@@ -1,0 +1,54 @@
+window.THE_BASE_MOTOR_CATALOG =
+[
+  {
+    "id": "cm_lodestar_0_5t",
+    "brand": "CM",
+    "model": "Lodestar 0.5T",
+    "wll_kg": 500,
+    "self_weight_kg": 39,
+    "chain_kg_per_m": 1.1,
+    "max_lift_m": 18,
+    "verified": true
+  },
+  {
+    "id": "cm_lodestar_1t",
+    "brand": "CM",
+    "model": "Lodestar 1T",
+    "wll_kg": 1000,
+    "self_weight_kg": 47,
+    "chain_kg_per_m": 1.4,
+    "max_lift_m": 24,
+    "verified": true
+  },
+  {
+    "id": "verlinde_stagemaker_sr1",
+    "brand": "Verlinde",
+    "model": "Stagemaker SR1",
+    "wll_kg": 1000,
+    "self_weight_kg": 49,
+    "chain_kg_per_m": 1.5,
+    "max_lift_m": 24,
+    "verified": true
+  },
+  {
+    "id": "prolyft_aetos_500",
+    "brand": "Prolyft",
+    "model": "Aetos 500",
+    "wll_kg": 500,
+    "self_weight_kg": 36,
+    "chain_kg_per_m": 1.1,
+    "max_lift_m": 20,
+    "verified": true
+  },
+  {
+    "id": "generic_hoist_1t",
+    "brand": "Generic",
+    "model": "Chain Hoist 1T",
+    "wll_kg": 1000,
+    "self_weight_kg": null,
+    "chain_kg_per_m": null,
+    "max_lift_m": null,
+    "verified": false
+  }
+]
+;

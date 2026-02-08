@@ -5,11 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Base - Reports</title>
     <style>
+      :root {
+        --text: #f2f3f8;
+        --muted: #b8b3c9;
+        --line: #4c3f75;
+        --line-2: #52437f;
+        --btn-line: #584888;
+        --btn-active: #b68bff;
+      }
       * { box-sizing: border-box; }
       body {
         margin: 0;
         font-family: "Avenir Next", "Segoe UI", sans-serif;
-        color: #f2f3f8;
+        color: var(--text);
         background:
           radial-gradient(circle at 12% 8%, #6f4bcb42 0%, transparent 42%),
           radial-gradient(circle at 90% 12%, #8a5fff36 0%, transparent 34%),
@@ -17,7 +25,7 @@
       }
       .shell { max-width: 1480px; margin: 0 auto; padding: 0.85rem; }
       .header {
-        border: 1px solid #4c3f75;
+        border: 1px solid var(--line);
         border-radius: 24px;
         padding: 0.8rem 1.1rem;
         background: linear-gradient(180deg, #282434, #201d2c);
@@ -65,9 +73,95 @@
         gap: 0.4rem;
         align-items: center;
       }
-      .main { margin-top: 0.8rem; border: 1px solid #4c3f75; border-radius: 22px; background: linear-gradient(180deg, #24222e, #1f1d29 78%); padding: 1rem; }
-      .card { border: 1px solid #52437f; border-radius: 14px; padding: 0.8rem; background: linear-gradient(170deg, #2a2736, #22202d); }
-      .muted { color: #b8b3c9; font-size: 0.9rem; }
+      .main {
+        margin-top: 0.8rem;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: linear-gradient(180deg, #24222e, #1f1d29 78%);
+        padding: 1rem;
+      }
+      .card {
+        border: 1px solid var(--line-2);
+        border-radius: 14px;
+        padding: 0.8rem;
+        background: linear-gradient(170deg, #2a2736, #22202d);
+      }
+      .muted { color: var(--muted); font-size: 0.9rem; }
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+      }
+      .tabs {
+        margin-top: 0.65rem;
+        display: flex;
+        gap: 0.45rem;
+        flex-wrap: wrap;
+      }
+      .tabs button {
+        font: inherit;
+        color: inherit;
+        border: 1px solid var(--btn-line);
+        background: linear-gradient(180deg, #332a4c, #29233e);
+        border-radius: 10px;
+        padding: 0.45rem 0.72rem;
+        cursor: pointer;
+      }
+      .tabs button.active {
+        border-color: var(--btn-active);
+        background: linear-gradient(180deg, #5a3ca3, #4a3188);
+      }
+      .grid {
+        margin-top: 0.7rem;
+        display: grid;
+        gap: 0.65rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .kpi {
+        border: 1px solid #564684;
+        border-radius: 10px;
+        padding: 0.55rem;
+        background: linear-gradient(165deg, #332b4e, #2a2441);
+      }
+      .kpi b { font-size: 1rem; }
+      .table-wrap {
+        margin-top: 0.75rem;
+        border: 1px solid #4f4178;
+        border-radius: 10px;
+        overflow: auto;
+        max-height: 42vh;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+      }
+      th, td {
+        border: 1px solid #4b3e74;
+        padding: 0.38rem 0.42rem;
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+        color: var(--muted);
+        background: #2b2540;
+        position: sticky;
+        top: 0;
+      }
+      .badge {
+        font-size: 0.74rem;
+        border: 1px solid #5d4c95;
+        border-radius: 999px;
+        padding: 0.16rem 0.5rem;
+      }
+      @media (max-width: 1040px) {
+        .grid { grid-template-columns: 1fr 1fr; }
+      }
+      @media (max-width: 760px) {
+        .grid { grid-template-columns: 1fr; }
+      }
     </style>
   </head>
   <body>
@@ -91,11 +185,17 @@
       </header>
       <main class="main">
         <div class="card">
-          <h2>Reports</h2>
-          <div class="muted">Reports page is ready for content.</div>
+          <div class="toolbar">
+            <h2>Department Reports</h2>
+            <span class="badge" id="reportCountBadge">0 report rows</span>
+          </div>
+          <div class="muted">Select a department to view live technical summary and report rows.</div>
+          <div class="tabs" id="reportTabs"></div>
+          <div id="reportContent"></div>
         </div>
       </main>
     </div>
+    <script src="data/lighting-fixtures.js"></script>
     <script>
       const logo = document.getElementById("brandLogo");
       const fallback = document.getElementById("brandFallback");
@@ -105,6 +205,155 @@
           fallback.style.display = "grid";
         });
       }
+
+      const REPORTS = {
+        Video: {
+          kpis: [
+            { label: "Active Walls", value: "1" },
+            { label: "Total Pixels", value: "2,822,400" },
+            { label: "Controller Ports", value: "12" }
+          ],
+          rows: [
+            { item: "Main LED Wall", value: "8.0m x 4.5m", notes: "Absen NT 2.9 mix row build" },
+            { item: "Playback Feeds", value: "4", notes: "2x primary, 2x backup" },
+            { item: "Signal Standard", value: "Fiber + SDI", notes: "Long runs converted to fiber" }
+          ]
+        },
+        Lighting: {
+          kpis: [
+            { label: "Fixture Types", value: "0" },
+            { label: "Library Fixtures", value: "0" },
+            { label: "Power Max (kW)", value: "0.0" }
+          ],
+          rows: []
+        },
+        Audio: {
+          kpis: [
+            { label: "Input Channels", value: "48" },
+            { label: "Monitor Mixes", value: "10" },
+            { label: "PA Zones", value: "3" }
+          ],
+          rows: [
+            { item: "FOH Console", value: "1", notes: "96k digital platform" },
+            { item: "Stageboxes", value: "3", notes: "Primary + redundant ring" },
+            { item: "Wireless Channels", value: "16", notes: "Coordinated RF plan required" }
+          ]
+        },
+        Staging: {
+          kpis: [
+            { label: "Decks", value: "64" },
+            { label: "Stage Area (m²)", value: "153.6" },
+            { label: "Hot Zones", value: "2" }
+          ],
+          rows: [
+            { item: "Main Stage", value: "16m x 9.6m", notes: "2.0m trim height" },
+            { item: "Leg Heights", value: "0.6m - 2.0m", notes: "Mixed terrain adjustment" },
+            { item: "Surface", value: "Painted Black", notes: "Anti-slip top" }
+          ]
+        },
+        Rigging: {
+          kpis: [
+            { label: "Motors", value: "18" },
+            { label: "Total Suspended (kg)", value: "4,120" },
+            { label: "Max Point Load (kg)", value: "420" }
+          ],
+          rows: [
+            { item: "Downstage Truss", value: "12m", notes: "4x motors, even span" },
+            { item: "Mid Truss", value: "10m", notes: "LED + wash package" },
+            { item: "Upstage Truss", value: "12m", notes: "Video backlight support" }
+          ]
+        },
+        Power: {
+          kpis: [
+            { label: "3-Phase Feeds", value: "4" },
+            { label: "Single Phase Circuits", value: "28" },
+            { label: "Estimated Max (A)", value: "320" }
+          ],
+          rows: [
+            { item: "Main Distro", value: "400A 3P", notes: "Generator backed" },
+            { item: "Lighting Distro", value: "125A 3P", notes: "Balanced by phase" },
+            { item: "Video Distro", value: "63A 3P", notes: "Dedicated UPS branch" }
+          ]
+        }
+      };
+
+      function buildLightingReport() {
+        const data = Array.isArray(window.THE_BASE_LIGHTING_FIXTURES) ? window.THE_BASE_LIGHTING_FIXTURES : [];
+        const withPower = data.filter((f) => Number.isFinite(Number(f?.power?.max_w)));
+        const withWeight = data.filter((f) => Number.isFinite(Number(f?.weight_kg)));
+        const maxKw = withPower.reduce((acc, f) => acc + Number(f.power.max_w || 0), 0) / 1000;
+        REPORTS.Lighting.kpis = [
+          { label: "Fixture Types", value: String(data.length) },
+          { label: "With Weight", value: String(withWeight.length) },
+          { label: "Power Max Sum (kW)", value: maxKw.toFixed(1) }
+        ];
+        REPORTS.Lighting.rows = data.slice(0, 24).map((f) => {
+          const mode = (f.modes && f.modes[0]) ? `${f.modes[0].name} (${f.modes[0].channels}ch)` : "No mode";
+          return {
+            item: `${f.manufacturer} ${f.model}`,
+            value: f.category || "Fixture",
+            notes: mode
+          };
+        });
+      }
+
+      function renderReportDepartment(dept) {
+        const root = document.getElementById("reportContent");
+        const badge = document.getElementById("reportCountBadge");
+        const report = REPORTS[dept];
+        if (!root || !report) return;
+        badge.textContent = `${report.rows.length} report rows`;
+        root.innerHTML = `
+          <div class="grid">
+            ${report.kpis.map((k) => `
+              <div class="kpi">
+                <div class="muted">${k.label}</div>
+                <b>${k.value}</b>
+              </div>
+            `).join("")}
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Item</th>
+                  <th>Value</th>
+                  <th>Notes / Warnings</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${report.rows.map((r) => `
+                  <tr>
+                    <td>${dept}</td>
+                    <td>${r.item}</td>
+                    <td>${r.value}</td>
+                    <td>${r.notes || ""}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      function initReports() {
+        buildLightingReport();
+        const tabs = document.getElementById("reportTabs");
+        if (!tabs) return;
+        const departments = Object.keys(REPORTS);
+        tabs.innerHTML = departments.map((d, i) => `<button data-dept="${d}" class="${i === 0 ? "active" : ""}">${d}</button>`).join("");
+        tabs.querySelectorAll("button[data-dept]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            tabs.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderReportDepartment(btn.dataset.dept);
+          });
+        });
+        renderReportDepartment(departments[0]);
+      }
+
+      initReports();
     </script>
   </body>
 </html>

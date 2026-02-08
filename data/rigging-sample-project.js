@@ -1,0 +1,34 @@
+window.THE_BASE_RIGGING_SAMPLE =
+{
+  "name": "Sample - 2 Spans 3 Pickups 10 Fixtures",
+  "units": "kg/m",
+  "safety_factor": 1.2,
+  "cantilever_enabled": false,
+  "nodes": [
+    { "id": "N1", "label": "P1", "x": 0, "y": 0 },
+    { "id": "N2", "label": "P2", "x": 6, "y": 0 },
+    { "id": "N3", "label": "P3", "x": 12, "y": 0 }
+  ],
+  "spans": [
+    { "id": "S1", "nodeA": "N1", "nodeB": "N2", "truss_type_id": "prolyte_h30v", "length_m": 6, "weight_per_m_override_kg": 9.4 },
+    { "id": "S2", "nodeA": "N2", "nodeB": "N3", "truss_type_id": "prolyte_h30v", "length_m": 6, "weight_per_m_override_kg": 9.4 }
+  ],
+  "pickups": [
+    { "id": "PU1", "node_id": "N1", "pickup_type": "motor", "motor_id": "cm_lodestar_1t", "roof_point_wll_kg": 1000, "chain_drop_m": 8 },
+    { "id": "PU2", "node_id": "N2", "pickup_type": "motor", "motor_id": "cm_lodestar_1t", "roof_point_wll_kg": 1000, "chain_drop_m": 8 },
+    { "id": "PU3", "node_id": "N3", "pickup_type": "motor", "motor_id": "cm_lodestar_1t", "roof_point_wll_kg": 1000, "chain_drop_m": 8 }
+  ],
+  "fixture_placements": [
+    { "fixture_name": "Generic Moving Head Spot 230W", "weight_kg": 17.5, "clamp_weight_kg": 0.5, "span_id": "S1", "position_m_from_nodeA": 1.2, "quantity": 2 },
+    { "fixture_name": "Generic Moving Head Spot 230W", "weight_kg": 17.5, "clamp_weight_kg": 0.5, "span_id": "S1", "position_m_from_nodeA": 4.8, "quantity": 2 },
+    { "fixture_name": "Generic LED Strobe 1500W", "weight_kg": 8.2, "clamp_weight_kg": 0.4, "span_id": "S1", "position_m_from_nodeA": 3.0, "quantity": 1 },
+    { "fixture_name": "Generic Moving Head Spot 230W", "weight_kg": 17.5, "clamp_weight_kg": 0.5, "span_id": "S2", "position_m_from_nodeA": 1.0, "quantity": 2 },
+    { "fixture_name": "Generic Moving Head Spot 230W", "weight_kg": 17.5, "clamp_weight_kg": 0.5, "span_id": "S2", "position_m_from_nodeA": 5.0, "quantity": 2 },
+    { "fixture_name": "Generic LED Strobe 1500W", "weight_kg": 8.2, "clamp_weight_kg": 0.4, "span_id": "S2", "position_m_from_nodeA": 3.0, "quantity": 1 }
+  ],
+  "accessories": [
+    { "name": "Corner Block", "weight_kg": 12, "placement": "node", "node_id": "N2" },
+    { "name": "Half Coupler Pack", "weight_kg": 6, "placement": "span", "span_id": "S1", "position_m": 3.0 }
+  ]
+}
+;
