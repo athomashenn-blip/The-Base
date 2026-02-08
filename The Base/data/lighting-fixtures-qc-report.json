@@ -1,0 +1,23 @@
+{
+  "summary": {
+    "total_fixtures": 432,
+    "synced_from_local_ofl_count": 98,
+    "manufacturer_counts": {
+      "Generic": 233,
+      "Elation": 52,
+      "Robe": 44,
+      "Ayrton": 33,
+      "Martin": 24,
+      "ETC": 16,
+      "GLP": 8,
+      "High End Systems": 8,
+      "Chauvet Professional": 7,
+      "Clay Paky": 6,
+      "Vari-Lite": 1
+    },
+    "unsynced_catalog_entries": 101,
+    "unsynced_catalog_file": "/Users/andrew/Documents/The Base/data/lighting-fixtures-unsynced.csv",
+    "issues": {}
+  },
+  "issue_samples": {}
+}

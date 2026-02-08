@@ -1,0 +1,1302 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Base</title>
+    <style>
+      :root {
+        --bg: #121317;
+        --bg-alt: #1a1c22;
+        --panel: #232630;
+        --line: #5d4a93;
+        --text: #f2f3f8;
+        --muted: #b8b3c9;
+        --accent: #a97cff;
+        --accent-2: #8a4cff;
+        --warn: #ffb35a;
+        --danger: #ff6f90;
+        --ok: #6de2a8;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 12% 8%, #6f4bcb42 0%, transparent 42%),
+          radial-gradient(circle at 90% 12%, #8a5fff36 0%, transparent 34%),
+          linear-gradient(160deg, #101116, #171922 62%, #111217);
+      }
+      .shell {
+        max-width: 1480px;
+        margin: 0 auto;
+        padding: 0.85rem;
+      }
+      .header {
+        border: 1px solid #4c3f75;
+        border-radius: 24px;
+        padding: 0.8rem 1.1rem;
+        background: linear-gradient(180deg, #282434, #201d2c);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        box-shadow: 0 10px 25px #00000040;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .brand-logo {
+        width: 64px;
+        height: 64px;
+        object-fit: cover;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid #3a4a8f;
+        box-shadow: 0 6px 16px #00000055;
+        display: block;
+      }
+      .brand-dot {
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        background: linear-gradient(150deg, #ff2d72, #ff5b5b);
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 1.3rem;
+        box-shadow: 0 0 0 3px #ffffff14, 0 8px 20px #0000004f;
+      }
+      .brand-wordmark {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 1rem;
+      }
+      .header p {
+        margin: 0.18rem 0 0;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+      .header-links {
+        display: flex;
+        gap: 1.5rem;
+        color: #99a9d7;
+        font-weight: 500;
+      }
+      .header-link-btn {
+        border: 0;
+        background: transparent;
+        padding: 0;
+        color: #99a9d7;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .header-link-btn:hover {
+        color: #dce7ff;
+      }
+      .header-links .active {
+        color: #fff;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 0.2rem;
+      }
+      .header-actions {
+        display: flex;
+        gap: 0.4rem;
+        align-items: center;
+      }
+      .action-pill {
+        border: 1px solid #384789;
+        border-radius: 12px;
+        min-width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        background: #101944;
+        color: #dce7ff;
+      }
+      .save-status {
+        font-size: 0.72rem;
+        color: var(--muted);
+        border: 1px solid #34478f;
+        border-radius: 999px;
+        padding: 0.18rem 0.52rem;
+        white-space: nowrap;
+      }
+      .plan-mode .detail-only {
+        display: none !important;
+      }
+      button.action-pill {
+        cursor: pointer;
+      }
+      .layout.hide-nav {
+        grid-template-columns: 1fr;
+      }
+      .layout.hide-nav .nav {
+        display: none;
+      }
+      .layout {
+        margin-top: 0.8rem;
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 0.8rem;
+      }
+      .nav {
+        border: 1px solid #4c3f75;
+        border-radius: 22px;
+        padding: 1rem 0.8rem;
+        background: linear-gradient(180deg, #252230, #1f1c29 74%, #1a1822);
+        display: grid;
+        gap: 0.5rem;
+        align-content: start;
+        box-shadow: inset 0 1px 0 #4053a52e;
+      }
+      .nav button {
+        width: 100%;
+        text-align: left;
+        border-radius: 12px;
+        padding: 0.65rem 0.65rem;
+      }
+      .subnav {
+        display: grid;
+        gap: 0.35rem;
+        margin: -0.1rem 0 0.3rem;
+        padding-left: 0.4rem;
+        max-height: 220px;
+        opacity: 1;
+        overflow: hidden;
+        transition: max-height 220ms ease, opacity 180ms ease, margin 200ms ease;
+      }
+      .subnav.hidden {
+        max-height: 0;
+        opacity: 0;
+        margin: 0;
+      }
+      .subnav button {
+        font-size: 0.84rem;
+        padding: 0.45rem 0.55rem;
+        border-style: dashed;
+      }
+      .nav-main {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .color-picker-wrap {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 32px;
+        border: 1px solid #5a4a8f;
+        border-radius: 8px;
+        background: linear-gradient(180deg, #342a4f, #2a233f);
+      }
+      .color-input {
+        width: 28px;
+        height: 22px;
+        border: 0;
+        background: transparent;
+        padding: 0;
+        cursor: pointer;
+      }
+      .color-input::-webkit-color-swatch-wrapper { padding: 0; }
+      .color-input::-webkit-color-swatch {
+        border: 1px solid #9d88d8;
+        border-radius: 5px;
+      }
+      .color-tag {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #5b4c91;
+        border-radius: 999px;
+        padding: 0.26rem;
+        font-size: 0.72rem;
+        color: #dce7ff;
+      }
+      .color-dot {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1px solid #cbd7ff55;
+      }
+      .nav-arrow {
+        display: inline-block;
+        font-size: 0.7rem;
+        color: #9fb1de;
+        transition: transform 220ms ease;
+      }
+      #videoNavBtn.is-open .nav-arrow {
+        transform: rotate(180deg);
+      }
+      .main {
+        border: 1px solid #4c3f75;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #24222e, #1f1d29 78%);
+        padding: 1rem;
+        box-shadow: 0 14px 28px #00000035, inset 0 1px 0 #7c64be2c;
+        overflow: hidden;
+      }
+      .module {
+        display: none;
+      }
+      .module.active {
+        display: block;
+      }
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 0.8rem;
+        flex-wrap: wrap;
+      }
+      h2, h3 {
+        margin: 0;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+      .grid {
+        display: grid;
+        gap: 0.7rem;
+      }
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .card {
+        border: 1px solid #52437f;
+        border-radius: 14px;
+        padding: 0.68rem;
+        background: linear-gradient(170deg, #2a2736, #22202d);
+        box-shadow: 0 8px 16px #00000030, inset 0 1px 0 #8b72ce24;
+      }
+      label {
+        display: block;
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-bottom: 0.2rem;
+      }
+      input, select, textarea, button {
+        font: inherit;
+        color: inherit;
+      }
+      input, select, textarea {
+        width: 100%;
+        background: #1b1923;
+        border: 1px solid #54467f;
+        border-radius: 8px;
+        padding: 0.42rem;
+      }
+      textarea {
+        min-height: 140px;
+      }
+      button {
+        border: 1px solid #584888;
+        background: linear-gradient(180deg, #332a4c, #29233e);
+        border-radius: 8px;
+        padding: 0.45rem 0.65rem;
+        cursor: pointer;
+      }
+      button.primary, .nav button.active {
+        border-color: #b68bff;
+        background: linear-gradient(180deg, #5a3ca3, #4a3188);
+      }
+      button.warn {
+        border-color: var(--warn);
+      }
+      .table-wrap {
+        overflow: auto;
+        max-height: 44vh;
+        border-radius: 10px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.78rem;
+      }
+      th, td {
+        border: 1px solid #374989;
+        padding: 0.3rem 0.34rem;
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+        color: var(--muted);
+        font-weight: 600;
+        position: sticky;
+        top: 0;
+        background: #15214f;
+        z-index: 1;
+      }
+      .kpis {
+        display: grid;
+        gap: 0.6rem;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      .kpi {
+        border: 1px solid #564684;
+        border-radius: 10px;
+        padding: 0.55rem;
+        background: linear-gradient(165deg, #332b4e, #2a2441);
+      }
+      .kpi b {
+        font-size: 1rem;
+      }
+      .badge {
+        display: inline-block;
+        font-size: 0.72rem;
+        padding: 0.12rem 0.45rem;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+      }
+      .ok { color: var(--ok); }
+      .warn-t { color: var(--warn); }
+      .bad { color: var(--danger); }
+      .dropzone {
+        border: 1px dashed #4053a0;
+        border-radius: 10px;
+        padding: 0.5rem;
+        min-height: 64px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        border: 1px solid var(--line);
+        padding: 0.15rem 0.42rem;
+        border-radius: 999px;
+        margin: 0.12rem;
+        font-size: 0.75rem;
+        background: #20315f;
+      }
+      .fixture-palette-item {
+        border: 1px solid #3a4a8d;
+        border-radius: 8px;
+        padding: 0.45rem;
+        margin-bottom: 0.35rem;
+        background: #182756;
+      }
+      .fixture-palette-item[draggable="true"] {
+        cursor: grab;
+      }
+      .tabs {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.6rem;
+      }
+      .tabs button.active {
+        border-color: var(--accent);
+        background: #4f2ca8;
+      }
+      .tab-pane {
+        display: none;
+      }
+      .tab-pane.active {
+        display: block;
+      }
+      .sheet-live {
+        margin-top: 0.7rem;
+      }
+      .action-done {
+        box-shadow: 0 0 0 2px #6de2a855 inset;
+      }
+      .toolbar button.secondary {
+        border-color: #4f62a8;
+        background: #182858;
+      }
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: #050913bd;
+        display: none;
+        place-items: center;
+        z-index: 100;
+      }
+      .modal-backdrop.open {
+        display: grid;
+      }
+      .modal-card {
+        width: min(420px, 92vw);
+        border: 1px solid #3a4a8f;
+        border-radius: 14px;
+        background: linear-gradient(170deg, #172457, #121d49);
+        box-shadow: 0 18px 36px #00000073;
+        padding: 0.85rem;
+      }
+      .modal-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.55rem;
+      }
+      .modal-actions {
+        display: grid;
+        gap: 0.5rem;
+      }
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .nav {
+          grid-template-columns: repeat(6, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 1320px) {
+        .grid-3 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 820px) {
+        .grid-2, .grid-3, .kpis, .nav {
+          grid-template-columns: 1fr;
+        }
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .header-links {
+          width: 100%;
+          overflow-x: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="header">
+        <div class="brand">
+          <img id="brandLogo" class="brand-logo" src="assets/base-logo.png" alt="BASE Logo" />
+          <div class="brand-dot" id="brandFallback" style="display:none;">B</div>
+          <div>
+            <div class="brand-wordmark">THE BASE</div>
+            <p>Technical planning dashboard for Video, Lighting, Audio, Staging & Rigging.</p>
+          </div>
+        </div>
+        <div class="header-links">
+          <a href="projects.html" id="projectsBtn" class="header-link-btn">Projects</a>
+          <a href="index.html" class="header-link-btn active">Engineering</a>
+          <a href="reports.html" class="header-link-btn">Reports</a>
+          <a href="settings.html" class="header-link-btn">Settings</a>
+        </div>
+        <div class="header-actions">
+        </div>
+      </header>
+
+      <section class="layout">
+        <nav class="nav" id="engineeringNav">
+          <button class="active is-open" id="videoNavBtn" data-engineering="Video">
+            <span class="nav-main"><span>Video</span><span class="nav-arrow">▾</span></span>
+          </button>
+          <div id="videoSubnav" class="subnav">
+            <button class="active" data-video-sub="LED">LED</button>
+            <button data-video-sub="Playback">Playback</button>
+            <button data-video-sub="Signal">Signal</button>
+            <button data-video-sub="Streaming">Streaming</button>
+          </div>
+          <button data-engineering="Lighting">Lighting</button>
+          <button data-engineering="Sound">Sound</button>
+          <button data-engineering="Rigging">Rigging</button>
+          <button data-engineering="Power">Power</button>
+        </nav>
+        <main class="main"></main>
+      </section>
+    </div>
+    <script src="data/lighting-fixtures.js"></script>
+    <script>
+      (function () {
+        const LED_PANELS = [
+          { id: "absen_d2v_2_9_05", name: "Absen D2V 2.9 0.5x0.5m", panelW: 0.5, panelH: 0.5, pxW: 168, pxH: 168, family: "absen_d2v" },
+          { id: "absen_pl_2_9_05", name: "Absen PL 2.9 0.5x0.5m", panelW: 0.5, panelH: 0.5, pxW: 168, pxH: 168, family: "absen_pl" },
+          { id: "absen_nt_2_9_05", name: "Absen NT 2.9 0.5x0.5m", panelW: 0.5, panelH: 0.5, pxW: 168, pxH: 168, family: "absen_nt" },
+          { id: "absen_nt_2_9_10", name: "Absen NT 2.9 1x0.5m", panelW: 0.5, panelH: 1, pxW: 168, pxH: 336, family: "absen_nt", halfPairId: "absen_nt_2_9_05" },
+          { id: "absen_fl_2_9_05", name: "Absen FL 2.9 0.5x0.5m", panelW: 0.5, panelH: 0.5, pxW: 168, pxH: 168, family: "absen_fl" },
+          { id: "digiled_5_9_05", name: "DigiLED 5.9 0.5x0.5m", panelW: 0.5, panelH: 0.5, pxW: 84, pxH: 84, family: "digiled_59" },
+          { id: "digiled_5_9_10", name: "DigiLED 5.9 1x0.5m", panelW: 0.5, panelH: 1, pxW: 84, pxH: 168, family: "digiled_59", halfPairId: "digiled_5_9_05" }
+        ];
+        const LIGHTING_FIXTURE_FALLBACK = [
+          { manufacturer: "Ayrton", model: "Diablo-S", category: "Spot", weight_kg: 21.8, power: { avg_w: null, max_w: 550 }, modes: [{ name: "Basic", channels: 34 }, { name: "Standard", channels: 36 }, { name: "Extended", channels: 56 }] },
+          { manufacturer: "Martin", model: "MAC Axiom Hybrid", category: "Hybrid", weight_kg: 24.8, power: { avg_w: null, max_w: 600 }, modes: [{ name: "Basic", channels: 26 }, { name: "Extended", channels: 38 }] },
+          { manufacturer: "Robe", model: "Robin 600E Spot", category: "Spot", weight_kg: null, power: { avg_w: null, max_w: null }, modes: [{ name: "Mode 1", channels: 31 }, { name: "Mode 2", channels: 39 }] },
+          { manufacturer: "Clay Paky", model: "Sharpy", category: "Beam", weight_kg: null, power: { avg_w: null, max_w: null }, modes: [{ name: "Standard", channels: 16 }] },
+          { manufacturer: "Chauvet Professional", model: "Maverick MK2 Spot", category: "Spot", weight_kg: null, power: { avg_w: null, max_w: null }, modes: [{ name: "Basic", channels: 31 }, { name: "Extended", channels: 50 }] },
+          { manufacturer: "ETC", model: "Source Four LED Series 2 Lustr", category: "Profile", weight_kg: null, power: { avg_w: null, max_w: null }, modes: [{ name: "Direct", channels: 1 }, { name: "HSI", channels: 3 }, { name: "RGB", channels: 5 }] },
+          { manufacturer: "GLP", model: "JDC1", category: "Strobe", weight_kg: null, power: { avg_w: null, max_w: null }, modes: [{ name: "Basic", channels: 13 }, { name: "Extended", channels: 68 }] },
+          { manufacturer: "Elation", model: "Proteus Maximus", category: "Profile", weight_kg: null, power: { avg_w: null, max_w: null }, modes: [{ name: "Basic", channels: 35 }, { name: "Extended", channels: 57 }] }
+        ];
+
+        const logo = document.getElementById("brandLogo");
+        const fallback = document.getElementById("brandFallback");
+        const main = document.querySelector("main.main");
+        const engineeringNav = document.getElementById("engineeringNav");
+        const videoNavBtn = document.getElementById("videoNavBtn");
+        const videoSubnav = document.getElementById("videoSubnav");
+        let lightingFixtureLibrary = LIGHTING_FIXTURE_FALLBACK.slice();
+        const ledState = {
+          mode: "single",
+          single: { panelType: LED_PANELS[0].id, width: 8, height: 4.5, name: "Main Wall", color: "#53c5ff" },
+          walls: [],
+          activeWallId: null
+        };
+        const lightingState = {
+          search: "",
+          selectedManufacturer: "",
+          selectedFixtureKey: "",
+          selectedModeName: "",
+          quantity: 1,
+          fixtures: [],
+          groups: [],
+          activeGroupId: null
+        };
+
+        function newLedWall(index = 1) {
+          return {
+            id: `wall_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+            name: `Wall ${index}`,
+            color: "#53c5ff",
+            panelType: LED_PANELS[0].id,
+            width: 8,
+            height: 4.5
+          };
+        }
+        function newLightingGroup(index = 1) {
+          return {
+            id: `lx_group_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+            name: `Group ${index}`,
+            color: "#53c5ff"
+          };
+        }
+        function fixtureKey(fixture) {
+          return `${fixture.manufacturer}__${fixture.model}`;
+        }
+        function getLightingFixtureByKey(key) {
+          return lightingFixtureLibrary.find((f) => fixtureKey(f) === key) || lightingFixtureLibrary[0];
+        }
+        function applyLightingFixtureRows(rows) {
+          if (!Array.isArray(rows)) return false;
+          const clean = rows
+            .map((f) => ({
+              manufacturer: f.manufacturer || "Unknown",
+              model: f.model || "Unnamed Fixture",
+              category: f.category || "Fixture",
+              weight_kg: Number.isFinite(Number(f?.weight_kg)) ? Number(f.weight_kg) : null,
+              power: {
+                avg_w: Number.isFinite(Number(f?.power?.avg_w)) ? Number(f.power.avg_w) : null,
+                max_w: Number.isFinite(Number(f?.power?.max_w)) ? Number(f.power.max_w) : null
+              },
+              modes: Array.isArray(f.modes)
+                ? f.modes
+                  .filter((m) => m && Number.isInteger(m.channels) && m.channels > 0)
+                  .map((m) => ({ name: m.name || "Mode", channels: m.channels }))
+                : []
+            }))
+            .filter((f) => f.modes.length);
+          if (!clean.length) return false;
+          lightingFixtureLibrary = clean;
+          return true;
+        }
+        function loadLightingFixtures() {
+          if (applyLightingFixtureRows(window.THE_BASE_LIGHTING_FIXTURES || [])) return;
+          if (typeof fetch !== "function") return;
+          fetch("data/lighting-fixtures.json")
+            .then((res) => (res.ok ? res.json() : Promise.reject(new Error("No lighting fixture dataset found."))))
+            .then((rows) => {
+              if (applyLightingFixtureRows(rows)) {
+                const active = engineeringNav?.querySelector("button[data-engineering].active")?.dataset.engineering;
+                if (active === "Lighting") renderLighting();
+              }
+            })
+            .catch(() => {});
+        }
+
+        if (logo && fallback) {
+          logo.addEventListener("error", () => {
+            logo.style.display = "none";
+            fallback.style.display = "grid";
+          });
+        }
+
+        function renderPlaceholder(title, note) {
+          if (!main) return;
+          main.innerHTML = `
+            <div class="card">
+              <h2>${title}</h2>
+              <div class="muted">${note}</div>
+            </div>
+          `;
+        }
+
+        function calcLedWall(panel, wallW, wallH) {
+          const panelsW = Math.max(0, Math.ceil(wallW / panel.panelW));
+          const pixelsW = panelsW * panel.pxW;
+          let panelsH = Math.max(0, Math.ceil(wallH / panel.panelH));
+          let panelCount = panelsW * panelsH;
+          let pixelsH = panelsH * panel.pxH;
+          let builtH = panelsH * panel.panelH;
+          let rowInfo = `${panelsH} rows (${panel.panelH.toFixed(1)}m)`;
+
+          if (panel.panelH === 1 && panel.halfPairId) {
+            const halfPanel = LED_PANELS.find((p) => p.id === panel.halfPairId);
+            if (halfPanel) {
+              const fullRows = Math.floor(wallH / panel.panelH);
+              const remainder = Math.max(0, wallH - (fullRows * panel.panelH));
+              let halfRows = 0;
+              let useFullRows = fullRows;
+              if (remainder > 0 && remainder <= 0.5) {
+                halfRows = 1;
+              } else if (remainder > 0.5) {
+                useFullRows += 1;
+              }
+              panelsH = useFullRows + halfRows;
+              panelCount = (panelsW * useFullRows) + (panelsW * halfRows);
+              pixelsH = (useFullRows * panel.pxH) + (halfRows * halfPanel.pxH);
+              builtH = (useFullRows * panel.panelH) + (halfRows * halfPanel.panelH);
+              rowInfo = `${useFullRows} x 1.0m rows + ${halfRows} x 0.5m rows`;
+            }
+          }
+          return {
+            panelsW,
+            panelsH,
+            panelCount,
+            pixelsW,
+            pixelsH,
+            pixelsTotal: pixelsW * pixelsH,
+            builtW: panelsW * panel.panelW,
+            builtH,
+            rowInfo
+          };
+        }
+
+        function renderVideoLED() {
+          if (!ledState.walls.length) {
+            const first = newLedWall(1);
+            ledState.walls.push(first);
+            ledState.activeWallId = first.id;
+          }
+          if (!main) return;
+          main.innerHTML = `
+            <div class="card">
+              <h2>Video - LED Panel Selector</h2>
+              <div class="tabs" style="margin-top:0.65rem;">
+                <button id="ledModeSingle" class="${ledState.mode === "single" ? "active" : ""}">Single Wall</button>
+                <button id="ledModeMulti" class="${ledState.mode === "multi" ? "active" : ""}">Multi Wall</button>
+              </div>
+              <div class="grid grid-3" style="margin-top:0.7rem;">
+                <div>
+                  <label>Panel Type</label>
+                  <select id="ledPanelType"></select>
+                </div>
+                <div>
+                  <label>Wall Width (m)</label>
+                  <input id="ledWallWidth" type="number" min="0" step="0.1" value="8" />
+                </div>
+                <div>
+                  <label>Wall Height (m)</label>
+                  <input id="ledWallHeight" type="number" min="0" step="0.1" value="4.5" />
+                </div>
+              </div>
+              <div id="ledMultiTools" class="${ledState.mode === "multi" ? "" : "detail-only"}" style="${ledState.mode === "multi" ? "" : "display:none;"}margin-top:0.7rem;">
+                <div class="card">
+                  <div class="toolbar">
+                    <h3>Wall Grouping</h3>
+                    <button id="ledAddWallBtn">Add Wall</button>
+                  </div>
+                  <div id="ledWallRows" class="grid"></div>
+                </div>
+                <div class="card" style="margin-top:0.65rem;">
+                  <h3>Per-Wall Outputs</h3>
+                  <div id="ledMultiOutputs" class="grid" style="margin-top:0.5rem;"></div>
+                </div>
+              </div>
+              <div class="grid grid-2" style="margin-top:0.8rem;">
+                <div class="card">
+                  <h3>Outputs</h3>
+                  <div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0.5rem;">
+                    <div class="kpi"><div class="muted">Panel Count</div><b id="ledOutPanelCount">0</b></div>
+                    <div class="kpi"><div class="muted">Total Pixels</div><b id="ledOutPixelsTotal">0</b></div>
+                    <div class="kpi"><div class="muted">Width Pixels</div><b id="ledOutPixelsW">0</b></div>
+                    <div class="kpi"><div class="muted">Height Pixels</div><b id="ledOutPixelsH">0</b></div>
+                  </div>
+                </div>
+                <div class="card">
+                  <h3>Panel Fit</h3>
+                  <div class="muted" id="ledFitInfo">-</div>
+                  <div class="muted" id="ledModeInfo" style="margin-top:0.45rem;"></div>
+                </div>
+              </div>
+            </div>
+          `;
+
+          const modeSingleBtn = document.getElementById("ledModeSingle");
+          const modeMultiBtn = document.getElementById("ledModeMulti");
+          const panelSel = document.getElementById("ledPanelType");
+          const widthEl = document.getElementById("ledWallWidth");
+          const heightEl = document.getElementById("ledWallHeight");
+          const modeInfo = document.getElementById("ledModeInfo");
+          const wallRows = document.getElementById("ledWallRows");
+          const multiOutputs = document.getElementById("ledMultiOutputs");
+
+          const activeWall = () => {
+            if (ledState.mode === "single") return ledState.single;
+            return ledState.walls.find((w) => w.id === ledState.activeWallId) || ledState.walls[0];
+          };
+
+          function renderWallRows() {
+            if (!wallRows) return;
+            wallRows.innerHTML = "";
+            ledState.walls.forEach((w) => {
+              const row = document.createElement("div");
+              row.className = "card";
+              row.dataset.wallSelectRow = w.id;
+              row.style.borderColor = w.id === ledState.activeWallId ? "#b68bff" : "#52437f";
+              row.style.cursor = "pointer";
+              row.innerHTML = `
+                <div style="display:grid;grid-template-columns:1fr 90px auto;gap:0.4rem;align-items:center;">
+                  <input data-wall-name="${w.id}" value="${w.name}" />
+                  <label class="color-picker-wrap">
+                    <input class="color-input" type="color" data-wall-color="${w.id}" value="${w.color}" />
+                  </label>
+                  <button data-wall-remove="${w.id}" ${ledState.walls.length === 1 ? "disabled" : ""}>Remove</button>
+                </div>
+              `;
+              wallRows.appendChild(row);
+            });
+            wallRows.querySelectorAll("div[data-wall-select-row]").forEach((el) => {
+              el.addEventListener("click", (ev) => {
+                if (ev.target.closest("input, label, button")) return;
+                ledState.activeWallId = el.dataset.wallSelectRow;
+                renderVideoLED();
+              });
+            });
+            wallRows.querySelectorAll("input[data-wall-name]").forEach((el) => {
+              el.addEventListener("click", (ev) => ev.stopPropagation());
+              el.addEventListener("input", () => {
+                const w = ledState.walls.find((x) => x.id === el.dataset.wallName);
+                if (w) {
+                  w.name = el.value;
+                  if (ledState.mode === "multi") renderMultiOutputs();
+                }
+              });
+            });
+            wallRows.querySelectorAll("input[data-wall-color]").forEach((el) => {
+              el.addEventListener("click", (ev) => ev.stopPropagation());
+              el.addEventListener("input", () => {
+                const w = ledState.walls.find((x) => x.id === el.dataset.wallColor);
+                if (w) {
+                  w.color = el.value;
+                  if (ledState.mode === "multi") renderMultiOutputs();
+                }
+              });
+            });
+            wallRows.querySelectorAll("button[data-wall-remove]").forEach((el) => {
+              el.addEventListener("click", (ev) => {
+                ev.stopPropagation();
+                ledState.walls = ledState.walls.filter((x) => x.id !== el.dataset.wallRemove);
+                ledState.activeWallId = ledState.walls[0]?.id || null;
+                renderVideoLED();
+              });
+            });
+          }
+
+          function renderMultiOutputs() {
+            if (!multiOutputs) return;
+            multiOutputs.innerHTML = "";
+            ledState.walls.forEach((w) => {
+              const p = LED_PANELS.find((x) => x.id === w.panelType) || LED_PANELS[0];
+              const c = calcLedWall(p, Number(w.width || 0), Number(w.height || 0));
+              const item = document.createElement("div");
+              item.className = "card";
+              item.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+                  <h3 style="margin:0;">${w.name}</h3>
+                  <span class="color-tag"><span class="color-dot" style="background:${w.color};"></span></span>
+                </div>
+                <div class="muted" style="margin-top:0.35rem;">${p.name}</div>
+                <div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0.5rem;">
+                  <div class="kpi"><div class="muted">Panel Count</div><b>${c.panelCount.toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Total Pixels</div><b>${c.pixelsTotal.toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Width Pixels</div><b>${c.pixelsW.toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Height Pixels</div><b>${c.pixelsH.toLocaleString()}</b></div>
+                </div>
+                <div class="muted" style="margin-top:0.45rem;">Layout ${c.panelsW} columns. Height build: ${c.rowInfo}. Built size ${c.builtW.toFixed(2)}m x ${c.builtH.toFixed(2)}m.</div>
+              `;
+              multiOutputs.appendChild(item);
+            });
+          }
+
+          LED_PANELS.forEach((p) => {
+            const opt = document.createElement("option");
+            opt.value = p.id;
+            opt.textContent = p.name;
+            panelSel.appendChild(opt);
+          });
+
+          function recalc() {
+            const wall = activeWall();
+            if (!wall) return;
+            wall.panelType = panelSel.value;
+            wall.width = Number(widthEl.value || 0);
+            wall.height = Number(heightEl.value || 0);
+
+            const panel = LED_PANELS.find((p) => p.id === wall.panelType) || LED_PANELS[0];
+            const calc = calcLedWall(panel, wall.width, wall.height);
+
+            document.getElementById("ledOutPanelCount").textContent = calc.panelCount.toLocaleString();
+            document.getElementById("ledOutPixelsW").textContent = calc.pixelsW.toLocaleString();
+            document.getElementById("ledOutPixelsH").textContent = calc.pixelsH.toLocaleString();
+            document.getElementById("ledOutPixelsTotal").textContent = calc.pixelsTotal.toLocaleString();
+            document.getElementById("ledFitInfo").textContent =
+              `Layout ${calc.panelsW} columns. Height build: ${calc.rowInfo}. Built size ${calc.builtW.toFixed(2)}m x ${calc.builtH.toFixed(2)}m.`;
+            if (ledState.mode === "multi") {
+              const totals = ledState.walls.reduce((acc, w) => {
+                const p = LED_PANELS.find((x) => x.id === w.panelType) || LED_PANELS[0];
+                const c = calcLedWall(p, Number(w.width || 0), Number(w.height || 0));
+                acc.panels += c.panelCount;
+                acc.pixels += c.pixelsTotal;
+                return acc;
+              }, { panels: 0, pixels: 0 });
+              modeInfo.textContent = `Active wall: ${wall.name}. Multi-wall totals: ${totals.panels.toLocaleString()} panels, ${totals.pixels.toLocaleString()} total pixels.`;
+              renderMultiOutputs();
+            } else {
+              modeInfo.textContent = `Single wall mode.`;
+            }
+          }
+
+          const w = activeWall();
+          panelSel.value = w?.panelType || LED_PANELS[0].id;
+          widthEl.value = String(w?.width ?? 8);
+          heightEl.value = String(w?.height ?? 4.5);
+
+          modeSingleBtn?.addEventListener("click", () => {
+            ledState.mode = "single";
+            renderVideoLED();
+          });
+          modeMultiBtn?.addEventListener("click", () => {
+            ledState.mode = "multi";
+            if (!ledState.activeWallId) ledState.activeWallId = ledState.walls[0]?.id || null;
+            renderVideoLED();
+          });
+          document.getElementById("ledAddWallBtn")?.addEventListener("click", () => {
+            const wall = newLedWall(ledState.walls.length + 1);
+            ledState.walls.push(wall);
+            ledState.activeWallId = wall.id;
+            renderVideoLED();
+          });
+
+          if (ledState.mode === "multi") {
+            renderWallRows();
+            renderMultiOutputs();
+          }
+          panelSel.addEventListener("input", recalc);
+          widthEl.addEventListener("input", recalc);
+          heightEl.addEventListener("input", recalc);
+          recalc();
+        }
+
+        function renderVideoSubTab(name) {
+          if (name === "LED") {
+            renderVideoLED();
+            return;
+          }
+          renderPlaceholder(`Video - ${name}`, `${name} planning UI comes next.`);
+        }
+
+        function ensureLightingDefaults() {
+          if (!lightingState.groups.length) {
+            const first = newLightingGroup(1);
+            lightingState.groups.push(first);
+            lightingState.activeGroupId = first.id;
+          }
+          if (!lightingState.activeGroupId && lightingState.groups[0]) {
+            lightingState.activeGroupId = lightingState.groups[0].id;
+          }
+        }
+
+        function renderLighting() {
+          ensureLightingDefaults();
+          if (!main) return;
+          main.innerHTML = `
+            <div class="card">
+              <h2>Lighting - Fixture Planner</h2>
+              <div class="muted" style="margin-top:0.25rem;">Search fixtures, choose mode, set quantity, then organize in groups.</div>
+              <div class="grid grid-3" style="margin-top:0.75rem;">
+                <div>
+                  <label>Search Fixture</label>
+                  <input id="lxSearch" type="text" placeholder="Search manufacturer or model..." value="${lightingState.search.replace(/"/g, "&quot;")}" />
+                </div>
+                <div>
+                  <label>Manufacturer</label>
+                  <select id="lxManufacturer"></select>
+                </div>
+                <div>
+                  <label>Select Fixture</label>
+                  <select id="lxFixture"></select>
+                </div>
+                <div>
+                  <label>Mode</label>
+                  <select id="lxMode"></select>
+                </div>
+                <div>
+                  <label>Quantity</label>
+                  <input id="lxQty" type="number" min="1" step="1" value="${Math.max(1, Number(lightingState.quantity || 1))}" />
+                </div>
+                <div style="display:flex;align-items:flex-end;">
+                  <button id="lxAddFixtureBtn" class="primary" style="width:100%;">Add Fixtures</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-2" style="margin-top:0.8rem;">
+              <div class="card">
+                <div class="toolbar">
+                  <h3>Added Fixtures</h3>
+                  <span class="badge">${lightingState.fixtures.length} lines</span>
+                </div>
+                <div id="lxFixtureRows" class="grid"></div>
+              </div>
+              <div class="card">
+                <div class="toolbar">
+                  <h3>Group Section</h3>
+                  <button id="lxAddGroupBtn">Add Group</button>
+                </div>
+                <div id="lxGroupRows" class="grid"></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:0.75rem;">
+              <h3>Group Outputs</h3>
+              <div id="lxGroupOutputs" class="grid" style="margin-top:0.5rem;"></div>
+            </div>
+          `;
+
+          const searchEl = document.getElementById("lxSearch");
+          const manufacturerEl = document.getElementById("lxManufacturer");
+          const fixtureEl = document.getElementById("lxFixture");
+          const modeEl = document.getElementById("lxMode");
+          const qtyEl = document.getElementById("lxQty");
+          const fixtureRows = document.getElementById("lxFixtureRows");
+          const groupRows = document.getElementById("lxGroupRows");
+          const groupOutputs = document.getElementById("lxGroupOutputs");
+
+          const manufacturers = Array.from(new Set(lightingFixtureLibrary.map((f) => f.manufacturer))).sort((a, b) => a.localeCompare(b));
+          if (lightingState.selectedManufacturer && !manufacturers.includes(lightingState.selectedManufacturer)) {
+            lightingState.selectedManufacturer = "";
+          }
+          manufacturerEl.innerHTML = `<option value="">All Manufacturers</option>${manufacturers.map((m) => `<option value="${m}">${m}</option>`).join("")}`;
+          manufacturerEl.value = lightingState.selectedManufacturer;
+
+          const filteredFixtures = lightingFixtureLibrary.filter((f) => {
+            if (lightingState.selectedManufacturer && f.manufacturer !== lightingState.selectedManufacturer) return false;
+            const t = lightingState.search.trim().toLowerCase();
+            if (!t) return true;
+            return `${f.manufacturer} ${f.model} ${f.category}`.toLowerCase().includes(t);
+          });
+          const selectedFixture = filteredFixtures.find((f) => fixtureKey(f) === lightingState.selectedFixtureKey) || filteredFixtures[0] || lightingFixtureLibrary[0];
+          lightingState.selectedFixtureKey = selectedFixture ? fixtureKey(selectedFixture) : "";
+          if (!lightingState.selectedModeName) {
+            lightingState.selectedModeName = selectedFixture?.modes?.[0]?.name || "";
+          }
+
+          filteredFixtures.forEach((f) => {
+            const opt = document.createElement("option");
+            opt.value = fixtureKey(f);
+            opt.textContent = `${f.manufacturer} - ${f.model}`;
+            fixtureEl.appendChild(opt);
+          });
+          if (!filteredFixtures.length) {
+            const opt = document.createElement("option");
+            opt.value = "";
+            opt.textContent = "No fixtures match search";
+            fixtureEl.appendChild(opt);
+            fixtureEl.value = "";
+          } else {
+            fixtureEl.value = lightingState.selectedFixtureKey;
+          }
+
+          function repopulateModeSelect() {
+            const fixture = getLightingFixtureByKey(fixtureEl.value);
+            modeEl.innerHTML = "";
+            fixture.modes.forEach((m) => {
+              const opt = document.createElement("option");
+              opt.value = m.name;
+              opt.textContent = `${m.name} (${m.channels}ch)`;
+              modeEl.appendChild(opt);
+            });
+            if (!fixture.modes.find((m) => m.name === lightingState.selectedModeName)) {
+              lightingState.selectedModeName = fixture.modes[0]?.name || "";
+            }
+            modeEl.value = lightingState.selectedModeName;
+          }
+          repopulateModeSelect();
+
+          function renderFixtureRows() {
+            if (!fixtureRows) return;
+            fixtureRows.innerHTML = "";
+            if (!lightingState.fixtures.length) {
+              fixtureRows.innerHTML = `<div class="muted">No fixtures added yet.</div>`;
+              return;
+            }
+            lightingState.fixtures.forEach((line) => {
+              const row = document.createElement("div");
+              row.className = "card";
+              const fixture = getLightingFixtureByKey(line.fixtureKey);
+              const groupOptions = lightingState.groups
+                .map((g) => `<option value="${g.id}" ${g.id === line.groupId ? "selected" : ""}>${g.name}</option>`)
+                .join("");
+              row.innerHTML = `
+                <div style="display:grid;grid-template-columns:1.5fr 1fr 80px 1fr auto;gap:0.45rem;align-items:center;">
+                  <div>
+                    <div><b>${fixture.manufacturer} ${fixture.model}</b></div>
+                    <div class="muted">${fixture.category}</div>
+                  </div>
+                  <div class="muted">${line.modeName} (${line.channels}ch)</div>
+                  <input data-lx-line-qty="${line.id}" type="number" min="1" step="1" value="${line.quantity}" />
+                  <select data-lx-line-group="${line.id}">${groupOptions}</select>
+                  <button data-lx-line-remove="${line.id}">Remove</button>
+                </div>
+              `;
+              fixtureRows.appendChild(row);
+            });
+
+            fixtureRows.querySelectorAll("input[data-lx-line-qty]").forEach((el) => {
+              el.addEventListener("change", () => {
+                const line = lightingState.fixtures.find((x) => x.id === el.dataset.lxLineQty);
+                if (line) line.quantity = Math.max(1, Math.round(Number(el.value || 1)));
+                renderGroupOutputs();
+              });
+            });
+            fixtureRows.querySelectorAll("select[data-lx-line-group]").forEach((el) => {
+              el.addEventListener("change", () => {
+                const line = lightingState.fixtures.find((x) => x.id === el.dataset.lxLineGroup);
+                if (line) line.groupId = el.value;
+                renderGroupOutputs();
+              });
+            });
+            fixtureRows.querySelectorAll("button[data-lx-line-remove]").forEach((el) => {
+              el.addEventListener("click", () => {
+                lightingState.fixtures = lightingState.fixtures.filter((x) => x.id !== el.dataset.lxLineRemove);
+                renderLighting();
+              });
+            });
+          }
+
+          function renderGroupRows() {
+            if (!groupRows) return;
+            groupRows.innerHTML = "";
+            lightingState.groups.forEach((g) => {
+              const row = document.createElement("div");
+              row.className = "card";
+              row.dataset.lxGroupSelect = g.id;
+              row.style.borderColor = g.id === lightingState.activeGroupId ? "#b68bff" : "#52437f";
+              row.style.cursor = "pointer";
+              row.innerHTML = `
+                <div style="display:grid;grid-template-columns:1fr 90px auto;gap:0.4rem;align-items:center;">
+                  <input data-lx-group-name="${g.id}" value="${g.name}" />
+                  <label class="color-picker-wrap">
+                    <input class="color-input" type="color" data-lx-group-color="${g.id}" value="${g.color}" />
+                  </label>
+                  <button data-lx-group-remove="${g.id}" ${lightingState.groups.length === 1 ? "disabled" : ""}>Remove</button>
+                </div>
+              `;
+              groupRows.appendChild(row);
+            });
+
+            groupRows.querySelectorAll("div[data-lx-group-select]").forEach((el) => {
+              el.addEventListener("click", (ev) => {
+                if (ev.target.closest("input, label, button, select")) return;
+                lightingState.activeGroupId = el.dataset.lxGroupSelect;
+                renderLighting();
+              });
+            });
+            groupRows.querySelectorAll("input[data-lx-group-name]").forEach((el) => {
+              el.addEventListener("click", (ev) => ev.stopPropagation());
+              el.addEventListener("change", () => {
+                const g = lightingState.groups.find((x) => x.id === el.dataset.lxGroupName);
+                if (g) g.name = el.value;
+                renderLighting();
+              });
+            });
+            groupRows.querySelectorAll("input[data-lx-group-color]").forEach((el) => {
+              el.addEventListener("click", (ev) => ev.stopPropagation());
+              el.addEventListener("input", () => {
+                const g = lightingState.groups.find((x) => x.id === el.dataset.lxGroupColor);
+                if (g) g.color = el.value;
+                renderGroupOutputs();
+              });
+            });
+            groupRows.querySelectorAll("button[data-lx-group-remove]").forEach((el) => {
+              el.addEventListener("click", (ev) => {
+                ev.stopPropagation();
+                const removedId = el.dataset.lxGroupRemove;
+                lightingState.groups = lightingState.groups.filter((x) => x.id !== removedId);
+                if (!lightingState.groups.length) {
+                  const first = newLightingGroup(1);
+                  lightingState.groups = [first];
+                }
+                lightingState.activeGroupId = lightingState.groups[0].id;
+                lightingState.fixtures = lightingState.fixtures.map((line) => ({
+                  ...line,
+                  groupId: line.groupId === removedId ? lightingState.activeGroupId : line.groupId
+                }));
+                renderLighting();
+              });
+            });
+          }
+
+          function renderGroupOutputs() {
+            if (!groupOutputs) return;
+            groupOutputs.innerHTML = "";
+            lightingState.groups.forEach((g) => {
+              const rows = lightingState.fixtures.filter((f) => f.groupId === g.id);
+              const fixtureCount = rows.reduce((a, r) => a + r.quantity, 0);
+              const channels = rows.reduce((a, r) => a + (r.channels * r.quantity), 0);
+              const power = rows.reduce((acc, r) => {
+                const fx = getLightingFixtureByKey(r.fixtureKey);
+                const avg = Number.isFinite(Number(fx?.power?.avg_w)) ? Number(fx.power.avg_w) : 0;
+                const max = Number.isFinite(Number(fx?.power?.max_w)) ? Number(fx.power.max_w) : 0;
+                const weight = Number.isFinite(Number(fx?.weight_kg)) ? Number(fx.weight_kg) : 0;
+                acc.avgW += (avg * r.quantity);
+                acc.maxW += (max * r.quantity);
+                acc.weightKg += (weight * r.quantity);
+                return acc;
+              }, { avgW: 0, maxW: 0, weightKg: 0 });
+              const output = document.createElement("div");
+              output.className = "card";
+              output.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+                  <h3 style="margin:0;">${g.name}</h3>
+                  <span class="color-tag"><span class="color-dot" style="background:${g.color};"></span></span>
+                </div>
+                <div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0.45rem;">
+                  <div class="kpi"><div class="muted">Fixture Count</div><b>${fixtureCount.toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">DMX Channels</div><b>${channels.toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Power Avg (W)</div><b>${Math.round(power.avgW).toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Power Max (W)</div><b>${Math.round(power.maxW).toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Weight (kg)</div><b>${power.weightKg.toFixed(1)}</b></div>
+                </div>
+              `;
+              groupOutputs.appendChild(output);
+            });
+          }
+
+          searchEl?.addEventListener("input", () => {
+            const cursor = searchEl.selectionStart ?? searchEl.value.length;
+            lightingState.search = searchEl.value;
+            renderLighting();
+            requestAnimationFrame(() => {
+              const next = document.getElementById("lxSearch");
+              if (!next) return;
+              next.focus();
+              const pos = Math.min(cursor, next.value.length);
+              next.setSelectionRange(pos, pos);
+            });
+          });
+          manufacturerEl?.addEventListener("change", () => {
+            lightingState.selectedManufacturer = manufacturerEl.value;
+            lightingState.selectedFixtureKey = "";
+            lightingState.selectedModeName = "";
+            renderLighting();
+          });
+          fixtureEl?.addEventListener("change", () => {
+            lightingState.selectedFixtureKey = fixtureEl.value;
+            lightingState.selectedModeName = "";
+            renderLighting();
+          });
+          modeEl?.addEventListener("change", () => {
+            lightingState.selectedModeName = modeEl.value;
+          });
+          qtyEl?.addEventListener("change", () => {
+            lightingState.quantity = Math.max(1, Math.round(Number(qtyEl.value || 1)));
+          });
+          document.getElementById("lxAddFixtureBtn")?.addEventListener("click", () => {
+            if (!fixtureEl.value) return;
+            const fixture = getLightingFixtureByKey(fixtureEl.value);
+            if (!fixture) return;
+            const mode = fixture.modes.find((m) => m.name === modeEl.value) || fixture.modes[0];
+            lightingState.fixtures.push({
+              id: `lx_line_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+              fixtureKey: fixtureKey(fixture),
+              modeName: mode.name,
+              channels: mode.channels,
+              quantity: Math.max(1, Math.round(Number(qtyEl.value || 1))),
+              groupId: lightingState.activeGroupId || lightingState.groups[0]?.id
+            });
+            renderLighting();
+          });
+          document.getElementById("lxAddGroupBtn")?.addEventListener("click", () => {
+            const g = newLightingGroup(lightingState.groups.length + 1);
+            lightingState.groups.push(g);
+            lightingState.activeGroupId = g.id;
+            renderLighting();
+          });
+
+          renderFixtureRows();
+          renderGroupRows();
+          renderGroupOutputs();
+        }
+
+        function setEngineeringSection(name) {
+          if (name === "Video") {
+            const activeVideo = videoSubnav?.querySelector("button[data-video-sub].active")?.dataset.videoSub || "LED";
+            renderVideoSubTab(activeVideo);
+            return;
+          }
+          if (name === "Lighting") {
+            renderLighting();
+            return;
+          }
+          renderPlaceholder(name, `${name} workspace is ready for implementation.`);
+        }
+
+        engineeringNav?.querySelectorAll("button[data-engineering]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if (btn.dataset.engineering === "Video" && btn.classList.contains("active")) {
+              videoSubnav?.classList.toggle("hidden");
+              videoNavBtn?.classList.toggle("is-open", !videoSubnav?.classList.contains("hidden"));
+              return;
+            }
+            engineeringNav.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            if (btn.dataset.engineering === "Video") {
+              videoSubnav?.classList.remove("hidden");
+              videoNavBtn?.classList.add("is-open");
+            } else {
+              videoSubnav?.classList.add("hidden");
+              videoNavBtn?.classList.remove("is-open");
+            }
+            setEngineeringSection(btn.dataset.engineering);
+          });
+        });
+        videoSubnav?.querySelectorAll("button[data-video-sub]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            videoSubnav.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            setEngineeringSection("Video");
+          });
+        });
+
+        loadLightingFixtures();
+        setEngineeringSection("Video");
+
+        document.addEventListener("click", (e) => {
+          const btn = e.target.closest("button");
+          if (!btn || btn.disabled) return;
+          btn.classList.add("action-done");
+          setTimeout(() => btn.classList.remove("action-done"), 220);
+        });
+      })();
+    </script>
+  </body>
+</html>
