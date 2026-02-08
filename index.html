@@ -599,9 +599,21 @@
           selectedFixtureKey: "",
           selectedGroupId: "",
           selectedGroupInstanceId: "",
+          selectedTrussGroupId: "",
+          selectedPlanGroupId: "",
+          selectedGroupFixtureInstanceId: "",
+          groupFixturePositionM: 0,
+          groupMotorPositionM: 0,
+          groupMotorRoofWllKg: null,
+          groupMotorChainDropM: 8,
+          groupSegmentLengthMById: {},
+          groupExpandedById: {},
           selectedSpanId: "",
           fixturePositionM: 0,
           fixtureQty: 1,
+          groups: [
+            { id: "rig_grp_1", name: "Main Rig", color: "#8a7cff" }
+          ],
           nodes: [
             { id: "N1", label: "P1", x: 0, y: 0 },
             { id: "N2", label: "P2", x: 6, y: 0 },
@@ -617,6 +629,8 @@
             { id: "PU3", nodeId: "N3", pickupType: "motor", motorId: "cm_lodestar_1t", roofPointWllKg: 1000, chainDropM: 8, notes: "" }
           ],
           fixturePlacements: [],
+          groupFixtures: [],
+          groupMotors: [],
           accessories: [],
           lastCalc: null
         };
@@ -656,11 +670,16 @@
           measurementEditingValue: "",
           generalMeasureArmed: false,
           generalMeasurePoints: [],
-          generalMeasurementLog: []
+          generalMeasurementLog: [],
+          trussPlacements: [],
+          selectedVenueRigGroupId: ""
         };
         let riggingDragPayload = null;
+        let venueRigDragPayload = null;
         const riggingPlanDragState = { active: false, fixtureId: "", spanId: "", ax: 0, ay: 0, bx: 0, by: 0, spanLen: 0, markerGroup: null, tOffset: 0 };
+        const venueTrussDragState = { active: false, id: "", handle: "", startX: 0, startY: 0, fixedX: 0, fixedY: 0, lengthM: 0 };
         let riggingPlanDragBound = false;
+        let venueTrussDragBound = false;
         const venuePanState = { spaceDown: false, dragging: false, lastX: 0, lastY: 0 };
         let venuePanBound = false;
 
@@ -679,6 +698,13 @@
             id: `lx_group_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
             name: `Group ${index}`,
             color: "#53c5ff"
+          };
+        }
+        function newRiggingGroup(index = 1) {
+          return {
+            id: `rig_group_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+            name: `Truss Group ${index}`,
+            color: "#8a7cff"
           };
         }
         function fixtureKey(fixture) {
@@ -779,6 +805,57 @@
         }
         function getSpan(id) {
           return riggingState.spans.find((s) => s.id === id);
+        }
+        function getRiggingGroups() {
+          if (!Array.isArray(riggingState.groups)) riggingState.groups = [];
+          if (!riggingState.groups.length) {
+            riggingState.groups = [{ id: "rig_grp_1", name: "Main Rig", color: "#8a7cff" }];
+          }
+          return riggingState.groups;
+        }
+        function getRiggingSpanLabel(span) {
+          if (!span) return "";
+          const g = getRiggingGroups().find((x) => x.id === span.groupId);
+          const groupName = g?.name || "Ungrouped";
+          return `${groupName} - ${span.id} (${Number(span.lengthM || 0).toFixed(1)}m)`;
+        }
+        function getRiggingGroupSpans(groupId) {
+          const map = buildRiggingSpanCoordinateMap();
+          return (riggingState.spans || [])
+            .filter((s) => (s.groupId || getRiggingGroups()[0]?.id || "") === groupId)
+            .map((s) => {
+              const ax = Number(map.nodeXById[s.nodeA] ?? getNode(s.nodeA)?.x ?? 0);
+              const bx = Number(map.nodeXById[s.nodeB] ?? getNode(s.nodeB)?.x ?? 0);
+              return {
+                span: s,
+                sortX: Math.min(ax, bx),
+                lengthM: Math.max(0, Number(s.lengthM || 0))
+              };
+            })
+            .sort((a, b) => a.sortX - b.sortX);
+        }
+        function getRiggingGroupTotalSpan(groupId) {
+          return getRiggingGroupSpans(groupId).reduce((sum, x) => sum + x.lengthM, 0);
+        }
+        function mapGroupPositionToSpan(groupId, posM) {
+          const spans = getRiggingGroupSpans(groupId);
+          if (!spans.length) return null;
+          const total = spans.reduce((sum, x) => sum + x.lengthM, 0);
+          const clamped = Math.max(0, Math.min(Math.max(0, total), Number(posM || 0)));
+          let offset = 0;
+          for (let i = 0; i < spans.length; i += 1) {
+            const x = spans[i];
+            const end = offset + x.lengthM;
+            if (clamped <= end || i === spans.length - 1) {
+              return {
+                spanId: x.span.id,
+                positionM: Math.max(0, Math.min(x.lengthM, clamped - offset)),
+                totalSpanM: total
+              };
+            }
+            offset = end;
+          }
+          return null;
         }
         function buildRiggingSpanCoordinateMap() {
           const nodes = riggingState.nodes || [];
@@ -891,8 +968,7 @@
             const hasLeftPickup = (pickupByNode[nodeA.id] || []).length > 0;
             const hasRightPickup = (pickupByNode[nodeB.id] || []).length > 0;
             if (!hasLeftPickup || !hasRightPickup) {
-              blockers.push(`Span ${span.id} is missing pickup support at one or both ends. Current solver requires a supported pickup at each end.`);
-              return;
+              warnings.push(`Span ${span.id} is missing pickup support at one or both ends. Reactions will still be estimated; verify support model.`);
             }
 
             const truss = getTrussType(span.trussTypeId);
@@ -922,12 +998,9 @@
                   return;
                 }
                 const pos = Number(fp.positionM || 0);
-                if ((pos < 0 || pos > spanLength) && !riggingState.cantileverEnabled) {
+                if (pos < 0 || pos > spanLength) {
                   blockers.push(`Fixture load on ${span.id} is outside span length and cantilever mode is disabled.`);
                   return;
-                }
-                if (pos < 0 || pos > spanLength) {
-                  warnings.push(`Cantilever load on ${span.id} at ${pos.toFixed(2)}m.`);
                 }
                 const unitWeight = fixtureWeight + clampWeight;
                 const qty = Math.max(1, Math.round(Number(fp.quantity || 1)));
@@ -942,11 +1015,10 @@
                   blockers.push(`Accessory ${a.name || "Unnamed"} on ${span.id} has invalid weight.`);
                   return;
                 }
-                if ((pos < 0 || pos > spanLength) && !riggingState.cantileverEnabled) {
+                if (pos < 0 || pos > spanLength) {
                   blockers.push(`Accessory ${a.name || "Unnamed"} on ${span.id} is outside span and cantilever mode is disabled.`);
                   return;
                 }
-                if (pos < 0 || pos > spanLength) warnings.push(`Cantilever accessory on ${span.id} at ${pos.toFixed(2)}m.`);
                 pointLoads.push({ pos_m: pos, load_kg: load });
               });
 
@@ -1136,10 +1208,14 @@
           riggingState.lastCalc = result;
           return result;
         }
-        function buildBeamLoadProfile(sampleCount = 200) {
+        function buildBeamLoadProfile(sampleCount = 200, spanFilterIds = null) {
+          const spanFilterSet = spanFilterIds instanceof Set ? spanFilterIds : null;
           const spanMap = buildRiggingSpanCoordinateMap();
           const nodesById = Object.fromEntries((riggingState.nodes || []).map((n) => [n.id, n]));
-          const spans = (riggingState.spans || []).map((s) => {
+          const spans = (riggingState.spans || []).filter((s) => {
+            if (!spanFilterSet) return true;
+            return spanFilterSet.has(s.id);
+          }).map((s) => {
             const a = nodesById[s.nodeA];
             const b = nodesById[s.nodeB];
             if (!a || !b) return null;
@@ -1165,6 +1241,7 @@
           const pointLoads = [];
           (riggingState.fixturePlacements || []).forEach((fp) => {
             if (!fp.spanId) return;
+            if (spanFilterSet && !spanFilterSet.has(fp.spanId)) return;
             const s = spans.find((x) => x.id === fp.spanId);
             if (!s) return;
             const t = Math.max(0, Math.min(1, Number(fp.positionM || 0) / s.lenM));
@@ -1176,6 +1253,7 @@
           });
           (riggingState.accessories || []).forEach((a) => {
             if (a.placement !== "span") return;
+            if (spanFilterSet && !spanFilterSet.has(a.spanId)) return;
             const s = spans.find((x) => x.id === a.spanId);
             if (!s) return;
             const t = Math.max(0, Math.min(1, Number(a.positionM || 0) / s.lenM));
@@ -1846,6 +1924,28 @@
         }
         function renderRigging() {
           if (!main) return;
+          const rigGroups = getRiggingGroups();
+          riggingState.spans = (riggingState.spans || []).map((s) => ({
+            ...s,
+            groupId: s.groupId || rigGroups[0]?.id || ""
+          }));
+          if (riggingState.selectedTrussGroupId && !rigGroups.some((g) => g.id === riggingState.selectedTrussGroupId)) {
+            riggingState.selectedTrussGroupId = "";
+          }
+          if (!riggingState.selectedTrussGroupId && rigGroups[0]) {
+            riggingState.selectedTrussGroupId = rigGroups[0].id;
+          }
+          if (riggingState.selectedPlanGroupId && !rigGroups.some((g) => g.id === riggingState.selectedPlanGroupId)) {
+            riggingState.selectedPlanGroupId = "";
+          }
+          if (!riggingState.selectedPlanGroupId && riggingState.selectedTrussGroupId) {
+            riggingState.selectedPlanGroupId = riggingState.selectedTrussGroupId;
+          }
+          if (!riggingState.selectedPlanGroupId && rigGroups[0]) {
+            riggingState.selectedPlanGroupId = rigGroups[0].id;
+          }
+          const selectedRigGroupId = riggingState.selectedTrussGroupId || rigGroups[0]?.id || "";
+          const selectedRigGroupTotalSpanM = getRiggingGroupTotalSpan(selectedRigGroupId);
           const groupById = Object.fromEntries((lightingState.groups || []).map((g) => [g.id, g]));
           const assignedInstanceIds = new Set(
             (riggingState.fixturePlacements || [])
@@ -1891,6 +1991,14 @@
             riggingState.selectedGroupInstanceId = availableInstances[0].sourceInstanceId;
           }
           const selectedDragFixture = availableInstances.find((x) => x.sourceInstanceId === riggingState.selectedGroupInstanceId) || null;
+          const takenGroupFixtureInstances = new Set((riggingState.groupFixtures || []).map((x) => x.sourceInstanceId).filter(Boolean));
+          const availableGroupSpanInstances = availableInstances.filter((x) => !takenGroupFixtureInstances.has(x.sourceInstanceId));
+          if (riggingState.selectedGroupFixtureInstanceId && !availableGroupSpanInstances.some((x) => x.sourceInstanceId === riggingState.selectedGroupFixtureInstanceId)) {
+            riggingState.selectedGroupFixtureInstanceId = "";
+          }
+          if (!riggingState.selectedGroupFixtureInstanceId && availableGroupSpanInstances[0]) {
+            riggingState.selectedGroupFixtureInstanceId = availableGroupSpanInstances[0].sourceInstanceId;
+          }
           const fixtureOptions = lightingFixtureLibrary
             .filter((f) => {
               const t = riggingState.fixtureSearch.trim().toLowerCase();
@@ -1908,6 +2016,65 @@
           const motorOptions = motorCatalog.map((m) => `<option value="${m.id}" ${m.id === riggingState.selectedMotorId ? "selected" : ""}>${m.brand} ${m.model} (${m.wll_kg ?? "?"}kg)</option>`).join("");
           const calc = riggingState.lastCalc || runRiggingCalculation();
           const exportLocked = Boolean(calc?.compliance?.exportLocked);
+          const splitSpanAtPosition = (spanId, posM) => {
+            const span = getSpan(spanId);
+            if (!span) return null;
+            const L = Number(span.lengthM || 0);
+            const p = Number(posM || 0);
+            if (!(L > 0) || p <= 0.001 || p >= (L - 0.001)) return null;
+            const nodeA = getNode(span.nodeA);
+            const nodeB = getNode(span.nodeB);
+            if (!nodeA || !nodeB) return null;
+            const t = p / L;
+            const newNodeIdx = riggingState.nodes.length + 1;
+            const newNodeId = `N${newNodeIdx}`;
+            riggingState.nodes.push({
+              id: newNodeId,
+              label: `P${newNodeIdx}`,
+              x: Number(nodeA.x || 0) + ((Number(nodeB.x || 0) - Number(nodeA.x || 0)) * t),
+              y: Number(nodeA.y || 0) + ((Number(nodeB.y || 0) - Number(nodeA.y || 0)) * t)
+            });
+            const s1 = {
+              id: `${span.id}A${Math.random().toString(36).slice(2, 4)}`,
+              nodeA: span.nodeA,
+              nodeB: newNodeId,
+              trussTypeId: span.trussTypeId,
+              groupId: span.groupId || selectedRigGroupId,
+              lengthM: Number(p.toFixed(3))
+            };
+            const s2 = {
+              id: `${span.id}B${Math.random().toString(36).slice(2, 4)}`,
+              nodeA: newNodeId,
+              nodeB: span.nodeB,
+              trussTypeId: span.trussTypeId,
+              groupId: span.groupId || selectedRigGroupId,
+              lengthM: Number((L - p).toFixed(3))
+            };
+            riggingState.spans = riggingState.spans.filter((x) => x.id !== span.id).concat([s1, s2]);
+            (riggingState.fixturePlacements || []).forEach((fp) => {
+              if (fp.spanId !== span.id) return;
+              const fxPos = Number(fp.positionM || 0);
+              if (fxPos <= p) {
+                fp.spanId = s1.id;
+                fp.positionM = Number(Math.max(0, fxPos).toFixed(3));
+              } else {
+                fp.spanId = s2.id;
+                fp.positionM = Number(Math.max(0, fxPos - p).toFixed(3));
+              }
+            });
+            (riggingState.accessories || []).forEach((a) => {
+              if (a.spanId !== span.id) return;
+              const accPos = Number(a.positionM || 0);
+              if (accPos <= p) {
+                a.spanId = s1.id;
+                a.positionM = Number(Math.max(0, accPos).toFixed(3));
+              } else {
+                a.spanId = s2.id;
+                a.positionM = Number(Math.max(0, accPos - p).toFixed(3));
+              }
+            });
+            return { newNodeId, leftSpanId: s1.id, rightSpanId: s2.id };
+          };
 
           main.innerHTML = `
             <div class="card">
@@ -1940,62 +2107,71 @@
               <div class="muted" style="margin-top:0.45rem;">Raw and factored loads are displayed separately. Final calc blocks on missing mass data.</div>
             </div>
 
-            <div class="grid grid-2" style="margin-top:0.75rem;">
+            <div class="grid grid-2" style="margin-top:0.75rem;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:start;">
               <div class="card">
                 <div class="toolbar">
-                  <h3>Roof Points</h3>
-                  <button id="rigAddNodeBtn">Add Point</button>
+                  <h3>Truss Groups</h3>
                 </div>
-                <div class="table-wrap">
-                  <table>
-                    <thead><tr><th>ID</th><th>Label</th><th>X (m)</th><th>Y (m)</th><th></th></tr></thead>
-                    <tbody id="rigNodeRows">
-                      ${riggingState.nodes.map((n) => `
-                        <tr>
-                          <td>${n.id}</td>
-                          <td><input data-rig-node-label="${n.id}" value="${n.label}" /></td>
-                          <td><input data-rig-node-x="${n.id}" type="number" step="0.1" value="${n.x}" /></td>
-                          <td><input data-rig-node-y="${n.id}" type="number" step="0.1" value="${n.y}" /></td>
-                          <td><button data-rig-node-remove="${n.id}" ${riggingState.nodes.length <= 2 ? "disabled" : ""}>Remove</button></td>
-                        </tr>
-                      `).join("")}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div class="card">
-                <div class="toolbar">
-                  <h3>Spans / Truss Pieces</h3>
-                  <button id="rigAddSpanBtn">Add Span</button>
-                </div>
-                <div class="grid grid-3" style="margin-bottom:0.55rem;">
+                <div class="grid grid-4" style="margin-bottom:0.55rem;">
                   <div><label>Truss Type</label><select id="rigTrussTypeSel">${trussOptions}</select></div>
-                  <div><label>Cantilever Mode</label><button id="rigCantileverBtn" class="${riggingState.cantileverEnabled ? "primary" : ""}">${riggingState.cantileverEnabled ? "Enabled" : "Disabled"}</button></div>
+                  <div><label>Truss Group</label><select id="rigTrussGroupSel">${rigGroups.map((g) => `<option value="${g.id}" ${g.id === riggingState.selectedTrussGroupId ? "selected" : ""}>${g.name}</option>`).join("")}</select></div>
+                  <div style="display:flex;align-items:flex-end;"><button id="rigAddTrussGroupBtn">Add Truss Group</button></div>
                 </div>
-                <div class="table-wrap">
+                <div class="table-wrap" style="margin-bottom:0.55rem;">
                   <table>
-                    <thead><tr><th>ID</th><th>Node A</th><th>Node B</th><th>Length (m)</th><th>Type</th><th></th></tr></thead>
-                    <tbody id="rigSpanRows">
-                      ${riggingState.spans.map((s) => {
+                    <thead><tr><th>Group</th><th>Color</th><th>Spans</th><th></th></tr></thead>
+                    <tbody>
+                      ${rigGroups.map((g) => {
+                        const groupSpans = riggingState.spans.filter((s) => s.groupId === g.id);
+                        const spanCount = groupSpans.length;
+                        const groupSegLen = Math.max(0.1, Number(riggingState.groupSegmentLengthMById?.[g.id] || 6));
+                        const expanded = riggingState.groupExpandedById?.[g.id] !== false;
                         return `
                           <tr>
-                            <td>${s.id}</td>
-                            <td><select data-rig-span-a="${s.id}">${nodeOptions.replace(`value="${s.nodeA}"`, `value="${s.nodeA}" selected`)}</select></td>
-                            <td><select data-rig-span-b="${s.id}">${nodeOptions.replace(`value="${s.nodeB}"`, `value="${s.nodeB}" selected`)}</select></td>
-                            <td><input data-rig-span-l="${s.id}" type="number" min="0.1" step="0.1" value="${s.lengthM}" /></td>
-                            <td><select data-rig-span-type="${s.id}">${trussCatalog.map((x) => `<option value="${x.id}" ${x.id === s.trussTypeId ? "selected" : ""}>${x.series}${x.verified ? "" : " [UNVERIFIED]"}</option>`).join("")}</select></td>
-                            <td><button data-rig-span-remove="${s.id}" ${riggingState.spans.length <= 1 ? "disabled" : ""}>Remove</button></td>
+                            <td>
+                              <div style="display:flex;align-items:center;gap:0.35rem;">
+                                <button data-rig-group-toggle="${g.id}" title="${expanded ? "Collapse" : "Expand"}" style="min-width:26px;padding:0.15rem 0.35rem;">${expanded ? "▾" : "▸"}</button>
+                                <input data-rig-group-name="${g.id}" value="${g.name}" />
+                              </div>
+                            </td>
+                            <td><input data-rig-group-color="${g.id}" type="color" value="${g.color || "#8a7cff"}" /></td>
+                            <td>${spanCount}</td>
+                            <td><button data-rig-group-remove="${g.id}" ${rigGroups.length <= 1 ? "disabled" : ""} title="Remove group" style="min-width:24px;padding:0.12rem 0.35rem;">×</button></td>
                           </tr>
+                          ${expanded ? `
+                            <tr>
+                              <td colspan="4" style="background:#181429;">
+                                <div style="display:flex;gap:0.35rem;align-items:center;margin-bottom:0.45rem;">
+                                  <button data-rig-group-add-seg="${g.id}">Add Segment</button>
+                                  <input data-rig-group-seg-l="${g.id}" type="number" min="0.1" step="0.1" value="${groupSegLen.toFixed(1)}" style="max-width:72px;padding:0.18rem 0.32rem;" />
+                                  <label style="margin:0;">New Segment Length (m)</label>
+                                </div>
+                                <div class="table-wrap">
+                                  <table>
+                                    <thead><tr><th>ID</th><th>Length (m)</th><th>Type</th><th></th></tr></thead>
+                                    <tbody>
+                                      ${groupSpans.length
+                                        ? groupSpans.map((s) => `
+                                          <tr>
+                                            <td>${s.id}</td>
+                                            <td><input data-rig-span-l="${s.id}" type="number" min="0.1" step="0.1" value="${s.lengthM}" style="width:64px;max-width:64px;padding:0.05rem 0;border:0;background:transparent;border-radius:0;box-shadow:none;text-align:center;position:relative;top:2px;" /></td>
+                                            <td><select data-rig-span-type="${s.id}">${trussCatalog.map((x) => `<option value="${x.id}" ${x.id === s.trussTypeId ? "selected" : ""}>${x.series}${x.verified ? "" : " [UNVERIFIED]"}</option>`).join("")}</select></td>
+                                            <td><button data-rig-span-remove="${s.id}" ${riggingState.spans.length <= 1 ? "disabled" : ""} title="Remove segment" style="min-width:24px;padding:0.12rem 0.35rem;">×</button></td>
+                                          </tr>
+                                        `).join("")
+                                        : `<tr><td colspan="4" class="muted">No segments in this group.</td></tr>`}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </td>
+                            </tr>
+                          ` : ""}
                         `;
                       }).join("")}
                     </tbody>
                   </table>
                 </div>
               </div>
-            </div>
-
-            <div class="grid grid-2" style="margin-top:0.75rem;">
               <div class="card">
                 <div class="toolbar">
                   <h3>Motors</h3>
@@ -2006,12 +2182,11 @@
                 </div>
                 <div class="table-wrap">
                   <table>
-                    <thead><tr><th>ID</th><th>Node</th><th>Motor</th><th>Roof WLL (kg)</th><th>Chain Drop (m)</th><th></th></tr></thead>
+                    <thead><tr><th>ID</th><th>Motor</th><th>Roof WLL (kg)</th><th>Chain Drop (m)</th><th></th></tr></thead>
                     <tbody>
                       ${riggingState.pickups.map((p) => `
                         <tr>
                           <td>${p.id}</td>
-                          <td><select data-rig-pickup-node="${p.id}">${nodeOptions.replace(`value="${p.nodeId}"`, `value="${p.nodeId}" selected`)}</select></td>
                           <td><select data-rig-pickup-motor="${p.id}">${motorCatalog.map((m) => `<option value="${m.id}" ${m.id === p.motorId ? "selected" : ""}>${m.brand} ${m.model}</option>`).join("")}</select></td>
                           <td><input data-rig-pickup-wll="${p.id}" type="number" min="0" step="1" value="${p.roofPointWllKg ?? ""}" /></td>
                           <td><input data-rig-pickup-drop="${p.id}" type="number" min="0" step="0.1" value="${p.chainDropM ?? 0}" /></td>
@@ -2022,9 +2197,10 @@
                   </table>
                 </div>
               </div>
+            </div>
 
-              <div class="card">
-                <h3>Fixture Drag Source</h3>
+            <div class="card" style="margin-top:0.75rem;">
+                <h3>Add Fixtrues</h3>
                 <div class="grid grid-2" style="margin-top:0.55rem;">
                   <div>
                     <label>Lighting Group</label>
@@ -2058,18 +2234,70 @@
                 <div class="muted" style="margin-top:0.35rem;">Drop onto 2D span line to auto-calculate position from Node A.</div>
                 <div class="table-wrap" style="margin-top:0.55rem;">
                   <table>
-                    <thead><tr><th>Fixture</th><th>Span</th><th>Pos (m)</th><th>Qty</th><th>Weight (kg)</th><th></th></tr></thead>
+                    <thead><tr><th>Fixture</th><th>Truss Group</th><th>Span</th><th>Pos (m)</th><th>Qty</th><th>Weight (kg)</th><th></th></tr></thead>
                     <tbody>
-                      ${riggingState.fixturePlacements.map((fp) => `
+                      ${riggingState.fixturePlacements.map((fp) => {
+                        const span = fp.spanId ? getSpan(fp.spanId) : null;
+                        const group = span ? rigGroups.find((g) => g.id === span.groupId) : null;
+                        return `
                         <tr>
                           <td>${fp.fixtureName}</td>
+                          <td>${group ? `<span class="chip" style="border-color:${group.color};">${group.name}</span>` : "-"}</td>
                           <td>${fp.spanId || (fp.nodeId ? `Node ${getNode(fp.nodeId)?.label || fp.nodeId}` : "-")}</td>
                           <td>${Number(fp.positionM || 0).toFixed(2)}</td>
                           <td>${fp.quantity}</td>
                           <td>${Number(((fp.weightKg || 0) + (fp.clampWeightKg || 0)) * (fp.quantity || 1)).toFixed(1)}</td>
                           <td><button data-rig-fp-remove="${fp.id}">Remove</button></td>
                         </tr>
-                      `).join("")}
+                      `;
+                      }).join("")}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            <div class="card" style="margin-top:0.75rem;">
+              <h3>Truss Group Span Planner</h3>
+              <div class="grid grid-4" style="margin-top:0.55rem;">
+                <div><label>Truss Group</label><select id="rigGroupSpanSel">${rigGroups.map((g) => `<option value="${g.id}" ${g.id === selectedRigGroupId ? "selected" : ""}>${g.name}</option>`).join("")}</select></div>
+                <div><label>Total Span</label><input value="${selectedRigGroupTotalSpanM.toFixed(2)} m" disabled /></div>
+                <div><label>Fixture Position (m)</label><input id="rigGroupFixturePosM" type="number" min="0" max="${Math.max(0, selectedRigGroupTotalSpanM).toFixed(2)}" step="0.1" value="${Math.max(0, Math.min(selectedRigGroupTotalSpanM, Number(riggingState.groupFixturePositionM || 0))).toFixed(1)}" /></div>
+                <div><label>Motor Position (m)</label><input id="rigGroupMotorPosM" type="number" min="0" max="${Math.max(0, selectedRigGroupTotalSpanM).toFixed(2)}" step="0.1" value="${Math.max(0, Math.min(selectedRigGroupTotalSpanM, Number(riggingState.groupMotorPositionM || 0))).toFixed(1)}" /></div>
+              </div>
+              <div class="grid grid-4" style="margin-top:0.45rem;">
+                <div><label>Fixture Instance</label><select id="rigGroupSpanFixtureSel">${availableGroupSpanInstances.length ? availableGroupSpanInstances.map((f) => `<option value="${f.sourceInstanceId}" ${f.sourceInstanceId === riggingState.selectedGroupFixtureInstanceId ? "selected" : ""}>${f.instanceName}</option>`).join("") : `<option value="">No available instances</option>`}</select></div>
+                <div style="display:flex;align-items:flex-end;"><button id="rigGroupAddFixtureBtn" ${selectedRigGroupTotalSpanM > 0 ? "" : "disabled"}>Add Fixture To Span</button></div>
+                <div><label>Roof Point Weight (kg)</label><input id="rigGroupMotorWllKg" type="number" min="0" step="1" value="${Number.isFinite(Number(riggingState.groupMotorRoofWllKg)) ? Number(riggingState.groupMotorRoofWllKg) : ""}" /></div>
+                <div style="display:flex;align-items:flex-end;gap:0.4rem;"><button id="rigGroupAddMotorBtn" ${selectedRigGroupTotalSpanM > 0 ? "" : "disabled"}>Add Motor On Span</button></div>
+              </div>
+              <div class="grid grid-2" style="margin-top:0.55rem;">
+                <div class="table-wrap">
+                  <table>
+                    <thead><tr><th>Fixture</th><th>Position (m)</th><th>Weight</th><th></th></tr></thead>
+                    <tbody>
+                      ${(riggingState.groupFixtures || []).filter((gf) => gf.groupId === selectedRigGroupId).map((gf) => `
+                        <tr>
+                          <td>${gf.fixtureName}</td>
+                          <td>${Number(gf.positionM || 0).toFixed(2)}</td>
+                          <td>${Number(gf.weightKg || 0).toFixed(1)}</td>
+                          <td><button data-rig-gf-remove="${gf.id}">Remove</button></td>
+                        </tr>
+                      `).join("") || '<tr><td colspan="4" class="muted">No group fixtures yet.</td></tr>'}
+                    </tbody>
+                  </table>
+                </div>
+                <div class="table-wrap">
+                  <table>
+                    <thead><tr><th>Motor</th><th>Position (m)</th><th>WLL</th><th></th></tr></thead>
+                    <tbody>
+                      ${(riggingState.groupMotors || []).filter((gm) => gm.groupId === selectedRigGroupId).map((gm) => `
+                        <tr>
+                          <td>${getMotor(gm.motorId)?.brand || ""} ${getMotor(gm.motorId)?.model || ""}</td>
+                          <td>${Number(gm.positionM || 0).toFixed(2)}</td>
+                          <td>${Number.isFinite(Number(gm.roofPointWllKg)) ? `${Number(gm.roofPointWllKg).toFixed(0)} kg` : "n/a"}</td>
+                          <td><button data-rig-gm-remove="${gm.id}">Remove</button></td>
+                        </tr>
+                      `).join("") || '<tr><td colspan="4" class="muted">No group motors yet.</td></tr>'}
                     </tbody>
                   </table>
                 </div>
@@ -2077,7 +2305,15 @@
             </div>
 
             <div class="card" style="margin-top:0.75rem;">
-              <h3>2D Plan</h3>
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:0.75rem;flex-wrap:wrap;">
+                <h3 style="margin:0;">2D Plan</h3>
+                <div style="min-width:200px;">
+                  <label>Group</label>
+                  <select id="rigPlanGroupSel">
+                    ${rigGroups.map((g) => `<option value="${g.id}" ${g.id === riggingState.selectedPlanGroupId ? "selected" : ""}>${g.name}</option>`).join("")}
+                  </select>
+                </div>
+              </div>
               <div class="muted">Node and span layout with 0.5m grid, 1m top labels, and live beam load profile.</div>
               <svg id="rigPlanSvg" viewBox="0 0 900 280" style="width:100%;margin-top:0.55rem;border:1px solid #4b3e74;border-radius:10px;background:#1b1923;"></svg>
             </div>
@@ -2158,45 +2394,91 @@
           const sfEl = document.getElementById("rigSafetyFactor");
           projectNameEl?.addEventListener("change", () => { riggingState.projectName = projectNameEl.value || "Rigging Project"; });
           sfEl?.addEventListener("change", () => { riggingState.safetyFactor = Math.max(1, Number(sfEl.value || 1)); renderRigging(); });
-          document.getElementById("rigCantileverBtn")?.addEventListener("click", () => { riggingState.cantileverEnabled = !riggingState.cantileverEnabled; renderRigging(); });
           document.getElementById("rigTrussTypeSel")?.addEventListener("change", (e) => { riggingState.selectedTrussType = e.target.value; });
+          document.getElementById("rigTrussGroupSel")?.addEventListener("change", (e) => { riggingState.selectedTrussGroupId = e.target.value; });
           document.getElementById("rigMotorSel")?.addEventListener("change", (e) => { riggingState.selectedMotorId = e.target.value; });
-
-          document.getElementById("rigAddNodeBtn")?.addEventListener("click", () => {
-            const idx = riggingState.nodes.length + 1;
-            riggingState.nodes.push({ id: `N${idx}`, label: `P${idx}`, x: idx * 3, y: 0 });
+          document.getElementById("rigAddTrussGroupBtn")?.addEventListener("click", () => {
+            const g = newRiggingGroup((riggingState.groups || []).length + 1);
+            riggingState.groups = [...getRiggingGroups(), g];
+            riggingState.selectedTrussGroupId = g.id;
             renderRigging();
           });
-          document.querySelectorAll("[data-rig-node-remove]").forEach((el) => {
-            el.addEventListener("click", () => {
-              const id = el.dataset.rigNodeRemove;
-              riggingState.nodes = riggingState.nodes.filter((n) => n.id !== id);
-              riggingState.spans = riggingState.spans.filter((s) => s.nodeA !== id && s.nodeB !== id);
-              riggingState.pickups = riggingState.pickups.filter((p) => p.nodeId !== id);
+          document.querySelectorAll("[data-rig-group-name]").forEach((el) => {
+            el.addEventListener("change", () => {
+              const g = getRiggingGroups().find((x) => x.id === el.dataset.rigGroupName);
+              if (!g) return;
+              g.name = (el.value || "").trim() || g.name;
               renderRigging();
             });
           });
-          document.querySelectorAll("[data-rig-node-label]").forEach((el) => el.addEventListener("change", () => { const n = getNode(el.dataset.rigNodeLabel); if (n) n.label = el.value; renderRigging(); }));
-          document.querySelectorAll("[data-rig-node-x]").forEach((el) => el.addEventListener("change", () => { const n = getNode(el.dataset.rigNodeX); if (n) n.x = Number(el.value || 0); renderRigging(); }));
-          document.querySelectorAll("[data-rig-node-y]").forEach((el) => el.addEventListener("change", () => { const n = getNode(el.dataset.rigNodeY); if (n) n.y = Number(el.value || 0); renderRigging(); }));
-
-          document.getElementById("rigAddSpanBtn")?.addEventListener("click", () => {
-            if (riggingState.nodes.length < 2) return;
-            const idx = riggingState.spans.length + 1;
-            riggingState.spans.push({
-              id: `S${idx}`,
-              nodeA: riggingState.nodes[0].id,
-              nodeB: riggingState.nodes[1].id,
-              trussTypeId: riggingState.selectedTrussType || trussCatalog[0]?.id,
-              lengthM: 6
+          document.querySelectorAll("[data-rig-group-color]").forEach((el) => {
+            el.addEventListener("input", () => {
+              const g = getRiggingGroups().find((x) => x.id === el.dataset.rigGroupColor);
+              if (!g) return;
+              g.color = el.value || g.color;
+              renderRigging();
             });
-            renderRigging();
           });
+          document.querySelectorAll("[data-rig-group-toggle]").forEach((el) => {
+            el.addEventListener("click", () => {
+              const id = el.dataset.rigGroupToggle;
+              if (!id) return;
+              const current = riggingState.groupExpandedById?.[id] !== false;
+              riggingState.groupExpandedById[id] = !current;
+              renderRigging();
+            });
+          });
+          document.querySelectorAll("[data-rig-group-seg-l]").forEach((el) => {
+            el.addEventListener("change", () => {
+              const id = el.dataset.rigGroupSegL;
+              if (!id) return;
+              const len = Math.max(0.1, Number(el.value || 6));
+              riggingState.groupSegmentLengthMById[id] = len;
+            });
+          });
+          document.querySelectorAll("[data-rig-group-add-seg]").forEach((el) => {
+            el.addEventListener("click", () => {
+              const groupId = el.dataset.rigGroupAddSeg;
+              if (!groupId || riggingState.nodes.length < 2) return;
+              const nextId = (() => {
+                let i = riggingState.spans.length + 1;
+                while (riggingState.spans.some((s) => s.id === `S${i}`)) i += 1;
+                return `S${i}`;
+              })();
+              const lengthM = Math.max(0.1, Number(riggingState.groupSegmentLengthMById?.[groupId] || 6));
+              riggingState.spans.push({
+                id: nextId,
+                nodeA: riggingState.nodes[0].id,
+                nodeB: riggingState.nodes[1].id,
+                trussTypeId: riggingState.selectedTrussType || trussCatalog[0]?.id,
+                groupId,
+                lengthM
+              });
+              riggingState.selectedTrussGroupId = groupId;
+              renderRigging();
+            });
+          });
+          document.querySelectorAll("[data-rig-group-remove]").forEach((el) => {
+            el.addEventListener("click", () => {
+              const id = el.dataset.rigGroupRemove;
+              const groups = getRiggingGroups();
+              if (!id || groups.length <= 1) return;
+              const fallback = groups.find((x) => x.id !== id);
+              riggingState.groups = groups.filter((x) => x.id !== id);
+              riggingState.spans.forEach((s) => {
+                if (s.groupId === id) s.groupId = fallback?.id || "";
+              });
+              riggingState.groupFixtures = (riggingState.groupFixtures || []).filter((x) => x.groupId !== id);
+              riggingState.groupMotors = (riggingState.groupMotors || []).filter((x) => x.groupId !== id);
+              if (riggingState.selectedTrussGroupId === id) riggingState.selectedTrussGroupId = fallback?.id || "";
+              renderRigging();
+            });
+          });
+
           document.querySelectorAll("[data-rig-span-remove]").forEach((el) => el.addEventListener("click", () => { riggingState.spans = riggingState.spans.filter((s) => s.id !== el.dataset.rigSpanRemove); renderRigging(); }));
-          document.querySelectorAll("[data-rig-span-a]").forEach((el) => el.addEventListener("change", () => { const s = getSpan(el.dataset.rigSpanA); if (s) s.nodeA = el.value; renderRigging(); }));
-          document.querySelectorAll("[data-rig-span-b]").forEach((el) => el.addEventListener("change", () => { const s = getSpan(el.dataset.rigSpanB); if (s) s.nodeB = el.value; renderRigging(); }));
           document.querySelectorAll("[data-rig-span-l]").forEach((el) => el.addEventListener("input", () => { const s = getSpan(el.dataset.rigSpanL); if (s) s.lengthM = Number(el.value || 0); renderRigging(); }));
           document.querySelectorAll("[data-rig-span-type]").forEach((el) => el.addEventListener("change", () => { const s = getSpan(el.dataset.rigSpanType); if (s) s.trussTypeId = el.value; renderRigging(); }));
+          document.querySelectorAll("[data-rig-span-group]").forEach((el) => el.addEventListener("change", () => { const s = getSpan(el.dataset.rigSpanGroup); if (s) s.groupId = el.value; renderRigging(); }));
 
           document.getElementById("rigAddPickupBtn")?.addEventListener("click", () => {
             const idx = riggingState.pickups.length + 1;
@@ -2212,7 +2494,6 @@
             renderRigging();
           });
           document.querySelectorAll("[data-rig-pickup-remove]").forEach((el) => el.addEventListener("click", () => { riggingState.pickups = riggingState.pickups.filter((p) => p.id !== el.dataset.rigPickupRemove); renderRigging(); }));
-          document.querySelectorAll("[data-rig-pickup-node]").forEach((el) => el.addEventListener("change", () => { const p = riggingState.pickups.find((x) => x.id === el.dataset.rigPickupNode); if (p) p.nodeId = el.value; }));
           document.querySelectorAll("[data-rig-pickup-motor]").forEach((el) => el.addEventListener("change", () => { const p = riggingState.pickups.find((x) => x.id === el.dataset.rigPickupMotor); if (p) p.motorId = el.value; }));
           document.querySelectorAll("[data-rig-pickup-wll]").forEach((el) => el.addEventListener("change", () => { const p = riggingState.pickups.find((x) => x.id === el.dataset.rigPickupWll); if (p) p.roofPointWllKg = el.value === "" ? null : Number(el.value); }));
           document.querySelectorAll("[data-rig-pickup-drop]").forEach((el) => el.addEventListener("change", () => { const p = riggingState.pickups.find((x) => x.id === el.dataset.rigPickupDrop); if (p) p.chainDropM = Number(el.value || 0); }));
@@ -2228,6 +2509,127 @@
             riggingState.selectedGroupInstanceId = rigGroupFixtureSel.value;
             renderRigging();
           });
+          document.getElementById("rigGroupSpanSel")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLSelectElement)) return;
+            riggingState.selectedTrussGroupId = target.value;
+            renderRigging();
+          });
+          document.getElementById("rigPlanGroupSel")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLSelectElement)) return;
+            riggingState.selectedPlanGroupId = target.value;
+            renderRigging();
+          });
+          document.getElementById("rigGroupSpanFixtureSel")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLSelectElement)) return;
+            riggingState.selectedGroupFixtureInstanceId = target.value;
+          });
+          document.getElementById("rigGroupFixturePosM")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            riggingState.groupFixturePositionM = Math.max(0, Number(target.value || 0));
+          });
+          document.getElementById("rigGroupMotorPosM")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            riggingState.groupMotorPositionM = Math.max(0, Number(target.value || 0));
+          });
+          document.getElementById("rigGroupMotorWllKg")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            riggingState.groupMotorRoofWllKg = target.value === "" ? null : Math.max(0, Number(target.value || 0));
+          });
+          document.getElementById("rigGroupAddFixtureBtn")?.addEventListener("click", () => {
+            const sourceId = riggingState.selectedGroupFixtureInstanceId;
+            const chosen = availableGroupSpanInstances.find((x) => x.sourceInstanceId === sourceId);
+            if (!chosen || !selectedRigGroupId) return;
+            const total = getRiggingGroupTotalSpan(selectedRigGroupId);
+            if (!(total > 0)) return;
+            const pos = Math.max(0, Math.min(total, Number(riggingState.groupFixturePositionM || 0)));
+            const mapped = mapGroupPositionToSpan(selectedRigGroupId, pos);
+            if (!mapped) return;
+            riggingState.groupFixtures.push({
+              id: `rgf_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+              groupId: selectedRigGroupId,
+              sourceInstanceId: chosen.sourceInstanceId,
+              fixtureKey: chosen.fixtureKey,
+              fixtureName: chosen.instanceName,
+              weightKg: chosen.weightKg,
+              quantity: 1,
+              positionM: pos
+            });
+            addRiggingFixturePlacement({
+              sourceInstanceId: chosen.sourceInstanceId,
+              fixtureKey: chosen.fixtureKey,
+              fixtureName: chosen.instanceName,
+              weightKg: chosen.weightKg,
+              clampWeightKg: 0.5,
+              spanId: mapped.spanId,
+              positionM: mapped.positionM,
+              quantity: 1
+            });
+            riggingState.selectedGroupFixtureInstanceId = "";
+            renderRigging();
+          });
+          document.getElementById("rigGroupAddMotorBtn")?.addEventListener("click", () => {
+            if (!selectedRigGroupId) return;
+            const total = getRiggingGroupTotalSpan(selectedRigGroupId);
+            if (!(total > 0)) return;
+            const pos = Math.max(0, Math.min(total, Number(riggingState.groupMotorPositionM || 0)));
+            const mapped = mapGroupPositionToSpan(selectedRigGroupId, pos);
+            if (!mapped) return;
+            let targetNodeId = null;
+            const span = getSpan(mapped.spanId);
+            const spanLength = Number(span?.lengthM || 0);
+            if (mapped.positionM <= 0.001) targetNodeId = span?.nodeA || null;
+            else if (mapped.positionM >= spanLength - 0.001) targetNodeId = span?.nodeB || null;
+            else {
+              const split = splitSpanAtPosition(mapped.spanId, mapped.positionM);
+              targetNodeId = split?.newNodeId || null;
+            }
+            if (!targetNodeId) return;
+            const nextPickupIdx = riggingState.pickups.length + 1;
+            const pickup = {
+              id: `PU${nextPickupIdx}`,
+              nodeId: targetNodeId,
+              pickupType: "motor",
+              motorId: riggingState.selectedMotorId || motorCatalog[0]?.id,
+              roofPointWllKg: Number.isFinite(Number(riggingState.groupMotorRoofWllKg)) ? Number(riggingState.groupMotorRoofWllKg) : null,
+              chainDropM: Number(riggingState.groupMotorChainDropM || 8),
+              notes: "Added from group span planner"
+            };
+            riggingState.pickups.push(pickup);
+            riggingState.groupMotors.push({
+              id: `rgm_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+              groupId: selectedRigGroupId,
+              motorId: pickup.motorId,
+              roofPointWllKg: pickup.roofPointWllKg,
+              chainDropM: pickup.chainDropM,
+              positionM: pos,
+              pickupId: pickup.id
+            });
+            renderRigging();
+          });
+          document.querySelectorAll("[data-rig-gf-remove]").forEach((el) => el.addEventListener("click", () => {
+            const id = el.dataset.rigGfRemove;
+            const gf = (riggingState.groupFixtures || []).find((x) => x.id === id);
+            riggingState.groupFixtures = (riggingState.groupFixtures || []).filter((x) => x.id !== id);
+            if (gf?.sourceInstanceId) {
+              riggingState.fixturePlacements = (riggingState.fixturePlacements || []).filter((x) => x.sourceInstanceId !== gf.sourceInstanceId);
+            }
+            renderRigging();
+          }));
+          document.querySelectorAll("[data-rig-gm-remove]").forEach((el) => el.addEventListener("click", () => {
+            const id = el.dataset.rigGmRemove;
+            const gm = (riggingState.groupMotors || []).find((x) => x.id === id);
+            riggingState.groupMotors = (riggingState.groupMotors || []).filter((x) => x.id !== id);
+            if (gm?.pickupId) {
+              riggingState.pickups = (riggingState.pickups || []).filter((x) => x.id !== gm.pickupId);
+            }
+            renderRigging();
+          }));
           document.querySelectorAll("[data-rig-fp-remove]").forEach((el) => el.addEventListener("click", () => { riggingState.fixturePlacements = riggingState.fixturePlacements.filter((x) => x.id !== el.dataset.rigFpRemove); renderRigging(); }));
           document.querySelectorAll("[data-rig-drag-key]").forEach((el) => {
             el.addEventListener("dragstart", (ev) => {
@@ -2311,9 +2713,13 @@
             riggingState.projectName = sample.name || "Sample Rigging Project";
             riggingState.units = sample.units || "kg/m";
             riggingState.safetyFactor = Number(sample.safety_factor || 1.2);
-            riggingState.cantileverEnabled = Boolean(sample.cantilever_enabled);
+            riggingState.cantileverEnabled = false;
+            riggingState.groups = [{ id: "rig_grp_1", name: "Main Rig", color: "#8a7cff" }];
+            riggingState.selectedTrussGroupId = "rig_grp_1";
+            riggingState.groupFixtures = [];
+            riggingState.groupMotors = [];
             riggingState.nodes = (sample.nodes || []).map((n) => ({ id: n.id, label: n.label, x: Number(n.x || 0), y: Number(n.y || 0) }));
-            riggingState.spans = (sample.spans || []).map((s) => ({ id: s.id, nodeA: s.nodeA, nodeB: s.nodeB, trussTypeId: s.truss_type_id, lengthM: Number(s.length_m || 0) }));
+            riggingState.spans = (sample.spans || []).map((s) => ({ id: s.id, nodeA: s.nodeA, nodeB: s.nodeB, trussTypeId: s.truss_type_id, groupId: "rig_grp_1", lengthM: Number(s.length_m || 0) }));
             riggingState.pickups = (sample.pickups || []).map((p) => ({ id: p.id, nodeId: p.node_id, pickupType: "motor", motorId: p.motor_id, roofPointWllKg: Number.isFinite(Number(p.roof_point_wll_kg)) ? Number(p.roof_point_wll_kg) : null, chainDropM: Number(p.chain_drop_m || 0), notes: p.notes || "" }));
             riggingState.fixturePlacements = (sample.fixture_placements || []).map((fp) => ({
               id: `FP_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`,
@@ -2406,12 +2812,21 @@
           const svg = document.getElementById("rigPlanSvg");
           if (svg) {
             const spanMap = buildRiggingSpanCoordinateMap();
-            const xs = riggingState.nodes.map((n) => Number(spanMap.nodeXById[n.id] ?? 0));
-            const ys = riggingState.nodes.map((n) => n.y);
-            const minX = Math.min(...xs, 0, spanMap.minX || 0);
-            const maxX = Math.max(...xs, 1, spanMap.maxX || 1);
-            const minY = Math.min(...ys, -1);
-            const maxY = Math.max(...ys, 1);
+            const planGroupId = riggingState.selectedPlanGroupId || rigGroups[0]?.id || "";
+            const spansForPlan = (riggingState.spans || []).filter((s) => (s.groupId || rigGroups[0]?.id || "") === planGroupId);
+            const spanIdsForPlan = new Set(spansForPlan.map((s) => s.id));
+            const nodeIdsForPlan = new Set();
+            spansForPlan.forEach((s) => {
+              if (s.nodeA) nodeIdsForPlan.add(s.nodeA);
+              if (s.nodeB) nodeIdsForPlan.add(s.nodeB);
+            });
+            const nodesForPlan = (riggingState.nodes || []).filter((n) => nodeIdsForPlan.has(n.id));
+            const xs = nodesForPlan.map((n) => Number(spanMap.nodeXById[n.id] ?? 0));
+            const ys = nodesForPlan.map((n) => n.y);
+            const minX = xs.length ? Math.min(...xs, 0, spanMap.minX || 0) : 0;
+            const maxX = xs.length ? Math.max(...xs, 1, spanMap.maxX || 1) : 1;
+            const minY = ys.length ? Math.min(...ys, -1) : -1;
+            const maxY = ys.length ? Math.max(...ys, 1) : 1;
             const pad = 50;
             const width = 900;
             const height = 280;
@@ -2462,7 +2877,7 @@
               children.push(`<line x1="${p.x}" y1="20" x2="${p.x}" y2="${planTop - 2}" stroke="#6b5a9e" stroke-width="1"/>`);
               children.push(`<text x="${p.x}" y="14" text-anchor="middle" fill="#d5ccf5" font-size="10">${m}m</text>`);
             }
-            riggingState.spans.forEach((s) => {
+            spansForPlan.forEach((s) => {
               const a = getNode(s.nodeA);
               const b = getNode(s.nodeB);
               if (!a || !b) return;
@@ -2474,12 +2889,12 @@
               children.push(`<line data-rig-plan-drop-span="${s.id}" data-rig-ax="${p1.x}" data-rig-ay="${p1.y}" data-rig-bx="${p2.x}" data-rig-by="${p2.y}" x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#ffffff00" stroke-width="20"/>`);
               children.push(`<text x="${(p1.x + p2.x) / 2}" y="${((p1.y + p2.y) / 2) - 8}" text-anchor="middle" fill="#c6bbeb" font-size="11">${s.id} (${Number(s.lengthM || 0).toFixed(1)}m)</text>`);
             });
-            riggingState.nodes.forEach((n) => {
+            nodesForPlan.forEach((n) => {
               const p = toPx(Number(spanMap.nodeXById[n.id] ?? 0), n.y);
               children.push(`<circle cx="${p.x}" cy="${p.y}" r="7" fill="#8f7bcb" stroke="#d4cbf2" stroke-width="1"/>`);
               children.push(`<text x="${p.x}" y="${p.y - 12}" text-anchor="middle" fill="#e8e2ff" font-size="11">${n.label}</text>`);
             });
-            riggingState.fixturePlacements.forEach((fp) => {
+            riggingState.fixturePlacements.filter((fp) => spanIdsForPlan.has(fp.spanId)).forEach((fp) => {
               const s = getSpan(fp.spanId);
               if (!s) return;
               const a = getNode(s.nodeA);
@@ -2511,7 +2926,7 @@
                 </g>
               `);
             });
-            const profile = buildBeamLoadProfile(220);
+            const profile = buildBeamLoadProfile(220, spanIdsForPlan);
             const pMinX = profile.minX;
             const pMaxX = profile.maxX;
             const pW = Math.max(0.001, pMaxX - pMinX);
@@ -2757,11 +3172,16 @@
 
         function renderVenue() {
           if (!main) return;
-          const widthM = Math.max(1, Number(venueState.widthM || 1));
-          const depthM = Math.max(1, Number(venueState.depthM || 1));
-          const majorStepM = Math.max(0.5, Number(venueState.majorStepM || 1));
-          const minorStepM = Math.max(0.25, Math.min(majorStepM, Number(venueState.minorStepM || 0.5)));
-          const floorPlanOpacity = Math.max(0.05, Math.min(1, Number(venueState.floorPlanOpacity || 0.28)));
+          venueState.trussPlacements = (venueState.trussPlacements || []).filter((x) => x && typeof x === "object" && x.id);
+          const safeNum = (v, fallback) => {
+            const n = Number(v);
+            return Number.isFinite(n) ? n : fallback;
+          };
+          const widthM = Math.max(1, safeNum(venueState.widthM, 30));
+          const depthM = Math.max(1, safeNum(venueState.depthM, 20));
+          const majorStepM = Math.max(0.5, safeNum(venueState.majorStepM, 1));
+          const minorStepM = Math.max(0.25, Math.min(majorStepM, safeNum(venueState.minorStepM, 0.5)));
+          const floorPlanOpacity = Math.max(0.05, Math.min(1, safeNum(venueState.floorPlanOpacity, 0.28)));
           const hasFloorPlan = Boolean(venueState.floorPlanDataUrl);
           const hasWorldMatrix = Boolean(venueState.floorPlanWorldMatrix);
           const wizardOpen = Boolean(venueState.floorPlanWizardOpen && hasFloorPlan);
@@ -2777,6 +3197,15 @@
           const wizardHasX = Boolean(venueState.floorPlanWizardXPx);
           const wizardHasY = Boolean(venueState.floorPlanWizardYPx);
           const wizardActivePoint = String(venueState.floorPlanWizardActivePoint || "origin");
+          const rigGroups = getRiggingGroups();
+          if (venueState.selectedVenueRigGroupId && !rigGroups.some((g) => g.id === venueState.selectedVenueRigGroupId)) {
+            venueState.selectedVenueRigGroupId = "";
+          }
+          if (!venueState.selectedVenueRigGroupId && rigGroups[0]) {
+            venueState.selectedVenueRigGroupId = rigGroups[0].id;
+          }
+          const selectedVenueGroup = rigGroups.find((g) => g.id === venueState.selectedVenueRigGroupId) || null;
+          const selectedVenueGroupTotalSpanM = selectedVenueGroup ? getRiggingGroupTotalSpan(selectedVenueGroup.id) : 0;
           const multiPointDistanceM = (venueState.measurePoints || []).reduce((sum, p, i, arr) => {
             if (!p || i === 0) return sum;
             const prev = arr[i - 1];
@@ -2895,6 +3324,35 @@
               </div>
               <div class="card" style="margin-top:0.7rem;">
                 <div class="toolbar" style="margin-bottom:0.45rem;">
+                  <h3 style="margin:0;font-size:1rem;">Truss Placement (From Rigging)</h3>
+                </div>
+                <div class="grid grid-3">
+                  <div>
+                    <label>Rigging Group</label>
+                    <select id="venueRigGroupSel">
+                      ${rigGroups.map((g) => `<option value="${g.id}" ${g.id === venueState.selectedVenueRigGroupId ? "selected" : ""}>${g.name}</option>`).join("")}
+                    </select>
+                  </div>
+                  <div>
+                    <label>Total Group Span</label>
+                    <input value="${selectedVenueGroupTotalSpanM.toFixed(2)} m" disabled />
+                  </div>
+                  <div class="dropzone" style="display:flex;align-items:center;">
+                    ${selectedVenueGroup && selectedVenueGroupTotalSpanM > 0
+                      ? `<span class="chip" draggable="true" id="venueRigSpanDragChip"
+                          data-venue-drag-group-id="${selectedVenueGroup.id}"
+                          data-venue-drag-group-name="${selectedVenueGroup.name.replace(/"/g, "&quot;")}"
+                          data-venue-drag-span-length="${Number(selectedVenueGroupTotalSpanM || 0)}"
+                          data-venue-drag-span-color="${selectedVenueGroup.color || "#8a7cff"}"
+                          title="Drag this full truss group onto the venue grid."
+                        >Drag Group: ${selectedVenueGroup.name} (${Number(selectedVenueGroupTotalSpanM || 0).toFixed(1)}m)</span>`
+                      : `<span class="muted">Select a rigging group with spans.</span>`}
+                  </div>
+                </div>
+                <div class="muted" style="margin-top:0.35rem;">Drop on the venue grid, then drag endpoints to reposition.</div>
+              </div>
+              <div class="card" style="margin-top:0.7rem;">
+                <div class="toolbar" style="margin-bottom:0.45rem;">
                   <h3 style="margin:0;font-size:1rem;">General Measurement</h3>
                 </div>
                 <div style="display:flex;flex-wrap:wrap;gap:0.45rem;align-items:center;">
@@ -2993,6 +3451,7 @@
           const redraw = () => {
             const svg = document.getElementById("venuePlanSvg");
             if (!svg) return;
+            try {
             const zoom = Math.max(0.5, Math.min(4, Number(venueState.zoom || 1)));
             venueState.zoom = zoom;
             if (venueState.floorPlanWorldMatrix && venueState.floorPlanImageWidthPx && venueState.floorPlanImageHeightPx) {
@@ -3026,14 +3485,15 @@
                 venueState.depthM = nextD;
               }
             }
-            const w = Math.max(1, Number(venueState.widthM || 1));
-            const d = Math.max(1, Number(venueState.depthM || 1));
-            const major = Math.max(0.5, Number(venueState.majorStepM || 1));
-            const minor = Math.max(0.25, Math.min(major, Number(venueState.minorStepM || 0.5)));
+            const w = Math.max(1, safeNum(venueState.widthM, 30));
+            const d = Math.max(1, safeNum(venueState.depthM, 20));
+            const major = Math.max(0.5, safeNum(venueState.majorStepM, 1));
+            const minor = Math.max(0.25, Math.min(major, safeNum(venueState.minorStepM, 0.5)));
             const W = 980;
             const H = 560;
-            const vbW = W / zoom;
-            const vbH = H / zoom;
+            const safeZoom = Math.max(0.5, Math.min(4, safeNum(zoom, 1)));
+            const vbW = W / safeZoom;
+            const vbH = H / safeZoom;
             const maxVbX = Math.max(0, W - vbW);
             const maxVbY = Math.max(0, H - vbH);
             let vbX = Number.isFinite(Number(venueState.viewX)) ? Number(venueState.viewX) : (W - vbW) / 2;
@@ -3063,6 +3523,8 @@
               return 10 * mag;
             };
             const out = [];
+            const trussOverlayOut = [];
+            const esc = (v) => String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
             out.push(`<rect x="${padL}" y="${padT}" width="${innerW}" height="${innerH}" fill="#1a1630" stroke="#6f5da8" stroke-width="1.4"/>`);
             out.push(`<text x="${(padL + 6).toFixed(2)}" y="${(padT + 14).toFixed(2)}" fill="#d5ccf5" font-size="10">0X, 0Y</text>`);
@@ -3107,6 +3569,33 @@
               const majorLine = Math.abs((y / major) - Math.round(y / major)) < 1e-9;
               out.push(`<line x1="${padL}" y1="${py.toFixed(2)}" x2="${padL + innerW}" y2="${py.toFixed(2)}" stroke="${majorLine ? "#4f3f79" : "#322b4d"}" stroke-width="${majorLine ? "1" : "0.6"}"/>`);
             }
+            try {
+              const rigGroupById = Object.fromEntries(getRiggingGroups().map((g) => [g.id, g]));
+              (venueState.trussPlacements || []).forEach((tp, idx) => {
+                if (!tp || typeof tp !== "object") return;
+                const x1 = xToPx(Number(tp.x1 || 0));
+                const y1 = yToPx(Number(tp.y1 || 0));
+                const x2 = xToPx(Number(tp.x2 || 0));
+                const y2 = yToPx(Number(tp.y2 || 0));
+                const color = tp.color || "#8a7cff";
+                const group = rigGroupById[tp.sourceGroupId || ""];
+                const label = tp.label || group?.name || `Truss ${idx + 1}`;
+                const labelText = `${label}${group ? ` - ${group.name}` : ""}`;
+                out.push(`<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="${color}" stroke-width="4" stroke-linecap="round" style="pointer-events:none;" />`);
+                out.push(`<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="#f3eeff55" stroke-width="1.2" stroke-dasharray="4 3" style="pointer-events:none;" />`);
+                const groupFixtures = (riggingState.groupFixtures || []).filter((gf) => gf.groupId && gf.groupId === tp.sourceGroupId);
+                const totalSpan = Math.max(0.001, getRiggingGroupTotalSpan(tp.sourceGroupId || ""));
+                groupFixtures.forEach((gf) => {
+                  const t = Math.max(0, Math.min(1, Number(gf.positionM || 0) / totalSpan));
+                  const fx = x1 + ((x2 - x1) * t);
+                  const fy = y1 + ((y2 - y1) * t);
+                  out.push(`<circle cx="${fx.toFixed(2)}" cy="${fy.toFixed(2)}" r="4" fill="#74f2b7" stroke="#e8fff6" stroke-width="1.0" style="pointer-events:none;" />`);
+                });
+                trussOverlayOut.push(`<circle data-venue-truss-handle="start" data-venue-truss-id="${tp.id}" cx="${x1.toFixed(2)}" cy="${y1.toFixed(2)}" r="5.2" fill="${color}" stroke="#f3eeff" stroke-width="1.3" style="cursor:grab;" />`);
+                trussOverlayOut.push(`<circle data-venue-truss-handle="end" data-venue-truss-id="${tp.id}" cx="${x2.toFixed(2)}" cy="${y2.toFixed(2)}" r="5.2" fill="${color}" stroke="#f3eeff" stroke-width="1.3" style="cursor:grab;" />`);
+                trussOverlayOut.push(`<text x="${((x1 + x2) / 2).toFixed(2)}" y="${(((y1 + y2) / 2) - 9).toFixed(2)}" text-anchor="middle" fill="#efe9ff" font-size="10" style="pointer-events:none;">${esc(labelText)}</text>`);
+              });
+            } catch (_) {}
 
             // Viewport-anchored rulers: always visible and scale by zoom level / visible range.
             const visXMin = Math.max(0, Math.min(w, pxToX(vbX)));
@@ -3183,9 +3672,10 @@
             out.push(`<rect id="venueHoverArea" x="${padL}" y="${padT}" width="${innerW}" height="${innerH}" fill="#00000000" />`);
             out.push(`<line id="venueCrossV" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + innerH}" stroke="#cfc6ea88" stroke-width="1" stroke-dasharray="3 3" style="display:none;pointer-events:none;" />`);
             out.push(`<line id="venueCrossH" x1="${padL}" y1="${padT}" x2="${padL + innerW}" y2="${padT}" stroke="#cfc6ea88" stroke-width="1" stroke-dasharray="3 3" style="display:none;pointer-events:none;" />`);
+            if (trussOverlayOut.length) out.push(...trussOverlayOut);
             svg.innerHTML = out.join("");
             const zoomPct = document.getElementById("venueZoomPct");
-            if (zoomPct) zoomPct.textContent = `${Math.round(zoom * 100)}%`;
+            if (zoomPct) zoomPct.textContent = `${Math.round(safeZoom * 100)}%`;
 
             const hoverArea = document.getElementById("venueHoverArea");
             const crossV = document.getElementById("venueCrossV");
@@ -3218,9 +3708,9 @@
                 crossH.style.display = "";
               }
             };
-            hoverArea?.addEventListener("mousemove", updatePointer);
-            hoverArea?.addEventListener("mouseenter", updatePointer);
-            hoverArea?.addEventListener("click", (ev) => {
+            const handleMeasureClick = (ev) => {
+              const target = ev.target;
+              if (target instanceof Element && target.closest("[data-venue-truss-handle]")) return;
               if ((!venueState.measureArmed && !venueState.generalMeasureArmed) || venuePanState.dragging) return;
               const rect = svg.getBoundingClientRect();
               const vb = (svg.getAttribute("viewBox") || "0 0 980 560").split(/\s+/).map(Number);
@@ -3240,13 +3730,216 @@
                 venueState.generalMeasurePoints = [...(venueState.generalMeasurePoints || []), { x: wx, y: wy }];
               }
               renderVenue();
-            });
-            hoverArea?.addEventListener("mouseleave", () => {
+            };
+            const handlePointerLeave = () => {
               if (mouseXEl) mouseXEl.textContent = "-";
               if (mouseYEl) mouseYEl.textContent = "-";
               if (crossV) crossV.style.display = "none";
               if (crossH) crossH.style.display = "none";
+            };
+            const pointerTarget = hoverArea || svg;
+            pointerTarget?.addEventListener("mousemove", updatePointer);
+            pointerTarget?.addEventListener("mouseenter", updatePointer);
+            pointerTarget?.addEventListener("click", handleMeasureClick);
+            pointerTarget?.addEventListener("mouseleave", handlePointerLeave);
+
+            const venueDragChip = document.getElementById("venueRigSpanDragChip");
+            venueDragChip?.addEventListener("dragstart", (ev) => {
+              venueRigDragPayload = {
+                groupId: venueDragChip.getAttribute("data-venue-drag-group-id") || "",
+                label: venueDragChip.getAttribute("data-venue-drag-group-name") || "Truss Group",
+                lengthM: Number(venueDragChip.getAttribute("data-venue-drag-span-length") || 0),
+                color: venueDragChip.getAttribute("data-venue-drag-span-color") || "#8a7cff"
+              };
+              try {
+                ev.dataTransfer?.setData("text/plain", JSON.stringify(venueRigDragPayload));
+              } catch (_) {}
+              ev.dataTransfer.effectAllowed = "copy";
             });
+            venueDragChip?.addEventListener("dragend", () => {
+              venueRigDragPayload = null;
+            });
+            const eventToWorld = (ev) => {
+              const rect = svg.getBoundingClientRect();
+              const vb = (svg.getAttribute("viewBox") || "0 0 980 560").split(/\s+/).map(Number);
+              const vbX = vb[0] || 0;
+              const vbY = vb[1] || 0;
+              const vbW = vb[2] || 980;
+              const vbH = vb[3] || 560;
+              const sx = vbX + (((ev.clientX - rect.left) / Math.max(1, rect.width)) * vbW);
+              const sy = vbY + (((ev.clientY - rect.top) / Math.max(1, rect.height)) * vbH);
+              const clampedX = Math.max(padL, Math.min(padL + innerW, sx));
+              const clampedY = Math.max(padT, Math.min(padT + innerH, sy));
+              const wx = Math.max(0, Math.min(w, pxToX(clampedX)));
+              const wy = Math.max(0, Math.min(d, pxToY(clampedY)));
+              return { wx, wy };
+            };
+            const handleVenueDragOver = (ev) => {
+              if (!venueRigDragPayload) return;
+              ev.preventDefault();
+              if (hoverArea) hoverArea.setAttribute("fill", "#7e6ac51a");
+            };
+            const handleVenueDragLeave = () => {
+              if (hoverArea) hoverArea.setAttribute("fill", "#00000000");
+            };
+            const handleVenueDrop = (ev) => {
+              if (hoverArea) hoverArea.setAttribute("fill", "#00000000");
+              let payload = venueRigDragPayload;
+              if (!payload) {
+                try {
+                  payload = JSON.parse(ev.dataTransfer?.getData("text/plain") || "{}");
+                } catch (_) {}
+              }
+              if (!payload || !payload.groupId || !Number.isFinite(Number(payload.lengthM)) || Number(payload.lengthM) <= 0) return;
+              ev.preventDefault();
+              const p = eventToWorld(ev);
+              const len = Number(payload.lengthM);
+              const x1 = Math.max(0, Math.min(w, p.wx - (len / 2)));
+              const x2 = Math.max(0, Math.min(w, p.wx + (len / 2)));
+              const placement = {
+                id: `venue_truss_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+                sourceGroupId: payload.groupId,
+                label: payload.label || payload.groupId,
+                color: payload.color || "#8a7cff",
+                x1,
+                y1: p.wy,
+                x2,
+                y2: p.wy
+              };
+              venueState.trussPlacements = [placement, ...(venueState.trussPlacements || [])];
+              renderVenue();
+            };
+            const dragTarget = hoverArea || svg;
+            dragTarget?.addEventListener("dragover", handleVenueDragOver);
+            dragTarget?.addEventListener("dragleave", handleVenueDragLeave);
+            dragTarget?.addEventListener("drop", handleVenueDrop);
+
+            svg.querySelectorAll("[data-venue-truss-handle]").forEach((el) => {
+              el.addEventListener("mousedown", (ev) => {
+                ev.preventDefault();
+                const id = el.getAttribute("data-venue-truss-id") || "";
+                const handle = el.getAttribute("data-venue-truss-handle") || "";
+                if (!id || !handle) return;
+                const placement = (venueState.trussPlacements || []).find((x) => x.id === id);
+                if (!placement) return;
+                venueTrussDragState.active = true;
+                venueTrussDragState.id = id;
+                venueTrussDragState.handle = handle;
+                venueTrussDragState.startX = ev.clientX;
+                venueTrussDragState.startY = ev.clientY;
+                venueTrussDragState.lengthM = Math.max(
+                  0.001,
+                  Math.hypot(
+                    Number(placement.x2 || 0) - Number(placement.x1 || 0),
+                    Number(placement.y2 || 0) - Number(placement.y1 || 0)
+                  )
+                );
+                if (handle === "start") {
+                  venueTrussDragState.fixedX = Number(placement.x2 || 0);
+                  venueTrussDragState.fixedY = Number(placement.y2 || 0);
+                } else {
+                  venueTrussDragState.fixedX = Number(placement.x1 || 0);
+                  venueTrussDragState.fixedY = Number(placement.y1 || 0);
+                }
+              });
+            });
+            if (!venueTrussDragBound) {
+              window.addEventListener("mousemove", (ev) => {
+                if (!venueTrussDragState.active) return;
+                const svgEl = document.getElementById("venuePlanSvg");
+                if (!svgEl) return;
+                const placement = (venueState.trussPlacements || []).find((x) => x.id === venueTrussDragState.id);
+                if (!placement) return;
+                const rect = svgEl.getBoundingClientRect();
+                const vb = (svgEl.getAttribute("viewBox") || "0 0 980 560").split(/\s+/).map(Number);
+                const vbX = vb[0] || 0;
+                const vbY = vb[1] || 0;
+                const vbW = vb[2] || 980;
+                const vbH = vb[3] || 560;
+                const sx = vbX + (((ev.clientX - rect.left) / Math.max(1, rect.width)) * vbW);
+                const sy = vbY + (((ev.clientY - rect.top) / Math.max(1, rect.height)) * vbH);
+                const dynW = Math.max(1, Number(venueState.widthM || 1));
+                const dynD = Math.max(1, Number(venueState.depthM || 1));
+                const dynPadL = 54;
+                const dynPadR = 22;
+                const dynPadT = 36;
+                const dynPadB = 42;
+                const dynInnerW = 980 - dynPadL - dynPadR;
+                const dynInnerH = 560 - dynPadT - dynPadB;
+                const clampedX = Math.max(dynPadL, Math.min(dynPadL + dynInnerW, sx));
+                const clampedY = Math.max(dynPadT, Math.min(dynPadT + dynInnerH, sy));
+                const p = {
+                  wx: Math.max(0, Math.min(dynW, ((clampedX - dynPadL) / dynInnerW) * dynW)),
+                  wy: Math.max(0, Math.min(dynD, ((clampedY - dynPadT) / dynInnerH) * dynD))
+                };
+                const anchorX = Number(venueTrussDragState.fixedX || 0);
+                const anchorY = Number(venueTrussDragState.fixedY || 0);
+                const targetDx = Number(p.wx) - anchorX;
+                const targetDy = Number(p.wy) - anchorY;
+                const mag = Math.hypot(targetDx, targetDy);
+                const baseLen = Math.max(0.001, Number(venueTrussDragState.lengthM || 0.001));
+                let ux = 1;
+                let uy = 0;
+                if (mag > 1e-6) {
+                  ux = targetDx / mag;
+                  uy = targetDy / mag;
+                } else {
+                  const fallbackDx = Number(placement.x2 || 0) - Number(placement.x1 || 0);
+                  const fallbackDy = Number(placement.y2 || 0) - Number(placement.y1 || 0);
+                  const fallbackMag = Math.hypot(fallbackDx, fallbackDy);
+                  if (fallbackMag > 1e-6) {
+                    ux = fallbackDx / fallbackMag;
+                    uy = fallbackDy / fallbackMag;
+                  }
+                }
+                if (venueTrussDragState.handle === "start") {
+                  placement.x2 = anchorX;
+                  placement.y2 = anchorY;
+                  placement.x1 = anchorX + (ux * baseLen);
+                  placement.y1 = anchorY + (uy * baseLen);
+                } else {
+                  placement.x1 = anchorX;
+                  placement.y1 = anchorY;
+                  placement.x2 = anchorX + (ux * baseLen);
+                  placement.y2 = anchorY + (uy * baseLen);
+                }
+                redraw();
+              });
+              window.addEventListener("mouseup", () => {
+                if (!venueTrussDragState.active) return;
+                venueTrussDragState.active = false;
+                venueTrussDragState.id = "";
+                venueTrussDragState.handle = "";
+                venueTrussDragState.lengthM = 0;
+              });
+              venueTrussDragBound = true;
+            }
+            } catch (err) {
+              // Hard fallback: always show a basic visible grid even if advanced layers fail.
+              const W = 980;
+              const H = 560;
+              const padL = 54;
+              const padR = 22;
+              const padT = 36;
+              const padB = 42;
+              const innerW = W - padL - padR;
+              const innerH = H - padT - padB;
+              const lines = [];
+              lines.push(`<rect x="${padL}" y="${padT}" width="${innerW}" height="${innerH}" fill="#1a1630" stroke="#6f5da8" stroke-width="1.4"/>`);
+              for (let x = 0; x <= innerW; x += (innerW / 20)) {
+                const px = padL + x;
+                lines.push(`<line x1="${px.toFixed(2)}" y1="${padT}" x2="${px.toFixed(2)}" y2="${padT + innerH}" stroke="#3b2f5f" stroke-width="0.8"/>`);
+              }
+              for (let y = 0; y <= innerH; y += (innerH / 12)) {
+                const py = padT + y;
+                lines.push(`<line x1="${padL}" y1="${py.toFixed(2)}" x2="${padL + innerW}" y2="${py.toFixed(2)}" stroke="#3b2f5f" stroke-width="0.8"/>`);
+              }
+              lines.push(`<text x="${padL + 6}" y="${padT + 14}" fill="#d5ccf5" font-size="10">0X, 0Y</text>`);
+              lines.push(`<text x="${padL}" y="${H - 10}" fill="#bdb2df" font-size="11">Venue fallback grid</text>`);
+              svg.setAttribute("viewBox", "0 0 980 560");
+              svg.innerHTML = lines.join("");
+              console.error("Venue redraw failed; fallback grid rendered.", err);
+            }
           };
 
           const bindNumber = (id, cb) => {
@@ -3367,6 +4060,12 @@
             venueState.floorPlanWizardOriginPx = null;
             venueState.floorPlanWizardXPx = null;
             venueState.floorPlanWizardYPx = null;
+            renderVenue();
+          });
+          document.getElementById("venueRigGroupSel")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLSelectElement)) return;
+            venueState.selectedVenueRigGroupId = target.value;
             renderVenue();
           });
           document.getElementById("venueMeasureArmBtn")?.addEventListener("click", () => {
