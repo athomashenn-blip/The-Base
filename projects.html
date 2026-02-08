@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Base - Projects</title>
+    <style>
+      :root {
+        --text: #f2f3f8;
+        --muted: #b8b3c9;
+        --line: #4c3f75;
+        --line-2: #52437f;
+        --btn-line: #584888;
+        --btn-active: #b68bff;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 12% 8%, #6f4bcb42 0%, transparent 42%),
+          radial-gradient(circle at 90% 12%, #8a5fff36 0%, transparent 34%),
+          linear-gradient(160deg, #101116, #171922 62%, #111217);
+      }
+      .shell { max-width: 1480px; margin: 0 auto; padding: 0.85rem; }
+      .header {
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 0.8rem 1.1rem;
+        background: linear-gradient(180deg, #282434, #201d2c);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        box-shadow: 0 10px 25px #00000040;
+        margin-bottom: 12px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .brand-logo {
+        width: 64px;
+        height: 64px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #4f4670;
+        box-shadow: 0 6px 16px #00000055;
+        display: block;
+      }
+      .brand-dot {
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        background: linear-gradient(150deg, #ff2d72, #ff5b5b);
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 1.3rem;
+      }
+      .brand-wordmark { font-weight: 700; letter-spacing: 0.08em; }
+      .brand p { margin: 0.18rem 0 0; color: var(--muted); font-size: 0.8rem; }
+      .header-links {
+        display: flex;
+        gap: 1.5rem;
+        color: #99a9d7;
+        font-weight: 500;
+      }
+      .header-actions {
+        display: flex;
+        gap: 0.4rem;
+        align-items: center;
+      }
+      .header-link-btn {
+        border: 0;
+        background: transparent;
+        padding: 0;
+        color: #99a9d7;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .header-links .active {
+        color: #fff;
+        border-bottom: 2px solid #a97cff;
+        padding-bottom: 0.2rem;
+      }
+      .main {
+        margin-top: 0.8rem;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: linear-gradient(180deg, #24222e, #1f1d29 78%);
+        padding: 1rem;
+      }
+      .card {
+        border: 1px solid var(--line-2);
+        border-radius: 14px;
+        padding: 14px;
+        background: linear-gradient(170deg, #2a2736, #22202d);
+        box-shadow: 0 8px 16px #00000030, inset 0 1px 0 #8b72ce24;
+      }
+      h1 { margin: 0 0 10px; }
+      .actions {
+        display: grid;
+        gap: 10px;
+        max-width: 340px;
+        margin: 0 auto;
+      }
+      button, .link-btn {
+        font: inherit;
+        color: inherit;
+        border: 1px solid var(--btn-line);
+        background: linear-gradient(180deg, #332a4c, #29233e);
+        border-radius: 8px;
+        padding: 10px 12px;
+        cursor: pointer;
+      }
+      button.primary { border-color: var(--btn-active); background: linear-gradient(180deg, #5a3ca3, #4a3188); }
+      .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+      a.link-btn { text-decoration: none; display: inline-block; }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="header">
+        <div class="brand">
+          <img id="brandLogo" class="brand-logo" src="assets/base-logo.png" alt="BASE Logo" />
+          <div class="brand-dot" id="brandFallback" style="display:none;">B</div>
+          <div>
+            <div class="brand-wordmark">THE BASE</div>
+            <p>Technical planning dashboard for Video, Lighting, Audio, Staging & Rigging.</p>
+          </div>
+        </div>
+        <div class="header-links">
+          <a class="header-link-btn active" href="projects.html">Projects</a>
+          <a class="header-link-btn" href="index.html">Engineering</a>
+          <a class="header-link-btn" href="reports.html">Reports</a>
+          <a class="header-link-btn" href="settings.html">Settings</a>
+        </div>
+        <div class="header-actions"></div>
+      </header>
+      <main class="main">
+        <div class="card">
+          <div class="row" style="justify-content:center;">
+            <h1>Projects</h1>
+          </div>
+          <div class="actions">
+            <button class="primary" id="projectNewBtn">New Project</button>
+            <button id="projectOpenBtn">Open Project</button>
+            <button id="projectExportBtn">Export Project</button>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script>
+      const logo = document.getElementById("brandLogo");
+      const fallback = document.getElementById("brandFallback");
+      if (logo && fallback) {
+        logo.addEventListener("error", () => {
+          logo.style.display = "none";
+          fallback.style.display = "grid";
+        });
+      }
+      document.getElementById("projectNewBtn").addEventListener("click", () => alert("New Project"));
+      document.getElementById("projectOpenBtn").addEventListener("click", () => alert("Open Project"));
+      document.getElementById("projectExportBtn").addEventListener("click", () => alert("Export Project"));
+    </script>
+  </body>
+</html>

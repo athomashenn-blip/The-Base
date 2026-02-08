@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Base - Settings</title>
+    <style>
+      :root {
+        --bg: #121317;
+        --line: #4c3f75;
+        --text: #f2f3f8;
+        --muted: #b8b3c9;
+        --accent: #a97cff;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 12% 8%, #6f4bcb42 0%, transparent 42%),
+          radial-gradient(circle at 90% 12%, #8a5fff36 0%, transparent 34%),
+          linear-gradient(160deg, #101116, #171922 62%, #111217);
+      }
+      .shell { max-width: 1480px; margin: 0 auto; padding: 0.85rem; }
+      .header {
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 0.8rem 1.1rem;
+        background: linear-gradient(180deg, #282434, #201d2c);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        box-shadow: 0 10px 25px #00000040;
+      }
+      .brand { display: flex; align-items: center; gap: 0.75rem; }
+      .brand-logo {
+        width: 64px;
+        height: 64px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #4f4670;
+        box-shadow: 0 6px 16px #00000055;
+        display: block;
+      }
+      .brand-dot {
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        background: linear-gradient(150deg, #ff2d72, #ff5b5b);
+        display: grid;
+        place-items: center;
+        font-weight: 800;
+        font-size: 1.3rem;
+      }
+      .brand-wordmark { font-weight: 700; letter-spacing: 0.08em; }
+      .brand p { margin: 0.18rem 0 0; color: var(--muted); font-size: 0.8rem; }
+      .header-links { display: flex; gap: 1.5rem; color: #99a9d7; font-weight: 500; }
+      .header-link-btn {
+        border: 0;
+        background: transparent;
+        padding: 0;
+        color: #99a9d7;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .header-link-btn:hover { color: #dce7ff; }
+      .header-links .active { color: #fff; border-bottom: 2px solid var(--accent); padding-bottom: 0.2rem; }
+      .header-actions { display: flex; gap: 0.4rem; align-items: center; }
+
+      .layout {
+        margin-top: 0.8rem;
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 0.8rem;
+      }
+      .nav {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 1rem 0.8rem;
+        background: linear-gradient(180deg, #252230, #1f1c29 74%, #1a1822);
+        display: grid;
+        gap: 0.5rem;
+        align-content: start;
+      }
+      .nav button {
+        width: 100%;
+        text-align: left;
+        border: 1px solid #584888;
+        background: linear-gradient(180deg, #332a4c, #29233e);
+        border-radius: 12px;
+        padding: 0.65rem;
+        color: var(--text);
+        cursor: pointer;
+      }
+      .nav button.active { border-color: #b68bff; background: linear-gradient(180deg, #5a3ca3, #4a3188); }
+      .subnav {
+        display: grid;
+        gap: 0.35rem;
+        margin: -0.1rem 0 0.3rem;
+        padding-left: 0.4rem;
+        max-height: 220px;
+        opacity: 1;
+        overflow: hidden;
+        transition: max-height 220ms ease, opacity 180ms ease, margin 200ms ease;
+      }
+      .subnav.hidden { max-height: 0; opacity: 0; margin: 0; }
+      .subnav button { font-size: 0.84rem; padding: 0.45rem 0.55rem; border-style: dashed; }
+      .nav-main { display: flex; align-items: center; justify-content: space-between; }
+      .nav-arrow { display: inline-block; font-size: 0.7rem; color: #9fb1de; transition: transform 220ms ease; }
+      #videoNavBtn.is-open .nav-arrow { transform: rotate(180deg); }
+
+      .main {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: linear-gradient(180deg, #24222e, #1f1d29 78%);
+        padding: 1rem;
+      }
+      .card {
+        border: 1px solid #52437f;
+        border-radius: 14px;
+        padding: 0.8rem;
+        background: linear-gradient(170deg, #2a2736, #22202d);
+      }
+      .muted { color: var(--muted); font-size: 0.9rem; }
+      @media (max-width: 1100px) {
+        .layout { grid-template-columns: 1fr; }
+        .nav { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      }
+      @media (max-width: 820px) {
+        .nav { grid-template-columns: 1fr; }
+        .header { flex-direction: column; align-items: flex-start; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="header">
+        <div class="brand">
+          <img id="brandLogo" class="brand-logo" src="assets/base-logo.png" alt="BASE Logo" />
+          <div class="brand-dot" id="brandFallback" style="display:none;">B</div>
+          <div>
+            <div class="brand-wordmark">THE BASE</div>
+            <p>Technical planning dashboard for Video, Lighting, Audio, Staging & Rigging.</p>
+          </div>
+        </div>
+        <div class="header-links">
+          <a class="header-link-btn" href="projects.html">Projects</a>
+          <a class="header-link-btn" href="index.html">Engineering</a>
+          <a class="header-link-btn" href="reports.html">Reports</a>
+          <a class="header-link-btn active" href="settings.html">Settings</a>
+        </div>
+        <div class="header-actions"></div>
+      </header>
+
+      <section class="layout">
+        <nav class="nav" id="engineeringNav">
+          <button class="active is-open" id="videoNavBtn" data-engineering="Video">
+            <span class="nav-main"><span>Video</span><span class="nav-arrow">▾</span></span>
+          </button>
+          <div id="videoSubnav" class="subnav">
+            <button class="active" data-video-sub="LED">LED</button>
+            <button data-video-sub="Playback">Playback</button>
+            <button data-video-sub="Signal">Signal</button>
+            <button data-video-sub="Streaming">Streaming</button>
+          </div>
+          <button data-engineering="Lighting">Lighting</button>
+          <button data-engineering="Sound">Sound</button>
+          <button data-engineering="Rigging">Rigging</button>
+          <button data-engineering="Power">Power</button>
+        </nav>
+        <main class="main">
+          <div class="card">
+            <h2>Settings</h2>
+            <div class="muted">Settings page with the same Engineering dropdown menu.</div>
+          </div>
+        </main>
+      </section>
+    </div>
+
+    <script>
+      const logo = document.getElementById("brandLogo");
+      const fallback = document.getElementById("brandFallback");
+      if (logo && fallback) {
+        logo.addEventListener("error", () => {
+          logo.style.display = "none";
+          fallback.style.display = "grid";
+        });
+      }
+      const engineeringNav = document.getElementById("engineeringNav");
+      const videoNavBtn = document.getElementById("videoNavBtn");
+      const videoSubnav = document.getElementById("videoSubnav");
+      engineeringNav?.querySelectorAll("button[data-engineering]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          if (btn.dataset.engineering === "Video" && btn.classList.contains("active")) {
+            videoSubnav?.classList.toggle("hidden");
+            videoNavBtn?.classList.toggle("is-open", !videoSubnav?.classList.contains("hidden"));
+            return;
+          }
+          engineeringNav.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          if (btn.dataset.engineering === "Video") {
+            videoSubnav?.classList.remove("hidden");
+            videoNavBtn?.classList.add("is-open");
+          } else {
+            videoSubnav?.classList.add("hidden");
+            videoNavBtn?.classList.remove("is-open");
+          }
+        });
+      });
+      videoSubnav?.querySelectorAll("button[data-video-sub]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          videoSubnav.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+        });
+      });
+    </script>
+  </body>
+</html>
