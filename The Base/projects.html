@@ -8,10 +8,22 @@
       :root {
         --text: #f2f3f8;
         --muted: #b8b3c9;
-        --line: #4c3f75;
-        --line-2: #52437f;
-        --btn-line: #584888;
-        --btn-active: #b68bff;
+        --line: #3f4452;
+        --line-2: #4a5060;
+        --btn-line: #545b6d;
+        --btn-active: #7c889f;
+        --theme-bg-a: #101116;
+        --theme-bg-b: #171922;
+        --theme-bg-c: #111217;
+        --theme-glow-a: #6a738420;
+        --theme-glow-b: #8d97aa1a;
+        --theme-header-a: #282434;
+        --theme-header-b: #201d2c;
+        --theme-main-a: #24222e;
+        --theme-main-b: #1f1d29;
+        --theme-card-a: #2a2736;
+        --theme-card-b: #22202d;
+        --logo-hue: 0deg;
       }
       * { box-sizing: border-box; }
       body {
@@ -19,16 +31,16 @@
         font-family: "Avenir Next", "Segoe UI", sans-serif;
         color: var(--text);
         background:
-          radial-gradient(circle at 12% 8%, #6f4bcb42 0%, transparent 42%),
-          radial-gradient(circle at 90% 12%, #8a5fff36 0%, transparent 34%),
-          linear-gradient(160deg, #101116, #171922 62%, #111217);
+          radial-gradient(circle at 12% 8%, var(--theme-glow-a) 0%, transparent 42%),
+          radial-gradient(circle at 90% 12%, var(--theme-glow-b) 0%, transparent 34%),
+          linear-gradient(160deg, var(--theme-bg-a), var(--theme-bg-b) 62%, var(--theme-bg-c));
       }
       .shell { max-width: 1480px; margin: 0 auto; padding: 0.85rem; }
       .header {
         border: 1px solid var(--line);
         border-radius: 24px;
         padding: 0.8rem 1.1rem;
-        background: linear-gradient(180deg, #282434, #201d2c);
+        background: linear-gradient(180deg, var(--theme-header-a), var(--theme-header-b));
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -46,9 +58,10 @@
         height: 64px;
         object-fit: cover;
         border-radius: 50%;
-        border: 2px solid #4f4670;
+        border: 2px solid var(--line);
         box-shadow: 0 6px 16px #00000055;
         display: block;
+        filter: hue-rotate(var(--logo-hue, 0deg)) saturate(1.08);
       }
       .brand-dot {
         width: 42px;
@@ -83,22 +96,22 @@
       }
       .header-links .active {
         color: #fff;
-        border-bottom: 2px solid #a97cff;
+        border-bottom: 2px solid var(--btn-active);
         padding-bottom: 0.2rem;
       }
       .main {
         margin-top: 0.8rem;
         border: 1px solid var(--line);
         border-radius: 22px;
-        background: linear-gradient(180deg, #24222e, #1f1d29 78%);
+        background: linear-gradient(180deg, var(--theme-main-a), var(--theme-main-b) 78%);
         padding: 1rem;
       }
       .card {
         border: 1px solid var(--line-2);
         border-radius: 14px;
         padding: 14px;
-        background: linear-gradient(170deg, #2a2736, #22202d);
-        box-shadow: 0 8px 16px #00000030, inset 0 1px 0 #8b72ce24;
+        background: linear-gradient(170deg, var(--theme-card-a), var(--theme-card-b));
+        box-shadow: 0 8px 16px #00000030, inset 0 1px 0 #9ba6bf24;
       }
       h1 { margin: 0 0 10px; }
       .actions {
@@ -111,14 +124,136 @@
         font: inherit;
         color: inherit;
         border: 1px solid var(--btn-line);
-        background: linear-gradient(180deg, #332a4c, #29233e);
+        background: linear-gradient(180deg, #343946, #2a2f3a);
         border-radius: 8px;
         padding: 10px 12px;
         cursor: pointer;
       }
-      button.primary { border-color: var(--btn-active); background: linear-gradient(180deg, #5a3ca3, #4a3188); }
+      button.primary { border-color: var(--btn-active); background: linear-gradient(180deg, color-mix(in srgb, var(--btn-active) 38%, #323846 62%), color-mix(in srgb, var(--btn-line) 58%, #262b36 42%)); }
       .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
       a.link-btn { text-decoration: none; display: inline-block; }
+      body[data-dept="Video"] {
+        --logo-hue: -150deg;
+        --line: #3e784f;
+        --line-2: #4d8f61;
+        --btn-line: #579b67;
+        --btn-active: #70c984;
+        --theme-bg-a: #0f1612;
+        --theme-bg-b: #131f17;
+        --theme-bg-c: #101511;
+        --theme-glow-a: #4ec06b2f;
+        --theme-glow-b: #8ff0a13d;
+        --theme-header-a: #213326;
+        --theme-header-b: #1b281f;
+        --theme-main-a: #1e2a22;
+        --theme-main-b: #18231c;
+        --theme-card-a: #233226;
+        --theme-card-b: #1a261d;
+      }
+      body[data-dept="Sound"] {
+        --logo-hue: -35deg;
+        --line: #3e5e97;
+        --line-2: #4a6ca9;
+        --btn-line: #5479bb;
+        --btn-active: #74a9ff;
+        --theme-bg-a: #101420;
+        --theme-bg-b: #141b2a;
+        --theme-bg-c: #0f131e;
+        --theme-glow-a: #4e7cd03a;
+        --theme-glow-b: #71a2ff33;
+        --theme-header-a: #212944;
+        --theme-header-b: #1a2137;
+        --theme-main-a: #1e2538;
+        --theme-main-b: #171e2d;
+        --theme-card-a: #252d46;
+        --theme-card-b: #1b2235;
+      }
+      body[data-dept="Lighting"] {
+        --logo-hue: 90deg;
+        --line: #8a3e44;
+        --line-2: #9c474d;
+        --btn-line: #b2555d;
+        --btn-active: #ff7b85;
+        --theme-bg-a: #1b1214;
+        --theme-bg-b: #26181b;
+        --theme-bg-c: #1a1113;
+        --theme-glow-a: #d14e5d30;
+        --theme-glow-b: #ff7e7e2e;
+        --theme-header-a: #3a2326;
+        --theme-header-b: #2b1b1d;
+        --theme-main-a: #332225;
+        --theme-main-b: #271b1d;
+        --theme-card-a: #3a2528;
+        --theme-card-b: #2b1d1f;
+      }
+      body[data-dept="Power"] {
+        --logo-hue: 0deg;
+        --line: #634699;
+        --line-2: #7454ad;
+        --btn-line: #7f5ec0;
+        --btn-active: #aa84ff;
+        --theme-bg-a: #14121f;
+        --theme-bg-b: #1d1a2b;
+        --theme-bg-c: #12101b;
+        --theme-glow-a: #7e5acf34;
+        --theme-glow-b: #ab85ff2e;
+        --theme-header-a: #2f2744;
+        --theme-header-b: #241f34;
+        --theme-main-a: #2a243a;
+        --theme-main-b: #201c2d;
+        --theme-card-a: #322a46;
+        --theme-card-b: #262038;
+      }
+      body[data-dept="Rigging"] {
+        --logo-hue: 120deg;
+        --line: #a4652c;
+        --line-2: #be7736;
+        --btn-line: #cf833e;
+        --btn-active: #ffab4f;
+        --theme-bg-a: #1c1510;
+        --theme-bg-b: #261c13;
+        --theme-bg-c: #1a130d;
+        --theme-glow-a: #d67a2e2f;
+        --theme-glow-b: #ffb35a2a;
+        --theme-header-a: #3b2517;
+        --theme-header-b: #2c1b11;
+        --theme-main-a: #342518;
+        --theme-main-b: #261c13;
+        --theme-card-a: #3f2a19;
+        --theme-card-b: #2f2013;
+      }
+      body[data-dept="Venue"] {
+        --logo-hue: -100deg;
+        --line: #3f8a86;
+        --line-2: #49a29d;
+        --btn-line: #54b5b0;
+        --btn-active: #6ad8d1;
+        --theme-bg-a: #101a19;
+        --theme-bg-b: #132423;
+        --theme-bg-c: #0f1716;
+        --theme-glow-a: #45b6ac2e;
+        --theme-glow-b: #7de9df2a;
+        --theme-header-a: #1f3230;
+        --theme-header-b: #182826;
+        --theme-main-a: #1d2d2b;
+        --theme-main-b: #172422;
+        --theme-card-a: #223634;
+        --theme-card-b: #1b2a28;
+      }
+      /* Keep UI neutral grey; preserve department accents for highlights */
+      body[data-dept] {
+        --theme-bg-a: #101116;
+        --theme-bg-b: #171922;
+        --theme-bg-c: #111217;
+        --theme-glow-a: #6a738420;
+        --theme-glow-b: #8d97aa1a;
+        --theme-header-a: #282434;
+        --theme-header-b: #201d2c;
+        --theme-main-a: #24222e;
+        --theme-main-b: #1f1d29;
+        --theme-card-a: #2a2736;
+        --theme-card-b: #22202d;
+      }
     </style>
   </head>
   <body>
@@ -162,6 +297,7 @@
           fallback.style.display = "grid";
         });
       }
+      document.body.setAttribute("data-dept", "Power");
       document.getElementById("projectNewBtn").addEventListener("click", () => alert("New Project"));
       document.getElementById("projectOpenBtn").addEventListener("click", () => alert("Open Project"));
       document.getElementById("projectExportBtn").addEventListener("click", () => alert("Export Project"));

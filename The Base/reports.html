@@ -5,22 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Base - Reports</title>
     <style>
+      :root {
+        --text: #f2f3f8;
+        --muted: #b8b3c9;
+        --line: #3f4452;
+        --line-2: #4a5060;
+        --btn-line: #545b6d;
+        --btn-active: #7c889f;
+        --theme-bg-a: #101116;
+        --theme-bg-b: #171922;
+        --theme-bg-c: #111217;
+        --theme-glow-a: #6a738420;
+        --theme-glow-b: #8d97aa1a;
+        --theme-header-a: #282434;
+        --theme-header-b: #201d2c;
+        --theme-main-a: #24222e;
+        --theme-main-b: #1f1d29;
+        --theme-card-a: #2a2736;
+        --theme-card-b: #22202d;
+        --logo-hue: 0deg;
+      }
       * { box-sizing: border-box; }
       body {
         margin: 0;
         font-family: "Avenir Next", "Segoe UI", sans-serif;
-        color: #f2f3f8;
+        color: var(--text);
         background:
-          radial-gradient(circle at 12% 8%, #6f4bcb42 0%, transparent 42%),
-          radial-gradient(circle at 90% 12%, #8a5fff36 0%, transparent 34%),
-          linear-gradient(160deg, #101116, #171922 62%, #111217);
+          radial-gradient(circle at 12% 8%, var(--theme-glow-a) 0%, transparent 42%),
+          radial-gradient(circle at 90% 12%, var(--theme-glow-b) 0%, transparent 34%),
+          linear-gradient(160deg, var(--theme-bg-a), var(--theme-bg-b) 62%, var(--theme-bg-c));
       }
       .shell { max-width: 1480px; margin: 0 auto; padding: 0.85rem; }
       .header {
-        border: 1px solid #4c3f75;
+        border: 1px solid var(--line);
         border-radius: 24px;
         padding: 0.8rem 1.1rem;
-        background: linear-gradient(180deg, #282434, #201d2c);
+        background: linear-gradient(180deg, var(--theme-header-a), var(--theme-header-b));
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -33,9 +53,10 @@
         height: 64px;
         object-fit: cover;
         border-radius: 50%;
-        border: 2px solid #4f4670;
+        border: 2px solid var(--line);
         box-shadow: 0 6px 16px #00000055;
         display: block;
+        filter: hue-rotate(var(--logo-hue, 0deg)) saturate(1.08);
       }
       .brand-dot {
         width: 42px;
@@ -59,15 +80,194 @@
         text-decoration: none;
       }
       .header-link-btn:hover { color: #dce7ff; }
-      .header-links .active { color: #fff; border-bottom: 2px solid #a97cff; padding-bottom: 0.2rem; }
+      .header-links .active { color: #fff; border-bottom: 2px solid var(--btn-active); padding-bottom: 0.2rem; }
       .header-actions {
         display: flex;
         gap: 0.4rem;
         align-items: center;
       }
-      .main { margin-top: 0.8rem; border: 1px solid #4c3f75; border-radius: 22px; background: linear-gradient(180deg, #24222e, #1f1d29 78%); padding: 1rem; }
-      .card { border: 1px solid #52437f; border-radius: 14px; padding: 0.8rem; background: linear-gradient(170deg, #2a2736, #22202d); }
-      .muted { color: #b8b3c9; font-size: 0.9rem; }
+      .main {
+        margin-top: 0.8rem;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: linear-gradient(180deg, var(--theme-main-a), var(--theme-main-b) 78%);
+        padding: 1rem;
+      }
+      .card {
+        border: 1px solid var(--line-2);
+        border-radius: 14px;
+        padding: 0.8rem;
+        background: linear-gradient(170deg, var(--theme-card-a), var(--theme-card-b));
+      }
+      .muted { color: var(--muted); font-size: 0.9rem; }
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+      }
+      .tabs {
+        margin-top: 0.65rem;
+        display: flex;
+        gap: 0.45rem;
+        flex-wrap: wrap;
+      }
+      .tabs button {
+        font: inherit;
+        color: inherit;
+        border: 1px solid var(--btn-line);
+        background: linear-gradient(180deg, #343946, #2a2f3a);
+        border-radius: 10px;
+        padding: 0.45rem 0.72rem;
+        cursor: pointer;
+      }
+      .tabs button.active {
+        border-color: var(--btn-active);
+        background: linear-gradient(180deg, color-mix(in srgb, var(--btn-active) 38%, #323846 62%), color-mix(in srgb, var(--btn-line) 58%, #262b36 42%));
+      }
+      .inputs {
+        display: flex;
+        gap: 0.45rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      input, select {
+        background: #181b25;
+        border: 1px solid var(--line-2);
+        color: var(--text);
+        border-radius: 8px;
+        padding: 0.38rem 0.5rem;
+        font: inherit;
+      }
+      .btn {
+        border: 1px solid var(--btn-line);
+        border-radius: 8px;
+        background: linear-gradient(180deg, #343946, #2a2f3a);
+        color: var(--text);
+        padding: 0.4rem 0.62rem;
+        cursor: pointer;
+        font: inherit;
+      }
+      .grid {
+        margin-top: 0.7rem;
+        display: grid;
+        gap: 0.65rem;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .sections {
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+      }
+      .section {
+        border: 1px solid var(--line-2);
+        border-radius: 12px;
+        padding: 0.65rem;
+        background: linear-gradient(170deg, var(--theme-card-a), var(--theme-card-b));
+      }
+      .section h3 {
+        margin: 0;
+      }
+      .kpi {
+        border: 1px solid var(--line-2);
+        border-radius: 10px;
+        padding: 0.55rem;
+        background: linear-gradient(165deg, var(--theme-card-a), var(--theme-card-b));
+      }
+      .kpi b { font-size: 1rem; }
+      .table-wrap {
+        margin-top: 0.75rem;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: auto;
+        max-height: 42vh;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+      }
+      th, td {
+        border: 1px solid var(--line);
+        padding: 0.38rem 0.42rem;
+        vertical-align: top;
+      }
+      th {
+        text-align: left;
+        color: var(--muted);
+        background: color-mix(in srgb, var(--theme-card-a) 78%, #000 22%);
+        position: sticky;
+        top: 0;
+      }
+      .badge {
+        font-size: 0.74rem;
+        border: 1px solid var(--btn-line);
+        border-radius: 999px;
+        padding: 0.16rem 0.5rem;
+      }
+      body[data-dept="Video"] {
+        --logo-hue: -150deg;
+        --line: #3e784f; --line-2: #4d8f61; --btn-line: #579b67; --btn-active: #70c984;
+        --theme-bg-a: #0f1612; --theme-bg-b: #131f17; --theme-bg-c: #101511;
+        --theme-glow-a: #4ec06b2f; --theme-glow-b: #8ff0a13d; --theme-header-a: #213326; --theme-header-b: #1b281f;
+        --theme-main-a: #1e2a22; --theme-main-b: #18231c; --theme-card-a: #233226; --theme-card-b: #1a261d;
+      }
+      body[data-dept="Sound"] {
+        --logo-hue: -35deg;
+        --line: #3e5e97; --line-2: #4a6ca9; --btn-line: #5479bb; --btn-active: #74a9ff;
+        --theme-bg-a: #101420; --theme-bg-b: #141b2a; --theme-bg-c: #0f131e;
+        --theme-glow-a: #4e7cd03a; --theme-glow-b: #71a2ff33; --theme-header-a: #212944; --theme-header-b: #1a2137;
+        --theme-main-a: #1e2538; --theme-main-b: #171e2d; --theme-card-a: #252d46; --theme-card-b: #1b2235;
+      }
+      body[data-dept="Lighting"] {
+        --logo-hue: 90deg;
+        --line: #8a3e44; --line-2: #9c474d; --btn-line: #b2555d; --btn-active: #ff7b85;
+        --theme-bg-a: #1b1214; --theme-bg-b: #26181b; --theme-bg-c: #1a1113;
+        --theme-glow-a: #d14e5d30; --theme-glow-b: #ff7e7e2e; --theme-header-a: #3a2326; --theme-header-b: #2b1b1d;
+        --theme-main-a: #332225; --theme-main-b: #271b1d; --theme-card-a: #3a2528; --theme-card-b: #2b1d1f;
+      }
+      body[data-dept="Power"] {
+        --logo-hue: 0deg;
+        --line: #634699; --line-2: #7454ad; --btn-line: #7f5ec0; --btn-active: #aa84ff;
+        --theme-bg-a: #14121f; --theme-bg-b: #1d1a2b; --theme-bg-c: #12101b;
+        --theme-glow-a: #7e5acf34; --theme-glow-b: #ab85ff2e; --theme-header-a: #2f2744; --theme-header-b: #241f34;
+        --theme-main-a: #2a243a; --theme-main-b: #201c2d; --theme-card-a: #322a46; --theme-card-b: #262038;
+      }
+      body[data-dept="Rigging"] {
+        --logo-hue: 120deg;
+        --line: #a4652c; --line-2: #be7736; --btn-line: #cf833e; --btn-active: #ffab4f;
+        --theme-bg-a: #1c1510; --theme-bg-b: #261c13; --theme-bg-c: #1a130d;
+        --theme-glow-a: #d67a2e2f; --theme-glow-b: #ffb35a2a; --theme-header-a: #3b2517; --theme-header-b: #2c1b11;
+        --theme-main-a: #342518; --theme-main-b: #261c13; --theme-card-a: #3f2a19; --theme-card-b: #2f2013;
+      }
+      body[data-dept="Venue"] {
+        --logo-hue: -100deg;
+        --line: #3f8a86; --line-2: #49a29d; --btn-line: #54b5b0; --btn-active: #6ad8d1;
+        --theme-bg-a: #101a19; --theme-bg-b: #132423; --theme-bg-c: #0f1716;
+        --theme-glow-a: #45b6ac2e; --theme-glow-b: #7de9df2a; --theme-header-a: #1f3230; --theme-header-b: #182826;
+        --theme-main-a: #1d2d2b; --theme-main-b: #172422; --theme-card-a: #223634; --theme-card-b: #1b2a28;
+      }
+      /* Keep UI neutral grey; preserve department accents for highlights */
+      body[data-dept] {
+        --theme-bg-a: #101116;
+        --theme-bg-b: #171922;
+        --theme-bg-c: #111217;
+        --theme-glow-a: #6a738420;
+        --theme-glow-b: #8d97aa1a;
+        --theme-header-a: #282434;
+        --theme-header-b: #201d2c;
+        --theme-main-a: #24222e;
+        --theme-main-b: #1f1d29;
+        --theme-card-a: #2a2736;
+        --theme-card-b: #22202d;
+      }
+      @media (max-width: 1040px) {
+        .grid { grid-template-columns: 1fr 1fr; }
+      }
+      @media (max-width: 760px) {
+        .grid { grid-template-columns: 1fr; }
+      }
     </style>
   </head>
   <body>
@@ -91,11 +291,28 @@
       </header>
       <main class="main">
         <div class="card">
-          <h2>Reports</h2>
-          <div class="muted">Reports page is ready for content.</div>
+          <div class="toolbar">
+            <h2>Technical Reports</h2>
+            <span class="badge" id="reportCountBadge">0 report rows</span>
+          </div>
+          <div class="muted">All reports on one page with department filtering and exports.</div>
+          <div class="inputs" style="margin-top:0.55rem;">
+            <select id="reportProjectSel">
+              <option value="current">Current Project</option>
+            </select>
+            <input id="reportDateFrom" type="date" />
+            <input id="reportDateTo" type="date" />
+            <button class="btn" id="exportCsvBtn">Export CSV</button>
+            <button class="btn" id="exportJsonBtn">Export JSON</button>
+          </div>
+          <div class="tabs" id="reportTabs"></div>
+          <div id="reportContent" class="sections"></div>
         </div>
       </main>
     </div>
+    <script src="data/lighting-fixtures.js"></script>
+    <script src="data/power-calculator.js"></script>
+    <script src="data/settings-store.js"></script>
     <script>
       const logo = document.getElementById("brandLogo");
       const fallback = document.getElementById("brandFallback");
@@ -105,6 +322,345 @@
           fallback.style.display = "grid";
         });
       }
+      const reportThemeMap = { All: "Power", Video: "Video", Lighting: "Lighting", Audio: "Sound", Rigging: "Rigging", Power: "Power", Venue: "Venue" };
+      function applyDeptTheme(dept) {
+        const mapped = reportThemeMap[dept] || "Video";
+        document.body.setAttribute("data-dept", mapped);
+        localStorage.setItem("thebase.activeDept", mapped);
+      }
+      const departments = ["Video", "Lighting", "Audio", "Rigging", "Power", "Venue"];
+      let activeTab = "All";
+
+      function loadSettings() {
+        if (!window.TheBaseSettings) return null;
+        return TheBaseSettings.loadSettings();
+      }
+      function fmt(value, digits = 1) {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return "0";
+        return n.toFixed(digits);
+      }
+      function buildReports() {
+        const settings = loadSettings();
+        const byDept = Object.fromEntries(departments.map((d) => [d, { rows: [], kpis: [] }]));
+        const allEquip = [];
+        departments.forEach((dept) => {
+          const equip = (settings?.departments?.[dept]?.equipment || []).filter((x) => x && x.enabled !== false);
+          equip.forEach((e) => allEquip.push({ ...e, department: dept }));
+        });
+
+        departments.forEach((dept) => {
+          const rows = allEquip.filter((x) => x.department === dept);
+          const powerW = rows.reduce((s, r) => s + (Number(r?.power_use?.watts) || 0), 0);
+          const weightKg = rows.reduce((s, r) => s + (Number(r?.weight_kg) || 0), 0);
+          byDept[dept].kpis = [
+            { label: "Equipment", value: String(rows.length) },
+            { label: "Weight (kg)", value: fmt(weightKg, 1) },
+            { label: "Power (kW)", value: fmt(powerW / 1000, 2) }
+          ];
+          byDept[dept].rows = rows.map((r) => ({
+            item: `${r.manufacturer || "-"} ${r.name || "-"}`.trim(),
+            value: `${r.weight_kg ?? "-"}kg | ${r?.power_use?.watts ?? "-"}W / ${r?.power_use?.amps ?? "-"}A`,
+            notes: r.notes || ""
+          }));
+        });
+
+        const allWarnings = [];
+        allEquip.forEach((e) => {
+          if (!(Number(e.weight_kg) >= 0)) allWarnings.push(`${e.department}: ${e.name || e.id} missing weight.`);
+          if (!Number.isFinite(Number(e?.power_use?.watts)) && !Number.isFinite(Number(e?.power_use?.amps))) {
+            allWarnings.push(`${e.department}: ${e.name || e.id} missing power use.`);
+          }
+        });
+
+        const totalWeight = allEquip.reduce((s, r) => s + (Number(r.weight_kg) || 0), 0);
+        const totalPowerW = allEquip.reduce((s, r) => s + (Number(r?.power_use?.watts) || 0), 0);
+        const allReport = {
+          kpis: [
+            { label: "Departments", value: String(departments.length) },
+            { label: "Equipment Total", value: String(allEquip.length) },
+            { label: "Total Weight (kg)", value: fmt(totalWeight, 1) },
+            { label: "Total Power (kW)", value: fmt(totalPowerW / 1000, 2) },
+            { label: "Warnings", value: String(allWarnings.length) }
+          ],
+          rows: departments.flatMap((dept) => byDept[dept].rows.map((r) => ({ ...r, dept }))),
+          diagnostics: allWarnings
+        };
+
+        return { all: allReport, byDept };
+      }
+
+      function renderTopKpis(report, isAll) {
+        if (isAll) {
+          return `
+            <div class="grid">
+              ${report.kpis.map((k) => `<div class="kpi"><div class="muted">${k.label}</div><b>${k.value}</b></div>`).join("")}
+            </div>
+          `;
+        }
+        return `
+          <div class="grid">
+            ${report.kpis.map((k) => `<div class="kpi"><div class="muted">${k.label}</div><b>${k.value}</b></div>`).join("")}
+          </div>
+        `;
+      }
+
+      function renderSection(dept, report) {
+        let graphHtml = "";
+        if (dept === "Rigging") graphHtml = renderRiggingGraph();
+        if (dept === "Power") graphHtml = renderPowerGraph();
+        return `
+          <section class="section">
+            <div class="toolbar">
+              <h3>${dept}</h3>
+              <span class="badge">${report.rows.length} rows</span>
+            </div>
+            ${renderTopKpis(report, false)}
+            ${graphHtml}
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Category</th><th>Item</th><th>Value</th><th>Notes / Warnings</th></tr></thead>
+                <tbody>
+                  ${report.rows.map((r) => `<tr><td>${dept}</td><td>${r.item}</td><td>${r.value}</td><td>${r.notes || ""}</td></tr>`).join("") || '<tr><td colspan="4" class="muted">No rows.</td></tr>'}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        `;
+      }
+
+      function renderRiggingGraph() {
+        const settings = loadSettings();
+        const rig = (settings?.departments?.Rigging?.equipment || []).filter((x) => x && x.enabled !== false);
+        const weights = rig
+          .map((x) => ({ name: `${x.manufacturer || ""} ${x.name || ""}`.trim() || "Item", w: Number(x.weight_kg || 0) }))
+          .filter((x) => x.w > 0)
+          .sort((a, b) => b.w - a.w)
+          .slice(0, 10);
+        if (!weights.length) {
+          return `<div class="muted" style="margin-top:0.6rem;">No rigging weight data to graph.</div>`;
+        }
+        const W = 860;
+        const H = 180;
+        const padL = 46;
+        const padR = 16;
+        const padT = 16;
+        const padB = 30;
+        const maxW = Math.max(...weights.map((x) => x.w), 1);
+        const barGap = 8;
+        const barW = ((W - padL - padR) - (barGap * (weights.length - 1))) / weights.length;
+        const bars = weights.map((row, i) => {
+          const h = ((H - padT - padB) * (row.w / maxW));
+          const x = padL + (i * (barW + barGap));
+          const y = (H - padB) - h;
+          return `
+            <rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${barW.toFixed(2)}" height="${h.toFixed(2)}" fill="#f2b84b88" stroke="#ffcf7b" stroke-width="1"/>
+            <text x="${(x + (barW / 2)).toFixed(2)}" y="${(y - 4).toFixed(2)}" text-anchor="middle" fill="#f7e3bf" font-size="8">${row.w.toFixed(1)}kg</text>
+            <text x="${(x + (barW / 2)).toFixed(2)}" y="${(H - 12).toFixed(2)}" text-anchor="middle" fill="#c6ccdb" font-size="8">${`R${i + 1}`}</text>
+          `;
+        }).join("");
+        return `
+          <div style="margin-top:0.65rem;">
+            <div class="muted" style="margin-bottom:0.3rem;">Rigging Weight Distribution (top 10 items)</div>
+            <svg viewBox="0 0 ${W} ${H}" style="width:100%;border:1px solid var(--line);border-radius:10px;background:#161b25;">
+              <line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="var(--line-2)" stroke-width="1"/>
+              <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="var(--line-2)" stroke-width="1"/>
+              <text x="8" y="${(padT + 6)}" fill="#c6ccdb" font-size="8">${maxW.toFixed(1)}kg</text>
+              <text x="8" y="${(H - padB + 4)}" fill="#c6ccdb" font-size="8">0</text>
+              ${bars}
+            </svg>
+          </div>
+        `;
+      }
+
+      function buildPowerGraphData() {
+        const settings = loadSettings();
+        const departmentsForLoads = ["Video", "Lighting", "Audio", "Rigging", "Power", "Venue"];
+        const loads = [];
+        departmentsForLoads.forEach((dept) => {
+          const mappedDepartment = (dept === "Video" || dept === "Lighting" || dept === "Audio") ? dept : "Other";
+          (settings?.departments?.[dept]?.equipment || [])
+            .filter((x) => x && x.enabled !== false)
+            .forEach((eq, idx) => {
+              const watts = Number(eq?.power_use?.watts);
+              const amps = Number(eq?.power_use?.amps);
+              if (!Number.isFinite(watts) && !Number.isFinite(amps)) return;
+              loads.push({
+                id: `rpt_${dept}_${eq.id || idx}`,
+                name: `${eq.manufacturer || ""} ${eq.name || ""}`.trim() || `${dept} Item`,
+                department: mappedDepartment,
+                quantity: 1,
+                watts_avg: Number.isFinite(watts) ? watts : null,
+                watts_max: Number.isFinite(watts) ? watts : null,
+                amps_avg: Number.isFinite(amps) ? amps : null,
+                amps_max: Number.isFinite(amps) ? amps : null,
+                preferred_connection: "single_phase"
+              });
+            });
+        });
+        if (!window.PowerCalculator || typeof window.PowerCalculator.computePowerPlan !== "function") return null;
+        if (!loads.length) return null;
+        const defaultSettings = window.PowerCalculator.POWER_DEFAULTS || {};
+        const powerRules = settings?.departments?.Power?.rules && typeof settings.departments.Power.rules === "object"
+          ? settings.departments.Power.rules
+          : {};
+        return window.PowerCalculator.computePowerPlan(loads, { ...defaultSettings, ...powerRules });
+      }
+
+      function renderPowerGraph() {
+        const plan = buildPowerGraphData();
+        if (!plan?.phase_totals) {
+          return `<div class="muted" style="margin-top:0.6rem;">No power data to graph.</div>`;
+        }
+        const phases = ["L1", "L2", "L3"].map((p) => ({
+          phase: p,
+          amps: Number(plan.phase_totals?.[p]?.A_max || 0)
+        }));
+        const W = 860;
+        const H = 190;
+        const padL = 46;
+        const padR = 16;
+        const padT = 16;
+        const padB = 34;
+        const warnA = Number(plan?.settings?.incomer?.per_phase_a || 250) * Number(plan?.settings?.continuous_derate || 0.8);
+        const failA = Number(plan?.settings?.incomer?.per_phase_a || 250);
+        const yMax = Math.max(failA, ...phases.map((x) => x.amps), 10);
+        const barGap = 24;
+        const barW = ((W - padL - padR) - (barGap * 2)) / 3;
+        const y = (amps) => (H - padB) - ((amps / yMax) * (H - padT - padB));
+        const bars = phases.map((row, i) => {
+          const x = padL + (i * (barW + barGap));
+          const yy = y(row.amps);
+          const h = (H - padB) - yy;
+          const color = row.amps > failA ? "#ef5353" : (row.amps > warnA ? "#f2b84b" : "#6de2a8");
+          return `
+            <rect x="${x.toFixed(2)}" y="${yy.toFixed(2)}" width="${barW.toFixed(2)}" height="${h.toFixed(2)}" fill="${color}88" stroke="${color}" stroke-width="1"/>
+            <text x="${(x + (barW / 2)).toFixed(2)}" y="${(yy - 4).toFixed(2)}" text-anchor="middle" fill="#e8ecf4" font-size="9">${row.amps.toFixed(1)}A</text>
+            <text x="${(x + (barW / 2)).toFixed(2)}" y="${(H - 12).toFixed(2)}" text-anchor="middle" fill="#c6ccdb" font-size="9">${row.phase}</text>
+          `;
+        }).join("");
+        return `
+          <div style="margin-top:0.65rem;">
+            <div class="muted" style="margin-bottom:0.3rem;">Power Phase Load (A) with WARN/FAIL thresholds</div>
+            <svg viewBox="0 0 ${W} ${H}" style="width:100%;border:1px solid var(--line);border-radius:10px;background:#161b25;">
+              <line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="var(--line-2)" stroke-width="1"/>
+              <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="var(--line-2)" stroke-width="1"/>
+              <line x1="${padL}" y1="${y(warnA).toFixed(2)}" x2="${W - padR}" y2="${y(warnA).toFixed(2)}" stroke="#f2b84b" stroke-width="1" stroke-dasharray="4 3"/>
+              <line x1="${padL}" y1="${y(failA).toFixed(2)}" x2="${W - padR}" y2="${y(failA).toFixed(2)}" stroke="#ef5353" stroke-width="1" stroke-dasharray="4 3"/>
+              <text x="8" y="${(y(failA) + 3).toFixed(2)}" fill="#efb2b2" font-size="8">FAIL ${failA.toFixed(0)}A</text>
+              <text x="8" y="${(y(warnA) + 3).toFixed(2)}" fill="#f6dcad" font-size="8">WARN ${warnA.toFixed(0)}A</text>
+              ${bars}
+            </svg>
+          </div>
+        `;
+      }
+
+      function renderReports() {
+        const root = document.getElementById("reportContent");
+        const badge = document.getElementById("reportCountBadge");
+        if (!root || !badge) return;
+        const data = buildReports();
+        if (activeTab === "All") {
+          const totalRows = data.all.rows.length;
+          badge.textContent = `${totalRows} report rows`;
+          applyDeptTheme("All");
+          root.innerHTML = `
+            <section class="section">
+              <div class="toolbar">
+                <h3>All Reports</h3>
+                <span class="badge">${new Date().toLocaleString()}</span>
+              </div>
+              ${renderTopKpis(data.all, true)}
+            </section>
+            ${departments.map((d) => renderSection(d, data.byDept[d])).join("")}
+            <section class="section">
+              <h3>Diagnostics</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Status</th><th>Message</th></tr></thead>
+                  <tbody>
+                    ${data.all.diagnostics.map((w) => `<tr><td>WARN</td><td>${w}</td></tr>`).join("") || '<tr><td>PASS</td><td>No cross-department warnings.</td></tr>'}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          `;
+          return;
+        }
+        const report = data.byDept[activeTab] || { rows: [], kpis: [] };
+        badge.textContent = `${report.rows.length} report rows`;
+        applyDeptTheme(activeTab);
+        root.innerHTML = renderSection(activeTab, report);
+      }
+
+      function exportRowsAsCsv() {
+        const data = buildReports();
+        const rows = (activeTab === "All")
+          ? data.all.rows.map((r) => ({ category: r.dept, ...r }))
+          : (data.byDept[activeTab]?.rows || []).map((r) => ({ category: activeTab, ...r }));
+        const header = ["Category", "Item", "Value", "Notes"];
+        const body = rows.map((r) => [
+          r.category,
+          String(r.item || "").replaceAll("\"", "\"\""),
+          String(r.value || "").replaceAll("\"", "\"\""),
+          String(r.notes || "").replaceAll("\"", "\"\"")
+        ]);
+        const csv = [header.join(","), ...body.map((r) => `"${r[0]}","${r[1]}","${r[2]}","${r[3]}"`)].join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `the-base-reports-${activeTab.toLowerCase()}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function exportRowsAsJson() {
+        const data = buildReports();
+        const payload = activeTab === "All" ? data : { [activeTab]: data.byDept[activeTab] };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `the-base-reports-${activeTab.toLowerCase()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function initReports() {
+        const storedDept = localStorage.getItem("thebase.activeDept") || "Video";
+        const tabs = document.getElementById("reportTabs");
+        if (!tabs) return;
+        const allTabs = ["All", ...departments];
+        const preferred = allTabs.includes(storedDept) ? storedDept : "All";
+        activeTab = preferred;
+        tabs.innerHTML = allTabs.map((d) => `<button data-dept="${d}" class="${d === preferred ? "active" : ""}">${d === "All" ? "All Reports" : d}</button>`).join("");
+        tabs.querySelectorAll("button[data-dept]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            tabs.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            activeTab = btn.dataset.dept || "All";
+            renderReports();
+          });
+        });
+
+        const now = new Date();
+        const iso = now.toISOString().slice(0, 10);
+        const from = new Date(now.getTime() - (7 * 24 * 3600 * 1000)).toISOString().slice(0, 10);
+        const dFrom = document.getElementById("reportDateFrom");
+        const dTo = document.getElementById("reportDateTo");
+        if (dFrom) dFrom.value = from;
+        if (dTo) dTo.value = iso;
+        document.getElementById("exportCsvBtn")?.addEventListener("click", exportRowsAsCsv);
+        document.getElementById("exportJsonBtn")?.addEventListener("click", exportRowsAsJson);
+        renderReports();
+      }
+
+      initReports();
     </script>
   </body>
 </html>
