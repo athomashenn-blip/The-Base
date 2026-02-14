@@ -35,7 +35,7 @@
           radial-gradient(circle at 90% 12%, var(--theme-glow-b) 0%, transparent 34%),
           linear-gradient(160deg, var(--theme-bg-a), var(--theme-bg-b) 62%, var(--theme-bg-c));
       }
-      .shell { max-width: 1480px; margin: 0 auto; padding: 0.85rem; }
+      .shell { max-width: none; width: 100%; margin: 0; padding: 0.45rem 0.55rem; }
       .header {
         border: 1px solid var(--line);
         border-radius: 24px;
@@ -80,6 +80,36 @@
         text-decoration: none;
       }
       .header-link-btn:hover { color: #dce7ff; }
+      .header-link-group {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        padding-bottom: 0.35rem;
+        margin-bottom: -0.35rem;
+      }
+      .header-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 170px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #1d222d;
+        box-shadow: 0 10px 24px #00000055;
+        padding: 0.25rem;
+        display: none;
+        z-index: 50;
+      }
+      .header-link-group:hover .header-dropdown,
+      .header-link-group:focus-within .header-dropdown { display: grid; }
+      .header-dropdown a {
+        color: #dbe5ff;
+        text-decoration: none;
+        padding: 0.42rem 0.55rem;
+        border-radius: 8px;
+        font-size: 0.86rem;
+      }
+      .header-dropdown a:hover { background: #2a3040; }
       .header-links .active { color: #fff; border-bottom: 2px solid var(--btn-active); padding-bottom: 0.2rem; }
       .header-actions { display: flex; gap: 0.4rem; align-items: center; }
 
@@ -291,7 +321,17 @@
         </div>
         <div class="header-links">
           <a class="header-link-btn" href="projects.html">Projects</a>
-          <a class="header-link-btn" href="index.html">Engineering</a>
+          <div class="header-link-group">
+            <a class="header-link-btn" href="index.html">Engineering</a>
+            <div class="header-dropdown" aria-label="Engineering Departments">
+              <a href="index.html?dept=Video">Video</a>
+              <a href="index.html?dept=Lighting">Lighting</a>
+              <a href="index.html?dept=Sound">Sound</a>
+              <a href="index.html?dept=Rigging">Rigging</a>
+              <a href="index.html?dept=Power">Power</a>
+              <a href="index.html?dept=Venue">Venue</a>
+            </div>
+          </div>
           <a class="header-link-btn" href="reports.html">Reports</a>
           <a class="header-link-btn active" href="settings.html">Settings</a>
         </div>

@@ -31,9 +31,10 @@
           linear-gradient(160deg, #101116, #171922 62%, #111217);
       }
       .shell {
-        max-width: 1480px;
-        margin: 0 auto;
-        padding: 0.85rem;
+        max-width: none;
+        width: 100%;
+        margin: 0;
+        padding: 0.45rem 0.55rem;
       }
       .header {
         border: 1px solid var(--line);
@@ -103,6 +104,40 @@
       .header-link-btn:hover {
         color: #dce7ff;
       }
+      .header-link-group {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        padding-bottom: 0.35rem;
+        margin-bottom: -0.35rem;
+      }
+      .header-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 170px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #1d222d;
+        box-shadow: 0 10px 24px #00000055;
+        padding: 0.25rem;
+        display: none;
+        z-index: 50;
+      }
+      .header-link-group:hover .header-dropdown,
+      .header-link-group:focus-within .header-dropdown {
+        display: grid;
+      }
+      .header-dropdown a {
+        color: #dbe5ff;
+        text-decoration: none;
+        padding: 0.42rem 0.55rem;
+        border-radius: 8px;
+        font-size: 0.86rem;
+      }
+      .header-dropdown a:hover {
+        background: #2a3040;
+      }
       .header-links .active {
         color: #fff;
         border-bottom: 2px solid var(--accent);
@@ -146,7 +181,7 @@
       .layout {
         margin-top: 0.8rem;
         display: grid;
-        grid-template-columns: 240px 1fr;
+        grid-template-columns: 1fr;
         gap: 0.8rem;
       }
       .nav {
@@ -158,12 +193,19 @@
         gap: 0.5rem;
         align-content: start;
         box-shadow: inset 0 1px 0 #4053a52e;
+        width: 74px;
+        overflow: hidden;
+        transition: width 180ms ease;
+      }
+      .nav:hover,
+      .nav:focus-within {
+        width: 232px;
       }
       .nav button {
         width: 100%;
         text-align: left;
         border-radius: 12px;
-        padding: 0.65rem 0.65rem;
+        padding: 0.6rem 0.55rem;
       }
       .subnav {
         display: grid;
@@ -184,6 +226,47 @@
         font-size: 0.84rem;
         padding: 0.45rem 0.55rem;
         border-style: dashed;
+      }
+      .nav-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        min-width: 0;
+      }
+      .nav-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 8px;
+        border: 1px solid var(--theme-line-soft);
+        display: inline-grid;
+        place-items: center;
+        flex: 0 0 auto;
+        color: #f2f5ff;
+        background: color-mix(in srgb, var(--theme-accent) 18%, #1a1f2a 82%);
+      }
+      .nav-icon svg {
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+      }
+      .nav-label {
+        display: inline-block;
+        white-space: nowrap;
+        opacity: 0;
+        max-width: 0;
+        overflow: hidden;
+        transition: opacity 120ms ease, max-width 160ms ease;
+      }
+      .nav:hover .nav-label,
+      .nav:focus-within .nav-label {
+        opacity: 1;
+        max-width: 140px;
+      }
+      .nav:not(:hover):not(:focus-within) .subnav {
+        max-height: 0;
+        opacity: 0;
+        margin: 0;
+        padding-left: 0;
       }
       .nav-main {
         display: flex;
@@ -236,6 +319,9 @@
       }
       #videoNavBtn.is-open .nav-arrow {
         transform: rotate(180deg);
+      }
+      .nav:not(:hover):not(:focus-within) .nav-arrow {
+        opacity: 0;
       }
       .main {
         border: 1px solid var(--line);
@@ -692,6 +778,16 @@
         .grid-2, .grid-3, .grid-4, .kpis, .nav {
           grid-template-columns: 1fr;
         }
+        .nav {
+          width: 100%;
+        }
+        .nav .nav-label {
+          opacity: 1;
+          max-width: 180px;
+        }
+        .nav .nav-arrow {
+          opacity: 1;
+        }
         .header {
           flex-direction: column;
           align-items: flex-start;
@@ -716,7 +812,17 @@
         </div>
         <div class="header-links">
           <a href="projects.html" id="projectsBtn" class="header-link-btn">Projects</a>
-          <a href="index.html" class="header-link-btn active">Engineering</a>
+          <div class="header-link-group">
+            <a href="index.html" class="header-link-btn active">Engineering</a>
+            <div class="header-dropdown" aria-label="Engineering Departments">
+              <a href="index.html?dept=Video">Video</a>
+              <a href="index.html?dept=Lighting">Lighting</a>
+              <a href="index.html?dept=Sound">Sound</a>
+              <a href="index.html?dept=Rigging">Rigging</a>
+              <a href="index.html?dept=Power">Power</a>
+              <a href="index.html?dept=Venue">Venue</a>
+            </div>
+          </div>
           <a href="reports.html" class="header-link-btn">Reports</a>
           <a href="settings.html" class="header-link-btn">Settings</a>
         </div>
@@ -725,19 +831,6 @@
       </header>
 
       <section class="layout">
-        <nav class="nav" id="engineeringNav">
-          <button class="active is-open" id="videoNavBtn" data-engineering="Video">
-            <span class="nav-main"><span>Video</span><span class="nav-arrow">▾</span></span>
-          </button>
-          <div id="videoSubnav" class="subnav">
-            <button class="active" data-video-sub="LED">LED</button>
-          </div>
-          <button data-engineering="Lighting">Lighting</button>
-          <button data-engineering="Sound">Sound</button>
-          <button data-engineering="Rigging">Rigging</button>
-          <button data-engineering="Power">Power</button>
-          <button data-engineering="Venue">Venue</button>
-        </nav>
         <main class="main"></main>
       </section>
     </div>
@@ -928,9 +1021,7 @@
         const logo = document.getElementById("brandLogo");
         const fallback = document.getElementById("brandFallback");
         const main = document.querySelector("main.main");
-        const engineeringNav = document.getElementById("engineeringNav");
-        const videoNavBtn = document.getElementById("videoNavBtn");
-        const videoSubnav = document.getElementById("videoSubnav");
+        let currentEngineeringSection = "Video";
         let lightingFixtureLibrary = LIGHTING_FIXTURE_FALLBACK.slice();
         let trussCatalog = TRUSS_FALLBACK.slice();
         let motorCatalog = MOTOR_FALLBACK.slice();
@@ -1085,7 +1176,15 @@
           generalMeasurePoints: [],
           generalMeasurementLog: [],
           trussPlacements: [],
-          selectedVenueRigGroupId: ""
+          selectedVenueRigGroupId: "",
+          model3dUrl: "",
+          model3dName: "",
+          model3dScale: 1
+        };
+        const gearState = {
+          placedItems: [],
+          selectedInventoryId: "",
+          selectedPlacedId: ""
         };
         let riggingDragPayload = null;
         let venueRigDragPayload = null;
@@ -1113,6 +1212,75 @@
         let venueTrussDragBound = false;
         const venuePanState = { spaceDown: false, dragging: false, lastX: 0, lastY: 0 };
         let venuePanBound = false;
+        let venue3dRuntime = null;
+        let gear3dRuntime = null;
+        let venue3dLibPromise = null;
+        const APP_MEMORY_KEY = "thebase.app.memory.v1";
+        let appMemoryTick = null;
+
+        function safeClone(value) {
+          return value == null ? value : JSON.parse(JSON.stringify(value));
+        }
+        function assignKnownState(target, source) {
+          if (!target || !source || typeof source !== "object") return;
+          Object.keys(target).forEach((k) => {
+            if (source[k] === undefined) return;
+            target[k] = safeClone(source[k]);
+          });
+        }
+        function buildAppMemorySnapshot() {
+          return {
+            version: 1,
+            savedAt: new Date().toISOString(),
+            currentEngineeringSection,
+            ledState: safeClone(ledState),
+            lightingState: safeClone(lightingState),
+            powerState: safeClone(powerState),
+            riggingState: safeClone(riggingState),
+            venueState: safeClone(venueState),
+            gearState: safeClone(gearState)
+          };
+        }
+        function saveAppMemory() {
+          try {
+            const snapshot = buildAppMemorySnapshot();
+            localStorage.setItem(APP_MEMORY_KEY, JSON.stringify(snapshot));
+          } catch (err) {
+            try {
+              // Fallback if localStorage quota is exceeded (usually from embedded floor-plan image data)
+              const snapshot = buildAppMemorySnapshot();
+              if (snapshot.venueState) {
+                snapshot.venueState.floorPlanDataUrl = "";
+              }
+              localStorage.setItem(APP_MEMORY_KEY, JSON.stringify(snapshot));
+            } catch (_) {}
+          }
+        }
+        function restoreAppMemory() {
+          try {
+            const raw = localStorage.getItem(APP_MEMORY_KEY);
+            if (!raw) return;
+            const snapshot = JSON.parse(raw);
+            if (!snapshot || typeof snapshot !== "object") return;
+            if (typeof snapshot.currentEngineeringSection === "string") {
+              currentEngineeringSection = snapshot.currentEngineeringSection;
+            }
+            assignKnownState(ledState, snapshot.ledState);
+            assignKnownState(lightingState, snapshot.lightingState);
+            assignKnownState(powerState, snapshot.powerState);
+            assignKnownState(riggingState, snapshot.riggingState);
+            assignKnownState(venueState, snapshot.venueState);
+            assignKnownState(gearState, snapshot.gearState);
+          } catch (_) {}
+        }
+        function startAppMemoryAutosave() {
+          if (appMemoryTick) clearInterval(appMemoryTick);
+          appMemoryTick = setInterval(saveAppMemory, 2000);
+          window.addEventListener("beforeunload", saveAppMemory);
+          document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "hidden") saveAppMemory();
+          });
+        }
 
         function newLedWall(index = 1) {
           return {
@@ -1205,7 +1373,7 @@
             .then((res) => (res.ok ? res.json() : Promise.reject(new Error("No lighting fixture dataset found."))))
             .then((rows) => {
               if (applyLightingFixtureRows(rows)) {
-                const active = engineeringNav?.querySelector("button[data-engineering].active")?.dataset.engineering;
+                const active = currentEngineeringSection;
                 if (active === "Lighting") renderLighting();
               }
             })
@@ -6293,8 +6461,1387 @@
           }
         }
 
+        async function loadVenue3dLib() {
+          if (venue3dLibPromise) return venue3dLibPromise;
+          venue3dLibPromise = (async () => {
+            const THREE = await import("https://esm.sh/three@0.160.0");
+            const { OrbitControls } = await import("https://esm.sh/three@0.160.0/examples/jsm/controls/OrbitControls.js");
+            const { GLTFLoader } = await import("https://esm.sh/three@0.160.0/examples/jsm/loaders/GLTFLoader.js");
+            return { THREE, OrbitControls, GLTFLoader };
+          })();
+          return venue3dLibPromise;
+        }
+
+        function disposeVenue3dRuntime() {
+          if (!venue3dRuntime) return;
+          try {
+            if (venue3dRuntime.frameId) cancelAnimationFrame(venue3dRuntime.frameId);
+            if (venue3dRuntime.controls) venue3dRuntime.controls.dispose();
+            if (venue3dRuntime.renderer) {
+              venue3dRuntime.renderer.dispose();
+              venue3dRuntime.renderer.forceContextLoss?.();
+            }
+            if (venue3dRuntime.onResize) window.removeEventListener("resize", venue3dRuntime.onResize);
+          } catch (_) {}
+          venue3dRuntime = null;
+        }
+
+        async function initVenue3dViewer() {
+          const host = document.getElementById("venue3dCanvasHost");
+          const statusEl = document.getElementById("venue3dStatus");
+          const pickEl = document.getElementById("venue3dPick");
+          const resetBtn = document.getElementById("venue3dResetViewBtn");
+          const clearGearBtn = document.getElementById("venue3dClearGearBtn");
+          const objNameEl = document.getElementById("venue3dObjName");
+          const objPosXEl = document.getElementById("venue3dObjPosX");
+          const objPosZEl = document.getElementById("venue3dObjPosZ");
+          const objRotYEl = document.getElementById("venue3dObjRotY");
+          const objScaleEl = document.getElementById("venue3dObjScale");
+          const objApplyBtn = document.getElementById("venue3dObjApplyBtn");
+          const objDeleteBtn = document.getElementById("venue3dObjDeleteBtn");
+          const scaleEl = document.getElementById("venue3dScaleInput");
+          const modeTabs = document.getElementById("venue3dModeTabs");
+          const viewTabs = document.getElementById("venue3dViewTabs");
+          if (!(host instanceof HTMLElement) || !statusEl || !pickEl) return;
+          disposeVenue3dRuntime();
+          host.innerHTML = "";
+          const requestToken = `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+          host.dataset.initToken = requestToken;
+          statusEl.textContent = "Loading 3D engine...";
+          try {
+            const { THREE, OrbitControls, GLTFLoader } = await loadVenue3dLib();
+            if (host.dataset.initToken !== requestToken) return;
+            const width = Math.max(320, Math.floor(host.clientWidth || 320));
+            const height = Math.max(320, Math.floor(host.clientHeight || 500));
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+            renderer.setSize(width, height, true);
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            renderer.setClearColor(0x141924, 1);
+            renderer.domElement.style.width = "100%";
+            renderer.domElement.style.height = "100%";
+            renderer.domElement.style.display = "block";
+            host.appendChild(renderer.domElement);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(52, width / height, 0.05, 10000);
+            camera.position.set(16, 12, 16);
+
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.08;
+            controls.target.set(0, 0, 0);
+            controls.update();
+            let navMode = "orbit";
+            const setControlMode = (mode) => {
+              navMode = mode;
+              if (!modeTabs) return;
+              modeTabs.querySelectorAll("button[data-venue3d-mode]").forEach((btn) => {
+                btn.classList.toggle("active", btn.getAttribute("data-venue3d-mode") === mode);
+              });
+              const M = THREE.MOUSE;
+              if (mode === "pan") {
+                controls.mouseButtons = { LEFT: M.PAN, MIDDLE: M.PAN, RIGHT: M.PAN };
+                controls.touches = { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_PAN };
+              } else if (mode === "zoom") {
+                controls.mouseButtons = { LEFT: M.DOLLY, MIDDLE: M.DOLLY, RIGHT: M.DOLLY };
+                controls.touches = { ONE: THREE.TOUCH.DOLLY_PAN, TWO: THREE.TOUCH.DOLLY_PAN };
+              } else {
+                controls.mouseButtons = { LEFT: M.ROTATE, MIDDLE: M.DOLLY, RIGHT: M.PAN };
+                controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+              }
+            };
+            setControlMode("orbit");
+
+            scene.add(new THREE.HemisphereLight(0xdde8ff, 0x18202c, 0.95));
+            const venueGridW = Math.max(1, Number(venueState.widthM || 30));
+            const venueGridD = Math.max(1, Number(venueState.depthM || 20));
+            const defaultVenueBounds = {
+              minX: 0,
+              maxX: venueGridW,
+              minZ: 0,
+              maxZ: venueGridD
+            };
+            const clampToVenueBounds = (x, z) => ({
+              x: Math.max(defaultVenueBounds.minX, Math.min(defaultVenueBounds.maxX, Number(x || 0))),
+              z: Math.max(defaultVenueBounds.minZ, Math.min(defaultVenueBounds.maxZ, Number(z || 0)))
+            });
+            const gridRoot = new THREE.Group();
+            gridRoot.position.y = -0.001;
+            scene.add(gridRoot);
+            const buildOriginGrid = (widthM, depthM) => {
+              const w = Math.max(1, Math.ceil(widthM));
+              const d = Math.max(1, Math.ceil(depthM));
+              const majorStep = 5;
+              const addLine = (x1, z1, x2, z2, color, opacity, lineWidth = 1) => {
+                const geo = new THREE.BufferGeometry().setFromPoints([
+                  new THREE.Vector3(x1, 0, z1),
+                  new THREE.Vector3(x2, 0, z2)
+                ]);
+                const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity, linewidth: lineWidth });
+                const line = new THREE.Line(geo, mat);
+                gridRoot.add(line);
+              };
+              // Border
+              addLine(0, 0, w, 0, 0x6a7391, 0.75);
+              addLine(w, 0, w, d, 0x6a7391, 0.75);
+              addLine(w, d, 0, d, 0x6a7391, 0.75);
+              addLine(0, d, 0, 0, 0x6a7391, 0.75);
+              for (let x = 0; x <= w; x += 1) {
+                const major = x % majorStep === 0;
+                addLine(x, 0, x, d, major ? 0x55607a : 0x2e3445, major ? 0.8 : 0.55);
+              }
+              for (let z = 0; z <= d; z += 1) {
+                const major = z % majorStep === 0;
+                addLine(0, z, w, z, major ? 0x55607a : 0x2e3445, major ? 0.8 : 0.55);
+              }
+              const originDot = new THREE.Mesh(
+                new THREE.SphereGeometry(0.08, 10, 10),
+                new THREE.MeshBasicMaterial({ color: 0x9de0ff })
+              );
+              originDot.position.set(0, 0.02, 0);
+              originDot.name = "Grid Origin 0,0";
+              gridRoot.add(originDot);
+            };
+            buildOriginGrid(venueGridW, venueGridD);
+            const axes = new THREE.AxesHelper(Math.max(2, Math.max(venueGridW, venueGridD) * 0.08));
+            axes.position.set(0, 0, 0);
+            scene.add(axes);
+            const floorPlanRoot = new THREE.Group();
+            scene.add(floorPlanRoot);
+            const textureLoader = new THREE.TextureLoader();
+            let floorPlanMesh = null;
+            let floorPlanBounds = null;
+            const clearFloorPlanMesh = () => {
+              if (!floorPlanMesh) return;
+              floorPlanRoot.remove(floorPlanMesh);
+              floorPlanMesh.geometry?.dispose?.();
+              if (Array.isArray(floorPlanMesh.material)) floorPlanMesh.material.forEach((m) => m.dispose?.());
+              else floorPlanMesh.material?.dispose?.();
+              floorPlanMesh = null;
+              floorPlanBounds = null;
+            };
+            const fitViewToBounds = (bounds) => {
+              if (!bounds) return;
+              const size = new THREE.Vector3(
+                Math.max(0.1, Number(bounds.maxX) - Number(bounds.minX)),
+                0.1,
+                Math.max(0.1, Number(bounds.maxZ) - Number(bounds.minZ))
+              );
+              const center = new THREE.Vector3(
+                (Number(bounds.minX) + Number(bounds.maxX)) / 2,
+                0,
+                (Number(bounds.minZ) + Number(bounds.maxZ)) / 2
+              );
+              const maxDim = Math.max(size.x, size.z, 0.1);
+              fittedCenter.copy(center);
+              fittedMaxDim = maxDim;
+              const dist = (maxDim * 1.45) / Math.tan((camera.fov * Math.PI / 180) / 2);
+              camera.position.set(center.x + dist * 0.9, Math.max(6, dist * 0.55), center.z + dist * 0.9);
+              controls.target.copy(center);
+              camera.up.set(0, 1, 0);
+              controls.update();
+            };
+            const syncFloorPlanMesh = () => {
+              clearFloorPlanMesh();
+              const imgUrl = String(venueState.floorPlanDataUrl || "");
+              const m = venueState.floorPlanWorldMatrix;
+              const imgW = Number(venueState.floorPlanImageWidthPx || 0);
+              const imgH = Number(venueState.floorPlanImageHeightPx || 0);
+              if (!imgUrl || !m || !(imgW > 0) || !(imgH > 0)) return Promise.resolve(false);
+              return new Promise((resolve) => {
+                textureLoader.load(imgUrl, (tex) => {
+                  tex.colorSpace = THREE.SRGBColorSpace;
+                  tex.needsUpdate = true;
+                  const mapPt = (u, v) => ({
+                    x: (Number(m.a || 0) * u) + (Number(m.c || 0) * v) + Number(m.e || 0),
+                    z: (Number(m.b || 0) * u) + (Number(m.d || 0) * v) + Number(m.f || 0)
+                  });
+                  const p00 = mapPt(0, 0);
+                  const p10 = mapPt(imgW, 0);
+                  const p01 = mapPt(0, imgH);
+                  const p11 = mapPt(imgW, imgH);
+                  const pos = new Float32Array([
+                    p00.x, 0.002, p00.z,
+                    p10.x, 0.002, p10.z,
+                    p01.x, 0.002, p01.z,
+                    p11.x, 0.002, p11.z
+                  ]);
+                  const uv = new Float32Array([
+                    0, 1,
+                    1, 1,
+                    0, 0,
+                    1, 0
+                  ]);
+                  const idx = [0, 2, 1, 2, 3, 1];
+                  const geo = new THREE.BufferGeometry();
+                  geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+                  geo.setAttribute("uv", new THREE.BufferAttribute(uv, 2));
+                  geo.setIndex(idx);
+                  geo.computeVertexNormals();
+                  const mat = new THREE.MeshBasicMaterial({
+                    map: tex,
+                    transparent: true,
+                    opacity: Math.max(0.08, Math.min(1, Number(venueState.floorPlanOpacity || 0.28))),
+                    side: THREE.DoubleSide,
+                    depthWrite: false
+                  });
+                  floorPlanMesh = new THREE.Mesh(geo, mat);
+                  floorPlanMesh.name = "Venue Floor Plan";
+                  floorPlanRoot.add(floorPlanMesh);
+                  floorPlanBounds = {
+                    minX: Math.min(p00.x, p10.x, p01.x, p11.x),
+                    maxX: Math.max(p00.x, p10.x, p01.x, p11.x),
+                    minZ: Math.min(p00.z, p10.z, p01.z, p11.z),
+                    maxZ: Math.max(p00.z, p10.z, p01.z, p11.z)
+                  };
+                  resolve(true);
+                }, undefined, () => resolve(false));
+              });
+            };
+
+            let loadedRoot = null;
+            const raycaster = new THREE.Raycaster();
+            const pointer = new THREE.Vector2();
+            const loader = new GLTFLoader();
+            const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+            let gearItemsById = Object.fromEntries(collectGearInventory().map((x) => [x.id, x]));
+            const gearRoot = new THREE.Group();
+            scene.add(gearRoot);
+            const gearMeshes = new Map();
+            const trussRoot = new THREE.Group();
+            scene.add(trussRoot);
+            const measureRoot = new THREE.Group();
+            scene.add(measureRoot);
+            let fittedCenter = new THREE.Vector3(0, 0, 0);
+            let fittedMaxDim = 10;
+            const buildGearMesh = (placed) => {
+              const source = gearItemsById[placed.sourceId] || {};
+              const color = Number(new THREE.Color(source.color || "#8f98ab").getHex());
+              const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.7, metalness: 0.08 });
+              const dept = String(source.department || "Other").toLowerCase();
+              const weight = Number(source.weightKg || 0);
+              const scale = Math.max(0.45, Math.min(2.4, Math.cbrt(Math.max(1, weight) / 14)));
+              let mesh;
+              if (dept === "lighting") mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.23 * scale, 0.26 * scale, 0.45 * scale, 18), mat);
+              else if (dept === "video") {
+                const wallW = Math.max(0.5, Number(source.footprintW || 1));
+                const wallH = Math.max(0.5, Number(source.heightM || 1));
+                const wallD = Math.max(0.08, Number(source.footprintD || 0.2));
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(wallW, wallH, wallD), mat);
+              }
+              else if (dept === "audio" || dept === "sound") mesh = new THREE.Mesh(new THREE.BoxGeometry(0.5 * scale, 0.75 * scale, 0.45 * scale), mat);
+              else if (dept === "rigging") mesh = new THREE.Mesh(new THREE.BoxGeometry(1.1 * scale, 0.18 * scale, 0.18 * scale), mat);
+              else mesh = new THREE.Mesh(new THREE.BoxGeometry(0.55 * scale, 0.55 * scale, 0.55 * scale), mat);
+              if (dept === "video") {
+                const y = Math.max(0.25, Number(source.heightM || 1) / 2);
+                mesh.position.set(Number(placed.x || 0), y, Number(placed.z || 0));
+              } else {
+                mesh.position.set(Number(placed.x || 0), Number(placed.y || 0.35), Number(placed.z || 0));
+              }
+              const rotYDeg = Number.isFinite(Number(placed.rotYDeg)) ? Number(placed.rotYDeg) : 0;
+              const scaleMul = Math.max(0.1, Number.isFinite(Number(placed.scale)) ? Number(placed.scale) : 1);
+              mesh.rotation.y = (rotYDeg * Math.PI) / 180;
+              mesh.scale.setScalar(scaleMul);
+              mesh.userData.placedId = placed.id;
+              mesh.userData.sourceId = placed.sourceId;
+              mesh.name = source.name || "Gear";
+              return mesh;
+            };
+            const updateSelectedVisual = () => {
+              gearMeshes.forEach((mesh, id) => {
+                const selected = id === gearState.selectedPlacedId;
+                const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+                mats.forEach((m) => {
+                  if (!m) return;
+                  m.emissive = m.emissive || new THREE.Color(0x000000);
+                  m.emissive.set(selected ? 0x243040 : 0x000000);
+                  m.needsUpdate = true;
+                });
+              });
+            };
+            const updateObjectControlPanel = () => {
+              const placed = (gearState.placedItems || []).find((x) => x.id === gearState.selectedPlacedId);
+              const src = placed ? (gearItemsById[placed.sourceId] || null) : null;
+              if (objNameEl) objNameEl.textContent = placed && src ? `Selected: ${src.name}` : "Selected: -";
+              if (objPosXEl) objPosXEl.value = placed ? String(Number(placed.x || 0).toFixed(2)) : "";
+              if (objPosZEl) objPosZEl.value = placed ? String(Number(placed.z || 0).toFixed(2)) : "";
+              if (objRotYEl) objRotYEl.value = placed ? String(Number(placed.rotYDeg || 0).toFixed(0)) : "";
+              if (objScaleEl) objScaleEl.value = placed ? String(Number(placed.scale || 1).toFixed(2)) : "";
+              if (objApplyBtn) objApplyBtn.disabled = !placed;
+              if (objDeleteBtn) objDeleteBtn.disabled = !placed;
+            };
+            const syncGearMeshes = () => {
+              gearItemsById = Object.fromEntries(collectGearInventory().map((x) => [x.id, x]));
+              const current = new Set((gearState.placedItems || []).map((p) => p.id));
+              Array.from(gearMeshes.keys()).forEach((id) => {
+                if (current.has(id)) return;
+                const mesh = gearMeshes.get(id);
+                if (mesh) {
+                  gearRoot.remove(mesh);
+                  mesh.geometry?.dispose?.();
+                  if (Array.isArray(mesh.material)) mesh.material.forEach((m) => m.dispose?.());
+                  else mesh.material?.dispose?.();
+                }
+                gearMeshes.delete(id);
+              });
+              (gearState.placedItems || []).forEach((p) => {
+                let mesh = gearMeshes.get(p.id);
+                if (!mesh) {
+                  mesh = buildGearMesh(p);
+                  gearMeshes.set(p.id, mesh);
+                  gearRoot.add(mesh);
+                } else {
+                  const source = gearItemsById[p.sourceId] || {};
+                  const dept = String(source.department || "Other").toLowerCase();
+                  if (dept === "video") {
+                    const y = Math.max(0.25, Number(source.heightM || 1) / 2);
+                    mesh.position.set(Number(p.x || 0), y, Number(p.z || 0));
+                  } else {
+                    mesh.position.set(Number(p.x || 0), Number(p.y || 0.35), Number(p.z || 0));
+                  }
+                  const rotYDeg = Number.isFinite(Number(p.rotYDeg)) ? Number(p.rotYDeg) : 0;
+                  const scaleMul = Math.max(0.1, Number.isFinite(Number(p.scale)) ? Number(p.scale) : 1);
+                  mesh.rotation.y = (rotYDeg * Math.PI) / 180;
+                  mesh.scale.setScalar(scaleMul);
+                }
+              });
+              if (gearState.selectedPlacedId && !current.has(gearState.selectedPlacedId)) {
+                gearState.selectedPlacedId = "";
+              }
+              updateSelectedVisual();
+              updateObjectControlPanel();
+            };
+            const clearTrussMeshes = () => {
+              while (trussRoot.children.length) {
+                const child = trussRoot.children.pop();
+                if (!child) break;
+                child.traverse?.((obj) => {
+                  if (obj.geometry) obj.geometry.dispose?.();
+                  if (obj.material) {
+                    if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
+                    else obj.material.dispose?.();
+                  }
+                });
+              }
+            };
+            const syncTrussMeshes = () => {
+              clearTrussMeshes();
+              const rigGroupById = Object.fromEntries(getRiggingGroups().map((g) => [g.id, g]));
+              const placementsByGroupId = {};
+              (venueState.trussPlacements || []).forEach((tp) => {
+                if (!tp || !tp.sourceGroupId || !rigGroupById[tp.sourceGroupId]) return;
+                placementsByGroupId[String(tp.sourceGroupId)] = tp;
+              });
+              Object.values(placementsByGroupId).forEach((tp) => {
+                const groupId = String(tp.sourceGroupId || "");
+                const group = rigGroupById[groupId] || null;
+                const totalSpanM = Math.max(0, Number(getRiggingGroupTotalSpan(groupId) || 0));
+                if (!(totalSpanM > 0)) return;
+
+                let x1 = Number(tp.x1 || 0);
+                let z1 = Number(tp.y1 || 0);
+                let x2 = Number(tp.x2 || 0);
+                let z2 = Number(tp.y2 || 0);
+                let dx = x2 - x1;
+                let dz = z2 - z1;
+                let len = Math.hypot(dx, dz);
+                if (!(len > 1e-6)) {
+                  dx = totalSpanM;
+                  dz = 0;
+                  len = Math.max(1e-6, totalSpanM);
+                }
+                const ux = dx / len;
+                const uz = dz / len;
+                const cx = (x1 + x2) / 2;
+                const cz = (z1 + z2) / 2;
+                const half = totalSpanM / 2;
+                const n1 = clampToVenueBounds(cx - (ux * half), cz - (uz * half));
+                const n2 = clampToVenueBounds(cx + (ux * half), cz + (uz * half));
+                x1 = n1.x;
+                z1 = n1.z;
+                x2 = n2.x;
+                z2 = n2.z;
+                tp.x1 = Number(x1.toFixed(3));
+                tp.y1 = Number(z1.toFixed(3));
+                tp.x2 = Number(x2.toFixed(3));
+                tp.y2 = Number(z2.toFixed(3));
+                dx = x2 - x1;
+                dz = z2 - z1;
+                len = Math.max(0.001, Math.hypot(dx, dz));
+                const heading = Math.atan2(dz, dx);
+                const lineColor = new THREE.Color(group?.color || tp.color || "#f08a3c");
+
+                const beam = new THREE.Mesh(
+                  new THREE.BoxGeometry(len, 0.08, 0.14),
+                  new THREE.MeshStandardMaterial({
+                    color: lineColor,
+                    roughness: 0.55,
+                    metalness: 0.25,
+                    emissive: lineColor.clone().multiplyScalar(0.05)
+                  })
+                );
+                beam.position.set((x1 + x2) / 2, 0.08, (z1 + z2) / 2);
+                beam.rotation.y = heading;
+                beam.name = `${group?.name || tp.label || "Truss Group"} (${totalSpanM.toFixed(2)}m)`;
+                trussRoot.add(beam);
+
+                const endMat = new THREE.MeshStandardMaterial({ color: 0xf5f2ff, roughness: 0.35, metalness: 0.1 });
+                const endA = new THREE.Mesh(new THREE.SphereGeometry(0.07, 10, 10), endMat.clone());
+                const endB = new THREE.Mesh(new THREE.SphereGeometry(0.07, 10, 10), endMat.clone());
+                endA.position.set(x1, 0.1, z1);
+                endB.position.set(x2, 0.1, z2);
+                trussRoot.add(endA);
+                trussRoot.add(endB);
+
+                // Intentionally render connected spans as one continuous truss body per group.
+
+                const fixtureLines = [];
+                (riggingState.fixturePlacements || []).forEach((fp) => {
+                  const span = fp?.spanId ? getSpan(fp.spanId) : null;
+                  if (!span || String(span.groupId || "") !== groupId) return;
+                  const gp = mapSpanLocalToGroupPosition(groupId, span.id, Number(fp.positionM || 0));
+                  if (!Number.isFinite(Number(gp))) return;
+                  fixtureLines.push({
+                    fixtureName: fp.fixtureName || "Fixture",
+                    positionM: Number(gp),
+                    weightKg: (Number(fp.weightKg || 0) + Number(fp.clampWeightKg || 0)) * Math.max(1, Number(fp.quantity || 1))
+                  });
+                });
+                if (!fixtureLines.length) {
+                  (riggingState.groupFixtures || []).forEach((gf) => {
+                    if (String(gf.groupId || "") !== groupId) return;
+                    fixtureLines.push({
+                      fixtureName: gf.fixtureName || "Fixture",
+                      positionM: Number(gf.positionM || 0),
+                      weightKg: Number(gf.weightKg || 0)
+                    });
+                  });
+                }
+                fixtureLines.forEach((fxLine) => {
+                  const gfPos = Math.max(0, Math.min(totalSpanM, Number(fxLine.positionM || 0)));
+                  const t = Math.max(0, Math.min(1, gfPos / Math.max(0.001, totalSpanM)));
+                  const fx = x1 + ((x2 - x1) * t);
+                  const fz = z1 + ((z2 - z1) * t);
+                  const weight = Number.isFinite(Number(fxLine.weightKg)) ? Number(fxLine.weightKg) : 0;
+                  const r = Math.max(0.05, Math.min(0.12, 0.055 + (Math.sqrt(Math.max(0, weight)) * 0.008)));
+                  const fixtureDot = new THREE.Mesh(
+                    new THREE.SphereGeometry(r, 12, 12),
+                    new THREE.MeshStandardMaterial({ color: 0x6de2a8, roughness: 0.45, metalness: 0.05, emissive: 0x103b2a })
+                  );
+                  fixtureDot.position.set(fx, 0.2, fz);
+                  fixtureDot.name = `${fxLine.fixtureName || "Fixture"} ${weight > 0 ? `(${weight.toFixed(1)}kg)` : ""}`.trim();
+                  trussRoot.add(fixtureDot);
+                });
+              });
+            };
+            const getPathDistance = (pts) => (pts || []).reduce((sum, p, i, arr) => {
+              if (!p || i === 0) return sum;
+              const prev = arr[i - 1];
+              if (!prev) return sum;
+              return sum + Math.hypot(Number(p.x) - Number(prev.x), Number(p.y) - Number(prev.y));
+            }, 0);
+            const updateMeasureUI = () => {
+              const cableCurrentEl = document.getElementById("venueMeasureCurrent");
+              const generalCurrentEl = document.getElementById("venueGeneralMeasureCurrent");
+              const cableSaveBtn = document.getElementById("venueMeasureSaveBtn");
+              const generalSaveBtn = document.getElementById("venueGeneralMeasureSaveBtn");
+              const cableDistance = getPathDistance(venueState.measurePoints || []);
+              const generalDistance = getPathDistance(venueState.generalMeasurePoints || []);
+              if (cableCurrentEl) cableCurrentEl.textContent = `Current: ${cableDistance > 0 ? `${cableDistance.toFixed(2)} m` : (venueState.measureArmed ? "Click in 3D to add points." : "-")}`;
+              if (generalCurrentEl) generalCurrentEl.textContent = `Current: ${generalDistance > 0 ? `${generalDistance.toFixed(2)} m` : (venueState.generalMeasureArmed ? "Click in 3D to add points." : "-")}`;
+              if (cableSaveBtn) cableSaveBtn.disabled = !(cableDistance > 0);
+              if (generalSaveBtn) generalSaveBtn.disabled = !(generalDistance > 0);
+            };
+            const clearMeasureOverlays = () => {
+              while (measureRoot.children.length) {
+                const child = measureRoot.children.pop();
+                if (!child) break;
+                child.geometry?.dispose?.();
+                if (Array.isArray(child.material)) child.material.forEach((m) => m.dispose?.());
+                else child.material?.dispose?.();
+              }
+            };
+            const syncMeasureOverlays = () => {
+              clearMeasureOverlays();
+              const addPath = (pts, colorHex) => {
+                const points = (pts || []).filter(Boolean).map((p) => new THREE.Vector3(Number(p.x || 0), 0.04, Number(p.y || 0)));
+                points.forEach((pt) => {
+                  const dot = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.08, 10, 10),
+                    new THREE.MeshBasicMaterial({ color: colorHex })
+                  );
+                  dot.position.copy(pt);
+                  measureRoot.add(dot);
+                });
+                if (points.length >= 2) {
+                  const geo = new THREE.BufferGeometry().setFromPoints(points);
+                  const line = new THREE.Line(
+                    geo,
+                    new THREE.LineBasicMaterial({ color: colorHex, transparent: true, opacity: 0.9 })
+                  );
+                  measureRoot.add(line);
+                }
+              };
+              addPath(venueState.measurePoints || [], 0x6de2a8);
+              addPath(venueState.generalMeasurePoints || [], 0x53c5ff);
+              updateMeasureUI();
+            };
+            const fitViewToObject = (object3d) => {
+              const box = new THREE.Box3().setFromObject(object3d);
+              if (box.isEmpty()) return;
+              const size = box.getSize(new THREE.Vector3());
+              const center = box.getCenter(new THREE.Vector3());
+              const maxDim = Math.max(size.x, size.y, size.z, 0.1);
+              fittedCenter.copy(center);
+              fittedMaxDim = maxDim;
+              const dist = (maxDim * 1.45) / Math.tan((camera.fov * Math.PI / 180) / 2);
+              camera.position.set(center.x + dist * 0.9, center.y + dist * 0.55, center.z + dist * 0.9);
+              controls.target.copy(center);
+              camera.up.set(0, 1, 0);
+              controls.update();
+            };
+            const setView = (view) => {
+              const dist = Math.max(2, fittedMaxDim * 1.9);
+              const c = fittedCenter.clone();
+              if (view === "front") {
+                camera.position.set(c.x, c.y, c.z + dist);
+              } else if (view === "back") {
+                camera.position.set(c.x, c.y, c.z - dist);
+              } else if (view === "left") {
+                camera.position.set(c.x - dist, c.y, c.z);
+              } else if (view === "right") {
+                camera.position.set(c.x + dist, c.y, c.z);
+              } else if (view === "top") {
+                camera.position.set(c.x, c.y + dist, c.z);
+              } else {
+                if (loadedRoot) {
+                  fitViewToObject(loadedRoot);
+                  return;
+                }
+                if (floorPlanBounds) {
+                  fitViewToBounds(floorPlanBounds);
+                  return;
+                }
+                fitViewToBounds(defaultVenueBounds);
+                return;
+              }
+              controls.target.copy(c);
+              camera.up.set(0, 1, 0);
+              controls.update();
+            };
+            const getScaledModelSize = () => {
+              if (!loadedRoot) return null;
+              const box = new THREE.Box3().setFromObject(loadedRoot);
+              if (box.isEmpty()) return null;
+              const size = box.getSize(new THREE.Vector3());
+              return { x: Number(size.x || 0), y: Number(size.y || 0), z: Number(size.z || 0) };
+            };
+            const getVenueFitScale = () => {
+              if (!loadedRoot) return 1;
+              const venueW = Math.max(0.1, Number(venueState.widthM || 0));
+              const venueD = Math.max(0.1, Number(venueState.depthM || 0));
+              loadedRoot.scale.setScalar(1);
+              loadedRoot.updateMatrixWorld(true);
+              const baseSize = getScaledModelSize();
+              if (!baseSize) return 1;
+              const fitX = baseSize.x > 0.001 ? (venueW * 0.92) / baseSize.x : 1;
+              const fitZ = baseSize.z > 0.001 ? (venueD * 0.92) / baseSize.z : 1;
+              const fit = Math.min(fitX, fitZ);
+              return Number.isFinite(fit) && fit > 0 ? fit : 1;
+            };
+            const applyModelScale = () => {
+              if (!loadedRoot) return;
+              const userScale = Math.max(0.001, Number(venueState.model3dScale || 1));
+              const fitScale = getVenueFitScale();
+              loadedRoot.scale.setScalar(fitScale * userScale);
+              loadedRoot.updateMatrixWorld(true);
+            };
+            const clearLoaded = () => {
+              if (!loadedRoot) return;
+              scene.remove(loadedRoot);
+              loadedRoot.traverse((obj) => {
+                if (obj.geometry) obj.geometry.dispose?.();
+                if (obj.material) {
+                  if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
+                  else obj.material.dispose?.();
+                }
+              });
+              loadedRoot = null;
+            };
+            const loadModel = (url) => {
+              if (!url) {
+                clearLoaded();
+                if (floorPlanBounds) {
+                  fitViewToBounds(floorPlanBounds);
+                  statusEl.textContent = "2D floor plan scaled in 3D. Drag gear onto the mapped venue.";
+                } else {
+                  fitViewToBounds(defaultVenueBounds);
+                  statusEl.textContent = "No 3D model loaded. Upload a model or calibrate a floor plan.";
+                }
+                return;
+              }
+              statusEl.textContent = "Loading model...";
+              loader.load(url, (gltf) => {
+                clearLoaded();
+                loadedRoot = gltf.scene || gltf.scenes?.[0] || null;
+                if (!loadedRoot) {
+                  statusEl.textContent = "Model loaded, but no scene found.";
+                  return;
+                }
+                applyModelScale();
+                scene.add(loadedRoot);
+                fitViewToObject(loadedRoot);
+                const size = getScaledModelSize();
+                const sizeTxt = size ? ` (${size.x.toFixed(1)}m x ${size.z.toFixed(1)}m footprint)` : "";
+                statusEl.textContent = `Loaded: ${venueState.model3dName || "3D model"}${sizeTxt}${floorPlanBounds ? " + Floor plan mapped" : ""}`;
+                pickEl.textContent = "Selected: -";
+              }, undefined, (err) => {
+                statusEl.textContent = "Failed to load model. Upload a valid .glb/.gltf file.";
+                console.error("Venue 3D load error", err);
+              });
+            };
+
+            const dragObjectState = { active: false, placedId: "", offsetX: 0, offsetZ: 0 };
+            const getDropWorldPoint = (event) => {
+              const rect = renderer.domElement.getBoundingClientRect();
+              pointer.x = ((event.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1;
+              pointer.y = -(((event.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1);
+              raycaster.setFromCamera(pointer, camera);
+              const out = new THREE.Vector3();
+              const hit = raycaster.ray.intersectPlane(plane, out);
+              if (!hit) return null;
+              const clamped = clampToVenueBounds(out.x, out.z);
+              out.set(clamped.x, out.y, clamped.z);
+              return out;
+            };
+            const pickObject = (ev) => {
+              if (venueState.measureArmed || venueState.generalMeasureArmed) {
+                const p3 = getDropWorldPoint(ev);
+                if (p3) {
+                  const point = { x: Number(p3.x.toFixed(3)), y: Number(p3.z.toFixed(3)) };
+                  if (venueState.measureArmed) venueState.measurePoints = [...(venueState.measurePoints || []), point];
+                  if (venueState.generalMeasureArmed) venueState.generalMeasurePoints = [...(venueState.generalMeasurePoints || []), point];
+                  syncMeasureOverlays();
+                  pickEl.textContent = `Measure point @ ${point.x.toFixed(2)}, ${point.y.toFixed(2)} m`;
+                  saveAppMemory();
+                }
+                return;
+              }
+              const rect = renderer.domElement.getBoundingClientRect();
+              pointer.x = ((ev.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1;
+              pointer.y = -(((ev.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1);
+              raycaster.setFromCamera(pointer, camera);
+              const gearHits = raycaster.intersectObjects(Array.from(gearMeshes.values()), false);
+              if (gearHits.length) {
+                const hit = gearHits[0];
+                const placedId = hit.object?.userData?.placedId;
+                gearState.selectedPlacedId = placedId || "";
+                const placed = (gearState.placedItems || []).find((x) => x.id === placedId);
+                dragObjectState.active = Boolean(placedId && placed);
+                dragObjectState.placedId = placedId || "";
+                if (placed) {
+                  const hp = hit.point || { x: Number(placed.x || 0), z: Number(placed.z || 0) };
+                  dragObjectState.offsetX = Number(placed.x || 0) - Number(hp.x || 0);
+                  dragObjectState.offsetZ = Number(placed.z || 0) - Number(hp.z || 0);
+                } else {
+                  dragObjectState.offsetX = 0;
+                  dragObjectState.offsetZ = 0;
+                }
+                controls.enabled = !dragObjectState.active;
+                const src = placed ? gearItemsById[placed.sourceId] : null;
+                const p = hit.point || new THREE.Vector3();
+                pickEl.textContent = src
+                  ? `Selected: ${src.name} @ ${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} m`
+                  : "Selected: -";
+                updateSelectedVisual();
+                updateObjectControlPanel();
+                return;
+              }
+              dragObjectState.active = false;
+              dragObjectState.placedId = "";
+              dragObjectState.offsetX = 0;
+              dragObjectState.offsetZ = 0;
+              controls.enabled = true;
+              const modelHits = loadedRoot ? raycaster.intersectObjects(loadedRoot.children, true) : [];
+              if (!modelHits.length) {
+                gearState.selectedPlacedId = "";
+                pickEl.textContent = "Selected: -";
+                updateSelectedVisual();
+                updateObjectControlPanel();
+                return;
+              }
+              const hit = modelHits[0];
+              const p = hit.point || new THREE.Vector3();
+              const name = hit.object?.name ? String(hit.object.name) : "Unnamed object";
+              pickEl.textContent = `Selected: ${name} @ ${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} m`;
+            };
+            renderer.domElement.addEventListener("pointerdown", pickObject);
+            renderer.domElement.addEventListener("dragover", (ev) => {
+              ev.preventDefault();
+              ev.dataTransfer.dropEffect = "copy";
+            });
+            renderer.domElement.addEventListener("drop", (ev) => {
+              ev.preventDefault();
+              const sourceId = ev.dataTransfer?.getData("application/x-thebase-gear")
+                || ev.dataTransfer?.getData("text/plain")
+                || gearState.selectedInventoryId;
+              if (!sourceId) return;
+              const source = gearItemsById[sourceId];
+              if (!source) return;
+              const point = getDropWorldPoint(ev);
+              if (!point) return;
+              const clamped = clampToVenueBounds(point.x, point.z);
+              gearState.placedItems.push({
+                id: makeGearPlacedId(),
+                sourceId,
+                x: Number(clamped.x.toFixed(3)),
+                y: 0.35,
+                z: Number(clamped.z.toFixed(3)),
+                rotYDeg: 0,
+                scale: 1
+              });
+              statusEl.textContent = `Placed: ${source.name}`;
+              syncGearMeshes();
+            });
+            renderer.domElement.addEventListener("pointermove", (ev) => {
+              if (!dragObjectState.active || !(ev.buttons & 1)) return;
+              const point = getDropWorldPoint(ev);
+              if (!point) return;
+              const placed = (gearState.placedItems || []).find((x) => x.id === dragObjectState.placedId);
+              if (!placed) return;
+              const next = clampToVenueBounds(
+                Number(point.x || 0) + Number(dragObjectState.offsetX || 0),
+                Number(point.z || 0) + Number(dragObjectState.offsetZ || 0)
+              );
+              placed.x = Number(next.x.toFixed(3));
+              placed.z = Number(next.z.toFixed(3));
+              syncGearMeshes();
+            });
+            const releaseDrag = () => {
+              if (!dragObjectState.active) return;
+              dragObjectState.active = false;
+              dragObjectState.placedId = "";
+              dragObjectState.offsetX = 0;
+              dragObjectState.offsetZ = 0;
+              controls.enabled = true;
+              saveAppMemory();
+            };
+            renderer.domElement.addEventListener("pointerup", releaseDrag);
+            renderer.domElement.addEventListener("pointerleave", releaseDrag);
+            clearGearBtn?.addEventListener("click", () => {
+              gearState.placedItems = [];
+              gearState.selectedPlacedId = "";
+              pickEl.textContent = "Selected: -";
+              syncGearMeshes();
+              saveAppMemory();
+            });
+            objApplyBtn?.addEventListener("click", () => {
+              const placed = (gearState.placedItems || []).find((x) => x.id === gearState.selectedPlacedId);
+              if (!placed) return;
+              const px = Number(objPosXEl?.value || placed.x || 0);
+              const pz = Number(objPosZEl?.value || placed.z || 0);
+              const ry = Number(objRotYEl?.value || placed.rotYDeg || 0);
+              const sc = Number(objScaleEl?.value || placed.scale || 1);
+              const next = clampToVenueBounds(
+                Number.isFinite(px) ? px : Number(placed.x || 0),
+                Number.isFinite(pz) ? pz : Number(placed.z || 0)
+              );
+              placed.x = Number(next.x.toFixed(3));
+              placed.z = Number(next.z.toFixed(3));
+              placed.rotYDeg = Number.isFinite(ry) ? ry : Number(placed.rotYDeg || 0);
+              placed.scale = Number.isFinite(sc) ? Math.max(0.1, sc) : Math.max(0.1, Number(placed.scale || 1));
+              syncGearMeshes();
+              saveAppMemory();
+            });
+            objDeleteBtn?.addEventListener("click", () => {
+              const id = gearState.selectedPlacedId;
+              if (!id) return;
+              gearState.placedItems = (gearState.placedItems || []).filter((x) => x.id !== id);
+              gearState.selectedPlacedId = "";
+              pickEl.textContent = "Selected: -";
+              syncGearMeshes();
+              saveAppMemory();
+            });
+
+            const onResize = () => {
+              if (!host || !renderer || !camera) return;
+              const nextW = Math.max(320, Math.floor(host.clientWidth || 320));
+              const nextH = Math.max(320, Math.floor(host.clientHeight || 500));
+              renderer.setSize(nextW, nextH, true);
+              camera.aspect = nextW / nextH;
+              camera.updateProjectionMatrix();
+            };
+            window.addEventListener("resize", onResize);
+
+            const tick = () => {
+              controls.update();
+              renderer.render(scene, camera);
+              venue3dRuntime.frameId = requestAnimationFrame(tick);
+            };
+            venue3dRuntime = { renderer, scene, camera, controls, frameId: 0, onResize };
+            resetBtn?.addEventListener("click", () => {
+              setView("home");
+            });
+            modeTabs?.querySelectorAll("button[data-venue3d-mode]").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const mode = String(btn.getAttribute("data-venue3d-mode") || "orbit");
+                setControlMode(mode);
+              });
+            });
+            viewTabs?.querySelectorAll("button[data-venue3d-view]").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const view = String(btn.getAttribute("data-venue3d-view") || "home");
+                setView(view);
+              });
+            });
+            scaleEl?.addEventListener("change", () => {
+              const next = Math.max(0.01, Number(scaleEl.value || 1));
+              venueState.model3dScale = next;
+              if (scaleEl.value !== String(next)) scaleEl.value = String(next);
+              applyModelScale();
+              if (loadedRoot) fitViewToObject(loadedRoot);
+            });
+            syncGearMeshes();
+            syncTrussMeshes();
+            syncMeasureOverlays();
+            syncFloorPlanMesh().then((hasFloorPlan) => {
+              loadModel(venueState.model3dUrl);
+              if (hasFloorPlan && !venueState.model3dUrl) {
+                pickEl.textContent = "Selected: Floor plan mapped. Place gear in 3D.";
+              }
+            });
+            tick();
+          } catch (err) {
+            const msg = err && err.message ? String(err.message) : "Unknown error";
+            statusEl.textContent = `3D engine failed to initialize: ${msg}`;
+            pickEl.textContent = "Selected: -";
+            console.error("Venue 3D init error", err);
+          }
+        }
+
+        function makeGearPlacedId() {
+          return `gear_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+        }
+
+        function getDepartmentColor(department) {
+          const key = String(department || "Other").toLowerCase();
+          if (key === "video") return "#52c67d";
+          if (key === "lighting") return "#e15c5c";
+          if (key === "audio" || key === "sound") return "#5b86ff";
+          if (key === "rigging") return "#f08a3c";
+          if (key === "power") return "#8457e8";
+          if (key === "venue") return "#35bfb4";
+          return "#8f98ab";
+        }
+
+        function collectGearInventory() {
+          const out = [];
+          const pushItem = (row) => {
+            if (!row || !row.id || !row.name) return;
+            out.push({
+              id: String(row.id),
+              department: String(row.department || "Other"),
+              manufacturer: String(row.manufacturer || ""),
+              name: String(row.name || "Item"),
+              quantity: Math.max(1, Math.round(Number(row.quantity || 1))),
+              weightKg: Number.isFinite(Number(row.weightKg)) ? Number(row.weightKg) : null,
+              powerW: Number.isFinite(Number(row.powerW)) ? Number(row.powerW) : null,
+              footprintW: Number.isFinite(Number(row.footprintW)) ? Number(row.footprintW) : null,
+              footprintD: Number.isFinite(Number(row.footprintD)) ? Number(row.footprintD) : null,
+              heightM: Number.isFinite(Number(row.heightM)) ? Number(row.heightM) : null,
+              notes: String(row.notes || ""),
+              color: getDepartmentColor(row.department)
+            });
+          };
+          // Important: only include equipment actively used in this project/calculator state.
+          // Full catalogs remain available in Settings/backend data and are not listed here until used.
+
+          (lightingState.fixtures || []).forEach((line) => {
+            const fixture = getLightingFixtureByKey(line.fixtureKey);
+            const qty = Math.max(1, Math.round(Number(line.quantity || 1)));
+            pushItem({
+              id: `lx_${line.id}`,
+              department: "Lighting",
+              manufacturer: fixture?.manufacturer || "",
+              name: fixture?.model ? `${fixture.model} (${line.modeName || "Mode"})` : "Lighting Fixture",
+              quantity: qty,
+              weightKg: fixture?.weight_kg,
+              powerW: Number.isFinite(Number(fixture?.power?.max_w)) ? Number(fixture.power.max_w) : fixture?.power?.avg_w,
+              notes: line.groupId ? `Group: ${(lightingState.groups || []).find((g) => g.id === line.groupId)?.name || line.groupId}` : ""
+            });
+          });
+
+          (powerState.manualLoads || []).forEach((load) => {
+            if (!load) return;
+            pushItem({
+              id: `pwr_${load.id}`,
+              department: load.department || "Power",
+              manufacturer: "Load",
+              name: load.name || "Power Load",
+              quantity: Math.max(1, Math.round(Number(load.quantity || 1))),
+              weightKg: null,
+              powerW: Number.isFinite(Number(load.watts_max)) ? Number(load.watts_max) : (Number.isFinite(Number(load.watts_avg)) ? Number(load.watts_avg) : null),
+              notes: load.preferred_connection || ""
+            });
+          });
+
+          const ledWalls = ledState.mode === "multi" ? ledState.walls : [ledState.single];
+          (ledWalls || []).forEach((w, idx) => {
+            const panel = LED_PANELS.find((p) => p.id === w.panelType) || LED_PANELS[0];
+            const calc = calcLedWall(panel, Number(w.width || 0), Number(w.height || 0));
+            if (!(calc.panelCount > 0)) return;
+            pushItem({
+              id: `video_led_${w.id || idx}`,
+              department: "Video",
+              manufacturer: panel.name.split(" ")[0] || "LED",
+              name: `${w.name || `Wall ${idx + 1}`}`,
+              quantity: calc.panelCount,
+              weightKg: null,
+              powerW: Number(panel.maxW || panel.avgW || 0),
+              footprintW: Number(calc.builtW || 0),
+              footprintD: 0.2,
+              heightM: Number(calc.builtH || 0),
+              notes: `${calc.panelsW}x${calc.panelsH} cabinets (${calc.builtW.toFixed(2)}m x ${calc.builtH.toFixed(2)}m)`
+            });
+          });
+
+          (riggingState.spans || []).forEach((span) => {
+            const truss = trussCatalog.find((t) => t.id === span.trussTypeId);
+            const length = Number(span.lengthM || 0);
+            if (!(length > 0)) return;
+            const kgpm = Number(truss?.weight_per_m_kg || 0);
+            pushItem({
+              id: `rig_span_${span.id}`,
+              department: "Rigging",
+              manufacturer: truss?.manufacturer || "Prolyte",
+              name: `${truss?.series || "Truss"} ${span.id}`,
+              quantity: 1,
+              weightKg: Number.isFinite(kgpm) && kgpm > 0 ? kgpm * length : null,
+              powerW: null,
+              notes: `${length.toFixed(2)}m`
+            });
+          });
+          (riggingState.groupMotors || []).forEach((gm) => {
+            const motor = motorCatalog.find((m) => m.id === gm.motorId);
+            pushItem({
+              id: `rig_motor_${gm.id}`,
+              department: "Rigging",
+              manufacturer: motor?.brand || "Motor",
+              name: motor?.model || "Motor",
+              quantity: 1,
+              weightKg: motor?.self_weight_kg,
+              powerW: null,
+              notes: `WLL ${Number(motor?.wll_kg || 0)}kg`
+            });
+          });
+          (riggingState.accessories || []).forEach((a) => {
+            pushItem({
+              id: `rig_acc_${a.id}`,
+              department: "Rigging",
+              manufacturer: "Accessory",
+              name: a.name || "Accessory",
+              quantity: 1,
+              weightKg: a.weightKg,
+              powerW: null,
+              notes: a.placement || ""
+            });
+          });
+          return out.sort((a, b) => {
+            const d = a.department.localeCompare(b.department);
+            if (d !== 0) return d;
+            return a.name.localeCompare(b.name);
+          });
+        }
+
+        function syncVenueTrussPlacementsFromRigging() {
+          const groups = getRiggingGroups();
+          const venueW = Math.max(1, Number(venueState.widthM || 30));
+          const venueD = Math.max(1, Number(venueState.depthM || 20));
+          const existing = Array.isArray(venueState.trussPlacements) ? venueState.trussPlacements : [];
+          const existingByGroupId = Object.fromEntries(
+            existing
+              .filter((p) => p && p.sourceGroupId)
+              .map((p) => [String(p.sourceGroupId), p])
+          );
+          const next = [];
+          groups.forEach((g, idx) => {
+            const totalSpan = Math.max(0, Number(getRiggingGroupTotalSpan(g.id) || 0));
+            if (!(totalSpan > 0)) return;
+            const found = existingByGroupId[g.id];
+            const p = found
+              ? { ...found }
+              : {
+                  id: `venue_truss_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+                  sourceGroupId: g.id,
+                  label: g.name || `Group ${idx + 1}`,
+                  color: g.color || "#f08a3c",
+                  x1: 0,
+                  y1: Math.max(0, Math.min(venueD, (1.5 + idx * 2.2))),
+                  x2: Math.max(0, Math.min(venueW, totalSpan)),
+                  y2: Math.max(0, Math.min(venueD, (1.5 + idx * 2.2)))
+                };
+
+            p.sourceGroupId = g.id;
+            p.label = g.name || p.label || g.id;
+            p.color = g.color || p.color || "#f08a3c";
+
+            let x1 = Number(p.x1 || 0);
+            let y1 = Number(p.y1 || 0);
+            let x2 = Number(p.x2 || 0);
+            let y2 = Number(p.y2 || 0);
+            let dx = x2 - x1;
+            let dy = y2 - y1;
+            let currLen = Math.hypot(dx, dy);
+            if (!(currLen > 1e-6)) {
+              dx = 1;
+              dy = 0;
+              currLen = 1;
+            }
+            const ux = dx / currLen;
+            const uy = dy / currLen;
+            const cx = (x1 + x2) / 2;
+            const cy = (y1 + y2) / 2;
+            const half = totalSpan / 2;
+            let nx1 = cx - (ux * half);
+            let ny1 = cy - (uy * half);
+            let nx2 = cx + (ux * half);
+            let ny2 = cy + (uy * half);
+
+            const minX = Math.min(nx1, nx2);
+            const maxX = Math.max(nx1, nx2);
+            const minY = Math.min(ny1, ny2);
+            const maxY = Math.max(ny1, ny2);
+            let shiftX = 0;
+            let shiftY = 0;
+            if (minX < 0) shiftX = -minX;
+            if (maxX > venueW) shiftX = Math.min(shiftX || Infinity, venueW - maxX);
+            if (!Number.isFinite(shiftX)) shiftX = 0;
+            if (minY < 0) shiftY = -minY;
+            if (maxY > venueD) shiftY = Math.min(shiftY || Infinity, venueD - maxY);
+            if (!Number.isFinite(shiftY)) shiftY = 0;
+
+            nx1 += shiftX;
+            ny1 += shiftY;
+            nx2 += shiftX;
+            ny2 += shiftY;
+
+            p.x1 = Number(nx1.toFixed(3));
+            p.y1 = Number(ny1.toFixed(3));
+            p.x2 = Number(nx2.toFixed(3));
+            p.y2 = Number(ny2.toFixed(3));
+            next.push(p);
+          });
+          venueState.trussPlacements = next;
+        }
+
+        function disposeGear3dRuntime() {
+          if (!gear3dRuntime) return;
+          try {
+            if (gear3dRuntime.frameId) cancelAnimationFrame(gear3dRuntime.frameId);
+            if (gear3dRuntime.controls) gear3dRuntime.controls.dispose();
+            if (gear3dRuntime.renderer) {
+              gear3dRuntime.renderer.dispose();
+              gear3dRuntime.renderer.forceContextLoss?.();
+            }
+            if (gear3dRuntime.onResize) window.removeEventListener("resize", gear3dRuntime.onResize);
+          } catch (_) {}
+          gear3dRuntime = null;
+        }
+
+        function renderGear() {
+          if (!main) return;
+          const items = collectGearInventory();
+          if (!gearState.selectedInventoryId || !items.some((x) => x.id === gearState.selectedInventoryId)) {
+            gearState.selectedInventoryId = items[0]?.id || "";
+          }
+          const selected = items.find((x) => x.id === gearState.selectedInventoryId) || null;
+          main.innerHTML = `
+            <div class="card">
+              <div class="toolbar">
+                <h2>Gear</h2>
+                <span class="badge">${items.length} inventory lines</span>
+              </div>
+              <div class="grid grid-2" style="margin-top:0.6rem;align-items:start;">
+                <div class="card">
+                  <h3 style="margin-top:0;">Inventory (All Departments)</h3>
+                  <div class="muted">Drag a gear chip into the 3D viewer to place an object.</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.55rem;max-height:240px;overflow:auto;">
+                    ${items.map((item) => `
+                      <button
+                        data-gear-chip="${item.id}"
+                        draggable="true"
+                        style="border-color:${item.color};color:${item.color};"
+                        class="${item.id === gearState.selectedInventoryId ? "active" : ""}"
+                        title="${item.manufacturer ? `${item.manufacturer} - ` : ""}${item.name}"
+                      >${item.department}: ${item.name} x${item.quantity}</button>
+                    `).join("") || '<span class="muted">No gear found yet. Add equipment in department modules or Settings.</span>'}
+                  </div>
+                  <div class="table-wrap" style="margin-top:0.6rem;">
+                    <table>
+                      <thead><tr><th>Manufacturer</th><th>Name</th><th>Dept</th><th>Qty</th><th>Weight</th><th>Power</th></tr></thead>
+                      <tbody>
+                        ${items.map((item) => `
+                          <tr>
+                            <td>${item.manufacturer || "-"}</td>
+                            <td>${item.name}</td>
+                            <td>${item.department}</td>
+                            <td>${item.quantity}</td>
+                            <td>${Number.isFinite(item.weightKg) ? `${item.weightKg.toFixed(1)} kg` : "-"}</td>
+                            <td>${Number.isFinite(item.powerW) ? `${Math.round(item.powerW)} W` : "-"}</td>
+                          </tr>
+                        `).join("") || '<tr><td colspan="6" class="muted">No items</td></tr>'}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="toolbar">
+                    <h3 style="margin:0;">3D Gear Layout</h3>
+                    <div style="display:flex;gap:0.45rem;align-items:center;">
+                      <button id="gear3dResetViewBtn">Reset View</button>
+                      <button id="gear3dClearBtn">Clear Placed</button>
+                    </div>
+                  </div>
+                  <div class="muted" id="gear3dStatus" style="margin-top:0.25rem;">Loading 3D viewer...</div>
+                  <div class="muted" id="gear3dPick" style="margin-top:0.2rem;">Selected: -</div>
+                  <div class="muted" style="margin-top:0.2rem;">Selected Source: ${selected ? `${selected.department} - ${selected.name}` : "-"}</div>
+                  <div id="gear3dCanvasHost" style="margin-top:0.55rem;height:540px;border:1px solid var(--theme-line-soft);border-radius:12px;background:var(--theme-input);overflow:hidden;"></div>
+                </div>
+              </div>
+            </div>
+          `;
+
+          document.querySelectorAll("[data-gear-chip]").forEach((chip) => {
+            chip.addEventListener("click", () => {
+              gearState.selectedInventoryId = chip.dataset.gearChip || "";
+              renderGear();
+            });
+            chip.addEventListener("dragstart", (ev) => {
+              const id = chip.dataset.gearChip || "";
+              gearState.selectedInventoryId = id;
+              ev.dataTransfer?.setData("text/plain", id);
+              ev.dataTransfer?.setData("application/x-thebase-gear", id);
+              ev.dataTransfer.effectAllowed = "copy";
+            });
+          });
+          document.getElementById("gear3dClearBtn")?.addEventListener("click", () => {
+            gearState.placedItems = [];
+            initGear3dViewer();
+          });
+          document.getElementById("gear3dResetViewBtn")?.addEventListener("click", () => {
+            if (gear3dRuntime && typeof gear3dRuntime.resetView === "function") gear3dRuntime.resetView();
+          });
+          initGear3dViewer();
+        }
+
+        async function initGear3dViewer() {
+          const host = document.getElementById("gear3dCanvasHost");
+          const statusEl = document.getElementById("gear3dStatus");
+          const pickEl = document.getElementById("gear3dPick");
+          if (!(host instanceof HTMLElement) || !statusEl || !pickEl) return;
+          disposeGear3dRuntime();
+          host.innerHTML = "";
+          statusEl.textContent = "Loading 3D engine...";
+          try {
+            const { THREE, OrbitControls } = await loadVenue3dLib();
+            const width = Math.max(320, Math.floor(host.clientWidth || 320));
+            const height = Math.max(320, Math.floor(host.clientHeight || 500));
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+            renderer.setSize(width, height, true);
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            renderer.setClearColor(0x141924, 1);
+            renderer.domElement.style.width = "100%";
+            renderer.domElement.style.height = "100%";
+            renderer.domElement.style.display = "block";
+            host.appendChild(renderer.domElement);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(52, width / height, 0.05, 10000);
+            camera.position.set(18, 15, 18);
+            camera.up.set(0, 1, 0);
+
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.08;
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            scene.add(new THREE.HemisphereLight(0xdde8ff, 0x18202c, 0.95));
+            scene.add(new THREE.DirectionalLight(0xffffff, 0.5));
+            const grid = new THREE.GridHelper(40, 40, 0x55607a, 0x2e3445);
+            grid.position.y = -0.001;
+            scene.add(grid);
+            scene.add(new THREE.AxesHelper(2.5));
+
+            const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+            const raycaster = new THREE.Raycaster();
+            const pointer = new THREE.Vector2();
+            const meshes = new Map();
+            const itemsById = Object.fromEntries(collectGearInventory().map((x) => [x.id, x]));
+
+            const buildMeshForItem = (placed) => {
+              const source = itemsById[placed.sourceId] || {};
+              const color = Number(new THREE.Color(source.color || "#8f98ab").getHex());
+              const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.7, metalness: 0.08 });
+              const dept = String(source.department || "Other").toLowerCase();
+              const weight = Number(source.weightKg || 0);
+              const scale = Math.max(0.45, Math.min(2.4, Math.cbrt(Math.max(1, weight) / 14)));
+              let mesh;
+              if (dept === "lighting") {
+                mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.23 * scale, 0.26 * scale, 0.45 * scale, 18), mat);
+              } else if (dept === "video") {
+                const wallW = Math.max(0.5, Number(source.footprintW || 1));
+                const wallH = Math.max(0.5, Number(source.heightM || 1));
+                const wallD = Math.max(0.08, Number(source.footprintD || 0.2));
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(wallW, wallH, wallD), mat);
+              } else if (dept === "audio" || dept === "sound") {
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(0.5 * scale, 0.75 * scale, 0.45 * scale), mat);
+              } else if (dept === "rigging") {
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(1.1 * scale, 0.18 * scale, 0.18 * scale), mat);
+              } else {
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(0.55 * scale, 0.55 * scale, 0.55 * scale), mat);
+              }
+              if (dept === "video") {
+                const y = Math.max(0.25, Number(source.heightM || 1) / 2);
+                mesh.position.set(Number(placed.x || 0), y, Number(placed.z || 0));
+              } else {
+                mesh.position.set(Number(placed.x || 0), Number(placed.y || 0.35), Number(placed.z || 0));
+              }
+              mesh.userData.placedId = placed.id;
+              mesh.userData.sourceId = placed.sourceId;
+              mesh.name = source.name || "Gear";
+              return mesh;
+            };
+
+            const syncScene = () => {
+              const current = new Set((gearState.placedItems || []).map((p) => p.id));
+              Array.from(meshes.keys()).forEach((id) => {
+                if (current.has(id)) return;
+                const mesh = meshes.get(id);
+                if (mesh) {
+                  scene.remove(mesh);
+                  mesh.geometry?.dispose?.();
+                  if (Array.isArray(mesh.material)) mesh.material.forEach((m) => m.dispose?.());
+                  else mesh.material?.dispose?.();
+                }
+                meshes.delete(id);
+              });
+              (gearState.placedItems || []).forEach((p) => {
+                let mesh = meshes.get(p.id);
+                if (!mesh) {
+                  mesh = buildMeshForItem(p);
+                  meshes.set(p.id, mesh);
+                  scene.add(mesh);
+                } else {
+                  const source = itemsById[p.sourceId] || {};
+                  const dept = String(source.department || "Other").toLowerCase();
+                  if (dept === "video") {
+                    const y = Math.max(0.25, Number(source.heightM || 1) / 2);
+                    mesh.position.set(Number(p.x || 0), y, Number(p.z || 0));
+                  } else {
+                    mesh.position.set(Number(p.x || 0), Number(p.y || 0.35), Number(p.z || 0));
+                  }
+                }
+              });
+            };
+
+            const getDropWorldPoint = (event) => {
+              const rect = renderer.domElement.getBoundingClientRect();
+              pointer.x = ((event.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1;
+              pointer.y = -(((event.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1);
+              raycaster.setFromCamera(pointer, camera);
+              const out = new THREE.Vector3();
+              const hit = raycaster.ray.intersectPlane(plane, out);
+              return hit ? out : null;
+            };
+
+            renderer.domElement.addEventListener("dragover", (ev) => {
+              ev.preventDefault();
+              ev.dataTransfer.dropEffect = "copy";
+            });
+            renderer.domElement.addEventListener("drop", (ev) => {
+              ev.preventDefault();
+              const id = ev.dataTransfer?.getData("application/x-thebase-gear")
+                || ev.dataTransfer?.getData("text/plain")
+                || gearState.selectedInventoryId;
+              if (!id) return;
+              const source = itemsById[id];
+              if (!source) return;
+              const p = getDropWorldPoint(ev);
+              if (!p) return;
+              gearState.placedItems.push({
+                id: makeGearPlacedId(),
+                sourceId: id,
+                x: Number(p.x.toFixed(3)),
+                y: 0.35,
+                z: Number(p.z.toFixed(3))
+              });
+              statusEl.textContent = `Placed: ${source.name}`;
+              syncScene();
+            });
+
+            const pickObject = (ev) => {
+              const rect = renderer.domElement.getBoundingClientRect();
+              pointer.x = ((ev.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1;
+              pointer.y = -(((ev.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1);
+              raycaster.setFromCamera(pointer, camera);
+              const hit = raycaster.intersectObjects(Array.from(meshes.values()), false)[0];
+              if (!hit) {
+                gearState.selectedPlacedId = "";
+                pickEl.textContent = "Selected: -";
+                return;
+              }
+              const placedId = hit.object?.userData?.placedId;
+              gearState.selectedPlacedId = placedId || "";
+              const placed = (gearState.placedItems || []).find((x) => x.id === placedId);
+              const src = placed ? itemsById[placed.sourceId] : null;
+              const p = hit.point || new THREE.Vector3();
+              pickEl.textContent = src
+                ? `Selected: ${src.name} @ ${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} m`
+                : "Selected: -";
+            };
+            renderer.domElement.addEventListener("pointerdown", pickObject);
+
+            const onResize = () => {
+              if (!host || !renderer || !camera) return;
+              const nextW = Math.max(320, Math.floor(host.clientWidth || 320));
+              const nextH = Math.max(320, Math.floor(host.clientHeight || 500));
+              renderer.setSize(nextW, nextH, true);
+              camera.aspect = nextW / nextH;
+              camera.updateProjectionMatrix();
+            };
+            window.addEventListener("resize", onResize);
+
+            const resetView = () => {
+              camera.position.set(18, 15, 18);
+              controls.target.set(0, 0, 0);
+              camera.up.set(0, 1, 0);
+              controls.update();
+            };
+            resetView();
+            syncScene();
+
+            const tick = () => {
+              controls.update();
+              renderer.render(scene, camera);
+              gear3dRuntime.frameId = requestAnimationFrame(tick);
+            };
+            gear3dRuntime = { renderer, scene, camera, controls, frameId: 0, onResize, resetView };
+            statusEl.textContent = "Gear 3D ready. Drag chips into the viewer.";
+            tick();
+          } catch (err) {
+            const msg = err && err.message ? String(err.message) : "Unknown error";
+            statusEl.textContent = `3D engine failed to initialize: ${msg}`;
+            pickEl.textContent = "Selected: -";
+            console.error("Gear 3D init error", err);
+          }
+        }
+
         function renderVenue() {
           if (!main) return;
+          syncVenueTrussPlacementsFromRigging();
           venueState.trussPlacements = (venueState.trussPlacements || []).filter((x) => x && typeof x === "object" && x.id);
           const safeNum = (v, fallback) => {
             const n = Number(v);
@@ -6390,6 +7937,10 @@
               <td><button data-measure-delete="${String(row.id || "")}" aria-label="Delete measurement">×</button></td>
             </tr>
           `).join("");
+          const venueGearInventory = collectGearInventory();
+          if (!gearState.selectedInventoryId || !venueGearInventory.some((x) => x.id === gearState.selectedInventoryId)) {
+            gearState.selectedInventoryId = venueGearInventory[0]?.id || "";
+          }
           const wizardStepLabel = !wizardHasOrigin
             ? "Step 1: Click Origin (0,0)"
             : !wizardHasX
@@ -6482,7 +8033,7 @@
                   <button id="venueGeneralMeasureArmBtn" class="${venueState.generalMeasureArmed ? "active" : ""}">Start Measure</button>
                   <button id="venueGeneralMeasureSaveBtn" ${generalDistanceM > 0 ? "" : "disabled"}>Save Measure</button>
                   <button id="venueGeneralMeasureClearBtn">Clear</button>
-                  <span class="muted">Current: ${generalDistanceM > 0 ? `${generalDistanceM.toFixed(2)} m` : (venueState.generalMeasureArmed ? "Click on the grid to add points." : "-")}</span>
+                  <span class="muted" id="venueGeneralMeasureCurrent">Current: ${generalDistanceM > 0 ? `${generalDistanceM.toFixed(2)} m` : (venueState.generalMeasureArmed ? "Click in 3D to add points." : "-")}</span>
                 </div>
                 <div class="table-wrap" style="margin-top:0.55rem;">
                   <table>
@@ -6499,7 +8050,7 @@
                   <button id="venueMeasureArmBtn" class="${venueState.measureArmed ? "active" : ""}">Start Run</button>
                   <button id="venueMeasureSaveBtn" ${activeMeasureDistanceM > 0 ? "" : "disabled"}>Save Run</button>
                   <button id="venueMeasureClearBtn">Clear</button>
-                  <span class="muted">Current: ${activeMeasureDistanceM > 0 ? `${activeMeasureDistanceM.toFixed(2)} m` : (venueState.measureArmed ? "Click on the grid to add points." : "-")}</span>
+                  <span class="muted" id="venueMeasureCurrent">Current: ${activeMeasureDistanceM > 0 ? `${activeMeasureDistanceM.toFixed(2)} m` : (venueState.measureArmed ? "Click in 3D to add points." : "-")}</span>
                 </div>
                 <div class="table-wrap" style="margin-top:0.55rem;">
                   <table>
@@ -6508,18 +8059,75 @@
                   </table>
                 </div>
               </div>
-              <div class="muted" style="margin-top:0.45rem;">Starter venue canvas. Grid scales directly from venue dimensions.</div>
-              <div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0.55rem;">
-                <div class="kpi"><div class="muted">Pos X (m)</div><b id="venueMouseX">-</b></div>
-                <div class="kpi"><div class="muted">Pos Y (m)</div><b id="venueMouseY">-</b></div>
-              </div>
+              <div class="muted" style="margin-top:0.45rem;">2D removed. Use the 3D view below for placement, measurement and cable runs.</div>
               <div class="card" style="margin-top:0.75rem;">
-                <svg id="venuePlanSvg" viewBox="0 0 980 560" style="width:100%;height:auto;border:1px solid var(--theme-line-soft);border-radius:12px;background:var(--theme-input);"></svg>
-                <div style="display:flex;justify-content:flex-end;align-items:center;gap:0.35rem;margin-top:0.55rem;">
-                  <button id="venueZoomOutBtn" title="Zoom out">-</button>
-                  <button id="venueZoomResetBtn" title="Reset zoom" aria-label="Reset zoom">↺</button>
-                  <button id="venueZoomInBtn" title="Zoom in">+</button>
-                  <span class="badge" id="venueZoomPct">100%</span>
+                <div class="toolbar">
+                  <h3 style="margin:0;">Venue 3D</h3>
+                  <div style="display:flex;gap:0.45rem;align-items:flex-end;flex-wrap:wrap;">
+                    <div>
+                      <label>Model File (.glb/.gltf)</label>
+                      <input id="venue3dFile" type="file" accept=".glb,.gltf,model/gltf-binary,model/gltf+json" />
+                    </div>
+                    <div style="min-width:120px;">
+                      <label>Model Scale</label>
+                      <input id="venue3dScaleInput" type="number" min="0.01" step="0.01" value="${Math.max(0.01, Number(venueState.model3dScale || 1))}" />
+                    </div>
+                    <button id="venue3dResetViewBtn">Reset View</button>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-top:0.4rem;">
+                  <div class="tabs" id="venue3dModeTabs">
+                    <button data-venue3d-mode="orbit" class="active">Orbit</button>
+                    <button data-venue3d-mode="pan">Pan</button>
+                    <button data-venue3d-mode="zoom">Zoom</button>
+                  </div>
+                  <div class="tabs" id="venue3dViewTabs">
+                    <button data-venue3d-view="home">Home</button>
+                    <button data-venue3d-view="front">Front</button>
+                    <button data-venue3d-view="back">Back</button>
+                    <button data-venue3d-view="left">Left</button>
+                    <button data-venue3d-view="right">Right</button>
+                    <button data-venue3d-view="top">Top</button>
+                  </div>
+                </div>
+                <div class="muted" style="margin-top:0.3rem;">Blender-style quick nav: use mode buttons + view snaps. Mouse wheel zoom remains active.</div>
+                <div class="muted" id="venue3dStatus" style="margin-top:0.4rem;">Loading 3D viewer...</div>
+                <div class="muted" id="venue3dPick" style="margin-top:0.2rem;">Selected: -</div>
+                <div style="margin-top:0.55rem;display:grid;grid-template-columns:320px minmax(0,1fr);gap:0.7rem;align-items:start;">
+                  <div class="card" style="margin:0;max-height:760px;overflow:auto;">
+                    <div class="toolbar" style="margin-bottom:0.4rem;">
+                      <h3 style="margin:0;font-size:1rem;">Gear Inventory</h3>
+                      <button id="venue3dClearGearBtn">Clear</button>
+                    </div>
+                    <div class="muted" style="margin-bottom:0.35rem;">Drag onto the 3D view.</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">
+                      ${venueGearInventory.map((item) => `
+                        <span
+                          class="chip"
+                          draggable="true"
+                          data-venue-gear-chip="${item.id}"
+                          style="border-color:${item.color};color:${item.color};"
+                          title="${(item.manufacturer ? `${item.manufacturer} - ` : "") + item.name}"
+                        >${item.department}: ${item.name} x${item.quantity}</span>
+                      `).join("") || '<span class="muted">No gear available.</span>'}
+                    </div>
+                    <div class="card" style="margin-top:0.65rem;">
+                      <h3 style="margin:0 0 0.35rem 0;font-size:0.96rem;">Object Controls</h3>
+                      <div class="muted" id="venue3dObjName">Selected: -</div>
+                      <div class="grid grid-2" style="margin-top:0.45rem;">
+                        <div><label>Pos X (m)</label><input id="venue3dObjPosX" type="number" step="0.01" /></div>
+                        <div><label>Pos Z (m)</label><input id="venue3dObjPosZ" type="number" step="0.01" /></div>
+                        <div><label>Rotate Y (deg)</label><input id="venue3dObjRotY" type="number" step="1" /></div>
+                        <div><label>Scale</label><input id="venue3dObjScale" type="number" min="0.1" step="0.05" /></div>
+                      </div>
+                      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.45rem;">
+                        <button id="venue3dObjApplyBtn">Apply</button>
+                        <button id="venue3dObjDeleteBtn">Delete</button>
+                      </div>
+                      <div class="muted" style="margin-top:0.35rem;">Tip: click and drag a placed object in 3D to move it.</div>
+                    </div>
+                  </div>
+                  <div id="venue3dCanvasHost" style="height:760px;border:1px solid var(--theme-line-soft);border-radius:12px;background:var(--theme-input);overflow:hidden;"></div>
                 </div>
               </div>
             </div>
@@ -6718,6 +8326,23 @@
                 trussOverlayOut.push(`<circle data-venue-truss-handle="start" data-venue-truss-id="${tp.id}" cx="${x1.toFixed(2)}" cy="${y1.toFixed(2)}" r="5.2" fill="${color}" stroke="#f3eeff" stroke-width="1.3" style="cursor:grab;" />`);
                 trussOverlayOut.push(`<circle data-venue-truss-handle="end" data-venue-truss-id="${tp.id}" cx="${x2.toFixed(2)}" cy="${y2.toFixed(2)}" r="5.2" fill="${color}" stroke="#f3eeff" stroke-width="1.3" style="cursor:grab;" />`);
                 trussOverlayOut.push(`<text x="${((x1 + x2) / 2).toFixed(2)}" y="${(((y1 + y2) / 2) - 9).toFixed(2)}" text-anchor="middle" fill="#efe9ff" font-size="10" style="pointer-events:none;">${esc(labelText)}</text>`);
+              });
+            } catch (_) {}
+            try {
+              const gearBySourceId = Object.fromEntries(collectGearInventory().map((g) => [g.id, g]));
+              (gearState.placedItems || []).forEach((item, idx) => {
+                if (!item) return;
+                const gx = Number(item.x || 0);
+                const gy = Number(item.z || 0);
+                if (!Number.isFinite(gx) || !Number.isFinite(gy)) return;
+                if (gx < 0 || gy < 0 || gx > w || gy > d) return;
+                const src = gearBySourceId[item.sourceId] || {};
+                const color = src.color || getDepartmentColor(src.department || "Other");
+                const px = xToPx(gx);
+                const py = yToPx(gy);
+                const label = String(src.name || `G${idx + 1}`).slice(0, 10);
+                out.push(`<circle cx="${px.toFixed(2)}" cy="${py.toFixed(2)}" r="4.4" fill="${color}" stroke="#eef3ff" stroke-width="1.1" style="pointer-events:none;" />`);
+                out.push(`<text x="${(px + 6).toFixed(2)}" y="${(py - 6).toFixed(2)}" fill="#e8efff" font-size="8.5" style="pointer-events:none;">${esc(label)}</text>`);
               });
             } catch (_) {}
 
@@ -7238,6 +8863,27 @@
             venueState.selectedVenueRigGroupId = target.value;
             renderVenue();
           });
+          const venue3dFileInput = document.getElementById("venue3dFile");
+          venue3dFileInput?.addEventListener("change", () => {
+            const file = venue3dFileInput.files && venue3dFileInput.files[0];
+            if (!file) return;
+            if (!/\.(glb|gltf)$/i.test(file.name)) {
+              alert("Please select a .glb or .gltf file.");
+              venue3dFileInput.value = "";
+              return;
+            }
+            if (venueState.model3dUrl && venueState.model3dUrl.startsWith("blob:")) {
+              try { URL.revokeObjectURL(venueState.model3dUrl); } catch (_) {}
+            }
+            venueState.model3dUrl = URL.createObjectURL(file);
+            venueState.model3dName = file.name;
+            initVenue3dViewer();
+          });
+          document.getElementById("venue3dScaleInput")?.addEventListener("input", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            venueState.model3dScale = Math.max(0.01, Number(target.value || 1));
+          });
           document.getElementById("venueMeasureArmBtn")?.addEventListener("click", () => {
             venueState.measureArmed = true;
             venueState.generalMeasureArmed = false;
@@ -7551,7 +9197,7 @@
           if (venueSvg) {
             venueSvg.style.cursor = venuePanState.spaceDown ? "grab" : "";
             venueSvg.addEventListener("mousedown", (ev) => {
-              const active = engineeringNav?.querySelector("button.active")?.dataset.engineering;
+              const active = currentEngineeringSection;
               if (active !== "Venue") return;
               if (!venuePanState.spaceDown || ev.button !== 0) return;
               venuePanState.dragging = true;
@@ -7575,7 +9221,7 @@
               if (ev.code !== "Space") return;
               const t = ev.target;
               if (t instanceof Element && t.closest("input, textarea, select, [contenteditable='true']")) return;
-              const active = engineeringNav?.querySelector("button.active")?.dataset.engineering;
+              const active = currentEngineeringSection;
               if (active === "Venue") ev.preventDefault();
               if (active !== "Venue") return;
               venuePanState.spaceDown = true;
@@ -7623,10 +9269,26 @@
             });
             venuePanBound = true;
           }
+          document.querySelectorAll("[data-venue-gear-chip]").forEach((chip) => {
+            chip.addEventListener("dragstart", (ev) => {
+              const id = chip.getAttribute("data-venue-gear-chip") || "";
+              gearState.selectedInventoryId = id;
+              ev.dataTransfer?.setData("text/plain", id);
+              ev.dataTransfer?.setData("application/x-thebase-gear", id);
+              ev.dataTransfer.effectAllowed = "copy";
+            });
+            chip.addEventListener("click", () => {
+              gearState.selectedInventoryId = chip.getAttribute("data-venue-gear-chip") || "";
+            });
+          });
           redraw();
+          initVenue3dViewer();
         }
 
         function setEngineeringSection(name) {
+          currentEngineeringSection = name;
+          if (name !== "Venue") disposeVenue3dRuntime();
+          disposeGear3dRuntime();
           if (name !== "Video" && typeof ledWiringKeyHandler === "function") {
             window.removeEventListener("keydown", ledWiringKeyHandler);
             ledWiringKeyHandler = null;
@@ -7641,6 +9303,7 @@
           };
           document.body.setAttribute("data-dept", themeMap[name] || "Power");
           localStorage.setItem("thebase.activeDept", themeMap[name] || "Power");
+          saveAppMemory();
           if (name === "Video") {
             renderVideoSubTab("LED");
             return;
@@ -7664,43 +9327,16 @@
           renderPlaceholder(name, `${name} workspace is ready for implementation.`);
         }
 
-        engineeringNav?.querySelectorAll("button[data-engineering]").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            if (btn.dataset.engineering === "Video" && btn.classList.contains("active")) {
-              videoSubnav?.classList.remove("hidden");
-              videoNavBtn?.classList.add("is-open");
-              return;
-            }
-            engineeringNav.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
-            btn.classList.add("active");
-            if (btn.dataset.engineering === "Video") {
-              videoSubnav?.classList.remove("hidden");
-              videoNavBtn?.classList.add("is-open");
-            } else {
-              videoSubnav?.classList.add("hidden");
-              videoNavBtn?.classList.remove("is-open");
-            }
-            setEngineeringSection(btn.dataset.engineering);
-          });
-        });
-        videoSubnav?.querySelectorAll("button[data-video-sub]").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            videoSubnav.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
-            btn.classList.add("active");
-            setEngineeringSection("Video");
-          });
-        });
-
         window.addEventListener("storage", (ev) => {
           if (!window.TheBaseSettings) return;
           if (ev.key !== TheBaseSettings.STORAGE_KEY) return;
           const latest = getSettingsState();
           applySettingsToRuntime(latest);
-          const active = engineeringNav?.querySelector("button[data-engineering].active")?.dataset.engineering || "Video";
-          setEngineeringSection(active);
+          setEngineeringSection(currentEngineeringSection || "Video");
         });
 
         ensureSettingsSeeded();
+        restoreAppMemory();
         loadRiggingCatalogs();
         const appSettings = getSettingsState();
         applySettingsToRuntime(appSettings);
@@ -7708,22 +9344,12 @@
         if (!hasSettingsLighting) {
           loadLightingFixtures();
         }
+        const DEPTS = new Set(["Video", "Lighting", "Sound", "Rigging", "Power", "Venue"]);
+        const urlDept = new URLSearchParams(window.location.search).get("dept") || "";
         const storedDept = localStorage.getItem("thebase.activeDept") || "Video";
-        const initBtn = engineeringNav?.querySelector(`button[data-engineering="${storedDept}"]`);
-        if (initBtn) {
-          engineeringNav?.querySelectorAll("button[data-engineering]").forEach((b) => b.classList.remove("active"));
-          initBtn.classList.add("active");
-          if (storedDept === "Video") {
-            videoSubnav?.classList.remove("hidden");
-            videoNavBtn?.classList.add("is-open");
-          } else {
-            videoSubnav?.classList.add("hidden");
-            videoNavBtn?.classList.remove("is-open");
-          }
-          setEngineeringSection(storedDept);
-        } else {
-          setEngineeringSection("Video");
-        }
+        const initDept = DEPTS.has(urlDept) ? urlDept : (DEPTS.has(storedDept) ? storedDept : "Video");
+        setEngineeringSection(initDept);
+        startAppMemoryAutosave();
 
         document.addEventListener("click", (e) => {
           const btn = e.target.closest("button");
