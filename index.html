@@ -56,6 +56,7 @@
         width: 64px;
         height: 64px;
         object-fit: cover;
+        background: #000;
         border-radius: 50%;
         overflow: hidden;
         border: 2px solid var(--line);
@@ -837,8 +838,11 @@
     <script src="data/lighting-fixtures.js"></script>
     <script src="data/settings-store.js"></script>
     <script src="data/power-calculator.js"></script>
+    <script src="data/model-assets.js"></script>
+    <script src="data/gdtf-models.js"></script>
     <script src="data/prolyte-truss-catalog.js"></script>
     <script src="data/motor-catalog.js"></script>
+    <script src="data/gdtf-previews.js"></script>
     <script src="data/rigging-sample-project.js"></script>
     <script>
       (function () {
@@ -855,16 +859,7 @@
           { id: "novastar_hd", name: "NovaStar HD", ports: 4 },
           { id: "novastar_4k", name: "NovaStar 4K", ports: 16 }
         ];
-        const LIGHTING_FIXTURE_FALLBACK = [
-          { manufacturer: "Ayrton", model: "Diablo-S", category: "Spot", weight_kg: 21.8, power: { avg_w: null, max_w: 550 }, modes: [{ name: "Basic", channels: 34 }, { name: "Standard", channels: 36 }, { name: "Extended", channels: 56 }] },
-          { manufacturer: "Martin", model: "MAC Axiom Hybrid", category: "Hybrid", weight_kg: 24.8, power: { avg_w: null, max_w: 600 }, modes: [{ name: "Basic", channels: 26 }, { name: "Extended", channels: 38 }] },
-          { manufacturer: "Robe", model: "Robin 600E Spot", category: "Spot", weight_kg: null, power: { avg_w: null, max_w: null }, modes: [{ name: "Mode 1", channels: 31 }, { name: "Mode 2", channels: 39 }] },
-          { manufacturer: "Clay Paky", model: "Sharpy", category: "Beam", weight_kg: null, power: { avg_w: null, max_w: null }, modes: [{ name: "Standard", channels: 16 }] },
-          { manufacturer: "Chauvet Professional", model: "Maverick MK2 Spot", category: "Spot", weight_kg: null, power: { avg_w: null, max_w: null }, modes: [{ name: "Basic", channels: 31 }, { name: "Extended", channels: 50 }] },
-          { manufacturer: "ETC", model: "Source Four LED Series 2 Lustr", category: "Profile", weight_kg: null, power: { avg_w: null, max_w: null }, modes: [{ name: "Direct", channels: 1 }, { name: "HSI", channels: 3 }, { name: "RGB", channels: 5 }] },
-          { manufacturer: "GLP", model: "JDC1", category: "Strobe", weight_kg: null, power: { avg_w: null, max_w: null }, modes: [{ name: "Basic", channels: 13 }, { name: "Extended", channels: 68 }] },
-          { manufacturer: "Elation", model: "Proteus Maximus", category: "Profile", weight_kg: null, power: { avg_w: null, max_w: null }, modes: [{ name: "Basic", channels: 35 }, { name: "Extended", channels: 57 }] }
-        ];
+        const LIGHTING_FIXTURE_FALLBACK = [];
         const TRUSS_FALLBACK = [
           { id: "prolyte_h30d", manufacturer: "Prolyte", series: "H30D", connection: "CCS6", weight_per_m_kg: 5.1, available_lengths_m: [0.25, 0.29, 0.5, 0.71, 0.75, 1, 1.5, 2, 2.5, 3, 4], verified: true },
           { id: "prolyte_h30l", manufacturer: "Prolyte", series: "H30L", connection: "CCS6", weight_per_m_kg: 3.017, available_lengths_m: [0.25, 0.29, 0.5, 0.75, 1, 1.5, 2, 2.5, 3, 4], verified: false },
@@ -898,7 +893,28 @@
           { id: "pa_150", name: "PA", weightKg: 150 },
           { id: "projector_25", name: "Projector", weightKg: 25 }
         ];
+        const PROLYTE_STAGE_DECK_SIZES = [
+          { id: "stagedex_2x1", name: "Prolyte StageDex 2.0m x 1.0m", widthM: 2.0, depthM: 1.0, deckWeightKg: 42 },
+          { id: "stagedex_2x0_75", name: "Prolyte StageDex 2.0m x 0.75m", widthM: 2.0, depthM: 0.75, deckWeightKg: 36 },
+          { id: "stagedex_2x0_5", name: "Prolyte StageDex 2.0m x 0.5m", widthM: 2.0, depthM: 0.5, deckWeightKg: 30 },
+          { id: "stagedex_1_5x1", name: "Prolyte StageDex 1.5m x 1.0m", widthM: 1.5, depthM: 1.0, deckWeightKg: 33 },
+          { id: "stagedex_1_5x0_5", name: "Prolyte StageDex 1.5m x 0.5m", widthM: 1.5, depthM: 0.5, deckWeightKg: 24 },
+          { id: "stagedex_1x1", name: "Prolyte StageDex 1.0m x 1.0m", widthM: 1.0, depthM: 1.0, deckWeightKg: 26 },
+          { id: "stagedex_1x0_75", name: "Prolyte StageDex 1.0m x 0.75m", widthM: 1.0, depthM: 0.75, deckWeightKg: 22 },
+          { id: "stagedex_1x0_5", name: "Prolyte StageDex 1.0m x 0.5m", widthM: 1.0, depthM: 0.5, deckWeightKg: 18 },
+          { id: "stagedex_0_75x0_75", name: "Prolyte StageDex 0.75m x 0.75m", widthM: 0.75, depthM: 0.75, deckWeightKg: 16 },
+          { id: "stagedex_0_5x0_5", name: "Prolyte StageDex 0.5m x 0.5m", widthM: 0.5, depthM: 0.5, deckWeightKg: 12 }
+        ];
         let riggingAdditionalCatalog = RIGGING_ADDITIONALS.slice();
+        const MODEL_ASSET_MAP = window.THE_BASE_MODEL_ASSETS && typeof window.THE_BASE_MODEL_ASSETS === "object"
+          ? window.THE_BASE_MODEL_ASSETS
+          : { fixtures: {}, truss: {}, defaults: {} };
+        const GDTF_MODEL_MAP = window.THE_BASE_GDTF_MODELS && typeof window.THE_BASE_GDTF_MODELS === "object"
+          ? window.THE_BASE_GDTF_MODELS
+          : {};
+        const GDTF_PREVIEW_MAP = window.THE_BASE_GDTF_PREVIEWS && typeof window.THE_BASE_GDTF_PREVIEWS === "object"
+          ? window.THE_BASE_GDTF_PREVIEWS
+          : {};
 
         const SETTINGS_SEED_KEY = "thebase.settings.seeded.v1";
         const SETTINGS_DEFAULT_DEPTS = ["Video", "Lighting", "Audio", "Rigging", "Power", "Venue"];
@@ -977,25 +993,7 @@
             if (!settings.departments?.[dept]) settings.departments[dept] = { equipment: [], rules: {} };
           });
           const lightingEquip = (settings.departments.Lighting?.equipment || []).filter((x) => x && x.enabled !== false);
-          if (lightingEquip.length) {
-            lightingFixtureLibrary = lightingEquip.map((eq, idx) => {
-              const modes = Array.isArray(eq?.meta?.fixture_modes) && eq.meta.fixture_modes.length
-                ? eq.meta.fixture_modes
-                : [{ name: "Standard", channels: 1 }];
-              return {
-                manufacturer: eq.manufacturer || "Unknown",
-                model: eq.name || `Fixture ${idx + 1}`,
-                category: String(eq.notes || "Fixture"),
-                weight_kg: Number.isFinite(Number(eq.weight_kg)) ? Number(eq.weight_kg) : null,
-                power: {
-                  avg_w: Number.isFinite(Number(eq?.power_use?.watts)) ? Number(eq.power_use.watts) : null,
-                  max_w: Number.isFinite(Number(eq?.power_use?.watts)) ? Number(eq.power_use.watts) : null
-                },
-                modes: modes
-                  .map((m) => ({ name: String(m.name || "Mode"), channels: Number.isFinite(Number(m.channels)) ? Math.max(1, Math.round(Number(m.channels))) : 1 }))
-              };
-            });
-          }
+          mergeLightingEquipmentIntoLibrary(lightingEquip);
           const riggingEquip = (settings.departments.Rigging?.equipment || []).filter((x) => x && x.enabled !== false);
           if (riggingEquip.length) {
             riggingAdditionalCatalog = riggingEquip.map((eq, idx) => ({
@@ -1094,6 +1092,8 @@
           projectName: "Rigging Project",
           units: "kg/m",
           safetyFactor: 1.2,
+          activeBuildType: "linear",
+          workspaces: {},
           cantileverEnabled: false,
           selectedTrussType: "prolyte_h30v",
           selectedMotorId: "cm_lodestar_1t",
@@ -1103,6 +1103,7 @@
           selectedGroupFixtureId: "",
           selectedTrussGroupId: "",
           selectedPlanGroupId: "",
+          selectedPlanFixtureId: "",
           selectedAdditionalId: "pa_150",
           graphScaleMode: "auto",
           graphFixedMax: null,
@@ -1176,10 +1177,21 @@
           generalMeasurePoints: [],
           generalMeasurementLog: [],
           trussPlacements: [],
+          selectedTrussPlacementId: "",
           selectedVenueRigGroupId: "",
           model3dUrl: "",
           model3dName: "",
-          model3dScale: 1
+          model3dScale: 1,
+          projectionMode: "perspective",
+          gizmoMode: "translate",
+          customVenueModels: [],
+          wallWidthM: 8,
+          wallHeightM: 4,
+          wallDepthM: 0.12,
+          wallScale: 1,
+          wallWeightKg: 120,
+          stageDeckSizeId: PROLYTE_STAGE_DECK_SIZES[0].id,
+          stageDeckHeightM: 0.6
         };
         const gearState = {
           placedItems: [],
@@ -1208,6 +1220,7 @@
         };
         let riggingPlanDragBound = false;
         let riggingPlanMotorDragBound = false;
+        let riggingPlanDeleteBound = false;
         let ledWiringKeyHandler = null;
         let venueTrussDragBound = false;
         const venuePanState = { spaceDown: false, dragging: false, lastX: 0, lastY: 0 };
@@ -1316,6 +1329,139 @@
             color: "#f08a3c"
           };
         }
+        const RIGGING_BUILD_TYPES = [
+          { id: "linear", label: "Linear Truss" },
+          { id: "box", label: "Box Truss" },
+          { id: "circle", label: "Circle Truss" },
+          { id: "totem", label: "Totems" }
+        ];
+        const RIGGING_WORKSPACE_KEYS = [
+          "projectName",
+          "units",
+          "safetyFactor",
+          "cantileverEnabled",
+          "selectedTrussType",
+          "selectedMotorId",
+          "fixtureSearch",
+          "selectedFixtureKey",
+          "selectedGroupId",
+          "selectedGroupFixtureId",
+          "selectedTrussGroupId",
+          "selectedPlanGroupId",
+          "selectedPlanFixtureId",
+          "selectedAdditionalId",
+          "graphScaleMode",
+          "graphFixedMax",
+          "groupFixturePositionM",
+          "groupMotorPositionM",
+          "groupMotorRoofWllKg",
+          "groupMotorChainDropM",
+          "groupSegmentLengthMById",
+          "groupExpandedById",
+          "selectedSpanId",
+          "fixturePositionM",
+          "fixtureQty",
+          "groups",
+          "nodes",
+          "spans",
+          "pickups",
+          "fixturePlacements",
+          "groupFixtures",
+          "groupMotors",
+          "accessories",
+          "lastCalc"
+        ];
+        function buildDefaultRiggingWorkspace(buildType = "linear") {
+          const suffix = String(buildType || "linear");
+          const defaultTrussForType = getPreferredTrussTypeForBuildType(buildType);
+          return {
+            projectName: "Rigging Project",
+            units: "kg/m",
+            safetyFactor: 1.2,
+            cantileverEnabled: false,
+            selectedTrussType: defaultTrussForType || "prolyte_h30v",
+            selectedMotorId: "cm_lodestar_1t",
+            fixtureSearch: "",
+            selectedFixtureKey: "",
+            selectedGroupId: "",
+            selectedGroupFixtureId: "",
+            selectedTrussGroupId: "",
+            selectedPlanGroupId: "",
+            selectedPlanFixtureId: "",
+            selectedAdditionalId: "pa_150",
+            graphScaleMode: "auto",
+            graphFixedMax: null,
+            groupFixturePositionM: 0,
+            groupMotorPositionM: 0,
+            groupMotorRoofWllKg: null,
+            groupMotorChainDropM: 8,
+            groupSegmentLengthMById: {},
+            groupExpandedById: {},
+            selectedSpanId: "",
+            fixturePositionM: 0,
+            fixtureQty: 1,
+            groups: [{ id: `rig_${suffix}_grp_1`, name: "Main Rig", color: "#f08a3c" }],
+            nodes: [
+              { id: `N_${suffix}_1`, label: "P1", x: 0, y: 0 },
+              { id: `N_${suffix}_2`, label: "P2", x: 6, y: 0 },
+              { id: `N_${suffix}_3`, label: "P3", x: 12, y: 0 }
+            ],
+            spans: [
+              { id: `S_${suffix}_1`, nodeA: `N_${suffix}_1`, nodeB: `N_${suffix}_2`, trussTypeId: defaultTrussForType || "prolyte_h30v", lengthM: 6, groupId: `rig_${suffix}_grp_1` },
+              { id: `S_${suffix}_2`, nodeA: `N_${suffix}_2`, nodeB: `N_${suffix}_3`, trussTypeId: defaultTrussForType || "prolyte_h30v", lengthM: 6, groupId: `rig_${suffix}_grp_1` }
+            ],
+            pickups: [
+              { id: `PU_${suffix}_1`, nodeId: `N_${suffix}_1`, pickupType: "motor", motorId: "cm_lodestar_1t", roofPointWllKg: 1000, chainDropM: 8, notes: "" },
+              { id: `PU_${suffix}_2`, nodeId: `N_${suffix}_2`, pickupType: "motor", motorId: "cm_lodestar_1t", roofPointWllKg: 1000, chainDropM: 8, notes: "" },
+              { id: `PU_${suffix}_3`, nodeId: `N_${suffix}_3`, pickupType: "motor", motorId: "cm_lodestar_1t", roofPointWllKg: 1000, chainDropM: 8, notes: "" }
+            ],
+            fixturePlacements: [],
+            groupFixtures: [],
+            groupMotors: [],
+            accessories: [],
+            lastCalc: null
+          };
+        }
+        function captureRiggingWorkspaceSnapshot() {
+          const snap = {};
+          RIGGING_WORKSPACE_KEYS.forEach((k) => { snap[k] = safeClone(riggingState[k]); });
+          return snap;
+        }
+        function applyRiggingWorkspaceSnapshot(snapshot) {
+          const next = snapshot && typeof snapshot === "object" ? snapshot : buildDefaultRiggingWorkspace(riggingState.activeBuildType || "linear");
+          RIGGING_WORKSPACE_KEYS.forEach((k) => {
+            if (next[k] === undefined) return;
+            riggingState[k] = safeClone(next[k]);
+          });
+        }
+        function ensureRiggingWorkspaces() {
+          if (!riggingState.workspaces || typeof riggingState.workspaces !== "object") riggingState.workspaces = {};
+          RIGGING_BUILD_TYPES.forEach((bt) => {
+            if (!riggingState.workspaces[bt.id]) {
+              riggingState.workspaces[bt.id] = bt.id === "linear"
+                ? captureRiggingWorkspaceSnapshot()
+                : buildDefaultRiggingWorkspace(bt.id);
+            }
+          });
+          if (!RIGGING_BUILD_TYPES.some((x) => x.id === riggingState.activeBuildType)) {
+            riggingState.activeBuildType = "linear";
+          }
+        }
+        function switchRiggingBuildType(nextType = "linear") {
+          ensureRiggingWorkspaces();
+          const next = String(nextType || "linear");
+          if (!RIGGING_BUILD_TYPES.some((x) => x.id === next)) return;
+          const prev = String(riggingState.activeBuildType || "linear");
+          riggingState.workspaces[prev] = captureRiggingWorkspaceSnapshot();
+          riggingState.activeBuildType = next;
+          applyRiggingWorkspaceSnapshot(riggingState.workspaces[next] || buildDefaultRiggingWorkspace(next));
+          const allowed = getTrussCatalogForBuildType(next);
+          if (!allowed.some((t) => t.id === riggingState.selectedTrussType)) {
+            riggingState.selectedTrussType = getPreferredTrussTypeForBuildType(next) || allowed[0]?.id || riggingState.selectedTrussType;
+          }
+          relayoutAllRiggingGroupsByBuildType();
+          riggingState.lastCalc = null;
+        }
         function colorWithAlpha(hex, alpha = 0.12) {
           const safeAlpha = Math.max(0, Math.min(1, Number(alpha || 0)));
           const h = String(hex || "").trim();
@@ -1340,6 +1486,33 @@
         function fixtureKey(fixture) {
           return `${fixture.manufacturer}__${fixture.model}`;
         }
+        function fixturePreviewByKey(key) {
+          const raw = GDTF_PREVIEW_MAP[String(key || "")];
+          if (!raw) return { path: "", dimensions_m: { length_m: null, width_m: null, height_m: null } };
+          if (typeof raw === "string") {
+            return { path: raw, symbol_role: "thumbnail", dimensions_m: { length_m: null, width_m: null, height_m: null } };
+          }
+          return {
+            path: String(raw.path || ""),
+            symbol_role: String(raw.symbol_role || "thumbnail"),
+            dimensions_m: raw.dimensions_m && typeof raw.dimensions_m === "object"
+              ? {
+                length_m: Number.isFinite(Number(raw.dimensions_m.length_m)) ? Number(raw.dimensions_m.length_m) : null,
+                width_m: Number.isFinite(Number(raw.dimensions_m.width_m)) ? Number(raw.dimensions_m.width_m) : null,
+                height_m: Number.isFinite(Number(raw.dimensions_m.height_m)) ? Number(raw.dimensions_m.height_m) : null
+              }
+              : { length_m: null, width_m: null, height_m: null }
+          };
+        }
+        function fixtureDimensionsMByKey(key) {
+          const f = getLightingFixtureByKey(key);
+          const d = f?.dimensions_mm || {};
+          return {
+            length_m: Number.isFinite(Number(d.length)) ? Number(d.length) / 1000 : null,
+            width_m: Number.isFinite(Number(d.width)) ? Number(d.width) / 1000 : null,
+            height_m: Number.isFinite(Number(d.height)) ? Number(d.height) / 1000 : null
+          };
+        }
         function getLightingFixtureByKey(key) {
           return lightingFixtureLibrary.find((f) => fixtureKey(f) === key) || lightingFixtureLibrary[0];
         }
@@ -1351,6 +1524,11 @@
               model: f.model || "Unnamed Fixture",
               category: f.category || "Fixture",
               weight_kg: Number.isFinite(Number(f?.weight_kg)) ? Number(f.weight_kg) : null,
+              dimensions_mm: {
+                length: Number.isFinite(Number(f?.dimensions_mm?.length)) ? Number(f.dimensions_mm.length) : null,
+                width: Number.isFinite(Number(f?.dimensions_mm?.width)) ? Number(f.dimensions_mm.width) : null,
+                height: Number.isFinite(Number(f?.dimensions_mm?.height)) ? Number(f.dimensions_mm.height) : null
+              },
               power: {
                 avg_w: Number.isFinite(Number(f?.power?.avg_w)) ? Number(f.power.avg_w) : null,
                 max_w: Number.isFinite(Number(f?.power?.max_w)) ? Number(f.power.max_w) : null
@@ -1366,13 +1544,57 @@
           lightingFixtureLibrary = clean;
           return true;
         }
+        function mapLightingEquipmentToFixture(eq, idx) {
+          const modes = Array.isArray(eq?.meta?.fixture_modes) && eq.meta.fixture_modes.length
+            ? eq.meta.fixture_modes
+            : [{ name: "Standard", channels: 1 }];
+          return {
+            manufacturer: eq?.manufacturer || "Unknown",
+            model: eq?.name || `Fixture ${idx + 1}`,
+            category: String(eq?.notes || "Fixture"),
+            weight_kg: Number.isFinite(Number(eq?.weight_kg)) ? Number(eq.weight_kg) : null,
+            dimensions_mm: {
+              length: Number.isFinite(Number(eq?.meta?.dimensions_mm?.length)) ? Number(eq.meta.dimensions_mm.length) : null,
+              width: Number.isFinite(Number(eq?.meta?.dimensions_mm?.width)) ? Number(eq.meta.dimensions_mm.width) : null,
+              height: Number.isFinite(Number(eq?.meta?.dimensions_mm?.height)) ? Number(eq.meta.dimensions_mm.height) : null
+            },
+            power: {
+              avg_w: Number.isFinite(Number(eq?.power_use?.watts)) ? Number(eq.power_use.watts) : null,
+              max_w: Number.isFinite(Number(eq?.power_use?.watts)) ? Number(eq.power_use.watts) : null
+            },
+            modes: modes.map((m) => ({
+              name: String(m?.name || "Mode"),
+              channels: Number.isFinite(Number(m?.channels)) ? Math.max(1, Math.round(Number(m.channels))) : 1
+            }))
+          };
+        }
+        function mergeLightingEquipmentIntoLibrary(lightingEquip) {
+          if (!Array.isArray(lightingEquip) || !lightingEquip.length) return;
+          const map = new Map(lightingFixtureLibrary.map((f) => [fixtureKey(f), f]));
+          lightingEquip.forEach((eq, idx) => {
+            const eqId = String(eq?.id || "");
+            if (/^lx_seed_\d+$/i.test(eqId)) return;
+            const fixture = mapLightingEquipmentToFixture(eq, idx);
+            map.set(fixtureKey(fixture), fixture);
+          });
+          lightingFixtureLibrary = Array.from(map.values());
+        }
         function loadLightingFixtures() {
-          if (applyLightingFixtureRows(window.THE_BASE_LIGHTING_FIXTURES || [])) return;
+          if (applyLightingFixtureRows(window.THE_BASE_LIGHTING_FIXTURES || [])) {
+            const liveSettings = getSettingsState();
+            const lightingEquip = (liveSettings?.departments?.Lighting?.equipment || []).filter((x) => x && x.enabled !== false);
+            mergeLightingEquipmentIntoLibrary(lightingEquip);
+            if (currentEngineeringSection === "Lighting") renderLighting();
+            return;
+          }
           if (typeof fetch !== "function") return;
           fetch("data/lighting-fixtures.json")
             .then((res) => (res.ok ? res.json() : Promise.reject(new Error("No lighting fixture dataset found."))))
             .then((rows) => {
               if (applyLightingFixtureRows(rows)) {
+                const liveSettings = getSettingsState();
+                const lightingEquip = (liveSettings?.departments?.Lighting?.equipment || []).filter((x) => x && x.enabled !== false);
+                mergeLightingEquipmentIntoLibrary(lightingEquip);
                 const active = currentEngineeringSection;
                 if (active === "Lighting") renderLighting();
               }
@@ -1515,12 +1737,65 @@
         function getSpan(id) {
           return riggingState.spans.find((s) => s.id === id);
         }
+        function getTrussCatalogForBuildType(buildType = "linear") {
+          const type = String(buildType || "linear").toLowerCase();
+          const all = Array.isArray(trussCatalog) ? trussCatalog : [];
+          const include = (row) => {
+            const series = String(row?.series || "").toUpperCase();
+            if (type === "circle") return /D$/.test(series) || /R$/.test(series);
+            if (type === "totem") return /V$/.test(series) || /R$/.test(series);
+            if (type === "box") return /V$/.test(series) || /R$/.test(series) || /D$/.test(series);
+            return true;
+          };
+          const filtered = all.filter(include);
+          return filtered.length ? filtered : all;
+        }
+        function getPreferredTrussTypeForBuildType(buildType = "linear") {
+          const list = getTrussCatalogForBuildType(buildType);
+          const prefSeries = buildType === "circle"
+            ? ["H30D", "H40R", "X30D"]
+            : (buildType === "totem" ? ["H30V", "H40V", "X30V"] : ["H30V", "H40V", "X30V"]);
+          for (let i = 0; i < prefSeries.length; i += 1) {
+            const hit = list.find((x) => String(x.series || "").toUpperCase() === prefSeries[i]);
+            if (hit) return hit.id;
+          }
+          return list[0]?.id || "";
+        }
         function getRiggingGroups() {
           if (!Array.isArray(riggingState.groups)) riggingState.groups = [];
           if (!riggingState.groups.length) {
             riggingState.groups = [{ id: "rig_grp_1", name: "Main Rig", color: "#f08a3c" }];
           }
           return riggingState.groups;
+        }
+        function getOrderedGroupSpans(groupId) {
+          const rows = (riggingState.spans || []).filter((s) => (s.groupId || getRiggingGroups()[0]?.id || "") === groupId);
+          if (rows.length <= 1) return rows.slice();
+          const byNode = {};
+          rows.forEach((s) => {
+            byNode[s.nodeA] = byNode[s.nodeA] || [];
+            byNode[s.nodeB] = byNode[s.nodeB] || [];
+            byNode[s.nodeA].push(s);
+            byNode[s.nodeB].push(s);
+          });
+          const endpoints = Object.entries(byNode).filter(([, list]) => list.length === 1).map(([id]) => id);
+          const startNode = endpoints[0] || rows[0].nodeA;
+          const used = new Set();
+          const ordered = [];
+          let currentNode = startNode;
+          let guard = 0;
+          while (guard < rows.length + 4) {
+            guard += 1;
+            const next = (byNode[currentNode] || []).find((s) => !used.has(s.id));
+            if (!next) break;
+            used.add(next.id);
+            ordered.push(next);
+            currentNode = next.nodeA === currentNode ? next.nodeB : next.nodeA;
+          }
+          rows.forEach((s) => {
+            if (!used.has(s.id)) ordered.push(s);
+          });
+          return ordered;
         }
         function getRiggingSpanLabel(span) {
           if (!span) return "";
@@ -1530,8 +1805,7 @@
         }
         function getRiggingGroupSpans(groupId) {
           const map = buildRiggingSpanCoordinateMap();
-          return (riggingState.spans || [])
-            .filter((s) => (s.groupId || getRiggingGroups()[0]?.id || "") === groupId)
+          return getOrderedGroupSpans(groupId)
             .map((s) => {
               const ax = Number(map.nodeXById[s.nodeA] ?? getNode(s.nodeA)?.x ?? 0);
               const bx = Number(map.nodeXById[s.nodeB] ?? getNode(s.nodeB)?.x ?? 0);
@@ -1544,8 +1818,7 @@
                 endX,
                 lengthM: Math.max(0, Number(s.lengthM || 0))
               };
-            })
-            .sort((a, b) => a.sortX - b.sortX);
+            });
         }
         function getRiggingGroupTotalSpan(groupId) {
           const spans = getRiggingGroupSpans(groupId);
@@ -1591,6 +1864,74 @@
             offset += len;
           }
           return null;
+        }
+        function relayoutRiggingGroupByBuildType(groupId, buildType = "linear") {
+          const ordered = getOrderedGroupSpans(groupId);
+          if (!ordered.length) return;
+          const nodesById = Object.fromEntries((riggingState.nodes || []).map((n) => [n.id, n]));
+          const nodeOrder = [];
+          ordered.forEach((s, idx) => {
+            if (idx === 0) nodeOrder.push(s.nodeA, s.nodeB);
+            else {
+              const last = nodeOrder[nodeOrder.length - 1];
+              nodeOrder.push(last === s.nodeA ? s.nodeB : s.nodeA);
+            }
+          });
+          if (nodeOrder.length < 2) return;
+          const lengths = ordered.map((s) => Math.max(0, Number(s.lengthM || 0)));
+          const total = lengths.reduce((a, b) => a + b, 0);
+          if (!(total > 0)) return;
+          const cum = [0];
+          for (let i = 0; i < lengths.length; i += 1) cum.push(cum[cum.length - 1] + lengths[i]);
+          const setNode = (id, x, y) => {
+            const node = nodesById[id];
+            if (!node) return;
+            node.x = Number(x.toFixed(3));
+            node.y = Number(y.toFixed(3));
+          };
+          const type = String(buildType || "linear").toLowerCase();
+          if (type === "circle") {
+            const r = Math.max(1, total / (2 * Math.PI));
+            for (let i = 0; i < nodeOrder.length; i += 1) {
+              const t = cum[Math.min(i, cum.length - 1)] / total;
+              const a = (Math.PI * 2 * t) - (Math.PI / 2);
+              setNode(nodeOrder[i], r * Math.cos(a), r * Math.sin(a));
+            }
+            return;
+          }
+          if (type === "box") {
+            const w = Math.max(1, total / 3);
+            const h = Math.max(0.6, (total - (2 * w)) / 2);
+            const per = Math.max(0.001, (2 * (w + h)));
+            const edgePoint = (dist) => {
+              let d = ((dist % per) + per) % per;
+              if (d <= w) return { x: d - (w / 2), y: -h / 2 };
+              d -= w;
+              if (d <= h) return { x: w / 2, y: d - (h / 2) };
+              d -= h;
+              if (d <= w) return { x: (w / 2) - d, y: h / 2 };
+              d -= w;
+              return { x: -w / 2, y: (h / 2) - d };
+            };
+            for (let i = 0; i < nodeOrder.length; i += 1) {
+              const p = edgePoint(cum[Math.min(i, cum.length - 1)]);
+              setNode(nodeOrder[i], p.x, p.y);
+            }
+            return;
+          }
+          if (type === "totem") {
+            for (let i = 0; i < nodeOrder.length; i += 1) {
+              setNode(nodeOrder[i], 0, cum[Math.min(i, cum.length - 1)]);
+            }
+            return;
+          }
+          for (let i = 0; i < nodeOrder.length; i += 1) {
+            setNode(nodeOrder[i], cum[Math.min(i, cum.length - 1)], 0);
+          }
+        }
+        function relayoutAllRiggingGroupsByBuildType() {
+          const bt = String(riggingState.activeBuildType || "linear");
+          getRiggingGroups().forEach((g) => relayoutRiggingGroupByBuildType(g.id, bt));
         }
         function projectPointerToRigPlanSpan(ev, groupId = "") {
           const liveSvg = document.getElementById("rigPlanSvg");
@@ -1645,63 +1986,12 @@
           const nodes = riggingState.nodes || [];
           const spans = riggingState.spans || [];
           if (!nodes.length) return { nodeXById: {}, minX: 0, maxX: 1, totalSpanM: 0 };
-
           const totalSpanM = spans.reduce((a, s) => a + Math.max(0, Number(s.lengthM || 0)), 0);
-          const nodeXById = {};
-          const nodeById = Object.fromEntries(nodes.map((n) => [n.id, n]));
-          const adj = {};
-          spans.forEach((s) => {
-            const a = nodeById[s.nodeA];
-            const b = nodeById[s.nodeB];
-            const len = Math.max(0, Number(s.lengthM || 0));
-            if (!a || !b || len <= 0) return;
-            const ax = Number(a.x || 0);
-            const bx = Number(b.x || 0);
-            const dirAB = bx >= ax ? 1 : -1;
-            const dirBA = ax >= bx ? 1 : -1;
-            if (!adj[a.id]) adj[a.id] = [];
-            if (!adj[b.id]) adj[b.id] = [];
-            adj[a.id].push({ to: b.id, len, dir: dirAB, spanId: s.id });
-            adj[b.id].push({ to: a.id, len, dir: dirBA, spanId: s.id });
-          });
-
-          const sortedNodes = [...nodes].sort((a, b) => Number(a.x || 0) - Number(b.x || 0));
-          const visitedSpan = new Set();
-          const visitedNode = new Set();
-
-          const walkComponent = (startId, startX) => {
-            if (!Number.isFinite(Number(nodeXById[startId]))) nodeXById[startId] = Number(startX || 0);
-            const q = [startId];
-            visitedNode.add(startId);
-            while (q.length) {
-              const id = q.shift();
-              const base = Number(nodeXById[id] || 0);
-              (adj[id] || []).forEach((e) => {
-                if (visitedSpan.has(e.spanId)) return;
-                visitedSpan.add(e.spanId);
-                if (!Number.isFinite(Number(nodeXById[e.to]))) nodeXById[e.to] = base + (e.dir * e.len);
-                if (!visitedNode.has(e.to)) {
-                  visitedNode.add(e.to);
-                  q.push(e.to);
-                }
-              });
-            }
-          };
-
-          while (Object.keys(nodeXById).length < nodes.length) {
-            const seed = sortedNodes.find((n) => !Number.isFinite(Number(nodeXById[n.id])));
-            if (!seed) break;
-            walkComponent(seed.id, Number(seed.x || 0));
-          }
-
-          const values = Object.values(nodeXById).map((v) => Number(v || 0)).concat(nodes.map((n) => Number(n.x || 0)));
-          const minX = values.length ? Math.min(...values) : 0;
-          const mappedMax = Object.values(nodeXById).length
-            ? Math.max(...Object.values(nodeXById).map((v) => Number(v || 0)))
-            : 1;
-          const actualMax = nodes.length ? Math.max(...nodes.map((n) => Number(n.x || 0))) : 1;
-          const maxX = Math.max(1, mappedMax, actualMax, totalSpanM || 0);
-          return { nodeXById, minX, maxX, totalSpanM };
+          const nodeXById = Object.fromEntries(nodes.map((n) => [n.id, Number(n.x || 0)]));
+          const xs = nodes.map((n) => Number(n.x || 0));
+          const minX = xs.length ? Math.min(...xs) : 0;
+          const maxX = xs.length ? Math.max(...xs) : 1;
+          return { nodeXById, minX, maxX: Math.max(1, maxX), totalSpanM };
         }
         function getFixtureWeightByKey(key) {
           const fx = getLightingFixtureByKey(key);
@@ -1912,6 +2202,8 @@
         }
         function runRiggingCalculation() {
           normalizeRiggingSpanItems();
+          const buildType = String(riggingState.activeBuildType || "linear");
+          const buildTypeMeta = RIGGING_BUILD_TYPES.find((x) => x.id === buildType) || RIGGING_BUILD_TYPES[0];
           const warnings = [];
           const blockers = [];
           const perNodeRaw = {};
@@ -1940,11 +2232,17 @@
             const hasLeftPickup = (pickupByNode[nodeA.id] || []).length > 0;
             const hasRightPickup = (pickupByNode[nodeB.id] || []).length > 0;
             if (!hasLeftPickup && !hasRightPickup) {
-              blockers.push(`Span ${span.id} has no pickup support at either end.`);
-              return;
+              if (buildType === "totem") {
+                warnings.push(`Totem mode: ${span.id} has no pickup supports; treated as base-supported member for planning checks.`);
+              } else {
+                blockers.push(`Span ${span.id} has no pickup support at either end.`);
+                return;
+              }
             }
             if (!hasLeftPickup || !hasRightPickup) {
-              warnings.push(`Span ${span.id} is missing pickup support at one end. Reactions will be estimated; verify support model.`);
+              if (buildType !== "totem") {
+                warnings.push(`Span ${span.id} is missing pickup support at one end. Reactions will be estimated; verify support model.`);
+              }
             }
 
             const truss = getTrussType(span.trussTypeId);
@@ -2003,13 +2301,18 @@
               });
 
             const reaction = calculateReactionsForSpan(spanLength, trussWeightPerM, pointLoads);
-            const prolyte = evaluateSpanAgainstProlyte(span, truss, spanLength, trussWeightPerM, pointLoads, reaction);
-            if (prolyte.status === "FAIL") {
-              blockers.push(`Span ${span.id} Prolyte limit fail: ${prolyte.detail}`);
-            } else if (prolyte.status === "WARN") {
-              warnings.push(`Span ${span.id} high Prolyte utilization: ${prolyte.detail}`);
+            let prolyte = { status: "PASS", utilizationPct: null, criticalLabel: "", detail: "", notes: [] };
+            if (buildType !== "totem") {
+              prolyte = evaluateSpanAgainstProlyte(span, truss, spanLength, trussWeightPerM, pointLoads, reaction);
+              if (prolyte.status === "FAIL") {
+                blockers.push(`Span ${span.id} Prolyte limit fail: ${prolyte.detail}`);
+              } else if (prolyte.status === "WARN") {
+                warnings.push(`Span ${span.id} high Prolyte utilization: ${prolyte.detail}`);
+              }
+              (prolyte.notes || []).forEach((n) => warnings.push(`Span ${span.id}: ${n}`));
+            } else {
+              prolyte.detail = "Totem mode uses member/load checks; span table utilization skipped.";
             }
-            (prolyte.notes || []).forEach((n) => warnings.push(`Span ${span.id}: ${n}`));
             perNodeRaw[nodeA.id] += reaction.R_left_kg;
             perNodeRaw[nodeB.id] += reaction.R_right_kg;
             perNodeStructuralRaw[nodeA.id] += reaction.R_left_kg;
@@ -2151,7 +2454,9 @@
 
           const totalSpanLoad = spanResults.reduce((a, s) => a + s.totalLoadKg, 0);
           const missingWllCount = riggingState.pickups.filter((p) => !Number.isFinite(Number(p.roofPointWllKg))).length;
-          const unsupportedNodeCount = riggingState.nodes.filter((n) => (!pickupByNode[n.id] || pickupByNode[n.id].length === 0) && (perNodeRaw[n.id] || 0) > 0.01).length;
+          const unsupportedNodeCount = buildType === "totem"
+            ? 0
+            : riggingState.nodes.filter((n) => (!pickupByNode[n.id] || pickupByNode[n.id].length === 0) && (perNodeRaw[n.id] || 0) > 0.01).length;
           const unverifiedSpanCount = riggingState.spans.filter((s) => {
             const truss = getTrussType(s.trussTypeId);
             return Boolean(truss && !truss.verified);
@@ -2165,7 +2470,73 @@
           const missingMass = blockers.filter((b) => /unknown weight|invalid weight|self-weight missing|chain kg\/m missing|truss weight is missing|UNVERIFIED/i.test(String(b))).length;
           if (roofWarnCount > 0) warnings.push(`${roofWarnCount} roof point(s) above 85% utilization.`);
           if (motorWarnCount > 0) warnings.push(`${motorWarnCount} motor(s) above 85% utilization.`);
+          const buildTypeRows = [];
+          const buildTypeWarnings = [];
+          const buildTypeBlockers = [];
+          getRiggingGroups().forEach((g) => {
+            const spans = (riggingState.spans || []).filter((s) => (s.groupId || getRiggingGroups()[0]?.id || "") === g.id);
+            if (!spans.length) return;
+            const motors = (riggingState.groupMotors || []).filter((m) => (m.groupId || "") === g.id);
+            const nodeDegree = {};
+            spans.forEach((s) => {
+              nodeDegree[s.nodeA] = (nodeDegree[s.nodeA] || 0) + 1;
+              nodeDegree[s.nodeB] = (nodeDegree[s.nodeB] || 0) + 1;
+            });
+            const isClosedLoop = spans.length >= 4 && Object.values(nodeDegree).every((d) => Number(d) === 2);
+            const totalSpan = Number(getRiggingGroupTotalSpan(g.id) || 0);
+            if (buildType === "box") {
+              if (!isClosedLoop) buildTypeWarnings.push(`Box Truss: ${g.name} is not a closed loop (recommended: 4+ sides with each corner node degree 2).`);
+              if (motors.length < 4) buildTypeWarnings.push(`Box Truss: ${g.name} has ${motors.length} motor(s); 4+ pickups are recommended for perimeter support.`);
+              buildTypeRows.push({
+                group: g.name,
+                rule: "Closed perimeter",
+                value: isClosedLoop ? "Closed" : "Open / chain",
+                status: isClosedLoop ? "PASS" : "WARN"
+              });
+            } else if (buildType === "circle") {
+              const segOk = spans.length >= 8;
+              const motorOk = motors.length >= 3;
+              if (!segOk) buildTypeWarnings.push(`Circle Truss: ${g.name} uses ${spans.length} segment(s); use 8+ for a stable round approximation.`);
+              if (!motorOk) buildTypeWarnings.push(`Circle Truss: ${g.name} has ${motors.length} motor(s); 3+ evenly spaced motors recommended.`);
+              buildTypeRows.push({
+                group: g.name,
+                rule: "Round approximation",
+                value: `${spans.length} seg (${(totalSpan > 0 ? (totalSpan / Math.PI) : 0).toFixed(2)}m eq. dia)`,
+                status: (segOk && motorOk) ? "PASS" : "WARN"
+              });
+            } else if (buildType === "totem") {
+              const singleSpan = spans.length === 1;
+              const baseAnchored = motors.length >= 1;
+              if (!singleSpan) buildTypeWarnings.push(`Totem: ${g.name} has ${spans.length} spans; usually model a totem as a single vertical member.`);
+              if (!baseAnchored) buildTypeWarnings.push(`Totem: ${g.name} has no motor/base anchor entry; support capacity check is incomplete.`);
+              buildTypeRows.push({
+                group: g.name,
+                rule: "Tower setup",
+                value: `${spans.length} span / ${motors.length} anchor`,
+                status: (singleSpan && baseAnchored) ? "PASS" : "WARN"
+              });
+            } else {
+              if (motors.length < 2) buildTypeWarnings.push(`Linear Truss: ${g.name} has ${motors.length} motor(s); 2+ supports recommended for beam behavior.`);
+              buildTypeRows.push({
+                group: g.name,
+                rule: "Beam supports",
+                value: `${motors.length} motor(s)`,
+                status: motors.length >= 2 ? "PASS" : "WARN"
+              });
+            }
+          });
+          buildTypeWarnings.forEach((w) => warnings.push(w));
+          buildTypeBlockers.forEach((b) => blockers.push(b));
+
           const complianceChecks = [
+            {
+              id: "build_type_rules",
+              title: `${buildTypeMeta.label} Rules`,
+              status: buildTypeBlockers.length > 0 ? "FAIL" : (buildTypeWarnings.length > 0 ? "WARN" : "PASS"),
+              detail: buildTypeBlockers.length > 0
+                ? `${buildTypeBlockers.length} blocker(s) for ${buildTypeMeta.label} workflow.`
+                : (buildTypeWarnings.length > 0 ? `${buildTypeWarnings.length} recommendation warning(s) for ${buildTypeMeta.label}.` : `${buildTypeMeta.label} rules satisfied.`)
+            },
             {
               id: "verified_truss",
               title: "Verified Truss Data",
@@ -2202,9 +2573,11 @@
               id: "supported_nodes",
               title: "Supported Loaded Nodes",
               status: unsupportedNodeCount > 0 ? "FAIL" : "PASS",
-              detail: unsupportedNodeCount > 0
+              detail: buildType === "totem"
+                ? "Totem mode uses base-supported tower assumptions for unsupported node checks."
+                : (unsupportedNodeCount > 0
                 ? `${unsupportedNodeCount} loaded node(s) have no pickup support.`
-                : "All loaded nodes are supported."
+                : "All loaded nodes are supported.")
             },
             {
               id: "roof_utilization",
@@ -2229,6 +2602,9 @@
             blocked: blockers.length > 0,
             blockers,
             warnings,
+            buildType,
+            buildTypeLabel: buildTypeMeta.label,
+            buildTypeRows,
             safetyFactor: Number(riggingState.safetyFactor || 1),
             totalWeightKg: totalSpanLoad + nodeAppliedTotal,
             perNodeRaw,
@@ -4338,6 +4714,28 @@
             lightingState.activeGroupId = lightingState.groups[0].id;
           }
         }
+        function syncRiggingFixturesWithLighting() {
+          const validSourceIds = new Set();
+          (lightingState.fixtures || []).forEach((line) => {
+            const qty = Math.max(1, Math.round(Number(line.quantity || 1)));
+            for (let i = 1; i <= qty; i += 1) validSourceIds.add(`${line.id}__${i}`);
+          });
+          const prevFp = (riggingState.fixturePlacements || []).length;
+          const prevGf = (riggingState.groupFixtures || []).length;
+          riggingState.fixturePlacements = (riggingState.fixturePlacements || []).filter((fp) => {
+            const sid = String(fp?.sourceInstanceId || "");
+            if (!sid) return true;
+            return validSourceIds.has(sid);
+          });
+          riggingState.groupFixtures = (riggingState.groupFixtures || []).filter((gf) => {
+            const sid = String(gf?.sourceInstanceId || "");
+            if (!sid) return true;
+            return validSourceIds.has(sid);
+          });
+          if ((riggingState.fixturePlacements || []).length !== prevFp || (riggingState.groupFixtures || []).length !== prevGf) {
+            riggingState.lastCalc = null;
+          }
+        }
 
         function renderLighting() {
           ensureLightingDefaults();
@@ -4489,6 +4887,7 @@
               el.addEventListener("change", () => {
                 const line = lightingState.fixtures.find((x) => x.id === el.dataset.lxLineQty);
                 if (line) line.quantity = Math.max(1, Math.round(Number(el.value || 1)));
+                syncRiggingFixturesWithLighting();
                 renderGroupOutputs();
               });
             });
@@ -4502,6 +4901,7 @@
             fixtureRows.querySelectorAll("button[data-lx-line-remove]").forEach((el) => {
               el.addEventListener("click", () => {
                 lightingState.fixtures = lightingState.fixtures.filter((x) => x.id !== el.dataset.lxLineRemove);
+                syncRiggingFixturesWithLighting();
                 renderLighting();
               });
             });
@@ -4663,21 +5063,26 @@
         }
         function renderRigging() {
           if (!main) return;
+          ensureRiggingWorkspaces();
           normalizeRiggingSpanItems();
-          const defaultTrussId = getPreferredDefaultTrussId();
-          if (riggingState.selectedTrussType && !trussCatalog.some((t) => t.id === riggingState.selectedTrussType)) {
+          const activeBuildType = String(riggingState.activeBuildType || "linear");
+          const trussCatalogForBuildType = getTrussCatalogForBuildType(activeBuildType);
+          const defaultTrussId = getPreferredTrussTypeForBuildType(activeBuildType) || getPreferredDefaultTrussId();
+          if (riggingState.selectedTrussType && !trussCatalogForBuildType.some((t) => t.id === riggingState.selectedTrussType)) {
             riggingState.selectedTrussType = "";
           }
           if (!riggingState.selectedTrussType && defaultTrussId) {
             riggingState.selectedTrussType = defaultTrussId;
           }
           const rigGroups = getRiggingGroups();
+          const trussTypeSetForBuild = new Set(trussCatalogForBuildType.map((t) => t.id));
           riggingState.spans = (riggingState.spans || []).map((s) => ({
             ...s,
-            trussTypeId: trussCatalog.some((t) => t.id === s.trussTypeId) ? s.trussTypeId : (riggingState.selectedTrussType || defaultTrussId || ""),
-            lengthM: getNearestTrussLength(Number(s.lengthM || 0), trussCatalog.some((t) => t.id === s.trussTypeId) ? s.trussTypeId : (riggingState.selectedTrussType || defaultTrussId || "")),
+            trussTypeId: trussTypeSetForBuild.has(s.trussTypeId) ? s.trussTypeId : (riggingState.selectedTrussType || defaultTrussId || ""),
+            lengthM: getNearestTrussLength(Number(s.lengthM || 0), trussTypeSetForBuild.has(s.trussTypeId) ? s.trussTypeId : (riggingState.selectedTrussType || defaultTrussId || "")),
             groupId: s.groupId || rigGroups[0]?.id || ""
           }));
+          relayoutAllRiggingGroupsByBuildType();
           if (riggingState.selectedTrussGroupId && !rigGroups.some((g) => g.id === riggingState.selectedTrussGroupId)) {
             riggingState.selectedTrussGroupId = "";
           }
@@ -4754,7 +5159,7 @@
           const spanOptions = riggingState.spans.map((s) => `<option value="${s.id}" ${s.id === riggingState.selectedSpanId ? "selected" : ""}>${s.id} (${s.nodeA}-${s.nodeB})</option>`).join("");
           const nodeOptions = riggingState.nodes.map((n) => `<option value="${n.id}">${n.label} (${n.id})</option>`).join("");
           const selectedTrussLengthOptions = getTrussLengthOptions(riggingState.selectedTrussType);
-          const trussOptions = trussCatalog.map((t) => `<option value="${t.id}" ${t.id === riggingState.selectedTrussType ? "selected" : ""}>${t.series} ${t.connection} ${t.verified ? "" : "[UNVERIFIED]"}</option>`).join("");
+          const trussOptions = trussCatalogForBuildType.map((t) => `<option value="${t.id}" ${t.id === riggingState.selectedTrussType ? "selected" : ""}>${t.series} ${t.connection} ${t.verified ? "" : "[UNVERIFIED]"}</option>`).join("");
           const motorOptions = motorCatalog.map((m) => `<option value="${m.id}" ${m.id === riggingState.selectedMotorId ? "selected" : ""}>${m.brand} ${m.model} (${m.wll_kg ?? "?"}kg)</option>`).join("");
           const calc = riggingState.lastCalc || runRiggingCalculation();
           const exportLocked = Boolean(calc?.compliance?.exportLocked);
@@ -4836,6 +5241,10 @@
             return t <= 0.5 ? span.nodeA : span.nodeB;
           };
 
+          const rigBuildTabs = RIGGING_BUILD_TYPES.map((bt) => {
+            const active = bt.id === String(riggingState.activeBuildType || "linear");
+            return `<button data-rig-build-tab="${bt.id}" class="${active ? "active" : ""}" style="${active ? "border-color:var(--theme-accent);color:var(--theme-accent-ink);" : ""}">${bt.label}</button>`;
+          }).join("");
           main.innerHTML = `
             <div class="card">
               <div class="toolbar">
@@ -4858,6 +5267,9 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.55rem;">
+                ${rigBuildTabs}
               </div>
               <div class="muted" style="margin-top:0.45rem;">Raw and factored loads are displayed separately. Final calc blocks on missing mass data.</div>
             </div>
@@ -4932,7 +5344,7 @@
                                           <tr>
                                             <td>${s.id}</td>
                                             <td><select data-rig-span-l="${s.id}" style="max-width:170px;">${sLenOptions.map((len) => `<option value="${len}" ${Math.abs(Number(len) - Number(sLen)) < 0.001 ? "selected" : ""}>${formatLengthWeightOption(len, s.trussTypeId)}</option>`).join("")}</select></td>
-                                            <td><select data-rig-span-type="${s.id}">${trussCatalog.map((x) => `<option value="${x.id}" ${x.id === s.trussTypeId ? "selected" : ""}>${x.series}${x.verified ? "" : " [UNVERIFIED]"}</option>`).join("")}</select></td>
+                                            <td><select data-rig-span-type="${s.id}">${trussCatalogForBuildType.map((x) => `<option value="${x.id}" ${x.id === s.trussTypeId ? "selected" : ""}>${x.series}${x.verified ? "" : " [UNVERIFIED]"}</option>`).join("")}</select></td>
                                             <td>${sWeight === null ? "n/a" : sWeight.toFixed(1)}</td>
                                             <td style="width:64px;text-align:center;"><button data-rig-span-remove="${s.id}" ${riggingState.spans.length <= 1 ? "disabled" : ""} title="Remove segment" style="width:28px;height:28px;min-width:28px;padding:0;line-height:1;">×</button></td>
                                           </tr>
@@ -5073,6 +5485,7 @@
 
             <div class="card" style="margin-top:0.75rem;">
               <h3>Calculation Output</h3>
+              <div class="muted" style="margin-top:0.15rem;">Build Type: <b>${calc.buildTypeLabel || "Linear Truss"}</b></div>
               ${calc.blocked ? `<div class="bad">Calculation blocked. Resolve blockers below.</div>` : `<div class="ok">Calculation valid.</div>`}
               <div class="kpis" style="margin-top:0.55rem;">
                 <div class="kpi"><div class="muted">Total Weight (kg)</div><b>${Number(calc.totalWeightKg || 0).toFixed(1)}</b></div>
@@ -5115,6 +5528,25 @@
                     </table>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:0.75rem;">
+              <h3>Build-Type Checks (${calc.buildTypeLabel || "Linear Truss"})</h3>
+              <div class="table-wrap" style="margin-top:0.45rem;">
+                <table>
+                  <thead><tr><th>Group</th><th>Rule</th><th>Value</th><th>Status</th></tr></thead>
+                  <tbody>
+                    ${(calc.buildTypeRows || []).map((r) => `
+                      <tr>
+                        <td>${r.group}</td>
+                        <td>${r.rule}</td>
+                        <td>${r.value}</td>
+                        <td class="${r.status === "PASS" ? "ok" : (r.status === "FAIL" ? "bad" : "warn-t")}">${r.status}</td>
+                      </tr>
+                    `).join("") || '<tr><td colspan="4" class="muted">No active truss groups to evaluate.</td></tr>'}
+                  </tbody>
+                </table>
               </div>
             </div>
 
@@ -5184,6 +5616,12 @@
             }
             renderRigging();
           });
+          document.querySelectorAll("[data-rig-build-tab]").forEach((el) => el.addEventListener("click", () => {
+            const next = String(el.dataset.rigBuildTab || "linear");
+            if (next === String(riggingState.activeBuildType || "linear")) return;
+            switchRiggingBuildType(next);
+            renderRigging();
+          }));
           document.getElementById("rigTrussGroupSel")?.addEventListener("change", (e) => { riggingState.selectedTrussGroupId = e.target.value; });
           document.getElementById("rigMotorSel")?.addEventListener("change", (e) => { riggingState.selectedMotorId = e.target.value; });
           document.getElementById("rigAddTrussGroupBtn")?.addEventListener("click", () => {
@@ -5484,7 +5922,14 @@
             }
             renderRigging();
           }));
-          document.querySelectorAll("[data-rig-fp-remove]").forEach((el) => el.addEventListener("click", () => { riggingState.fixturePlacements = riggingState.fixturePlacements.filter((x) => x.id !== el.dataset.rigFpRemove); renderRigging(); }));
+          document.querySelectorAll("[data-rig-fp-remove]").forEach((el) => el.addEventListener("click", () => {
+            const removeId = String(el.dataset.rigFpRemove || "");
+            riggingState.fixturePlacements = riggingState.fixturePlacements.filter((x) => x.id !== removeId);
+            if (String(riggingState.selectedPlanFixtureId || "") === removeId) {
+              riggingState.selectedPlanFixtureId = "";
+            }
+            renderRigging();
+          }));
           document.querySelectorAll("[data-rig-drag-key]").forEach((el) => {
             el.addEventListener("dragstart", (ev) => {
               if (el.getAttribute("draggable") !== "true") {
@@ -5730,6 +6175,15 @@
             }
             const meterStart = Math.ceil(minX);
             const meterEnd = Math.floor(maxX);
+            const halfStart = Math.ceil(minX * 2) / 2;
+            const halfEnd = Math.floor(maxX * 2) / 2;
+            for (let h = halfStart; h <= halfEnd + 1e-9; h += 0.5) {
+              const p = toPx(h, minY);
+              const isMeter = Math.abs(h - Math.round(h)) < 1e-9;
+              if (isMeter) continue;
+              children.push(`<line x1="${p.x}" y1="22" x2="${p.x}" y2="${planTop}" stroke="#cfd6e7" stroke-opacity="0.95" stroke-width="1.2"/>`);
+              children.push(`<text x="${p.x}" y="17" text-anchor="middle" fill="#bfc8dc" font-size="8.5">${Number(h).toFixed(1)}m</text>`);
+            }
             for (let m = meterStart; m <= meterEnd; m += 1) {
               const p = toPx(m, minY);
               children.push(`<line x1="${p.x}" y1="20" x2="${p.x}" y2="${planTop - 2}" stroke="var(--theme-line-soft)" stroke-width="1"/>`);
@@ -5792,7 +6246,32 @@
               const x = ax + (bx - ax) * t;
               const y = a.y + (b.y - a.y) * t;
               const p = toPx(x, y);
+              const pxPerM = (width - (pad * 2)) / Math.max(0.1, maxX - minX);
               const totalWeight = Number((((fp.weightKg || 0) + (fp.clampWeightKg || 0)) * (fp.quantity || 1)).toFixed(2));
+              const isAdditional = String(fp.fixtureKey || "").startsWith("__additional__");
+              const previewMeta = !isAdditional ? fixturePreviewByKey(fp.fixtureKey) : { path: "", dimensions_m: { length_m: null, width_m: null, height_m: null } };
+              const previewPath = String(previewMeta.path || "");
+              const libDims = fixtureDimensionsMByKey(fp.fixtureKey);
+              const dimH = Number(previewMeta.dimensions_m?.height_m || libDims.height_m || 0.55);
+              const dimW = Number(previewMeta.dimensions_m?.length_m || previewMeta.dimensions_m?.width_m || libDims.length_m || libDims.width_m || (dimH * 0.65));
+              const imgH = Math.max(20, Math.min(140, dimH * pxPerM));
+              const imgW = Math.max(14, Math.min(120, dimW * pxPerM));
+              const imgX = -imgW / 2;
+              const imgY = -5.6;
+              const imgPivotY = imgY + (imgH / 2);
+              const headFill = isAdditional ? "#9fb56a" : "#7e8fb0";
+              const headStroke = isAdditional ? "#d9e8b5" : "#d7e1f5";
+              const isSelectedPlanFixture = String(riggingState.selectedPlanFixtureId || "") === String(fp.id || "");
+              const selectedVisualStyle = isSelectedPlanFixture
+                ? "filter:saturate(1.45) hue-rotate(-18deg) brightness(1.12) drop-shadow(0 0 5px #ffad4d);"
+                : "";
+              const fallbackBodyW = Math.max(10, imgW * 0.52);
+              const fallbackBodyH = Math.max(8, imgH * 0.34);
+              const fallbackBodyX = -fallbackBodyW / 2;
+              const fallbackBodyY = Math.max(1.2, imgH * 0.08);
+              const fallbackClampW = Math.max(8.5, imgW * 0.34);
+              const fallbackClampX = -fallbackClampW / 2;
+              const fallbackYokeTop = -Math.max(8, imgH * 0.32);
               const tt = `${fp.fixtureName} | ${totalWeight} kg | ${s.id} @ ${Number(fp.positionM || 0).toFixed(2)}m`;
               children.push(`
                 <g
@@ -5806,9 +6285,24 @@
                   data-rig-span-len="${spanLen}"
                   style="cursor:grab;"
                 >
-                  <circle data-rig-item-dot="1" cx="${p.x}" cy="${p.y + 12}" r="6.5" fill="#6de2a8" stroke="#d5ffe8" stroke-width="1.2"/>
+                  ${previewPath ? `<g data-rig-item-visual="1" transform="translate(${p.x.toFixed(2)} ${(p.y + 12).toFixed(2)})" style="pointer-events:none;${selectedVisualStyle}">
+                    <line x1="0" y1="-13.2" x2="0" y2="-8.0" stroke="#dfe5f2" stroke-width="0.95"/>
+                    <rect x="-4.6" y="-8.0" width="9.2" height="2.4" rx="0.8" fill="#222938" stroke="#8e9aba" stroke-width="0.68"/>
+                    <path d="M -3.4 -5.6 Q 0 -2.4 3.4 -5.6" fill="none" stroke="#aebddb" stroke-width="0.85"/>
+                    <image data-rig-item-image="1" href="${previewPath}" x="${imgX.toFixed(2)}" y="${imgY.toFixed(2)}" width="${imgW.toFixed(2)}" height="${imgH.toFixed(2)}" transform="rotate(180 0 ${imgPivotY.toFixed(2)})" preserveAspectRatio="xMidYMid meet"/>
+                  </g>` : `<g data-rig-item-visual="1" transform="translate(${p.x.toFixed(2)} ${(p.y + 12).toFixed(2)})" style="pointer-events:none;${selectedVisualStyle}">
+                    <line x1="0" y1="${fallbackYokeTop.toFixed(2)}" x2="0" y2="-8.4" stroke="#dfe5f2" stroke-width="0.95"/>
+                    <rect x="${fallbackClampX.toFixed(2)}" y="-8.4" width="${fallbackClampW.toFixed(2)}" height="2.6" rx="0.9" fill="#222938" stroke="#8e9aba" stroke-width="0.7"/>
+                    <path d="M ${(-fallbackClampW * 0.32).toFixed(2)} -5.8 Q 0 -2.6 ${(fallbackClampW * 0.32).toFixed(2)} -5.8" fill="none" stroke="#aebddb" stroke-width="0.88"/>
+                    <line x1="${(-fallbackBodyW * 0.3).toFixed(2)}" y1="-2.2" x2="${(-fallbackBodyW * 0.3).toFixed(2)}" y2="${(fallbackBodyY + fallbackBodyH * 0.36).toFixed(2)}" stroke="#bac8e4" stroke-width="0.95"/>
+                    <line x1="${(fallbackBodyW * 0.3).toFixed(2)}" y1="-2.2" x2="${(fallbackBodyW * 0.3).toFixed(2)}" y2="${(fallbackBodyY + fallbackBodyH * 0.36).toFixed(2)}" stroke="#bac8e4" stroke-width="0.95"/>
+                    <rect x="${fallbackBodyX.toFixed(2)}" y="${fallbackBodyY.toFixed(2)}" width="${fallbackBodyW.toFixed(2)}" height="${fallbackBodyH.toFixed(2)}" rx="1.35" fill="${headFill}" stroke="${headStroke}" stroke-width="0.95"/>
+                    <circle cx="0" cy="${(fallbackBodyY + fallbackBodyH * 0.52).toFixed(2)}" r="${Math.max(1.45, fallbackBodyH * 0.18).toFixed(2)}" fill="#1c2638" stroke="#96b6ff" stroke-width="0.55"/>
+                    <line x1="${(-fallbackBodyW * 0.28).toFixed(2)}" y1="${(fallbackBodyY + fallbackBodyH * 0.2).toFixed(2)}" x2="${(fallbackBodyW * 0.28).toFixed(2)}" y2="${(fallbackBodyY + fallbackBodyH * 0.2).toFixed(2)}" stroke="#223149" stroke-opacity="0.45" stroke-width="0.7"/>
+                  </g>`}
+                  <circle data-rig-item-dot="1" cx="${p.x}" cy="${p.y + 12}" r="6.5" fill="#00000000" stroke="#00000000" stroke-width="0"/>
                   <circle data-rig-item-hit="1" cx="${p.x}" cy="${p.y + 12}" r="12" fill="#00000000" />
-                  <text data-rig-item-weight="1" x="${p.x}" y="${p.y + 29}" text-anchor="middle" fill="#d8ffe9" font-size="7.2">${totalWeight.toFixed(1)}kg</text>
+                  <text data-rig-item-weight="1" x="${p.x}" y="${p.y + 52}" text-anchor="middle" fill="#d8ffe9" font-size="7.2">${totalWeight.toFixed(1)}kg</text>
                   <title>${tt}</title>
                 </g>
               `);
@@ -6290,6 +6784,7 @@
             svg.querySelectorAll("[data-rig-plan-fixture]").forEach((g) => {
               g.addEventListener("mousedown", (ev) => {
                 ev.preventDefault();
+                riggingState.selectedPlanFixtureId = g.dataset.rigPlanFixture || "";
                 riggingPlanDragState.active = true;
                 riggingPlanDragState.fixtureId = g.dataset.rigPlanFixture || "";
                 riggingPlanDragState.spanId = g.dataset.rigSpanId || "";
@@ -6306,7 +6801,26 @@
                 if (span && !riggingPlanDragState.groupId) riggingPlanDragState.groupId = span.groupId || "";
                 g.style.cursor = "grabbing";
               });
+              g.addEventListener("click", (ev) => {
+                ev.preventDefault();
+                ev.stopPropagation();
+                const nextId = String(g.dataset.rigPlanFixture || "");
+                if (String(riggingState.selectedPlanFixtureId || "") === nextId) return;
+                riggingState.selectedPlanFixtureId = nextId;
+                renderRigging();
+              });
             });
+            if (svg.getAttribute("data-rig-select-bound") !== "1") {
+              svg.addEventListener("click", (ev) => {
+                const t = ev.target;
+                if (!(t instanceof Element)) return;
+                if (t.closest("[data-rig-plan-fixture]")) return;
+                if (!riggingState.selectedPlanFixtureId) return;
+                riggingState.selectedPlanFixtureId = "";
+                renderRigging();
+              });
+              svg.setAttribute("data-rig-select-bound", "1");
+            }
             svg.querySelectorAll("[data-rig-plan-motor]").forEach((g) => {
               g.addEventListener("mousedown", (ev) => {
                 ev.preventDefault();
@@ -6342,6 +6856,10 @@
                   dot.setAttribute("cx", x.toFixed(2));
                   dot.setAttribute("cy", (y + 12).toFixed(2));
                 }
+                const visual = riggingPlanDragState.markerGroup.querySelector("[data-rig-item-visual]");
+                if (visual) {
+                  visual.setAttribute("transform", `translate(${x.toFixed(2)} ${(y + 12).toFixed(2)})`);
+                }
                 const hit = riggingPlanDragState.markerGroup.querySelector("[data-rig-item-hit]");
                 if (hit) {
                   hit.setAttribute("cx", x.toFixed(2));
@@ -6350,7 +6868,7 @@
                 const wt = riggingPlanDragState.markerGroup.querySelector("[data-rig-item-weight]");
                 if (wt) {
                   wt.setAttribute("x", x.toFixed(2));
-                  wt.setAttribute("y", (y + 29).toFixed(2));
+                  wt.setAttribute("y", (y + 52).toFixed(2));
                 }
               });
 
@@ -6374,6 +6892,26 @@
                 renderRigging();
               });
               riggingPlanDragBound = true;
+            }
+            if (!riggingPlanDeleteBound) {
+              window.addEventListener("keydown", (ev) => {
+                const key = String(ev.key || "");
+                if (key !== "Backspace" && key !== "Delete") return;
+                if (currentEngineeringSection !== "Rigging") return;
+                const t = ev.target;
+                if (t instanceof Element && t.closest("input, textarea, select, [contenteditable='true']")) return;
+                const selectedId = String(riggingState.selectedPlanFixtureId || "");
+                if (!selectedId) return;
+                if (!riggingState.fixturePlacements.some((x) => String(x.id || "") === selectedId)) {
+                  riggingState.selectedPlanFixtureId = "";
+                  return;
+                }
+                ev.preventDefault();
+                riggingState.fixturePlacements = riggingState.fixturePlacements.filter((x) => String(x.id || "") !== selectedId);
+                riggingState.selectedPlanFixtureId = "";
+                renderRigging();
+              });
+              riggingPlanDeleteBound = true;
             }
             if (!riggingPlanMotorDragBound) {
               window.addEventListener("mousemove", (ev) => {
@@ -6467,7 +7005,8 @@
             const THREE = await import("https://esm.sh/three@0.160.0");
             const { OrbitControls } = await import("https://esm.sh/three@0.160.0/examples/jsm/controls/OrbitControls.js");
             const { GLTFLoader } = await import("https://esm.sh/three@0.160.0/examples/jsm/loaders/GLTFLoader.js");
-            return { THREE, OrbitControls, GLTFLoader };
+            const { TransformControls } = await import("https://esm.sh/three@0.160.0/examples/jsm/controls/TransformControls.js");
+            return { THREE, OrbitControls, GLTFLoader, TransformControls };
           })();
           return venue3dLibPromise;
         }
@@ -6477,11 +7016,13 @@
           try {
             if (venue3dRuntime.frameId) cancelAnimationFrame(venue3dRuntime.frameId);
             if (venue3dRuntime.controls) venue3dRuntime.controls.dispose();
+            if (venue3dRuntime.transformControls) venue3dRuntime.transformControls.dispose?.();
             if (venue3dRuntime.renderer) {
               venue3dRuntime.renderer.dispose();
               venue3dRuntime.renderer.forceContextLoss?.();
             }
             if (venue3dRuntime.onResize) window.removeEventListener("resize", venue3dRuntime.onResize);
+            if (venue3dRuntime.onKeydown) window.removeEventListener("keydown", venue3dRuntime.onKeydown);
           } catch (_) {}
           venue3dRuntime = null;
         }
@@ -6494,22 +7035,38 @@
           const clearGearBtn = document.getElementById("venue3dClearGearBtn");
           const objNameEl = document.getElementById("venue3dObjName");
           const objPosXEl = document.getElementById("venue3dObjPosX");
+          const objPosYEl = document.getElementById("venue3dObjPosY");
           const objPosZEl = document.getElementById("venue3dObjPosZ");
           const objRotYEl = document.getElementById("venue3dObjRotY");
           const objScaleEl = document.getElementById("venue3dObjScale");
           const objApplyBtn = document.getElementById("venue3dObjApplyBtn");
           const objDeleteBtn = document.getElementById("venue3dObjDeleteBtn");
+          const gizmoTabs = document.getElementById("venue3dGizmoTabs");
           const scaleEl = document.getElementById("venue3dScaleInput");
           const modeTabs = document.getElementById("venue3dModeTabs");
+          const projectionTabs = document.getElementById("venue3dProjectionTabs");
           const viewTabs = document.getElementById("venue3dViewTabs");
           if (!(host instanceof HTMLElement) || !statusEl || !pickEl) return;
+          const savedPose = (() => {
+            const fromRuntime = venue3dRuntime?.camera && venue3dRuntime?.controls
+              ? {
+                  px: Number(venue3dRuntime.camera.position.x || 0),
+                  py: Number(venue3dRuntime.camera.position.y || 0),
+                  pz: Number(venue3dRuntime.camera.position.z || 0),
+                  tx: Number(venue3dRuntime.controls.target.x || 0),
+                  ty: Number(venue3dRuntime.controls.target.y || 0),
+                  tz: Number(venue3dRuntime.controls.target.z || 0)
+                }
+              : null;
+            return fromRuntime || (venueState.venue3dPose && typeof venueState.venue3dPose === "object" ? venueState.venue3dPose : null);
+          })();
           disposeVenue3dRuntime();
           host.innerHTML = "";
           const requestToken = `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
           host.dataset.initToken = requestToken;
           statusEl.textContent = "Loading 3D engine...";
           try {
-            const { THREE, OrbitControls, GLTFLoader } = await loadVenue3dLib();
+            const { THREE, OrbitControls, GLTFLoader, TransformControls } = await loadVenue3dLib();
             if (host.dataset.initToken !== requestToken) return;
             const width = Math.max(320, Math.floor(host.clientWidth || 320));
             const height = Math.max(320, Math.floor(host.clientHeight || 500));
@@ -6524,14 +7081,80 @@
             host.appendChild(renderer.domElement);
 
             const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(52, width / height, 0.05, 10000);
-            camera.position.set(16, 12, 16);
+            const initialAspect = Math.max(0.1, width / Math.max(1, height));
+            const orthoSizeBase = Math.max(12, Math.max(Number(venueState.widthM || 30), Number(venueState.depthM || 20)) * 1.35);
+            const perspectiveCamera = new THREE.PerspectiveCamera(52, initialAspect, 0.05, 10000);
+            perspectiveCamera.position.set(16, 12, 16);
+            const orthographicCamera = new THREE.OrthographicCamera(
+              (-orthoSizeBase * initialAspect) / 2,
+              (orthoSizeBase * initialAspect) / 2,
+              orthoSizeBase / 2,
+              -orthoSizeBase / 2,
+              0.05,
+              10000
+            );
+            orthographicCamera.position.copy(perspectiveCamera.position);
+            orthographicCamera.up.set(0, 1, 0);
+            let camera = String(venueState.projectionMode || "perspective") === "orthographic"
+              ? orthographicCamera
+              : perspectiveCamera;
 
             const controls = new OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.08;
             controls.target.set(0, 0, 0);
             controls.update();
+            const transformControls = new TransformControls(camera, renderer.domElement);
+            transformControls.setSize(0.85);
+            transformControls.visible = false;
+            scene.add(transformControls);
+            const persistCameraPose = () => {
+              venueState.venue3dPose = {
+                px: Number(camera.position.x || 0),
+                py: Number(camera.position.y || 0),
+                pz: Number(camera.position.z || 0),
+                tx: Number(controls.target.x || 0),
+                ty: Number(controls.target.y || 0),
+                tz: Number(controls.target.z || 0)
+              };
+            };
+            const applyCameraPose = (pose) => {
+              if (!pose || typeof pose !== "object") return false;
+              const vals = [pose.px, pose.py, pose.pz, pose.tx, pose.ty, pose.tz].map((v) => Number(v));
+              if (vals.some((v) => !Number.isFinite(v))) return false;
+              camera.position.set(vals[0], vals[1], vals[2]);
+              controls.target.set(vals[3], vals[4], vals[5]);
+              camera.up.set(0, 1, 0);
+              controls.update();
+              persistCameraPose();
+              return true;
+            };
+            controls.addEventListener("change", persistCameraPose);
+            const syncProjectionTabs = () => {
+              projectionTabs?.querySelectorAll("button[data-venue3d-projection]").forEach((btn) => {
+                btn.classList.toggle("active", btn.getAttribute("data-venue3d-projection") === String(venueState.projectionMode || "perspective"));
+              });
+            };
+            const setProjection = (mode) => {
+              const next = mode === "orthographic" ? "orthographic" : "perspective";
+              if (next === String(venueState.projectionMode || "perspective")) {
+                syncProjectionTabs();
+                return;
+              }
+              const prevCamera = camera;
+              const nextCamera = next === "orthographic" ? orthographicCamera : perspectiveCamera;
+              nextCamera.position.copy(prevCamera.position);
+              nextCamera.quaternion.copy(prevCamera.quaternion);
+              camera = nextCamera;
+              controls.object = camera;
+              controls.update();
+              transformControls.camera = camera;
+              venueState.projectionMode = next;
+              syncProjectionTabs();
+              persistCameraPose();
+              saveAppMemory();
+            };
+            syncProjectionTabs();
             let navMode = "orbit";
             const setControlMode = (mode) => {
               navMode = mode;
@@ -6552,6 +7175,19 @@
               }
             };
             setControlMode("orbit");
+            const setGizmoMode = (mode) => {
+              const safe = (mode === "rotate" || mode === "scale") ? mode : "translate";
+              venueState.gizmoMode = safe;
+              transformControls.setMode(safe);
+              transformControls.setSpace("world");
+              transformControls.showX = true;
+              transformControls.showY = true;
+              transformControls.showZ = true;
+              gizmoTabs?.querySelectorAll("button[data-venue3d-gizmo]").forEach((btn) => {
+                btn.classList.toggle("active", btn.getAttribute("data-venue3d-gizmo") === safe);
+              });
+            };
+            setGizmoMode(String(venueState.gizmoMode || "translate"));
 
             scene.add(new THREE.HemisphereLight(0xdde8ff, 0x18202c, 0.95));
             const venueGridW = Math.max(1, Number(venueState.widthM || 30));
@@ -6565,6 +7201,9 @@
             const clampToVenueBounds = (x, z) => ({
               x: Math.max(defaultVenueBounds.minX, Math.min(defaultVenueBounds.maxX, Number(x || 0))),
               z: Math.max(defaultVenueBounds.minZ, Math.min(defaultVenueBounds.maxZ, Number(z || 0)))
+            });
+            transformControls.addEventListener("dragging-changed", (ev) => {
+              controls.enabled = !ev.value;
             });
             const gridRoot = new THREE.Group();
             gridRoot.position.y = -0.001;
@@ -6636,7 +7275,9 @@
               const maxDim = Math.max(size.x, size.z, 0.1);
               fittedCenter.copy(center);
               fittedMaxDim = maxDim;
-              const dist = (maxDim * 1.45) / Math.tan((camera.fov * Math.PI / 180) / 2);
+              const dist = camera.isPerspectiveCamera
+                ? (maxDim * 1.45) / Math.tan((camera.fov * Math.PI / 180) / 2)
+                : maxDim * 2.1;
               camera.position.set(center.x + dist * 0.9, Math.max(6, dist * 0.55), center.z + dist * 0.9);
               controls.target.copy(center);
               camera.up.set(0, 1, 0);
@@ -6701,9 +7342,94 @@
             };
 
             let loadedRoot = null;
+            let selectedImportedObject = null;
             const raycaster = new THREE.Raycaster();
             const pointer = new THREE.Vector2();
             const loader = new GLTFLoader();
+            const modelTemplateCache = new Map();
+            const loadModelTemplate = (url) => {
+              const key = String(url || "").trim();
+              if (!key) return Promise.resolve(null);
+              if (modelTemplateCache.has(key)) return modelTemplateCache.get(key);
+              const promise = new Promise((resolve) => {
+                loader.load(
+                  key,
+                  (gltf) => {
+                    const src = gltf?.scene || gltf?.scenes?.[0] || null;
+                    resolve(src || null);
+                  },
+                  undefined,
+                  () => resolve(null)
+                );
+              });
+              modelTemplateCache.set(key, promise);
+              return promise;
+            };
+            const computeMeshBounds = (object3d) => {
+              const box = new THREE.Box3();
+              const tempBox = new THREE.Box3();
+              const hasBounds = { value: false };
+              object3d.updateMatrixWorld(true);
+              object3d.traverse((child) => {
+                if (!child || !child.isMesh || !child.geometry) return;
+                if (!child.geometry.boundingBox) child.geometry.computeBoundingBox();
+                const gbox = child.geometry.boundingBox;
+                if (!gbox) return;
+                tempBox.copy(gbox).applyMatrix4(child.matrixWorld);
+                if (!hasBounds.value) {
+                  box.copy(tempBox);
+                  hasBounds.value = true;
+                } else {
+                  box.union(tempBox);
+                }
+              });
+              return hasBounds.value ? box : null;
+            };
+            const centerAndFloorObject = (object3d) => {
+              const box = computeMeshBounds(object3d) || new THREE.Box3().setFromObject(object3d);
+              if (box.isEmpty()) return { width: 1, height: 1, depth: 1 };
+              const size = box.getSize(new THREE.Vector3());
+              const center = box.getCenter(new THREE.Vector3());
+              object3d.position.x -= center.x;
+              object3d.position.z -= center.z;
+              object3d.position.y -= box.min.y;
+              return {
+                width: Math.max(0.001, Number(size.x || 0.001)),
+                height: Math.max(0.001, Number(size.y || 0.001)),
+                depth: Math.max(0.001, Number(size.z || 0.001))
+              };
+            };
+            const mountModelInContainer = (container, modelPath, targetSize = null) => {
+              const path = String(modelPath || "").trim();
+              if (!path) return;
+              loadModelTemplate(path).then((template) => {
+                if (!template || !container.parent) return;
+                const model = template.clone(true);
+                const base = centerAndFloorObject(model);
+                if (targetSize && typeof targetSize === "object") {
+                  const tw = Number(targetSize.width || 0);
+                  const th = Number(targetSize.height || 0);
+                  const td = Number(targetSize.depth || 0);
+                  const sx = tw > 0 ? tw / base.width : null;
+                  const sy = th > 0 ? th / base.height : null;
+                  const sz = td > 0 ? td / base.depth : null;
+                  const fitMode = String(targetSize.fit || "contain");
+                  let uniform = null;
+                  if (fitMode === "height" && Number.isFinite(sy) && sy > 0) {
+                    uniform = sy;
+                  } else {
+                    const valid = [sx, sy, sz].filter((v) => Number.isFinite(v) && v > 0);
+                    if (valid.length) uniform = Math.min(...valid);
+                  }
+                  if (Number.isFinite(uniform) && uniform > 0) model.scale.setScalar(uniform);
+                }
+                const oldFallback = container.userData.fallbackMesh;
+                if (oldFallback && oldFallback.parent === container) container.remove(oldFallback);
+                container.userData.fallbackMesh = null;
+                model.userData.isModelAsset = true;
+                container.add(model);
+              }).catch(() => {});
+            };
             const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
             let gearItemsById = Object.fromEntries(collectGearInventory().map((x) => [x.id, x]));
             const gearRoot = new THREE.Group();
@@ -6711,6 +7437,7 @@
             const gearMeshes = new Map();
             const trussRoot = new THREE.Group();
             scene.add(trussRoot);
+            const trussMeshes = new Map();
             const measureRoot = new THREE.Group();
             scene.add(measureRoot);
             let fittedCenter = new THREE.Vector3(0, 0, 0);
@@ -6723,48 +7450,152 @@
               const weight = Number(source.weightKg || 0);
               const scale = Math.max(0.45, Math.min(2.4, Math.cbrt(Math.max(1, weight) / 14)));
               let mesh;
-              if (dept === "lighting") mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.23 * scale, 0.26 * scale, 0.45 * scale, 18), mat);
-              else if (dept === "video") {
+              let targetSize = null;
+              if (dept === "lighting") {
+                mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.23 * scale, 0.26 * scale, 0.45 * scale, 18), mat);
+                const dim = 0.62 * scale;
+                targetSize = { width: dim, height: dim, depth: dim, fit: "height" };
+              } else if (dept === "video") {
                 const wallW = Math.max(0.5, Number(source.footprintW || 1));
                 const wallH = Math.max(0.5, Number(source.heightM || 1));
                 const wallD = Math.max(0.08, Number(source.footprintD || 0.2));
                 mesh = new THREE.Mesh(new THREE.BoxGeometry(wallW, wallH, wallD), mat);
-              }
-              else if (dept === "audio" || dept === "sound") mesh = new THREE.Mesh(new THREE.BoxGeometry(0.5 * scale, 0.75 * scale, 0.45 * scale), mat);
-              else if (dept === "rigging") mesh = new THREE.Mesh(new THREE.BoxGeometry(1.1 * scale, 0.18 * scale, 0.18 * scale), mat);
-              else mesh = new THREE.Mesh(new THREE.BoxGeometry(0.55 * scale, 0.55 * scale, 0.55 * scale), mat);
-              if (dept === "video") {
-                const y = Math.max(0.25, Number(source.heightM || 1) / 2);
-                mesh.position.set(Number(placed.x || 0), y, Number(placed.z || 0));
+                targetSize = { width: wallW, height: wallH, depth: wallD };
+              } else if (dept === "audio" || dept === "sound") {
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(0.5 * scale, 0.75 * scale, 0.45 * scale), mat);
+                targetSize = { width: 0.5 * scale, height: 0.75 * scale, depth: 0.45 * scale };
+              } else if (dept === "venue") {
+                const modelW = Math.max(0.2, Number(source.footprintW || 1));
+                const modelD = Math.max(0.08, Number(source.footprintD || 0.2));
+                const modelH = Math.max(0.2, Number(source.heightM || 1));
+                const isDeck = String(source.venueKind || "") === "stage_deck";
+                if (isDeck) {
+                  const topHeight = Math.max(0.08, Number(source.defaultY || 0.6));
+                  const deckThickness = Math.max(0.08, Math.min(0.14, modelH));
+                  const centerY = Math.max(deckThickness / 2, topHeight - (deckThickness / 2));
+                  const group = new THREE.Group();
+                  const deckTop = new THREE.Mesh(new THREE.BoxGeometry(modelW, deckThickness, modelD), mat);
+                  deckTop.position.y = centerY;
+                  group.add(deckTop);
+                  const legMat = new THREE.MeshStandardMaterial({ color: 0x8e97b3, roughness: 0.65, metalness: 0.22 });
+                  const legRadius = Math.max(0.018, Math.min(0.035, Math.min(modelW, modelD) * 0.05));
+                  const legHeight = Math.max(0.05, centerY - (deckThickness / 2));
+                  const legGeo = new THREE.CylinderGeometry(legRadius, legRadius, legHeight, 12);
+                  [
+                    [-0.46 * modelW, -0.46 * modelD],
+                    [0.46 * modelW, -0.46 * modelD],
+                    [-0.46 * modelW, 0.46 * modelD],
+                    [0.46 * modelW, 0.46 * modelD]
+                  ].forEach(([lx, lz]) => {
+                    const leg = new THREE.Mesh(legGeo, legMat);
+                    leg.position.set(lx, legHeight / 2, lz);
+                    group.add(leg);
+                  });
+                  mesh = group;
+                  targetSize = { width: modelW, height: Math.max(modelH, topHeight), depth: modelD };
+                } else {
+                  mesh = new THREE.Mesh(new THREE.BoxGeometry(modelW, modelH, modelD), mat);
+                  targetSize = { width: modelW, height: modelH, depth: modelD };
+                }
+              } else if (dept === "rigging") {
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(1.1 * scale, 0.18 * scale, 0.18 * scale), mat);
+                targetSize = { width: 1.1 * scale, height: 0.18 * scale, depth: 0.18 * scale };
               } else {
-                mesh.position.set(Number(placed.x || 0), Number(placed.y || 0.35), Number(placed.z || 0));
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(0.55 * scale, 0.55 * scale, 0.55 * scale), mat);
+                targetSize = { width: 0.55 * scale, height: 0.55 * scale, depth: 0.55 * scale };
               }
+              const container = new THREE.Group();
+              container.userData.fallbackMesh = mesh;
+              container.add(mesh);
+              const defaultY = dept === "video"
+                ? Math.max(0.25, Number(source.heightM || 1) / 2)
+                : (dept === "venue" && String(source.venueKind || "") === "stage_deck"
+                  ? 0
+                  : (Number.isFinite(Number(source.defaultY)) ? Number(source.defaultY) : 0.35));
+              const yPos = Number.isFinite(Number(placed.y)) ? Number(placed.y) : defaultY;
+              container.position.set(Number(placed.x || 0), yPos, Number(placed.z || 0));
               const rotYDeg = Number.isFinite(Number(placed.rotYDeg)) ? Number(placed.rotYDeg) : 0;
               const scaleMul = Math.max(0.1, Number.isFinite(Number(placed.scale)) ? Number(placed.scale) : 1);
-              mesh.rotation.y = (rotYDeg * Math.PI) / 180;
-              mesh.scale.setScalar(scaleMul);
-              mesh.userData.placedId = placed.id;
-              mesh.userData.sourceId = placed.sourceId;
-              mesh.name = source.name || "Gear";
-              return mesh;
+              container.rotation.y = (rotYDeg * Math.PI) / 180;
+              container.scale.setScalar(scaleMul);
+              container.userData.placedId = placed.id;
+              container.userData.sourceId = placed.sourceId;
+              container.name = source.name || "Gear";
+              const fixtureAsset = dept === "lighting"
+                ? ""
+                : (resolveFixtureModelAssetPath(source) || String(MODEL_ASSET_MAP.defaults?.[dept] || ""));
+              if (fixtureAsset) mountModelInContainer(container, fixtureAsset, targetSize);
+              return container;
             };
             const updateSelectedVisual = () => {
+              const applyEmissive = (root, colorHex) => {
+                if (!root) return;
+                root.traverse?.((obj) => {
+                  const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+                  mats.forEach((m) => {
+                    if (!m || !("emissive" in m)) return;
+                    m.emissive = m.emissive || new THREE.Color(0x000000);
+                    m.emissive.set(colorHex);
+                    m.needsUpdate = true;
+                  });
+                });
+              };
               gearMeshes.forEach((mesh, id) => {
                 const selected = id === gearState.selectedPlacedId;
-                const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-                mats.forEach((m) => {
-                  if (!m) return;
-                  m.emissive = m.emissive || new THREE.Color(0x000000);
-                  m.emissive.set(selected ? 0x243040 : 0x000000);
-                  m.needsUpdate = true;
-                });
+                applyEmissive(mesh, selected ? 0x243040 : 0x000000);
               });
+              trussMeshes.forEach((mesh, id) => {
+                const selected = id === venueState.selectedTrussPlacementId;
+                applyEmissive(mesh, selected ? 0x352100 : 0x000000);
+              });
+              const selectedMesh = gearState.selectedPlacedId ? gearMeshes.get(gearState.selectedPlacedId) : null;
+              const selectedTruss = venueState.selectedTrussPlacementId ? trussMeshes.get(venueState.selectedTrussPlacementId) : null;
+              const attachObj = selectedMesh || selectedTruss || null;
+              if (attachObj) {
+                transformControls.visible = true;
+                transformControls.attach(attachObj);
+              } else {
+                transformControls.visible = false;
+                transformControls.detach();
+              }
             };
             const updateObjectControlPanel = () => {
               const placed = (gearState.placedItems || []).find((x) => x.id === gearState.selectedPlacedId);
               const src = placed ? (gearItemsById[placed.sourceId] || null) : null;
+              const truss = venueState.selectedTrussPlacementId ? trussMeshes.get(venueState.selectedTrussPlacementId) : null;
+              if (selectedImportedObject && !placed && !truss) {
+                if (objNameEl) objNameEl.textContent = `Selected: ${selectedImportedObject.name || "Imported Object"}`;
+                if (objPosXEl) objPosXEl.value = String(Number(selectedImportedObject.position?.x || 0).toFixed(2));
+                if (objPosYEl) objPosYEl.value = String(Number(selectedImportedObject.position?.y || 0).toFixed(2));
+                if (objPosZEl) objPosZEl.value = String(Number(selectedImportedObject.position?.z || 0).toFixed(2));
+                if (objRotYEl) objRotYEl.value = String(Number(((selectedImportedObject.rotation?.y || 0) * 180) / Math.PI).toFixed(0));
+                if (objScaleEl) objScaleEl.value = String(Number(selectedImportedObject.scale?.x || 1).toFixed(2));
+                if (objApplyBtn) objApplyBtn.disabled = true;
+                if (objDeleteBtn) objDeleteBtn.disabled = false;
+                return;
+              }
+              if (truss && !placed) {
+                if (objNameEl) objNameEl.textContent = `Selected: ${truss.name || "Truss Group"}`;
+                if (objPosXEl) objPosXEl.value = String(Number(truss.position.x || 0).toFixed(2));
+                if (objPosYEl) objPosYEl.value = String(Number(truss.position.y || 0).toFixed(2));
+                if (objPosZEl) objPosZEl.value = String(Number(truss.position.z || 0).toFixed(2));
+                if (objRotYEl) objRotYEl.value = String(Number((truss.rotation.y * 180) / Math.PI).toFixed(0));
+                if (objScaleEl) objScaleEl.value = "1.00";
+                if (objApplyBtn) objApplyBtn.disabled = true;
+                if (objDeleteBtn) objDeleteBtn.disabled = true;
+                return;
+              }
               if (objNameEl) objNameEl.textContent = placed && src ? `Selected: ${src.name}` : "Selected: -";
               if (objPosXEl) objPosXEl.value = placed ? String(Number(placed.x || 0).toFixed(2)) : "";
+              if (objPosYEl) {
+                const defaultY = src && String(src.department || "").toLowerCase() === "video"
+                  ? Math.max(0.25, Number(src.heightM || 1) / 2)
+                  : (String(src?.department || "").toLowerCase() === "venue" && String(src?.venueKind || "") === "stage_deck"
+                    ? 0
+                    : (Number.isFinite(Number(src?.defaultY)) ? Number(src.defaultY) : 0.35));
+                const yVal = placed ? (Number.isFinite(Number(placed.y)) ? Number(placed.y) : defaultY) : 0;
+                objPosYEl.value = placed ? String(Number(yVal).toFixed(2)) : "";
+              }
               if (objPosZEl) objPosZEl.value = placed ? String(Number(placed.z || 0).toFixed(2)) : "";
               if (objRotYEl) objRotYEl.value = placed ? String(Number(placed.rotYDeg || 0).toFixed(0)) : "";
               if (objScaleEl) objScaleEl.value = placed ? String(Number(placed.scale || 1).toFixed(2)) : "";
@@ -6794,12 +7625,13 @@
                 } else {
                   const source = gearItemsById[p.sourceId] || {};
                   const dept = String(source.department || "Other").toLowerCase();
-                  if (dept === "video") {
-                    const y = Math.max(0.25, Number(source.heightM || 1) / 2);
-                    mesh.position.set(Number(p.x || 0), y, Number(p.z || 0));
-                  } else {
-                    mesh.position.set(Number(p.x || 0), Number(p.y || 0.35), Number(p.z || 0));
-                  }
+                  const defaultY = dept === "video"
+                    ? Math.max(0.25, Number(source.heightM || 1) / 2)
+                    : (dept === "venue" && String(source.venueKind || "") === "stage_deck"
+                      ? 0
+                      : (Number.isFinite(Number(source.defaultY)) ? Number(source.defaultY) : 0.35));
+                  const yPos = Number.isFinite(Number(p.y)) ? Number(p.y) : defaultY;
+                  mesh.position.set(Number(p.x || 0), yPos, Number(p.z || 0));
                   const rotYDeg = Number.isFinite(Number(p.rotYDeg)) ? Number(p.rotYDeg) : 0;
                   const scaleMul = Math.max(0.1, Number.isFinite(Number(p.scale)) ? Number(p.scale) : 1);
                   mesh.rotation.y = (rotYDeg * Math.PI) / 180;
@@ -6812,7 +7644,74 @@
               updateSelectedVisual();
               updateObjectControlPanel();
             };
+            const syncPlacedFromTransformObject = () => {
+              const obj = transformControls.object;
+              if (!obj) return;
+              const trussPlacementId = String(obj.userData?.trussPlacementId || "");
+              if (trussPlacementId) {
+                const tp = (venueState.trussPlacements || []).find((x) => String(x.id || "") === trussPlacementId);
+                if (!tp) return;
+                const groupId = String(tp.sourceGroupId || obj.userData?.trussGroupId || "");
+                const totalSpanM = Math.max(0, Number(getRiggingGroupTotalSpan(groupId) || 0));
+                if (!(totalSpanM > 0)) return;
+                const cx = Number(obj.position.x || 0);
+                const minY = Number.isFinite(Number(obj.userData?.trussBaseCenterY)) ? Number(obj.userData.trussBaseCenterY) : 0.08;
+                const cy = Math.max(minY, Number(obj.position.y || minY));
+                const cz = Number(obj.position.z || 0);
+                const heading = Number(obj.rotation.y || 0);
+                const ux = Math.cos(heading);
+                const uz = Math.sin(heading);
+                const half = totalSpanM / 2;
+                const p1 = clampToVenueBounds(cx - (ux * half), cz - (uz * half));
+                const p2 = clampToVenueBounds(cx + (ux * half), cz + (uz * half));
+                tp.x1 = Number(p1.x.toFixed(3));
+                tp.y1 = Number(p1.z.toFixed(3));
+                tp.x2 = Number(p2.x.toFixed(3));
+                tp.y2 = Number(p2.z.toFixed(3));
+                tp.heightY = Number(cy.toFixed(3));
+                const ndx = tp.x2 - tp.x1;
+                const ndz = tp.y2 - tp.y1;
+                obj.position.x = (tp.x1 + tp.x2) / 2;
+                obj.position.y = tp.heightY;
+                obj.position.z = (tp.y1 + tp.y2) / 2;
+                obj.rotation.y = Math.atan2(ndz, ndx);
+                updateObjectControlPanel();
+                return;
+              }
+              const placedId = obj.userData?.placedId;
+              if (!placedId) return;
+              const placed = (gearState.placedItems || []).find((x) => x.id === placedId);
+              if (!placed) return;
+              const source = gearItemsById[placed.sourceId] || {};
+              const dept = String(source.department || "Other").toLowerCase();
+              const clamped = clampToVenueBounds(obj.position.x, obj.position.z);
+              obj.position.x = clamped.x;
+              obj.position.z = clamped.z;
+              placed.x = Number(obj.position.x.toFixed(3));
+              placed.z = Number(obj.position.z.toFixed(3));
+              obj.position.y = Math.max(0.05, Number(obj.position.y || 0.35));
+              placed.y = Number(obj.position.y.toFixed(3));
+              placed.rotYDeg = Number(((obj.rotation.y * 180) / Math.PI).toFixed(3));
+              const sx = Number(obj.scale.x || 1);
+              const sy = Number(obj.scale.y || sx || 1);
+              const sz = Number(obj.scale.z || sx || 1);
+              const nextScale = Math.max(0.1, Math.min(5, (sx + sy + sz) / 3));
+              obj.scale.setScalar(nextScale);
+              placed.scale = Number(nextScale.toFixed(3));
+              updateObjectControlPanel();
+            };
+            transformControls.addEventListener("objectChange", () => {
+              syncPlacedFromTransformObject();
+              saveAppMemory();
+            });
+            transformControls.addEventListener("mouseUp", () => {
+              syncPlacedFromTransformObject();
+              syncTrussMeshes();
+              updateSelectedVisual();
+              saveAppMemory();
+            });
             const clearTrussMeshes = () => {
+              trussMeshes.clear();
               while (trussRoot.children.length) {
                 const child = trussRoot.children.pop();
                 if (!child) break;
@@ -6871,9 +7770,25 @@
                 len = Math.max(0.001, Math.hypot(dx, dz));
                 const heading = Math.atan2(dz, dx);
                 const lineColor = new THREE.Color(group?.color || tp.color || "#f08a3c");
+                const firstSpan = (getRiggingGroupSpans(groupId)[0]?.span) || null;
+                const firstTrussType = firstSpan ? getTrussType(firstSpan.trussTypeId) : null;
+                const trussAsset = resolveTrussModelAssetPathBySeries(firstTrussType?.series || "");
+                const trussHeightM = Math.max(0.08, Number(firstTrussType?.height_mm || 300) / 1000);
+                const trussDepthM = Math.max(0.08, Number(firstTrussType?.width_mm || 300) / 1000);
+                const trussCenterY = Math.max(trussHeightM * 0.5, 0.08);
+                const yCenter = Number.isFinite(Number(tp.heightY)) ? Number(tp.heightY) : trussCenterY;
 
+                const beamContainer = new THREE.Group();
+                beamContainer.position.set((x1 + x2) / 2, yCenter, (z1 + z2) / 2);
+                beamContainer.rotation.y = heading;
+                beamContainer.name = `${group?.name || tp.label || "Truss Group"} (${totalSpanM.toFixed(2)}m)`;
+                beamContainer.userData.trussGroupId = groupId;
+                beamContainer.userData.trussPlacementId = tp.id;
+                beamContainer.userData.trussBaseCenterY = trussCenterY;
+                trussRoot.add(beamContainer);
+                trussMeshes.set(String(tp.id), beamContainer);
                 const beam = new THREE.Mesh(
-                  new THREE.BoxGeometry(len, 0.08, 0.14),
+                  new THREE.BoxGeometry(len, trussHeightM, trussDepthM),
                   new THREE.MeshStandardMaterial({
                     color: lineColor,
                     roughness: 0.55,
@@ -6881,18 +7796,21 @@
                     emissive: lineColor.clone().multiplyScalar(0.05)
                   })
                 );
-                beam.position.set((x1 + x2) / 2, 0.08, (z1 + z2) / 2);
-                beam.rotation.y = heading;
-                beam.name = `${group?.name || tp.label || "Truss Group"} (${totalSpanM.toFixed(2)}m)`;
-                trussRoot.add(beam);
+                beam.userData.isFallback = true;
+                beamContainer.userData.fallbackMesh = beam;
+                beamContainer.add(beam);
+                if (trussAsset) {
+                  mountModelInContainer(beamContainer, trussAsset, { width: len, height: trussHeightM, depth: trussDepthM });
+                }
 
                 const endMat = new THREE.MeshStandardMaterial({ color: 0xf5f2ff, roughness: 0.35, metalness: 0.1 });
-                const endA = new THREE.Mesh(new THREE.SphereGeometry(0.07, 10, 10), endMat.clone());
-                const endB = new THREE.Mesh(new THREE.SphereGeometry(0.07, 10, 10), endMat.clone());
-                endA.position.set(x1, 0.1, z1);
-                endB.position.set(x2, 0.1, z2);
-                trussRoot.add(endA);
-                trussRoot.add(endB);
+                const endR = Math.max(0.05, Math.min(0.12, trussDepthM * 0.22));
+                const endA = new THREE.Mesh(new THREE.SphereGeometry(endR, 10, 10), endMat.clone());
+                const endB = new THREE.Mesh(new THREE.SphereGeometry(endR, 10, 10), endMat.clone());
+                endA.position.set(-len / 2, trussHeightM * 0.5 + endR * 0.15, 0);
+                endB.position.set(len / 2, trussHeightM * 0.5 + endR * 0.15, 0);
+                beamContainer.add(endA);
+                beamContainer.add(endB);
 
                 // Intentionally render connected spans as one continuous truss body per group.
 
@@ -6902,44 +7820,87 @@
                   if (!span || String(span.groupId || "") !== groupId) return;
                   const gp = mapSpanLocalToGroupPosition(groupId, span.id, Number(fp.positionM || 0));
                   if (!Number.isFinite(Number(gp))) return;
+                  const fixture = fp.fixtureKey ? getLightingFixtureByKey(fp.fixtureKey) : null;
                   fixtureLines.push({
+                    fixtureKey: fp.fixtureKey || "",
+                    manufacturer: fixture?.manufacturer || "",
+                    model: fixture?.model || "",
                     fixtureName: fp.fixtureName || "Fixture",
                     positionM: Number(gp),
-                    weightKg: (Number(fp.weightKg || 0) + Number(fp.clampWeightKg || 0)) * Math.max(1, Number(fp.quantity || 1))
+                    weightKg: (Number(fp.weightKg || 0) + Number(fp.clampWeightKg || 0)) * Math.max(1, Number(fp.quantity || 1)),
+                    dimensions_mm: fixture?.dimensions_mm || null
                   });
                 });
                 if (!fixtureLines.length) {
                   (riggingState.groupFixtures || []).forEach((gf) => {
                     if (String(gf.groupId || "") !== groupId) return;
+                    const fixture = gf.fixtureKey ? getLightingFixtureByKey(gf.fixtureKey) : null;
                     fixtureLines.push({
+                      fixtureKey: gf.fixtureKey || "",
+                      manufacturer: fixture?.manufacturer || "",
+                      model: fixture?.model || "",
                       fixtureName: gf.fixtureName || "Fixture",
                       positionM: Number(gf.positionM || 0),
-                      weightKg: Number(gf.weightKg || 0)
+                      weightKg: Number(gf.weightKg || 0),
+                      dimensions_mm: fixture?.dimensions_mm || null
                     });
                   });
                 }
                 fixtureLines.forEach((fxLine) => {
                   const gfPos = Math.max(0, Math.min(totalSpanM, Number(fxLine.positionM || 0)));
-                  const t = Math.max(0, Math.min(1, gfPos / Math.max(0.001, totalSpanM)));
-                  const fx = x1 + ((x2 - x1) * t);
-                  const fz = z1 + ((z2 - z1) * t);
+                  const localX = -len / 2 + (gfPos / Math.max(0.001, totalSpanM)) * len;
                   const weight = Number.isFinite(Number(fxLine.weightKg)) ? Number(fxLine.weightKg) : 0;
-                  const r = Math.max(0.05, Math.min(0.12, 0.055 + (Math.sqrt(Math.max(0, weight)) * 0.008)));
-                  const fixtureDot = new THREE.Mesh(
-                    new THREE.SphereGeometry(r, 12, 12),
+                  const dims = fxLine.dimensions_mm || {};
+                  const fxW = Math.max(0.18, Number.isFinite(Number(dims.width)) ? Number(dims.width) / 1000 : 0.45);
+                  const fxH = Math.max(0.18, Number.isFinite(Number(dims.height)) ? Number(dims.height) / 1000 : 0.45);
+                  const fxD = Math.max(0.12, Number.isFinite(Number(dims.length)) ? Number(dims.length) / 1000 : 0.28);
+                  const fixtureContainer = new THREE.Group();
+                  fixtureContainer.position.set(localX, -(trussHeightM * 0.5 + fxH * 0.55), 0);
+                  fixtureContainer.name = `${fxLine.fixtureName || "Fixture"} ${weight > 0 ? `(${weight.toFixed(1)}kg)` : ""}`.trim();
+                  const hanger = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.012, 0.012, Math.max(0.15, fxH * 0.25), 8),
+                    new THREE.MeshStandardMaterial({ color: 0xd9dff0, roughness: 0.45, metalness: 0.15 })
+                  );
+                  hanger.position.set(0, fxH * 0.42, 0);
+                  fixtureContainer.add(hanger);
+                  const modelSource = { manufacturer: fxLine.manufacturer || "", name: fxLine.model || fxLine.fixtureName || "" };
+                  const body = new THREE.Mesh(
+                    new THREE.BoxGeometry(fxW, fxH, fxD),
                     new THREE.MeshStandardMaterial({ color: 0x6de2a8, roughness: 0.45, metalness: 0.05, emissive: 0x103b2a })
                   );
-                  fixtureDot.position.set(fx, 0.2, fz);
-                  fixtureDot.name = `${fxLine.fixtureName || "Fixture"} ${weight > 0 ? `(${weight.toFixed(1)}kg)` : ""}`.trim();
-                  trussRoot.add(fixtureDot);
+                  body.userData.modelSource = modelSource;
+                  fixtureContainer.add(body);
+                  beamContainer.add(fixtureContainer);
+                });
+
+                const motorItems = (riggingState.groupMotors || []).filter((gm) => String(gm.groupId || "") === groupId);
+                motorItems.forEach((gm) => {
+                  const gp = Math.max(0, Math.min(totalSpanM, Number(gm.positionM || 0)));
+                  const localX = -len / 2 + (gp / Math.max(0.001, totalSpanM)) * len;
+                  const radius = Math.max(0.04, Math.min(trussDepthM * 0.45, trussHeightM * 0.45));
+                  const motorBall = new THREE.Mesh(
+                    new THREE.SphereGeometry(radius, 14, 14),
+                    new THREE.MeshStandardMaterial({ color: 0xffd766, roughness: 0.35, metalness: 0.18, emissive: 0x332400 })
+                  );
+                  motorBall.position.set(localX, (trussHeightM * 0.5) + radius, 0);
+                  const motor = getMotor(gm.motorId);
+                  motorBall.name = `${motor?.brand || "Motor"} ${motor?.model || ""}`.trim();
+                  beamContainer.add(motorBall);
                 });
               });
+              if (venueState.selectedTrussPlacementId && !trussMeshes.has(String(venueState.selectedTrussPlacementId))) {
+                venueState.selectedTrussPlacementId = "";
+              }
+              updateSelectedVisual();
+              updateObjectControlPanel();
             };
             const getPathDistance = (pts) => (pts || []).reduce((sum, p, i, arr) => {
               if (!p || i === 0) return sum;
               const prev = arr[i - 1];
               if (!prev) return sum;
-              return sum + Math.hypot(Number(p.x) - Number(prev.x), Number(p.y) - Number(prev.y));
+              const a = normalizeVenueMeasurePoint3D(p);
+              const b = normalizeVenueMeasurePoint3D(prev);
+              return sum + Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
             }, 0);
             const updateMeasureUI = () => {
               const cableCurrentEl = document.getElementById("venueMeasureCurrent");
@@ -6965,7 +7926,10 @@
             const syncMeasureOverlays = () => {
               clearMeasureOverlays();
               const addPath = (pts, colorHex) => {
-                const points = (pts || []).filter(Boolean).map((p) => new THREE.Vector3(Number(p.x || 0), 0.04, Number(p.y || 0)));
+                const points = (pts || []).filter(Boolean).map((p) => {
+                  const v = normalizeVenueMeasurePoint3D(p);
+                  return new THREE.Vector3(v.x, v.y, v.z);
+                });
                 points.forEach((pt) => {
                   const dot = new THREE.Mesh(
                     new THREE.SphereGeometry(0.08, 10, 10),
@@ -6995,7 +7959,9 @@
               const maxDim = Math.max(size.x, size.y, size.z, 0.1);
               fittedCenter.copy(center);
               fittedMaxDim = maxDim;
-              const dist = (maxDim * 1.45) / Math.tan((camera.fov * Math.PI / 180) / 2);
+              const dist = camera.isPerspectiveCamera
+                ? (maxDim * 1.45) / Math.tan((camera.fov * Math.PI / 180) / 2)
+                : maxDim * 2.1;
               camera.position.set(center.x + dist * 0.9, center.y + dist * 0.55, center.z + dist * 0.9);
               controls.target.copy(center);
               camera.up.set(0, 1, 0);
@@ -7004,7 +7970,9 @@
             const setView = (view) => {
               const dist = Math.max(2, fittedMaxDim * 1.9);
               const c = fittedCenter.clone();
-              if (view === "front") {
+              if (view === "isometric") {
+                camera.position.set(c.x + (dist * 0.95), c.y + (dist * 0.72), c.z + (dist * 0.95));
+              } else if (view === "front") {
                 camera.position.set(c.x, c.y, c.z + dist);
               } else if (view === "back") {
                 camera.position.set(c.x, c.y, c.z - dist);
@@ -7057,17 +8025,38 @@
               loadedRoot.scale.setScalar(fitScale * userScale);
               loadedRoot.updateMatrixWorld(true);
             };
-            const clearLoaded = () => {
-              if (!loadedRoot) return;
-              scene.remove(loadedRoot);
-              loadedRoot.traverse((obj) => {
+            const disposeObject3D = (rootObj) => {
+              if (!rootObj) return;
+              rootObj.traverse((obj) => {
                 if (obj.geometry) obj.geometry.dispose?.();
                 if (obj.material) {
                   if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
                   else obj.material.dispose?.();
                 }
               });
+            };
+            const clearLoaded = () => {
+              if (!loadedRoot) return;
+              scene.remove(loadedRoot);
+              disposeObject3D(loadedRoot);
               loadedRoot = null;
+              selectedImportedObject = null;
+            };
+            const getImportedTopLevelObject = (node) => {
+              if (!loadedRoot || !node) return null;
+              let cur = node;
+              while (cur && cur.parent && cur.parent !== loadedRoot) cur = cur.parent;
+              if (cur && cur.parent === loadedRoot) return cur;
+              return null;
+            };
+            const getPlacedIdFromNode = (node) => {
+              let cur = node;
+              while (cur) {
+                const id = cur.userData?.placedId;
+                if (id) return String(id);
+                cur = cur.parent;
+              }
+              return "";
             };
             const loadModel = (url) => {
               if (!url) {
@@ -7079,6 +8068,7 @@
                   fitViewToBounds(defaultVenueBounds);
                   statusEl.textContent = "No 3D model loaded. Upload a model or calibrate a floor plan.";
                 }
+                applyCameraPose(savedPose);
                 return;
               }
               statusEl.textContent = "Loading model...";
@@ -7096,6 +8086,7 @@
                 const sizeTxt = size ? ` (${size.x.toFixed(1)}m x ${size.z.toFixed(1)}m footprint)` : "";
                 statusEl.textContent = `Loaded: ${venueState.model3dName || "3D model"}${sizeTxt}${floorPlanBounds ? " + Floor plan mapped" : ""}`;
                 pickEl.textContent = "Selected: -";
+                applyCameraPose(savedPose);
               }, undefined, (err) => {
                 statusEl.textContent = "Failed to load model. Upload a valid .glb/.gltf file.";
                 console.error("Venue 3D load error", err);
@@ -7115,15 +8106,40 @@
               out.set(clamped.x, out.y, clamped.z);
               return out;
             };
+            const getMeasureWorldPoint = (event) => {
+              const rect = renderer.domElement.getBoundingClientRect();
+              pointer.x = ((event.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1;
+              pointer.y = -(((event.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1);
+              raycaster.setFromCamera(pointer, camera);
+              const candidates = [];
+              candidates.push(...Array.from(gearMeshes.values()));
+              candidates.push(...Array.from(trussMeshes.values()));
+              if (loadedRoot) candidates.push(...loadedRoot.children);
+              if (floorPlanMesh) candidates.push(floorPlanMesh);
+              if (candidates.length) {
+                const hits = raycaster.intersectObjects(candidates, true);
+                if (hits.length) {
+                  const hp = hits[0].point.clone();
+                  const clamped = clampToVenueBounds(hp.x, hp.z);
+                  hp.set(clamped.x, hp.y, clamped.z);
+                  return hp;
+                }
+              }
+              return getDropWorldPoint(event);
+            };
             const pickObject = (ev) => {
               if (venueState.measureArmed || venueState.generalMeasureArmed) {
-                const p3 = getDropWorldPoint(ev);
+                const p3 = getMeasureWorldPoint(ev);
                 if (p3) {
-                  const point = { x: Number(p3.x.toFixed(3)), y: Number(p3.z.toFixed(3)) };
+                  const point = {
+                    x: Number(p3.x.toFixed(3)),
+                    y: Number(p3.y.toFixed(3)),
+                    z: Number(p3.z.toFixed(3))
+                  };
                   if (venueState.measureArmed) venueState.measurePoints = [...(venueState.measurePoints || []), point];
                   if (venueState.generalMeasureArmed) venueState.generalMeasurePoints = [...(venueState.generalMeasurePoints || []), point];
                   syncMeasureOverlays();
-                  pickEl.textContent = `Measure point @ ${point.x.toFixed(2)}, ${point.y.toFixed(2)} m`;
+                  pickEl.textContent = `Measure point @ X ${point.x.toFixed(2)} / Y ${point.y.toFixed(2)} / Z ${point.z.toFixed(2)} m`;
                   saveAppMemory();
                 }
                 return;
@@ -7132,23 +8148,25 @@
               pointer.x = ((ev.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1;
               pointer.y = -(((ev.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1);
               raycaster.setFromCamera(pointer, camera);
-              const gearHits = raycaster.intersectObjects(Array.from(gearMeshes.values()), false);
+              const gizmoHelper = transformControls.getHelper ? transformControls.getHelper() : null;
+              if (gizmoHelper) {
+                const gizmoHits = raycaster.intersectObject(gizmoHelper, true);
+                if (gizmoHits.length) return;
+              }
+              if (transformControls.dragging || transformControls.axis) return;
+              const gearHits = raycaster.intersectObjects(Array.from(gearMeshes.values()), true);
               if (gearHits.length) {
                 const hit = gearHits[0];
-                const placedId = hit.object?.userData?.placedId;
+                const placedId = getPlacedIdFromNode(hit.object);
                 gearState.selectedPlacedId = placedId || "";
+                venueState.selectedTrussPlacementId = "";
+                selectedImportedObject = null;
                 const placed = (gearState.placedItems || []).find((x) => x.id === placedId);
-                dragObjectState.active = Boolean(placedId && placed);
-                dragObjectState.placedId = placedId || "";
-                if (placed) {
-                  const hp = hit.point || { x: Number(placed.x || 0), z: Number(placed.z || 0) };
-                  dragObjectState.offsetX = Number(placed.x || 0) - Number(hp.x || 0);
-                  dragObjectState.offsetZ = Number(placed.z || 0) - Number(hp.z || 0);
-                } else {
-                  dragObjectState.offsetX = 0;
-                  dragObjectState.offsetZ = 0;
-                }
-                controls.enabled = !dragObjectState.active;
+                dragObjectState.active = false;
+                dragObjectState.placedId = "";
+                dragObjectState.offsetX = 0;
+                dragObjectState.offsetZ = 0;
+                controls.enabled = true;
                 const src = placed ? gearItemsById[placed.sourceId] : null;
                 const p = hit.point || new THREE.Vector3();
                 pickEl.textContent = src
@@ -7158,6 +8176,29 @@
                 updateObjectControlPanel();
                 return;
               }
+              const trussHits = raycaster.intersectObjects(Array.from(trussMeshes.values()), true);
+              if (trussHits.length) {
+                let node = trussHits[0].object;
+                while (node && !node.userData?.trussPlacementId) node = node.parent;
+                const trussPlacementId = String(node?.userData?.trussPlacementId || "");
+                if (trussPlacementId) {
+                  venueState.selectedTrussPlacementId = trussPlacementId;
+                  gearState.selectedPlacedId = "";
+                  selectedImportedObject = null;
+                  dragObjectState.active = false;
+                  dragObjectState.placedId = "";
+                  dragObjectState.offsetX = 0;
+                  dragObjectState.offsetZ = 0;
+                  controls.enabled = true;
+                  const p = trussHits[0].point || new THREE.Vector3();
+                  const tr = (venueState.trussPlacements || []).find((x) => String(x.id || "") === trussPlacementId);
+                  const label = tr?.label || tr?.sourceGroupName || node?.name || "Truss Group";
+                  pickEl.textContent = `Selected: ${label} @ ${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} m`;
+                  updateSelectedVisual();
+                  updateObjectControlPanel();
+                  return;
+                }
+              }
               dragObjectState.active = false;
               dragObjectState.placedId = "";
               dragObjectState.offsetX = 0;
@@ -7166,6 +8207,8 @@
               const modelHits = loadedRoot ? raycaster.intersectObjects(loadedRoot.children, true) : [];
               if (!modelHits.length) {
                 gearState.selectedPlacedId = "";
+                venueState.selectedTrussPlacementId = "";
+                selectedImportedObject = null;
                 pickEl.textContent = "Selected: -";
                 updateSelectedVisual();
                 updateObjectControlPanel();
@@ -7173,8 +8216,12 @@
               }
               const hit = modelHits[0];
               const p = hit.point || new THREE.Vector3();
-              const name = hit.object?.name ? String(hit.object.name) : "Unnamed object";
+              const top = getImportedTopLevelObject(hit.object);
+              selectedImportedObject = top || null;
+              const name = top?.name ? String(top.name) : (hit.object?.name ? String(hit.object.name) : "Imported object");
               pickEl.textContent = `Selected: ${name} @ ${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} m`;
+              updateSelectedVisual();
+              updateObjectControlPanel();
             };
             renderer.domElement.addEventListener("pointerdown", pickObject);
             renderer.domElement.addEventListener("dragover", (ev) => {
@@ -7196,7 +8243,9 @@
                 id: makeGearPlacedId(),
                 sourceId,
                 x: Number(clamped.x.toFixed(3)),
-                y: 0.35,
+                y: String(source.venueKind || "") === "stage_deck"
+                  ? 0
+                  : (Number.isFinite(Number(source.defaultY)) ? Number(source.defaultY) : 0.35),
                 z: Number(clamped.z.toFixed(3)),
                 rotYDeg: 0,
                 scale: 1
@@ -7240,6 +8289,7 @@
               const placed = (gearState.placedItems || []).find((x) => x.id === gearState.selectedPlacedId);
               if (!placed) return;
               const px = Number(objPosXEl?.value || placed.x || 0);
+              const py = Number(objPosYEl?.value || placed.y || 0.35);
               const pz = Number(objPosZEl?.value || placed.z || 0);
               const ry = Number(objRotYEl?.value || placed.rotYDeg || 0);
               const sc = Number(objScaleEl?.value || placed.scale || 1);
@@ -7248,38 +8298,86 @@
                 Number.isFinite(pz) ? pz : Number(placed.z || 0)
               );
               placed.x = Number(next.x.toFixed(3));
+              placed.y = Number.isFinite(py) ? Number(Math.max(0.05, py).toFixed(3)) : Number(placed.y || 0.35);
               placed.z = Number(next.z.toFixed(3));
               placed.rotYDeg = Number.isFinite(ry) ? ry : Number(placed.rotYDeg || 0);
               placed.scale = Number.isFinite(sc) ? Math.max(0.1, sc) : Math.max(0.1, Number(placed.scale || 1));
               syncGearMeshes();
               saveAppMemory();
             });
-            objDeleteBtn?.addEventListener("click", () => {
+            const deleteSelected3dObject = () => {
               const id = gearState.selectedPlacedId;
-              if (!id) return;
-              gearState.placedItems = (gearState.placedItems || []).filter((x) => x.id !== id);
-              gearState.selectedPlacedId = "";
-              pickEl.textContent = "Selected: -";
-              syncGearMeshes();
-              saveAppMemory();
+              if (id) {
+                gearState.placedItems = (gearState.placedItems || []).filter((x) => x.id !== id);
+                gearState.selectedPlacedId = "";
+                pickEl.textContent = "Selected: -";
+                syncGearMeshes();
+                saveAppMemory();
+                return true;
+              }
+              if (selectedImportedObject && loadedRoot && selectedImportedObject.parent) {
+                selectedImportedObject.parent.remove(selectedImportedObject);
+                disposeObject3D(selectedImportedObject);
+                selectedImportedObject = null;
+                pickEl.textContent = "Selected: -";
+                updateSelectedVisual();
+                updateObjectControlPanel();
+                saveAppMemory();
+                return true;
+              }
+              const trussPlacementId = String(venueState.selectedTrussPlacementId || "");
+              if (trussPlacementId) {
+                const before = (venueState.trussPlacements || []).length;
+                venueState.trussPlacements = (venueState.trussPlacements || []).filter((x) => String(x.id || "") !== trussPlacementId);
+                venueState.selectedTrussPlacementId = "";
+                pickEl.textContent = "Selected: -";
+                syncTrussMeshes();
+                saveAppMemory();
+                return (venueState.trussPlacements || []).length !== before;
+              }
+              return false;
+            };
+            objDeleteBtn?.addEventListener("click", () => {
+              deleteSelected3dObject();
             });
+            const onVenue3dDeleteKey = (ev) => {
+              const key = String(ev.key || "");
+              if (key !== "Backspace" && key !== "Delete") return;
+              const t = ev.target;
+              if (t instanceof Element && t.closest("input, textarea, select, [contenteditable='true']")) return;
+              const section = String(currentEngineeringSection || "").toLowerCase();
+              if (section !== "venue") return;
+              if (!gearState.selectedPlacedId && !selectedImportedObject && !venueState.selectedTrussPlacementId) return;
+              ev.preventDefault();
+              deleteSelected3dObject();
+            };
+            window.addEventListener("keydown", onVenue3dDeleteKey);
 
             const onResize = () => {
               if (!host || !renderer || !camera) return;
               const nextW = Math.max(320, Math.floor(host.clientWidth || 320));
               const nextH = Math.max(320, Math.floor(host.clientHeight || 500));
               renderer.setSize(nextW, nextH, true);
-              camera.aspect = nextW / nextH;
-              camera.updateProjectionMatrix();
+              const aspect = Math.max(0.1, nextW / Math.max(1, nextH));
+              perspectiveCamera.aspect = aspect;
+              perspectiveCamera.updateProjectionMatrix();
+              orthographicCamera.left = (-orthoSizeBase * aspect) / 2;
+              orthographicCamera.right = (orthoSizeBase * aspect) / 2;
+              orthographicCamera.top = orthoSizeBase / 2;
+              orthographicCamera.bottom = -orthoSizeBase / 2;
+              orthographicCamera.updateProjectionMatrix();
             };
             window.addEventListener("resize", onResize);
 
             const tick = () => {
+              if (transformControls.dragging) {
+                syncPlacedFromTransformObject();
+              }
               controls.update();
               renderer.render(scene, camera);
               venue3dRuntime.frameId = requestAnimationFrame(tick);
             };
-            venue3dRuntime = { renderer, scene, camera, controls, frameId: 0, onResize };
+            venue3dRuntime = { renderer, scene, camera, controls, transformControls, frameId: 0, onResize, onKeydown: onVenue3dDeleteKey, refreshMeasurements: syncMeasureOverlays };
             resetBtn?.addEventListener("click", () => {
               setView("home");
             });
@@ -7293,6 +8391,19 @@
               btn.addEventListener("click", () => {
                 const view = String(btn.getAttribute("data-venue3d-view") || "home");
                 setView(view);
+              });
+            });
+            projectionTabs?.querySelectorAll("button[data-venue3d-projection]").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const mode = String(btn.getAttribute("data-venue3d-projection") || "perspective");
+                setProjection(mode);
+              });
+            });
+            gizmoTabs?.querySelectorAll("button[data-venue3d-gizmo]").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const mode = String(btn.getAttribute("data-venue3d-gizmo") || "translate");
+                setGizmoMode(mode);
+                saveAppMemory();
               });
             });
             scaleEl?.addEventListener("change", () => {
@@ -7310,6 +8421,7 @@
               if (hasFloorPlan && !venueState.model3dUrl) {
                 pickEl.textContent = "Selected: Floor plan mapped. Place gear in 3D.";
               }
+              applyCameraPose(savedPose);
             });
             tick();
           } catch (err) {
@@ -7323,6 +8435,12 @@
         function makeGearPlacedId() {
           return `gear_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
         }
+        function makeVenueModelId() {
+          return `venue_model_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+        }
+        function getStageDeckTypeById(id) {
+          return PROLYTE_STAGE_DECK_SIZES.find((x) => x.id === id) || PROLYTE_STAGE_DECK_SIZES[0];
+        }
 
         function getDepartmentColor(department) {
           const key = String(department || "Other").toLowerCase();
@@ -7333,6 +8451,102 @@
           if (key === "power") return "#8457e8";
           if (key === "venue") return "#35bfb4";
           return "#8f98ab";
+        }
+        function normalizeModelKey(text) {
+          return String(text || "")
+            .toLowerCase()
+            .replace(/\([^)]*\)/g, "")
+            .replace(/[^a-z0-9]+/g, " ")
+            .trim();
+        }
+        function resolveFixtureModelAssetPath(source) {
+          if (!source) return "";
+          const manufacturerRaw = String(source.manufacturer || "");
+          const nameRaw = String(source.name || "");
+          const modelRaw = nameRaw.replace(/\s*\([^)]*\)\s*$/, "").trim();
+          const byRaw = String(
+            GDTF_MODEL_MAP[`${manufacturerRaw}__${nameRaw}`]
+            || GDTF_MODEL_MAP[`${manufacturerRaw}__${modelRaw}`]
+            || ""
+          );
+          if (byRaw) return byRaw;
+          const manufacturer = normalizeModelKey(manufacturerRaw);
+          const model = normalizeModelKey(modelRaw || nameRaw);
+          if (manufacturer && model) {
+            const key = `${manufacturer}::${model}`;
+            const byGdtf = String(GDTF_MODEL_MAP[key] || "");
+            if (byGdtf) return byGdtf;
+          }
+          const fixtures = MODEL_ASSET_MAP.fixtures && typeof MODEL_ASSET_MAP.fixtures === "object"
+            ? MODEL_ASSET_MAP.fixtures
+            : {};
+          if (!manufacturer || !model) return "";
+          const key = `${manufacturer}::${model}`;
+          return String(fixtures[key] || "");
+        }
+        function resolveTrussModelAssetPathBySeries(series) {
+          const truss = MODEL_ASSET_MAP.truss && typeof MODEL_ASSET_MAP.truss === "object"
+            ? MODEL_ASSET_MAP.truss
+            : {};
+          const key = normalizeModelKey(series || "").replace(/\s+/g, "");
+          return String(truss[key] || "");
+        }
+        function normalizeVenueMeasurePoint3D(point) {
+          const p = point && typeof point === "object" ? point : {};
+          const x = Number.isFinite(Number(p.x)) ? Number(p.x) : 0;
+          const hasZ = Number.isFinite(Number(p.z));
+          // Backward compatible: old points used {x, y} where y represented ground Z.
+          const y = hasZ ? (Number.isFinite(Number(p.y)) ? Number(p.y) : 0) : 0;
+          const z = hasZ ? Number(p.z) : (Number.isFinite(Number(p.y)) ? Number(p.y) : 0);
+          return { x, y, z };
+        }
+        function getVenuePathDistance(points) {
+          return (points || []).reduce((sum, p, i, arr) => {
+            if (!p || i === 0) return sum;
+            const prev = arr[i - 1];
+            if (!prev) return sum;
+            const a = normalizeVenueMeasurePoint3D(p);
+            const b = normalizeVenueMeasurePoint3D(prev);
+            return sum + Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
+          }, 0);
+        }
+        function refreshVenueMeasureControls() {
+          const cableArmBtn = document.getElementById("venueMeasureArmBtn");
+          const cableCurrentEl = document.getElementById("venueMeasureCurrent");
+          const cableSaveBtn = document.getElementById("venueMeasureSaveBtn");
+          const generalArmBtn = document.getElementById("venueGeneralMeasureArmBtn");
+          const generalCurrentEl = document.getElementById("venueGeneralMeasureCurrent");
+          const generalSaveBtn = document.getElementById("venueGeneralMeasureSaveBtn");
+          const cableDistance = getVenuePathDistance(venueState.measurePoints || []);
+          const generalDistance = getVenuePathDistance(venueState.generalMeasurePoints || []);
+          if (cableArmBtn) cableArmBtn.classList.toggle("active", Boolean(venueState.measureArmed));
+          if (generalArmBtn) generalArmBtn.classList.toggle("active", Boolean(venueState.generalMeasureArmed));
+          if (cableCurrentEl) cableCurrentEl.textContent = `Current: ${cableDistance > 0 ? `${cableDistance.toFixed(2)} m` : (venueState.measureArmed ? "Click in 3D to add points." : "-")}`;
+          if (generalCurrentEl) generalCurrentEl.textContent = `Current: ${generalDistance > 0 ? `${generalDistance.toFixed(2)} m` : (venueState.generalMeasureArmed ? "Click in 3D to add points." : "-")}`;
+          if (cableSaveBtn) cableSaveBtn.disabled = !(cableDistance > 0);
+          if (generalSaveBtn) generalSaveBtn.disabled = !(generalDistance > 0);
+        }
+        function captureVenue3dPose() {
+          if (!venue3dRuntime?.camera || !venue3dRuntime?.controls) return null;
+          return {
+            px: Number(venue3dRuntime.camera.position.x || 0),
+            py: Number(venue3dRuntime.camera.position.y || 0),
+            pz: Number(venue3dRuntime.camera.position.z || 0),
+            tx: Number(venue3dRuntime.controls.target.x || 0),
+            ty: Number(venue3dRuntime.controls.target.y || 0),
+            tz: Number(venue3dRuntime.controls.target.z || 0)
+          };
+        }
+        function applyVenue3dPoseToRuntime(pose) {
+          if (!pose || !venue3dRuntime?.camera || !venue3dRuntime?.controls) return false;
+          const vals = [pose.px, pose.py, pose.pz, pose.tx, pose.ty, pose.tz].map((v) => Number(v));
+          if (vals.some((v) => !Number.isFinite(v))) return false;
+          venue3dRuntime.camera.position.set(vals[0], vals[1], vals[2]);
+          venue3dRuntime.controls.target.set(vals[3], vals[4], vals[5]);
+          venue3dRuntime.camera.up.set(0, 1, 0);
+          venue3dRuntime.controls.update();
+          venueState.venue3dPose = { ...pose };
+          return true;
         }
 
         function collectGearInventory() {
@@ -7350,6 +8564,8 @@
               footprintW: Number.isFinite(Number(row.footprintW)) ? Number(row.footprintW) : null,
               footprintD: Number.isFinite(Number(row.footprintD)) ? Number(row.footprintD) : null,
               heightM: Number.isFinite(Number(row.heightM)) ? Number(row.heightM) : null,
+              defaultY: Number.isFinite(Number(row.defaultY)) ? Number(row.defaultY) : null,
+              venueKind: String(row.venueKind || ""),
               notes: String(row.notes || ""),
               color: getDepartmentColor(row.department)
             });
@@ -7360,6 +8576,10 @@
           (lightingState.fixtures || []).forEach((line) => {
             const fixture = getLightingFixtureByKey(line.fixtureKey);
             const qty = Math.max(1, Math.round(Number(line.quantity || 1)));
+            const dims = fixture?.dimensions_mm || {};
+            const dimL = Number.isFinite(Number(dims.length)) ? Number(dims.length) / 1000 : null;
+            const dimW = Number.isFinite(Number(dims.width)) ? Number(dims.width) / 1000 : null;
+            const dimH = Number.isFinite(Number(dims.height)) ? Number(dims.height) / 1000 : null;
             pushItem({
               id: `lx_${line.id}`,
               department: "Lighting",
@@ -7368,6 +8588,9 @@
               quantity: qty,
               weightKg: fixture?.weight_kg,
               powerW: Number.isFinite(Number(fixture?.power?.max_w)) ? Number(fixture.power.max_w) : fixture?.power?.avg_w,
+              footprintW: dimW || dimL,
+              footprintD: dimL || dimW,
+              heightM: dimH,
               notes: line.groupId ? `Group: ${(lightingState.groups || []).find((g) => g.id === line.groupId)?.name || line.groupId}` : ""
             });
           });
@@ -7445,6 +8668,29 @@
               weightKg: a.weightKg,
               powerW: null,
               notes: a.placement || ""
+            });
+          });
+          (venueState.customVenueModels || []).forEach((item) => {
+            const width = Number(item.widthM || 0);
+            const depth = Number(item.depthM || 0);
+            const height = Number(item.heightM || 0);
+            const defaultY = Number(item.defaultY || 0);
+            pushItem({
+              id: String(item.id || ""),
+              department: "Venue",
+              manufacturer: String(item.manufacturer || "Custom"),
+              name: String(item.name || "Venue Model"),
+              quantity: 1,
+              weightKg: Number.isFinite(Number(item.weightKg)) ? Number(item.weightKg) : null,
+              powerW: null,
+              footprintW: Number.isFinite(width) && width > 0 ? width : null,
+              footprintD: Number.isFinite(depth) && depth > 0 ? depth : null,
+              heightM: Number.isFinite(height) && height > 0 ? height : null,
+              venueKind: String(item.kind || ""),
+              notes: item.kind === "stage_deck"
+                ? `Deck top ${Math.max(0, defaultY).toFixed(2)}m`
+                : "Custom wall",
+              defaultY: Number.isFinite(defaultY) ? defaultY : null
             });
           });
           return out.sort((a, b) => {
@@ -7775,7 +9021,9 @@
                 id: makeGearPlacedId(),
                 sourceId: id,
                 x: Number(p.x.toFixed(3)),
-                y: 0.35,
+                y: String(source.venueKind || "") === "stage_deck"
+                  ? 0
+                  : (Number.isFinite(Number(source.defaultY)) ? Number(source.defaultY) : 0.35),
                 z: Number(p.z.toFixed(3))
               });
               statusEl.textContent = `Placed: ${source.name}`;
@@ -7876,22 +9124,13 @@
           }
           const selectedVenueGroup = rigGroups.find((g) => g.id === venueState.selectedVenueRigGroupId) || null;
           const selectedVenueGroupTotalSpanM = selectedVenueGroup ? getRiggingGroupTotalSpan(selectedVenueGroup.id) : 0;
-          const multiPointDistanceM = (venueState.measurePoints || []).reduce((sum, p, i, arr) => {
-            if (!p || i === 0) return sum;
-            const prev = arr[i - 1];
-            if (!prev) return sum;
-            return sum + Math.hypot(Number(p.x) - Number(prev.x), Number(p.y) - Number(prev.y));
-          }, 0);
-          const generalDistanceM = (venueState.generalMeasurePoints || []).reduce((sum, p, i, arr) => {
-            if (!p || i === 0) return sum;
-            const prev = arr[i - 1];
-            if (!prev) return sum;
-            return sum + Math.hypot(Number(p.x) - Number(prev.x), Number(p.y) - Number(prev.y));
-          }, 0);
+          const multiPointDistanceM = getVenuePathDistance(venueState.measurePoints || []);
+          const generalDistanceM = getVenuePathDistance(venueState.generalMeasurePoints || []);
           const generalLogRows = (venueState.generalMeasurementLog || []).slice(0, 10).map((row, idx) => `
             <tr>
               <td>${idx + 1}</td>
               <td>${Number(row.distanceM || 0).toFixed(2)} m</td>
+              <td><button data-general-measure-delete="${String(row.id || "")}" data-general-measure-index="${idx}" aria-label="Delete general measurement">×</button></td>
             </tr>
           `).join("");
           const activeMeasureDistanceM = multiPointDistanceM;
@@ -7938,6 +9177,16 @@
             </tr>
           `).join("");
           const venueGearInventory = collectGearInventory();
+          const stageDeckType = getStageDeckTypeById(venueState.stageDeckSizeId);
+          const customVenueRows = (venueState.customVenueModels || []).map((item) => `
+            <tr>
+              <td>${String(item.kind || "") === "stage_deck" ? "Deck" : "Wall"}</td>
+              <td>${String(item.name || "Model")}</td>
+              <td>${Number(item.widthM || 0).toFixed(2)} x ${Number(item.depthM || 0).toFixed(2)} x ${Number(item.heightM || 0).toFixed(2)}m</td>
+              <td>${Number.isFinite(Number(item.defaultY)) ? Number(item.defaultY).toFixed(2) : "-"}m</td>
+              <td><button data-venue-model-remove="${String(item.id || "")}" aria-label="Remove custom venue model">×</button></td>
+            </tr>
+          `).join("");
           if (!gearState.selectedInventoryId || !venueGearInventory.some((x) => x.id === gearState.selectedInventoryId)) {
             gearState.selectedInventoryId = venueGearInventory[0]?.id || "";
           }
@@ -7952,7 +9201,7 @@
           main.innerHTML = `
             <div class="card">
               <div class="toolbar">
-                <h2>Venue - 2D Plan</h2>
+                <h2>Venue - 3D Plan</h2>
               </div>
               <div class="grid grid-4" style="margin-top:0.6rem;">
                 <div><label>Major Grid (m)</label><input id="venueMajorStepM" type="number" min="0.5" step="0.5" value="${majorStepM}" /></div>
@@ -8037,8 +9286,8 @@
                 </div>
                 <div class="table-wrap" style="margin-top:0.55rem;">
                   <table>
-                    <thead><tr><th>#</th><th>Distance</th></tr></thead>
-                    <tbody>${generalLogRows || '<tr><td colspan="2" class="muted">No measurements yet.</td></tr>'}</tbody>
+                    <thead><tr><th>#</th><th>Distance</th><th>Action</th></tr></thead>
+                    <tbody>${generalLogRows || '<tr><td colspan="3" class="muted">No measurements yet.</td></tr>'}</tbody>
                   </table>
                 </div>
               </div>
@@ -8059,7 +9308,6 @@
                   </table>
                 </div>
               </div>
-              <div class="muted" style="margin-top:0.45rem;">2D removed. Use the 3D view below for placement, measurement and cable runs.</div>
               <div class="card" style="margin-top:0.75rem;">
                 <div class="toolbar">
                   <h3 style="margin:0;">Venue 3D</h3>
@@ -8081,8 +9329,13 @@
                     <button data-venue3d-mode="pan">Pan</button>
                     <button data-venue3d-mode="zoom">Zoom</button>
                   </div>
+                  <div class="tabs" id="venue3dProjectionTabs">
+                    <button data-venue3d-projection="perspective" class="${String(venueState.projectionMode || "perspective") === "perspective" ? "active" : ""}">Perspective</button>
+                    <button data-venue3d-projection="orthographic" class="${String(venueState.projectionMode || "perspective") === "orthographic" ? "active" : ""}">Orthographic</button>
+                  </div>
                   <div class="tabs" id="venue3dViewTabs">
                     <button data-venue3d-view="home">Home</button>
+                    <button data-venue3d-view="isometric">Isometric</button>
                     <button data-venue3d-view="front">Front</button>
                     <button data-venue3d-view="back">Back</button>
                     <button data-venue3d-view="left">Left</button>
@@ -8100,6 +9353,37 @@
                       <button id="venue3dClearGearBtn">Clear</button>
                     </div>
                     <div class="muted" style="margin-bottom:0.35rem;">Drag onto the 3D view.</div>
+                    <div class="card" style="margin:0 0 0.55rem 0;">
+                      <h3 style="margin:0 0 0.35rem 0;font-size:0.96rem;">Add Models</h3>
+                      <div class="grid grid-2" style="gap:0.4rem;">
+                        <div><label>Wall Width (m)</label><input id="venueWallWidthM" type="number" min="0.1" step="0.1" value="${Math.max(0.1, Number(venueState.wallWidthM || 8))}" /></div>
+                        <div><label>Wall Height (m)</label><input id="venueWallHeightM" type="number" min="0.1" step="0.1" value="${Math.max(0.1, Number(venueState.wallHeightM || 4))}" /></div>
+                        <div><label>Wall Depth (m)</label><input id="venueWallDepthM" type="number" min="0.02" step="0.01" value="${Math.max(0.02, Number(venueState.wallDepthM || 0.12))}" /></div>
+                        <div><label>Wall Scale</label><input id="venueWallScale" type="number" min="0.1" step="0.1" value="${Math.max(0.1, Number(venueState.wallScale || 1))}" /></div>
+                      </div>
+                      <div style="display:flex;gap:0.35rem;align-items:flex-end;flex-wrap:wrap;margin-top:0.4rem;">
+                        <div style="max-width:120px;"><label>Wall Weight (kg)</label><input id="venueWallWeightKg" type="number" min="0" step="1" value="${Math.max(0, Number(venueState.wallWeightKg || 120))}" /></div>
+                        <button id="venueAddWallBtn">Add Wall</button>
+                      </div>
+                      <hr style="border:none;border-top:1px solid var(--theme-line-soft);margin:0.55rem 0;" />
+                      <div class="grid grid-2" style="gap:0.4rem;">
+                        <div>
+                          <label>Prolyte Stage Deck</label>
+                          <select id="venueStageDeckSizeSel">
+                            ${PROLYTE_STAGE_DECK_SIZES.map((d) => `<option value="${d.id}" ${d.id === stageDeckType.id ? "selected" : ""}>${d.name}</option>`).join("")}
+                          </select>
+                        </div>
+                        <div><label>Stage Height (m)</label><input id="venueStageDeckHeightM" type="number" min="0.08" step="0.01" value="${Math.max(0.08, Number(venueState.stageDeckHeightM || 0.6))}" /></div>
+                      </div>
+                      <div class="muted" style="margin-top:0.3rem;">Selected: ${stageDeckType.widthM.toFixed(2)}m x ${stageDeckType.depthM.toFixed(2)}m deck.</div>
+                      <div style="margin-top:0.35rem;"><button id="venueAddStageDeckBtn">Add Stage Deck</button></div>
+                      <div class="table-wrap" style="margin-top:0.5rem;max-height:180px;">
+                        <table>
+                          <thead><tr><th>Type</th><th>Name</th><th>Size</th><th>Top</th><th></th></tr></thead>
+                          <tbody>${customVenueRows || '<tr><td colspan="5" class="muted">No custom walls/decks yet.</td></tr>'}</tbody>
+                        </table>
+                      </div>
+                    </div>
                     <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">
                       ${venueGearInventory.map((item) => `
                         <span
@@ -8114,8 +9398,14 @@
                     <div class="card" style="margin-top:0.65rem;">
                       <h3 style="margin:0 0 0.35rem 0;font-size:0.96rem;">Object Controls</h3>
                       <div class="muted" id="venue3dObjName">Selected: -</div>
+                      <div class="tabs" id="venue3dGizmoTabs" style="margin-top:0.4rem;">
+                        <button data-venue3d-gizmo="translate" class="${String(venueState.gizmoMode || "translate") === "translate" ? "active" : ""}">Move</button>
+                        <button data-venue3d-gizmo="rotate" class="${String(venueState.gizmoMode || "translate") === "rotate" ? "active" : ""}">Rotate</button>
+                        <button data-venue3d-gizmo="scale" class="${String(venueState.gizmoMode || "translate") === "scale" ? "active" : ""}">Scale</button>
+                      </div>
                       <div class="grid grid-2" style="margin-top:0.45rem;">
                         <div><label>Pos X (m)</label><input id="venue3dObjPosX" type="number" step="0.01" /></div>
+                        <div><label>Pos Y (m)</label><input id="venue3dObjPosY" type="number" step="0.01" /></div>
                         <div><label>Pos Z (m)</label><input id="venue3dObjPosZ" type="number" step="0.01" /></div>
                         <div><label>Rotate Y (deg)</label><input id="venue3dObjRotY" type="number" step="1" /></div>
                         <div><label>Scale</label><input id="venue3dObjScale" type="number" min="0.1" step="0.05" /></div>
@@ -8884,18 +10174,147 @@
             if (!(target instanceof HTMLInputElement)) return;
             venueState.model3dScale = Math.max(0.01, Number(target.value || 1));
           });
+          const clampNum = (value, fallback, min, max = Number.POSITIVE_INFINITY) => {
+            const n = Number(value);
+            if (!Number.isFinite(n)) return fallback;
+            return Math.min(max, Math.max(min, n));
+          };
+          document.getElementById("venueWallWidthM")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.wallWidthM = clampNum(t.value, Number(venueState.wallWidthM || 8), 0.1);
+          });
+          document.getElementById("venueWallHeightM")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.wallHeightM = clampNum(t.value, Number(venueState.wallHeightM || 4), 0.1);
+          });
+          document.getElementById("venueWallDepthM")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.wallDepthM = clampNum(t.value, Number(venueState.wallDepthM || 0.12), 0.02);
+          });
+          document.getElementById("venueWallScale")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.wallScale = clampNum(t.value, Number(venueState.wallScale || 1), 0.1);
+          });
+          document.getElementById("venueWallWeightKg")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.wallWeightKg = clampNum(t.value, Number(venueState.wallWeightKg || 120), 0);
+          });
+          document.getElementById("venueStageDeckSizeSel")?.addEventListener("change", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLSelectElement)) return;
+            venueState.stageDeckSizeId = t.value;
+            renderVenue();
+          });
+          document.getElementById("venueStageDeckHeightM")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.stageDeckHeightM = clampNum(t.value, Number(venueState.stageDeckHeightM || 0.6), 0.08);
+          });
+          document.getElementById("venueAddWallBtn")?.addEventListener("click", () => {
+            const scale = Math.max(0.1, Number(venueState.wallScale || 1));
+            const widthM = Math.max(0.1, Number(venueState.wallWidthM || 8) * scale);
+            const heightM = Math.max(0.1, Number(venueState.wallHeightM || 4) * scale);
+            const depthM = Math.max(0.02, Number(venueState.wallDepthM || 0.12) * scale);
+            const wall = {
+              id: makeVenueModelId(),
+              kind: "wall",
+              manufacturer: "Custom",
+              name: `Wall ${Number(widthM).toFixed(2)}m x ${Number(heightM).toFixed(2)}m`,
+              widthM,
+              depthM,
+              heightM,
+              weightKg: Math.max(0, Number(venueState.wallWeightKg || 0)),
+              defaultY: Math.max(0.1, heightM / 2)
+            };
+            venueState.customVenueModels = [wall, ...(venueState.customVenueModels || [])];
+            const wallCount = (venueState.customVenueModels || []).filter((x) => String(x.kind || "") === "wall").length;
+            const lane = (wallCount - 1) % 6;
+            const row = Math.floor((wallCount - 1) / 6);
+            gearState.placedItems = [
+              {
+                id: makeGearPlacedId(),
+                sourceId: wall.id,
+                x: Number(((lane * 1.6) - 4).toFixed(3)),
+                y: Number((wall.defaultY || Math.max(0.1, heightM / 2)).toFixed(3)),
+                z: Number((row * 1.8).toFixed(3)),
+                rotYDeg: 0,
+                scale: 1
+              },
+              ...(gearState.placedItems || [])
+            ];
+            gearState.selectedInventoryId = wall.id;
+            gearState.selectedPlacedId = gearState.placedItems[0]?.id || "";
+            renderVenue();
+          });
+          document.getElementById("venueAddStageDeckBtn")?.addEventListener("click", () => {
+            const deckType = getStageDeckTypeById(venueState.stageDeckSizeId);
+            const deckTop = Math.max(0.08, Number(venueState.stageDeckHeightM || 0.6));
+            const deck = {
+              id: makeVenueModelId(),
+              kind: "stage_deck",
+              manufacturer: "Prolyte",
+              name: `${deckType.name} @ ${deckTop.toFixed(2)}m`,
+              widthM: Number(deckType.widthM),
+              depthM: Number(deckType.depthM),
+              heightM: 0.12,
+              weightKg: Number(deckType.deckWeightKg || 0),
+              defaultY: deckTop
+            };
+            venueState.customVenueModels = [deck, ...(venueState.customVenueModels || [])];
+            const deckCount = (venueState.customVenueModels || []).filter((x) => String(x.kind || "") === "stage_deck").length;
+            const lane = (deckCount - 1) % 5;
+            const row = Math.floor((deckCount - 1) / 5);
+            gearState.placedItems = [
+              {
+                id: makeGearPlacedId(),
+                sourceId: deck.id,
+                x: Number(((lane * (deckType.widthM + 0.6)) - 4).toFixed(3)),
+                y: 0,
+                z: Number(((row * (deckType.depthM + 0.8)) + 3).toFixed(3)),
+                rotYDeg: 0,
+                scale: 1
+              },
+              ...(gearState.placedItems || [])
+            ];
+            gearState.selectedInventoryId = deck.id;
+            gearState.selectedPlacedId = gearState.placedItems[0]?.id || "";
+            renderVenue();
+          });
+          document.querySelectorAll("button[data-venue-model-remove]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const id = String(btn.getAttribute("data-venue-model-remove") || "");
+              if (!id) return;
+              venueState.customVenueModels = (venueState.customVenueModels || []).filter((x) => String(x.id || "") !== id);
+              gearState.placedItems = (gearState.placedItems || []).filter((x) => String(x.sourceId || "") !== id);
+              if (gearState.selectedPlacedId && !(gearState.placedItems || []).some((x) => x.id === gearState.selectedPlacedId)) {
+                gearState.selectedPlacedId = "";
+              }
+              renderVenue();
+            });
+          });
           document.getElementById("venueMeasureArmBtn")?.addEventListener("click", () => {
             venueState.measureArmed = true;
             venueState.generalMeasureArmed = false;
-            renderVenue();
+            refreshVenueMeasureControls();
+            venue3dRuntime?.refreshMeasurements?.();
+            saveAppMemory();
           });
           document.getElementById("venueMeasureClearBtn")?.addEventListener("click", () => {
             venueState.measurePoints = [];
-            renderVenue();
+            refreshVenueMeasureControls();
+            venue3dRuntime?.refreshMeasurements?.();
+            saveAppMemory();
           });
           document.getElementById("venueMeasureSaveBtn")?.addEventListener("click", (ev) => {
             ev.preventDefault();
             ev.stopPropagation();
+            const poseBeforeSave = captureVenue3dPose();
+            if (poseBeforeSave) venueState.venue3dPose = { ...poseBeforeSave };
             venueState.measureArmed = false;
             const pts = venueState.measurePoints || [];
             const points = pts.length;
@@ -8906,7 +10325,8 @@
               return sum + Math.hypot(Number(p.x) - Number(prev.x), Number(p.y) - Number(prev.y));
             }, 0);
             if (distance <= 0) {
-              renderVenue();
+              refreshVenueMeasureControls();
+              venue3dRuntime?.refreshMeasurements?.();
               return;
             }
             const nextIndex = (venueState.measurementLog || []).length + 1;
@@ -8921,19 +10341,29 @@
             };
             venueState.measurementLog = [entry, ...(venueState.measurementLog || [])];
             renderVenue();
+            if (poseBeforeSave) {
+              setTimeout(() => applyVenue3dPoseToRuntime(poseBeforeSave), 0);
+              setTimeout(() => applyVenue3dPoseToRuntime(poseBeforeSave), 120);
+            }
           });
           document.getElementById("venueGeneralMeasureArmBtn")?.addEventListener("click", () => {
             venueState.generalMeasureArmed = true;
             venueState.measureArmed = false;
-            renderVenue();
+            refreshVenueMeasureControls();
+            venue3dRuntime?.refreshMeasurements?.();
+            saveAppMemory();
           });
           document.getElementById("venueGeneralMeasureClearBtn")?.addEventListener("click", () => {
             venueState.generalMeasurePoints = [];
-            renderVenue();
+            refreshVenueMeasureControls();
+            venue3dRuntime?.refreshMeasurements?.();
+            saveAppMemory();
           });
           document.getElementById("venueGeneralMeasureSaveBtn")?.addEventListener("click", (ev) => {
             ev.preventDefault();
             ev.stopPropagation();
+            const poseBeforeSave = captureVenue3dPose();
+            if (poseBeforeSave) venueState.venue3dPose = { ...poseBeforeSave };
             venueState.generalMeasureArmed = false;
             const pts = venueState.generalMeasurePoints || [];
             const distance = pts.reduce((sum, p, i, arr) => {
@@ -8943,12 +10373,20 @@
               return sum + Math.hypot(Number(p.x) - Number(prev.x), Number(p.y) - Number(prev.y));
             }, 0);
             if (distance <= 0) {
-              renderVenue();
+              refreshVenueMeasureControls();
+              venue3dRuntime?.refreshMeasurements?.();
               return;
             }
-            const next = [{ distanceM: distance }, ...(venueState.generalMeasurementLog || [])].slice(0, 10);
+            const next = [{
+              id: `gm_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+              distanceM: distance
+            }, ...(venueState.generalMeasurementLog || [])].slice(0, 10);
             venueState.generalMeasurementLog = next;
             renderVenue();
+            if (poseBeforeSave) {
+              setTimeout(() => applyVenue3dPoseToRuntime(poseBeforeSave), 0);
+              setTimeout(() => applyVenue3dPoseToRuntime(poseBeforeSave), 120);
+            }
           });
           document.querySelectorAll("select[data-measure-category]").forEach((sel) => {
             sel.addEventListener("change", () => {
@@ -9043,6 +10481,20 @@
               if (venueState.measurementEditingId === id) {
                 venueState.measurementEditingId = "";
                 venueState.measurementEditingValue = "";
+              }
+              renderVenue();
+            });
+          });
+          document.querySelectorAll("button[data-general-measure-delete]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-general-measure-delete");
+              const idx = Number(btn.getAttribute("data-general-measure-index"));
+              if (id) {
+                venueState.generalMeasurementLog = (venueState.generalMeasurementLog || []).filter((x) => x && x.id !== id);
+              } else if (Number.isInteger(idx) && idx >= 0) {
+                venueState.generalMeasurementLog = (venueState.generalMeasurementLog || []).filter((_, i) => i !== idx);
+              } else {
+                return;
               }
               renderVenue();
             });
@@ -9340,10 +10792,7 @@
         loadRiggingCatalogs();
         const appSettings = getSettingsState();
         applySettingsToRuntime(appSettings);
-        const hasSettingsLighting = Boolean((appSettings?.departments?.Lighting?.equipment || []).some((x) => x && x.enabled !== false));
-        if (!hasSettingsLighting) {
-          loadLightingFixtures();
-        }
+        loadLightingFixtures();
         const DEPTS = new Set(["Video", "Lighting", "Sound", "Rigging", "Power", "Venue"]);
         const urlDept = new URLSearchParams(window.location.search).get("dept") || "";
         const storedDept = localStorage.getItem("thebase.activeDept") || "Video";
