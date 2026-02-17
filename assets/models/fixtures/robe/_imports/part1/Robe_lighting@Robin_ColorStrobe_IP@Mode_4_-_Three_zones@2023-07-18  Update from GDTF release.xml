@@ -1,0 +1,429 @@
+<?xml version="1.0"?>
+<MA xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/2.8.123/MA.xsd" xmlns="http://schemas.malighting.de/grandma2/xml/MA" major_vers="3" minor_vers="7" stream_vers="0">
+    <FixtureType name="Robin ColorStrobe IP" mode="Mode 4 - Three zones">
+        <InfoItems>
+            <Info type="Revision" date="2023-07-18T12:14:15">Converted GDTF to grandMA2 fixture type with Share Converter version 1.4.0</Info>
+            <Info type="Revision" date="2022-02-23T15:16:13">test</Info>
+            <Info type="Revision" date="2022-02-24T15:22:21">24022022v2</Info>
+            <Info type="Revision" date="2022-02-24T16:34:53">24022022v3</Info>
+            <Info type="Revision" date="2022-02-25T15:50:33">25022022v3</Info>
+            <Info type="Revision" date="2022-03-02T16:13:38">02032022</Info>
+            <Info type="Revision" date="2022-03-03T08:08:36">03032022v2</Info>
+            <Info type="Revision" date="2022-03-03T09:29:10">03022022v3</Info>
+            <Info type="Revision" date="2022-03-03T10:02:48">03032022v5</Info>
+            <Info type="Revision" date="2022-04-07T12:24:52">07042022</Info>
+            <Info type="Revision" date="2022-05-04T11:03:36">04052022</Info>
+            <Info type="Revision" date="2022-05-05T07:07:24">05052022</Info>
+            <Info type="Revision" date="2022-05-05T12:49:29">05052022 new geometric tree finale</Info>
+            <Info type="Revision" date="2022-11-01T18:45:28">Adding pigtail  Namig DMX modes</Info>
+            <Info type="Revision" date="2022-11-01T18:47:22">2022-11-01  Convert models to glb</Info>
+            <Info type="Revision" date="2022-11-10T22:37:33">2022-11-10  DMX Input adjustment</Info>
+            <Info type="Revision" date="2022-11-30T12:27:54">2022-11-30  Major update</Info>
+            <Info type="Revision" date="2022-12-01T12:15:08">2022-12-01  Geometry names update</Info>
+            <Info>Powerful strobe in color for outdoor exposures. Add color into your outdoor blinding strobing sequences with the ColorStrobe IP to achieve dyed effects, white flashing with colorful backgrounds or continuous bright light output with colored animations.</Info>
+            <Info type="Revision" date="2023-07-18T12:14:24.661">2023-07-18%20%20Update%20from%20GDTF%20release, Uploaded to Fixture Share.</Info>
+        </InfoItems>
+        <short_name>Robin ColorStrobe IP</short_name>
+        <manufacturer>Robe lighting</manufacturer>
+        <short_manufacturer>Robe Lighting</short_manufacturer>
+        <Modules>
+            <Module name="Arms" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model name="Arms" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                </Model>
+                <ChannelType default="0" attribute="TILT" feature="POSITION" preset="POSITION">
+                    <ChannelFunction subattribute="TILT" attribute="TILT" feature="POSITION" preset="POSITION" from="90" to="-90" physfrom="90" physto="-90" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="Horizontal position 90deg" from_dmx="0" to_dmx="0"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+            <Module name="Zone 1" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model/>
+                <ChannelType coarse="1" default="255" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB1" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="2" default="255" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB2" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="3" default="255" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB3" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="4" default="255" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB5" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="5" default="0" react_to_master="1" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Open" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="6" default="0" attribute="STROBEDURATION" feature="SHUTTER" preset="BEAM" highlight_value="50.19607843137255">
+                    <ChannelFunction subattribute="STROBEDURATION" attribute="STROBEDURATION" feature="SHUTTER" preset="BEAM" from="0" to="100" physfrom="0.01331" physto="0.86195" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Light time duration from min to max" from_dmx="0" to_dmx="255" slot_from="0" slot_to="1"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="7" default="0" attribute="STROBEEFFECTRATE" feature="SHUTTER" preset="BEAM" highlight_value="50.19607843137255">
+                    <ChannelFunction subattribute="STROBEEFFECTRATE" attribute="STROBEEFFECTRATE" feature="SHUTTER" preset="BEAM" from="0" to="100" physfrom="0.289" physto="25" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="No flash" from_dmx="0" to_dmx="5" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="Flash frequency from min to max" from_dmx="6" to_dmx="255" slot_from="0.289" slot_to="25"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+            <Module name="Zone 2" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model/>
+                <ChannelType coarse="8" default="255" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB1" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="9" default="255" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB2" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="10" default="255" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB3" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="11" default="255" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB5" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="12" default="0" react_to_master="1" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Open" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="13" default="0" attribute="STROBEDURATION" feature="SHUTTER" preset="BEAM" highlight_value="50.19607843137255">
+                    <ChannelFunction subattribute="STROBEDURATION" attribute="STROBEDURATION" feature="SHUTTER" preset="BEAM" from="0" to="100" physfrom="0.01331" physto="0.86195" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Light time duration from min to max" from_dmx="0" to_dmx="255" slot_from="0" slot_to="1"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="14" default="0" attribute="STROBEEFFECTRATE" feature="SHUTTER" preset="BEAM" highlight_value="50.19607843137255">
+                    <ChannelFunction subattribute="STROBEEFFECTRATE" attribute="STROBEEFFECTRATE" feature="SHUTTER" preset="BEAM" from="0" to="100" physfrom="0.289" physto="25" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="No flash" from_dmx="0" to_dmx="5" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="Flash frequency from min to max" from_dmx="6" to_dmx="255" slot_from="0.289" slot_to="25"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+            <Module name="Zone 3" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model/>
+                <ChannelType coarse="15" default="255" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB1" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="16" default="255" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB2" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="17" default="255" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB3" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="18" default="255" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB5" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="19" default="0" react_to_master="1" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Open" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="20" default="0" attribute="STROBEDURATION" feature="SHUTTER" preset="BEAM" highlight_value="50.19607843137255">
+                    <ChannelFunction subattribute="STROBEDURATION" attribute="STROBEDURATION" feature="SHUTTER" preset="BEAM" from="0" to="100" physfrom="0.01331" physto="0.86195" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Light time duration from min to max" from_dmx="0" to_dmx="255" slot_from="0" slot_to="1"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="21" default="0" attribute="STROBEEFFECTRATE" feature="SHUTTER" preset="BEAM" highlight_value="50.19607843137255">
+                    <ChannelFunction subattribute="STROBEEFFECTRATE" attribute="STROBEEFFECTRATE" feature="SHUTTER" preset="BEAM" from="0" to="100" physfrom="0.289" physto="25" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="No flash" from_dmx="0" to_dmx="5" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="Flash frequency from min to max" from_dmx="6" to_dmx="255" slot_from="0.289" slot_to="25"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+        </Modules>
+        <Instances>
+            <Instance module_index="0" patch="1" locked="true"/>
+            <Instance module_index="1" patch="1" locked="true"/>
+            <Instance module_index="2" patch="1" locked="true"/>
+            <Instance module_index="3" patch="1" locked="true"/>
+        </Instances>
+        <Wheels>
+            <Wheel index="0" preset="Color" feature="Color" attribute="COLORMACROS" subattribute="COLORMACROS">
+                <Slot index="0" media_name="Open" r="254" g="255" b="255"/>
+                <Slot index="1" media_name="White 2700 K" r="255" g="199" b="125"/>
+                <Slot index="2" media_name="White 2700 K (Halogen lamp mode)" r="255" g="199" b="125"/>
+                <Slot index="3" media_name="White 3200 K" r="255" g="231" b="169"/>
+                <Slot index="4" media_name="White 3200 K (Halogen lamp mode)" r="255" g="231" b="169"/>
+                <Slot index="5" media_name="White 4200 K" r="255" g="251" b="226"/>
+                <Slot index="6" media_name="White 5600 K" r="255" g="249" b="255"/>
+                <Slot index="7" media_name="White 8000 K" r="237" g="240" b="255"/>
+                <Slot index="8" media_name="Blue" r="97" g="0" b="255"/>
+                <Slot index="9" media_name="Blue + Green >> 00" r="96" g="0" b="255"/>
+                <Slot index="10" media_name="Blue + Green >> 01" r="93" g="0" b="255"/>
+                <Slot index="11" media_name="Blue + Green >> 02" r="90" g="0" b="255"/>
+                <Slot index="12" media_name="Blue + Green >> 03" r="86" g="0" b="255"/>
+                <Slot index="13" media_name="Blue + Green >> 04" r="82" g="0" b="255"/>
+                <Slot index="14" media_name="Blue + Green >> 05" r="77" g="0" b="255"/>
+                <Slot index="15" media_name="Blue + Green >> 06" r="83" g="0" b="255"/>
+                <Slot index="16" media_name="Blue + Green >> 07" r="77" g="0" b="255"/>
+                <Slot index="17" media_name="Blue + Green >> 08" r="74" g="0" b="255"/>
+                <Slot index="18" media_name="Blue + Green >> 09" r="71" g="0" b="255"/>
+                <Slot index="19" media_name="Blue + Green >> 10" r="57" g="53" b="255"/>
+                <Slot index="20" media_name="Blue + Green >> 11" r="30" g="69" b="255"/>
+                <Slot index="21" media_name="Blue + Green >> 12" r="0" g="85" b="255"/>
+                <Slot index="22" media_name="Blue + Green >> 13" r="0" g="101" b="255"/>
+                <Slot index="23" media_name="Blue + Green >> 14" r="0" g="115" b="255"/>
+                <Slot index="24" media_name="Blue + Green >> 15" r="0" g="126" b="255"/>
+                <Slot index="25" media_name="Blue + Green >> 16" r="0" g="133" b="255"/>
+                <Slot index="26" media_name="Blue + Green >> 17" r="0" g="143" b="255"/>
+                <Slot index="27" media_name="Blue + Green >> 18" r="0" g="150" b="255"/>
+                <Slot index="28" media_name="Blue + Green >> 19" r="0" g="157" b="255"/>
+                <Slot index="29" media_name="Blue + Green >> 20" r="0" g="165" b="255"/>
+                <Slot index="30" media_name="Blue + Green >> 21" r="0" g="172" b="255"/>
+                <Slot index="31" media_name="Blue + Green >> 22" r="0" g="175" b="255"/>
+                <Slot index="32" media_name="Blue + Green >> 23" r="0" g="177" b="255"/>
+                <Slot index="33" media_name="Blue + Green >> 24" r="0" g="180" b="255"/>
+                <Slot index="34" media_name="Blue + Green >> 25" r="0" g="184" b="255"/>
+                <Slot index="35" media_name="Blue + Green >> 26" r="0" g="187" b="255"/>
+                <Slot index="36" media_name="Blue + Green >> 27" r="0" g="189" b="255"/>
+                <Slot index="37" media_name="Blue + Green >> 28" r="0" g="191" b="255"/>
+                <Slot index="38" media_name="Blue + Green >> 29" r="0" g="193" b="255"/>
+                <Slot index="39" media_name="Blue + Green >> 30" r="0" g="194" b="255"/>
+                <Slot index="40" media_name="Blue + Green >> 31" r="0" g="195" b="255"/>
+                <Slot index="41" media_name="Blue + Green >> 32" r="0" g="196" b="255"/>
+                <Slot index="42" media_name="Blue + Green >> 33" r="0" g="196" b="255"/>
+                <Slot index="43" media_name="Blue + Green >> 34" r="0" g="197" b="255"/>
+                <Slot index="44" media_name="Blue + Green >> 35" r="0" g="197" b="255"/>
+                <Slot index="45" media_name="Blue + Green >> 36" r="0" g="198" b="255"/>
+                <Slot index="46" media_name="Blue + Green >> 37" r="0" g="199" b="255"/>
+                <Slot index="47" media_name="Blue + Green >> 38" r="0" g="199" b="255"/>
+                <Slot index="48" media_name="Light Blue" r="0" g="200" b="255"/>
+                <Slot index="49" media_name="Green + Blue << 00" r="0" g="200" b="255"/>
+                <Slot index="50" media_name="Green + Blue << 01" r="0" g="201" b="255"/>
+                <Slot index="51" media_name="Green + Blue << 02" r="0" g="201" b="255"/>
+                <Slot index="52" media_name="Green + Blue << 03" r="0" g="202" b="254"/>
+                <Slot index="53" media_name="Green + Blue << 04" r="0" g="202" b="249"/>
+                <Slot index="54" media_name="Green + Blue << 05" r="0" g="203" b="244"/>
+                <Slot index="55" media_name="Green + Blue << 06" r="0" g="203" b="239"/>
+                <Slot index="56" media_name="Green + Blue << 07" r="0" g="204" b="235"/>
+                <Slot index="57" media_name="Green + Blue << 08" r="0" g="204" b="230"/>
+                <Slot index="58" media_name="Green + Blue << 09" r="0" g="205" b="224"/>
+                <Slot index="59" media_name="Green + Blue << 10" r="0" g="205" b="219"/>
+                <Slot index="60" media_name="Green + Blue << 11" r="0" g="206" b="213"/>
+                <Slot index="61" media_name="Green + Blue << 12" r="0" g="206" b="207"/>
+                <Slot index="62" media_name="Green + Blue << 13" r="0" g="207" b="201"/>
+                <Slot index="63" media_name="Green + Blue << 14" r="0" g="207" b="194"/>
+                <Slot index="64" media_name="Green + Blue << 15" r="0" g="208" b="187"/>
+                <Slot index="65" media_name="Green + Blue << 16" r="0" g="208" b="182"/>
+                <Slot index="66" media_name="Green + Blue << 17" r="0" g="208" b="178"/>
+                <Slot index="67" media_name="Green + Blue << 18" r="0" g="209" b="172"/>
+                <Slot index="68" media_name="Green + Blue << 19" r="0" g="209" b="167"/>
+                <Slot index="69" media_name="Green + Blue << 20" r="0" g="209" b="162"/>
+                <Slot index="70" media_name="Green + Blue << 21" r="0" g="210" b="150"/>
+                <Slot index="71" media_name="Green + Blue << 22" r="0" g="210" b="150"/>
+                <Slot index="72" media_name="Green + Blue << 23" r="0" g="210" b="146"/>
+                <Slot index="73" media_name="Green + Blue << 24" r="0" g="210" b="140"/>
+                <Slot index="74" media_name="Green + Blue << 25" r="0" g="211" b="133"/>
+                <Slot index="75" media_name="Green + Blue << 26" r="0" g="211" b="125"/>
+                <Slot index="76" media_name="Green + Blue << 27" r="0" g="211" b="118"/>
+                <Slot index="77" media_name="Green + Blue << 28" r="0" g="211" b="111"/>
+                <Slot index="78" media_name="Green + Blue << 29" r="0" g="211" b="101"/>
+                <Slot index="79" media_name="Green + Blue << 30" r="0" g="211" b="96"/>
+                <Slot index="80" media_name="Green + Blue << 31" r="0" g="212" b="91"/>
+                <Slot index="81" media_name="Green + Blue << 32" r="0" g="212" b="85"/>
+                <Slot index="82" media_name="Green + Blue << 33" r="0" g="212" b="78"/>
+                <Slot index="83" media_name="Green + Blue << 34" r="0" g="212" b="71"/>
+                <Slot index="84" media_name="Green + Blue << 35" r="0" g="212" b="63"/>
+                <Slot index="85" media_name="Green + Blue << 36" r="0" g="212" b="56"/>
+                <Slot index="86" media_name="Green + Blue << 37" r="0" g="213" b="47"/>
+                <Slot index="87" media_name="Green + Blue << 38" r="0" g="213" b="37"/>
+                <Slot index="88" media_name="Green" r="0" g="213" b="28"/>
+                <Slot index="89" media_name="Green + Red >> 00" r="0" g="213" b="29"/>
+                <Slot index="90" media_name="Green + Red >> 01" r="0" g="213" b="28"/>
+                <Slot index="91" media_name="Green + Red >> 02" r="0" g="213" b="28"/>
+                <Slot index="92" media_name="Green + Red >> 03" r="0" g="213" b="28"/>
+                <Slot index="93" media_name="Green + Red >> 04" r="0" g="213" b="27"/>
+                <Slot index="94" media_name="Green + Red >> 05" r="0" g="212" b="27"/>
+                <Slot index="95" media_name="Green + Red >> 06" r="0" g="212" b="28"/>
+                <Slot index="96" media_name="Green + Red >> 07" r="0" g="212" b="27"/>
+                <Slot index="97" media_name="Green + Red >> 08" r="0" g="212" b="27"/>
+                <Slot index="98" media_name="Green + Red >> 09" r="0" g="212" b="26"/>
+                <Slot index="99" media_name="Green + Red >> 10" r="0" g="212" b="25"/>
+                <Slot index="100" media_name="Green + Red >> 11" r="0" g="212" b="26"/>
+                <Slot index="101" media_name="Green + Red >> 12" r="0" g="211" b="25"/>
+                <Slot index="102" media_name="Green + Red >> 13" r="0" g="211" b="26"/>
+                <Slot index="103" media_name="Green + Red >> 14" r="0" g="211" b="25"/>
+                <Slot index="104" media_name="Green + Red >> 15" r="0" g="211" b="23"/>
+                <Slot index="105" media_name="Green + Red >> 16" r="0" g="211" b="23"/>
+                <Slot index="106" media_name="Green + Red >> 17" r="0" g="210" b="23"/>
+                <Slot index="107" media_name="Green + Red >> 18" r="0" g="210" b="23"/>
+                <Slot index="108" media_name="Green + Red >> 19" r="0" g="210" b="22"/>
+                <Slot index="109" media_name="Green + Red >> 20" r="0" g="209" b="22"/>
+                <Slot index="110" media_name="Green + Red >> 21" r="0" g="210" b="24"/>
+                <Slot index="111" media_name="Green + Red >> 22" r="29" g="210" b="21"/>
+                <Slot index="112" media_name="Green + Red >> 23" r="47" g="210" b="20"/>
+                <Slot index="113" media_name="Green + Red >> 24" r="70" g="210" b="21"/>
+                <Slot index="114" media_name="Green + Red >> 25" r="86" g="210" b="21"/>
+                <Slot index="115" media_name="Green + Red >> 26" r="98" g="209" b="21"/>
+                <Slot index="116" media_name="Green + Red >> 27" r="109" g="209" b="19"/>
+                <Slot index="117" media_name="Green + Red >> 28" r="119" g="209" b="17"/>
+                <Slot index="118" media_name="Green + Red >> 29" r="127" g="208" b="17"/>
+                <Slot index="119" media_name="Green + Red >> 30" r="135" g="208" b="17"/>
+                <Slot index="120" media_name="Green + Red >> 31" r="141" g="208" b="15"/>
+                <Slot index="121" media_name="Green + Red >> 32" r="149" g="208" b="15"/>
+                <Slot index="122" media_name="Green + Red >> 33" r="155" g="207" b="14"/>
+                <Slot index="123" media_name="Green + Red >> 34" r="161" g="207" b="14"/>
+                <Slot index="124" media_name="Green + Red >> 35" r="167" g="207" b="12"/>
+                <Slot index="125" media_name="Green + Red >> 36" r="173" g="206" b="12"/>
+                <Slot index="126" media_name="Green + Red >> 37" r="180" g="206" b="9"/>
+                <Slot index="127" media_name="Yellow" r="188" g="205" b="5"/>
+                <Slot index="128" media_name="Red + Green << 00" r="192" g="205" b="6"/>
+                <Slot index="129" media_name="Red + Green << 01" r="197" g="205" b="4"/>
+                <Slot index="130" media_name="Red + Green << 02" r="202" g="204" b="3"/>
+                <Slot index="131" media_name="Red + Green << 03" r="208" g="204" b="3"/>
+                <Slot index="132" media_name="Red + Green << 04" r="213" g="203" b="0"/>
+                <Slot index="133" media_name="Red + Green << 05" r="219" g="203" b="0"/>
+                <Slot index="134" media_name="Red + Green << 06" r="226" g="202" b="0"/>
+                <Slot index="135" media_name="Red + Green << 07" r="232" g="202" b="0"/>
+                <Slot index="136" media_name="Red + Green << 08" r="239" g="201" b="0"/>
+                <Slot index="137" media_name="Red + Green << 09" r="247" g="200" b="0"/>
+                <Slot index="138" media_name="Red + Green << 10" r="255" g="198" b="0"/>
+                <Slot index="139" media_name="Red + Green << 11" r="255" g="193" b="0"/>
+                <Slot index="140" media_name="Red + Green << 12" r="255" g="187" b="0"/>
+                <Slot index="141" media_name="Red + Green << 13" r="255" g="180" b="0"/>
+                <Slot index="142" media_name="Red + Green << 14" r="255" g="173" b="0"/>
+                <Slot index="143" media_name="Red + Green << 15" r="255" g="167" b="0"/>
+                <Slot index="144" media_name="Red + Green << 16" r="255" g="162" b="0"/>
+                <Slot index="145" media_name="Red + Green << 17" r="255" g="157" b="0"/>
+                <Slot index="146" media_name="Red + Green << 18" r="255" g="152" b="0"/>
+                <Slot index="147" media_name="Red + Green << 19" r="255" g="145" b="0"/>
+                <Slot index="148" media_name="Red + Green << 20" r="255" g="139" b="0"/>
+                <Slot index="149" media_name="Red + Green << 21" r="255" g="132" b="0"/>
+                <Slot index="150" media_name="Red + Green << 22" r="255" g="125" b="0"/>
+                <Slot index="151" media_name="Red + Green << 23" r="255" g="120" b="0"/>
+                <Slot index="152" media_name="Red + Green << 24" r="255" g="112" b="0"/>
+                <Slot index="153" media_name="Red + Green << 25" r="255" g="103" b="0"/>
+                <Slot index="154" media_name="Red + Green << 26" r="255" g="93" b="0"/>
+                <Slot index="155" media_name="Red + Green << 27" r="255" g="83" b="0"/>
+                <Slot index="156" media_name="Red + Green << 28" r="255" g="71" b="0"/>
+                <Slot index="157" media_name="Red + Green << 29" r="255" g="54" b="0"/>
+                <Slot index="158" media_name="Red + Green << 30" r="255" g="43" b="0"/>
+                <Slot index="159" media_name="Red + Green << 31" r="255" g="27" b="0"/>
+                <Slot index="160" media_name="Red + Green << 32" r="255" g="0" b="0"/>
+                <Slot index="161" media_name="Red + Green << 33" r="255" g="0" b="0"/>
+                <Slot index="162" media_name="Red + Green << 34" r="255" g="0" b="0"/>
+                <Slot index="163" media_name="Red + Green << 35" r="255" g="0" b="0"/>
+                <Slot index="164" media_name="Red + Green << 36" r="255" g="0" b="0"/>
+                <Slot index="165" media_name="Red + Green << 37" r="255" g="0" b="0"/>
+                <Slot index="166" media_name="Red + Green << 38" r="255" g="0" b="0"/>
+                <Slot index="167" media_name="Red" r="255" g="0" b="0"/>
+                <Slot index="168" media_name="Red + Blue >> 00" r="255" g="0" b="0"/>
+                <Slot index="169" media_name="Red + Blue >> 01" r="255" g="0" b="29"/>
+                <Slot index="170" media_name="Red + Blue >> 02" r="255" g="0" b="50"/>
+                <Slot index="171" media_name="Red + Blue >> 03" r="255" g="0" b="65"/>
+                <Slot index="172" media_name="Red + Blue >> 04" r="255" g="0" b="77"/>
+                <Slot index="173" media_name="Red + Blue >> 05" r="255" g="0" b="90"/>
+                <Slot index="174" media_name="Red + Blue >> 06" r="255" g="0" b="101"/>
+                <Slot index="175" media_name="Red + Blue >> 07" r="255" g="0" b="109"/>
+                <Slot index="176" media_name="Red + Blue >> 08" r="255" g="0" b="117"/>
+                <Slot index="177" media_name="Red + Blue >> 09" r="255" g="0" b="124"/>
+                <Slot index="178" media_name="Red + Blue >> 10" r="255" g="0" b="137"/>
+                <Slot index="179" media_name="Red + Blue >> 11" r="255" g="0" b="146"/>
+                <Slot index="180" media_name="Red + Blue >> 12" r="255" g="0" b="155"/>
+                <Slot index="181" media_name="Red + Blue >> 13" r="255" g="0" b="165"/>
+                <Slot index="182" media_name="Red + Blue >> 14" r="255" g="0" b="174"/>
+                <Slot index="183" media_name="Red + Blue >> 15" r="255" g="0" b="183"/>
+                <Slot index="184" media_name="Red + Blue >> 16" r="255" g="0" b="188"/>
+                <Slot index="185" media_name="Red + Blue >> 17" r="255" g="0" b="196"/>
+                <Slot index="186" media_name="Red + Blue >> 18" r="255" g="0" b="203"/>
+                <Slot index="187" media_name="Red + Blue >> 19" r="255" g="0" b="210"/>
+                <Slot index="188" media_name="Red + Blue >> 20" r="255" g="0" b="217"/>
+                <Slot index="189" media_name="Red + Blue >> 21" r="255" g="0" b="223"/>
+                <Slot index="190" media_name="Red + Blue >> 22" r="255" g="0" b="230"/>
+                <Slot index="191" media_name="Red + Blue >> 23" r="255" g="0" b="236"/>
+                <Slot index="192" media_name="Red + Blue >> 24" r="255" g="0" b="243"/>
+                <Slot index="193" media_name="Red + Blue >> 25" r="255" g="0" b="252"/>
+                <Slot index="194" media_name="Red + Blue >> 26" r="255" g="0" b="255"/>
+                <Slot index="195" media_name="Red + Blue >> 27" r="255" g="0" b="255"/>
+                <Slot index="196" media_name="Red + Blue >> 28" r="255" g="0" b="255"/>
+                <Slot index="197" media_name="Red + Blue >> 29" r="255" g="0" b="255"/>
+                <Slot index="198" media_name="Red + Blue >> 30" r="255" g="0" b="255"/>
+                <Slot index="199" media_name="Red + Blue >> 31" r="255" g="0" b="255"/>
+                <Slot index="200" media_name="Red + Blue >> 32" r="255" g="0" b="255"/>
+                <Slot index="201" media_name="Red + Blue >> 33" r="255" g="0" b="255"/>
+                <Slot index="202" media_name="Red + Blue >> 34" r="255" g="0" b="255"/>
+                <Slot index="203" media_name="Red + Blue >> 35" r="255" g="0" b="255"/>
+                <Slot index="204" media_name="Red + Blue >> 36" r="255" g="0" b="255"/>
+                <Slot index="205" media_name="Red + Blue >> 37" r="255" g="0" b="255"/>
+                <Slot index="206" media_name="Red + Blue >> 38" r="255" g="0" b="255"/>
+                <Slot index="207" media_name="Magenta" r="255" g="0" b="255"/>
+                <Slot index="208" media_name="Blue + Red << 00" r="255" g="0" b="255"/>
+                <Slot index="209" media_name="Blue + Red << 01" r="255" g="0" b="255"/>
+                <Slot index="210" media_name="Blue + Red << 02" r="255" g="0" b="255"/>
+                <Slot index="211" media_name="Blue + Red << 03" r="255" g="0" b="255"/>
+                <Slot index="212" media_name="Blue + Red << 04" r="255" g="0" b="255"/>
+                <Slot index="213" media_name="Blue + Red << 05" r="255" g="0" b="255"/>
+                <Slot index="214" media_name="Blue + Red << 06" r="255" g="0" b="255"/>
+                <Slot index="215" media_name="Blue + Red << 07" r="255" g="0" b="255"/>
+                <Slot index="216" media_name="Blue + Red << 08" r="255" g="0" b="255"/>
+                <Slot index="217" media_name="Blue + Red << 09" r="255" g="0" b="255"/>
+                <Slot index="218" media_name="Blue + Red << 10" r="255" g="0" b="255"/>
+                <Slot index="219" media_name="Blue + Red << 11" r="255" g="0" b="255"/>
+                <Slot index="220" media_name="Blue + Red << 12" r="255" g="0" b="255"/>
+                <Slot index="221" media_name="Blue + Red << 13" r="255" g="0" b="255"/>
+                <Slot index="222" media_name="Blue + Red << 14" r="255" g="0" b="255"/>
+                <Slot index="223" media_name="Blue + Red << 15" r="255" g="0" b="255"/>
+                <Slot index="224" media_name="Blue + Red << 16" r="255" g="0" b="255"/>
+                <Slot index="225" media_name="Blue + Red << 17" r="255" g="0" b="255"/>
+                <Slot index="226" media_name="Blue + Red << 18" r="252" g="0" b="255"/>
+                <Slot index="227" media_name="Blue + Red << 19" r="245" g="0" b="255"/>
+                <Slot index="228" media_name="Blue + Red << 20" r="239" g="0" b="255"/>
+                <Slot index="229" media_name="Blue + Red << 21" r="230" g="0" b="255"/>
+                <Slot index="230" media_name="Blue + Red << 22" r="223" g="0" b="255"/>
+                <Slot index="231" media_name="Blue + Red << 23" r="214" g="0" b="255"/>
+                <Slot index="232" media_name="Blue + Red << 24" r="204" g="0" b="255"/>
+                <Slot index="233" media_name="Blue + Red << 25" r="194" g="0" b="255"/>
+                <Slot index="234" media_name="Blue + Red << 26" r="185" g="0" b="255"/>
+                <Slot index="235" media_name="Blue + Red << 27" r="173" g="0" b="255"/>
+                <Slot index="236" media_name="Blue + Red << 28" r="161" g="0" b="255"/>
+                <Slot index="237" media_name="Blue + Red << 29" r="145" g="0" b="255"/>
+                <Slot index="238" media_name="Blue + Red << 30" r="131" g="0" b="255"/>
+                <Slot index="239" media_name="Blue 1" r="114" g="0" b="255"/>
+            </Wheel>
+        </Wheels>
+        <RDMKey ESTAId="21075" DeviceModelId="224"/>
+    </FixtureType>
+</MA>

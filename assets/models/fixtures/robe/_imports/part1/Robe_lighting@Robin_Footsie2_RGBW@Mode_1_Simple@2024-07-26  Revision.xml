@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<MA xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/2.8.123/MA.xsd" xmlns="http://schemas.malighting.de/grandma2/xml/MA" major_vers="3" minor_vers="7" stream_vers="0">
+    <FixtureType name="Robin Footsie2 RGBW" mode="Mode 1 Simple">
+        <InfoItems>
+            <Info type="Revision" date="2024-07-26T07:49:06">Converted GDTF to grandMA2 fixture type with Share Converter version 1.4.1</Info>
+            <Info type="Revision" date="2023-04-21T14:34:23">New fixture type based on ROBIN Footsie2 RGBW from Robe Lighting</Info>
+            <Info type="Revision" date="2023-04-21T12:34:32">2023-04-21  ID update</Info>
+            <Info type="Revision" date="2023-04-21T12:54:23">2023-04-21  Upload to share</Info>
+            <Info type="Revision" date="2023-05-09T09:17:38">2023-05-09  BlueMark LEDs position update</Info>
+            <Info type="Revision" date="2023-05-15T10:01:28">2023-05-15  Fixture thumbnail updated</Info>
+            <Info type="Revision" date="2023-05-16T10:21:50">2023-05-16  Wiring object revision</Info>
+            <Info type="Revision" date="2023-06-02T06:55:39">2023-06-02 Blue mark LED channel update </Info>
+            <Info type="Revision" date="2023-11-29T15:28:48">2023-11-29  PIP function added  Modes revision</Info>
+            <Info type="Revision" date="2023-12-15T13:11:54">2023-12-15  Virtual color wheel update</Info>
+            <Info type="Revision" date="2024-01-03T10:20:38">2024-01-03  Virtual colour wheel</Info>
+            <Info type="Revision" date="2024-01-03T13:56:39">2024-01-03  Virtual colour wheel</Info>
+            <Info type="Revision" date="2024-01-15T13:57:28">2024-01-15  Virtual colour wheel added  Spectral data added</Info>
+            <Info type="Revision" date="2024-01-16T06:30:12">2024-01-16  Virtual colour wheel added  Spectral data added</Info>
+            <Info type="Revision" date="2024-01-17T07:40:07">2024-01-16  CTO channel revision</Info>
+            <Info type="Revision" date="2024-01-17T07:43:26">2024-01-17  CTO channel revision</Info>
+            <Info type="Revision" date="2024-01-17T07:43:38">2024-01-17  CTO channel revision</Info>
+            <Info type="Revision" date="2024-01-17T14:02:16">2024-01-17  Emitters linked</Info>
+            <Info type="Revision" date="2024-01-18T08:25:08">2024-01-17  Virtual color wheels revision</Info>
+            <Info type="Revision" date="2024-01-18T09:56:38">2024-01-17  Virtual color wheels revision</Info>
+            <Info type="Revision" date="2024-01-18T10:00:06">2024-01-18  Virtual color wheels revision</Info>
+            <Info type="Revision" date="2024-01-18T11:07:08">2024-01-18  Models SVG and thumbnail fix</Info>
+            <Info type="Revision" date="2024-01-18T11:08:02">2024-01-18  Models SVG and thumbnail fix</Info>
+            <Info type="Revision" date="2024-01-18T11:55:57">2024-01-18  Virtual color wheels revision</Info>
+            <Info type="Revision" date="2024-01-18T12:18:09">2024-01-18  Virtual color wheels revision</Info>
+            <Info type="Revision" date="2024-01-18T12:39:16">2024-01-18  Virtual color wheels revision</Info>
+            <Info type="Revision" date="2024-01-18T12:51:28">2024-01-18  Virtual color wheels revision</Info>
+            <Info type="Revision" date="2024-01-24T08:47:14">2024-01-24  Emitters linked fix</Info>
+            <Info type="Revision" date="2024-02-08T11:45:23">2024-02-08  DMX channels corrections</Info>
+            <Info type="Revision" date="2024-02-08T11:51:23">2024-02-08  Defaults revision</Info>
+            <Info type="Revision" date="2024-02-08T11:58:37">2024-02-08  Wiring revision</Info>
+            <Info type="Revision" date="2024-02-09T07:13:57">2024-02-09  Control channel fix</Info>
+            <Info type="Revision" date="2024-02-09T07:14:43">2024-02-09  Control channel fix</Info>
+            <Info type="Revision" date="2024-03-14T13:12:26">2024-03-14  Photometric data added  Photo update  Modes update</Info>
+            <Info type="Revision" date="2024-06-11T07:24:35">2024-06-11  PIP and BlueMARK LEDs revision in Mode 1 and 2</Info>
+            <Info>Robe’s revolutionary IP65-rated FOOTSIE fixture redefines the concept of traditional ‘footlights’ and effectively removes the visual barrier between audience and performers.
+The IP65-rated FOOTSIE delivers dynamic LED foot lighting, whatever the production, environment or weather!
+This highly innovative new product is currently available in two standard lengths, FOOTSIE1™ (600mm) &amp; FOOTSIE2™ (1200mm), with a choice of warm or tuneable white LEDs or RGBW high power single chip LEDs. The classic warm white LEDs offer a CRI greater than 90 – fantastic for key lighting of faces, and the tuneable white ranges from 2.700K – 6.500K.
+The RGBW version facilitates all colours, including those infamous up-lit horror looks, so great for all relevant themed theatrical shows and the darker metal genres of music!
+The FOOTSIE’s cool low laying 52 mm high design allows a full view of the performer keeping the stage and sightlines clear and clean, while an integral self-contained cable tray can be used to neatly run any loose laying audio, power or data cables and their associated trip hazards!
+For flexibility in a run of fixtures, FOOTSIE1TM has two individually controlled zones within its 600 mm length, while FOOTSIE2TM, being longer at 1.200 mm, has four zones.
+BluMark™ allows a low-level blue LED indication of the stage edges without affecting the lighting states.
+An Integrated Shield that covers a direct line-of-sight view between the LED sources from the audience side, protecting them from unintentional glare / flare, can either be folded inside the fixture housing or released and installed in position.
+Fixtures can be joined together swiftly and easily with a fast connection system, and corner pieces of various angles are available, making the fixture ideal for outlining sets and stages or creating other bespoke shapes.
+The convection-cooled FOOTSIE is perfect for theatres, concert stages, fashion show catwalks and all types of corporate and industrial events.</Info>
+            <Info type="Revision" date="2024-07-26T07:49:17.767">2024-07-26%20%20Revision, Uploaded to Fixture Share.</Info>
+        </InfoItems>
+        <short_name>Robin Footsie2 RGBW</short_name>
+        <manufacturer>Robe lighting</manufacturer>
+        <short_manufacturer>Robe Lighting</short_manufacturer>
+        <Modules>
+            <Module name="Body" class="None" beamtype="None" beam_intensity="" beam_angle="1">
+                <Model name="Body" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                </Model>
+                <ChannelType default="4294967295" attribute="ZOOM" feature="FOCUS" preset="FOCUS">
+                    <ChannelFunction subattribute="ZOOM" attribute="ZOOM" feature="FOCUS" preset="FOCUS" from="0" to="100" physfrom="20" physto="55" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="20 degree" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="30 degree" from_dmx="4865392" to_dmx="4865392"/>
+                        <ChannelSet name="55 degree" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="3" default="255" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB3" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="5" default="0" react_to_master="1" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Open" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+            <Module name="Zone Red" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model/>
+                <ChannelType coarse="1" default="255" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB1" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+            <Module name="Zone Green" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model/>
+                <ChannelType coarse="2" default="255" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB2" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+            <Module name="Zone White" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model/>
+                <ChannelType coarse="4" default="255" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB5" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+            <Module name="BlueMarkLEDs" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model/>
+                <ChannelType default="0" attribute="COLOR1" feature="COLOR1" preset="COLOR">
+                    <ChannelFunction subattribute="COLOR1" attribute="COLOR1" feature="COLOR1" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777216" wheel="3">
+                        <ChannelSet name="Turned OFF" from_dmx="0" to_dmx="16777216" slot_index="0"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+            <Module name="PIP" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model/>
+                <ChannelType default="0" attribute="COLOR1" feature="COLOR1" preset="COLOR">
+                    <ChannelFunction subattribute="COLOR1" attribute="COLOR1" feature="COLOR1" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777216" wheel="3">
+                        <ChannelSet name="Turned OFF" from_dmx="0" to_dmx="16777216" slot_index="0"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+        </Modules>
+        <Instances>
+            <Instance module_index="0" patch="1" locked="true"/>
+            <Instance module_index="1" patch="1" locked="true"/>
+            <Instance module_index="2" patch="1" locked="true"/>
+            <Instance module_index="3" patch="1" locked="true"/>
+            <Instance module_index="4" patch="1" locked="true"/>
+            <Instance module_index="5" patch="1" locked="true"/>
+        </Instances>
+        <Wheels>
+            <Wheel index="2" preset="COLOR" feature="COLOR1" attribute="COLOR1" subattribute="COLOR1">
+                <Slot index="0" media_name="TurnedOFF" r="0" g="0" b="0"/>
+            </Wheel>
+        </Wheels>
+        <RDMKey ESTAId="21075" DeviceModelId="314"/>
+    </FixtureType>
+</MA>

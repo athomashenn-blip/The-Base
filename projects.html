@@ -318,18 +318,62 @@
         <div class="header-actions"></div>
       </header>
       <main class="main">
-        <div class="card">
-          <div class="row" style="justify-content:center;">
-            <h1>Projects</h1>
+        <div class="card" style="margin-bottom:0.7rem;">
+          <div class="row">
+            <h1 style="margin:0;">Projects</h1>
+            <div style="display:flex;gap:0.45rem;align-items:center;flex-wrap:wrap;">
+              <span id="projectUserLabel" class="muted">Not signed in</span>
+              <a class="link-btn" id="projectLoginBtn" href="login.html">Login</a>
+              <button id="projectLogoutBtn" style="display:none;">Logout</button>
+            </div>
           </div>
-          <div class="actions">
-            <button class="primary" id="projectNewBtn">New Project</button>
-            <button id="projectOpenBtn">Open Project</button>
-            <button id="projectExportBtn">Export Project</button>
+          <div id="projectCloudStatus" class="muted">Checking cloud connection...</div>
+        </div>
+
+        <div id="projectWorkspace" style="display:none;">
+          <div class="card" style="margin-bottom:0.7rem;">
+            <div class="row"><h2 style="margin:0;">New Project</h2></div>
+            <div style="display:grid;grid-template-columns:2fr 3fr auto;gap:0.45rem;align-items:end;">
+              <div>
+                <label style="display:block;font-size:0.8rem;color:var(--muted);margin-bottom:0.2rem;">Project Name</label>
+                <input id="projectNameInput" type="text" placeholder="e.g. Arena Tour - Cape Town" style="width:100%;background:#181b25;border:1px solid var(--line-2);color:var(--text);border-radius:8px;padding:0.42rem;" />
+              </div>
+              <div>
+                <label style="display:block;font-size:0.8rem;color:var(--muted);margin-bottom:0.2rem;">Description</label>
+                <input id="projectDescInput" type="text" placeholder="Optional project notes" style="width:100%;background:#181b25;border:1px solid var(--line-2);color:var(--text);border-radius:8px;padding:0.42rem;" />
+              </div>
+              <button class="primary" id="projectCreateBtn">New Project</button>
+            </div>
+            <div id="projectCreateStatus" class="muted" style="margin-top:0.45rem;"></div>
+          </div>
+
+          <div class="card" style="margin-bottom:0.7rem;">
+            <div class="row"><h2 style="margin:0;">Open Project</h2></div>
+            <div id="projectListWrap" class="muted">No projects yet.</div>
+          </div>
+
+          <div class="card" id="projectTeamCard" style="display:none;">
+            <div class="row"><h2 style="margin:0;">Team Members</h2><span id="projectTeamRole" class="muted"></span></div>
+            <div id="projectTeamAddRow" style="display:grid;grid-template-columns:2fr auto auto;gap:0.45rem;align-items:end;margin-bottom:0.5rem;">
+              <div>
+                <label style="display:block;font-size:0.8rem;color:var(--muted);margin-bottom:0.2rem;">Invite By Email</label>
+                <input id="projectMemberEmail" type="email" placeholder="teammate@email.com" style="width:100%;background:#181b25;border:1px solid var(--line-2);color:var(--text);border-radius:8px;padding:0.42rem;" />
+              </div>
+              <select id="projectMemberRole" style="background:#181b25;border:1px solid var(--line-2);color:var(--text);border-radius:8px;padding:0.42rem;">
+                <option value="member">Member</option>
+                <option value="owner">Owner</option>
+              </select>
+              <button id="projectAddMemberBtn">Add Team Member</button>
+            </div>
+            <div id="projectTeamStatus" class="muted" style="margin-bottom:0.4rem;"></div>
+            <div id="projectTeamList" class="muted">Select a project.</div>
           </div>
         </div>
       </main>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="data/auth-config.js"></script>
+    <script src="data/auth-projects.js"></script>
     <script>
       const logo = document.getElementById("brandLogo");
       const fallback = document.getElementById("brandFallback");
@@ -340,9 +384,275 @@
         });
       }
       document.body.setAttribute("data-dept", "Power");
-      document.getElementById("projectNewBtn").addEventListener("click", () => alert("New Project"));
-      document.getElementById("projectOpenBtn").addEventListener("click", () => alert("Open Project"));
-      document.getElementById("projectExportBtn").addEventListener("click", () => alert("Export Project"));
+      (function () {
+        const cloudStatus = document.getElementById("projectCloudStatus");
+        const workspace = document.getElementById("projectWorkspace");
+        const loginBtn = document.getElementById("projectLoginBtn");
+        const logoutBtn = document.getElementById("projectLogoutBtn");
+        const userLabel = document.getElementById("projectUserLabel");
+        const createStatus = document.getElementById("projectCreateStatus");
+        const projectListWrap = document.getElementById("projectListWrap");
+        const teamCard = document.getElementById("projectTeamCard");
+        const teamList = document.getElementById("projectTeamList");
+        const teamStatus = document.getElementById("projectTeamStatus");
+        const teamRoleLabel = document.getElementById("projectTeamRole");
+        const teamAddRow = document.getElementById("projectTeamAddRow");
+
+        let currentUser = null;
+        let selectedProject = null;
+        let selectedRole = "";
+
+        const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]));
+        const setMsg = (el, msg, ok) => {
+          if (!el) return;
+          el.textContent = String(msg || "");
+          el.style.color = ok ? "#c4ffe2" : "#ffb6c6";
+        };
+        const setMuted = (el, msg) => {
+          if (!el) return;
+          el.textContent = String(msg || "");
+          el.style.color = "#b8b3c9";
+        };
+
+        async function renderProjectList() {
+          if (!window.TheBaseCloud) return;
+          let list = [];
+          try {
+            list = await TheBaseCloud.listProjects();
+          } catch (err) {
+            setMsg(projectListWrap, err?.message || "Failed to load projects", false);
+            return;
+          }
+          if (!list.length) {
+            projectListWrap.innerHTML = '<div class="muted">No projects yet. Create your first project above.</div>';
+            teamCard.style.display = "none";
+            return;
+          }
+          const active = TheBaseCloud.getActiveProject();
+          projectListWrap.innerHTML = `
+            <div style="overflow:auto;">
+              <table style="width:100%;border-collapse:collapse;font-size:0.86rem;">
+                <thead>
+                  <tr>
+                    <th style="text-align:left;border:1px solid var(--line);padding:0.35rem;">Name</th>
+                    <th style="text-align:left;border:1px solid var(--line);padding:0.35rem;">Role</th>
+                    <th style="text-align:left;border:1px solid var(--line);padding:0.35rem;">Updated</th>
+                    <th style="text-align:left;border:1px solid var(--line);padding:0.35rem;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${list.map((p) => `
+                    <tr>
+                      <td style="border:1px solid var(--line);padding:0.35rem;"><strong>${esc(p.name)}</strong><div class="muted" style="font-size:0.78rem;">${esc(p.description || "")}</div></td>
+                      <td style="border:1px solid var(--line);padding:0.35rem;">${esc(p.role || "member")}</td>
+                      <td style="border:1px solid var(--line);padding:0.35rem;">${new Date(p.updated_at || p.created_at || Date.now()).toLocaleString()}</td>
+                      <td style="border:1px solid var(--line);padding:0.35rem;">
+                        <div style="display:flex;gap:0.35rem;flex-wrap:wrap;">
+                          <button data-open-project="${esc(p.id)}" class="${active?.id === p.id ? "primary" : ""}">Open Project</button>
+                          <button data-export-project="${esc(p.id)}">Export Project</button>
+                          <button data-team-project="${esc(p.id)}">Team</button>
+                          ${String(p.role || "") === "owner" ? `<button data-delete-project="${esc(p.id)}">Delete</button>` : ""}
+                        </div>
+                      </td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          `;
+
+          projectListWrap.querySelectorAll("[data-open-project]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-open-project") || "";
+              const project = list.find((p) => p.id === id);
+              if (!project) return;
+              TheBaseCloud.setActiveProject({ id: project.id, name: project.name });
+              window.location.href = "index.html";
+            });
+          });
+
+          projectListWrap.querySelectorAll("[data-export-project]").forEach((btn) => {
+            btn.addEventListener("click", async () => {
+              const id = btn.getAttribute("data-export-project") || "";
+              try {
+                const project = list.find((p) => p.id === id);
+                const snapshot = await TheBaseCloud.loadProjectSnapshot(id);
+                const payload = {
+                  project: project || null,
+                  snapshot: snapshot?.snapshot || null,
+                  exported_at: new Date().toISOString()
+                };
+                const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `${(project?.name || "project").replace(/\\s+/g, "_")}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+              } catch (err) {
+                alert(err?.message || "Export failed");
+              }
+            });
+          });
+
+          projectListWrap.querySelectorAll("[data-team-project]").forEach((btn) => {
+            btn.addEventListener("click", async () => {
+              const id = btn.getAttribute("data-team-project") || "";
+              const project = list.find((p) => p.id === id);
+              if (!project) return;
+              selectedProject = project;
+              selectedRole = project.role || "member";
+              await renderTeam();
+            });
+          });
+          projectListWrap.querySelectorAll("[data-delete-project]").forEach((btn) => {
+            btn.addEventListener("click", async () => {
+              const id = btn.getAttribute("data-delete-project") || "";
+              const project = list.find((p) => p.id === id);
+              if (!project) return;
+              const ok = window.confirm(`Delete project \"${project.name}\"? This cannot be undone.`);
+              if (!ok) return;
+              try {
+                await TheBaseCloud.deleteProject(project.id);
+                if (selectedProject?.id === project.id) {
+                  selectedProject = null;
+                  selectedRole = "";
+                  teamCard.style.display = "none";
+                }
+                await renderProjectList();
+              } catch (err) {
+                alert(err?.message || "Failed to delete project");
+              }
+            });
+          });
+        }
+
+        async function renderTeam() {
+          if (!selectedProject) {
+            teamCard.style.display = "none";
+            return;
+          }
+          teamCard.style.display = "block";
+          teamRoleLabel.textContent = `${selectedProject.name} (${selectedRole})`;
+          teamAddRow.style.display = selectedRole === "owner" ? "grid" : "none";
+          setMuted(teamStatus, selectedRole === "owner" ? "Owner controls enabled." : "Read-only. Only owners can manage team.");
+          try {
+            const members = await TheBaseCloud.listProjectMembers(selectedProject.id);
+            teamList.innerHTML = `
+              <div style="overflow:auto;">
+                <table style="width:100%;border-collapse:collapse;font-size:0.86rem;">
+                  <thead><tr><th style="text-align:left;border:1px solid var(--line);padding:0.35rem;">Name</th><th style="text-align:left;border:1px solid var(--line);padding:0.35rem;">Email</th><th style="text-align:left;border:1px solid var(--line);padding:0.35rem;">Department</th><th style="text-align:left;border:1px solid var(--line);padding:0.35rem;">Role</th><th style="text-align:left;border:1px solid var(--line);padding:0.35rem;">Action</th></tr></thead>
+                  <tbody>
+                    ${members.map((m) => `
+                      <tr>
+                        <td style="border:1px solid var(--line);padding:0.35rem;">${esc(m.name || "User")}</td>
+                        <td style="border:1px solid var(--line);padding:0.35rem;">${esc(m.email || "")}</td>
+                        <td style="border:1px solid var(--line);padding:0.35rem;">${esc(m.department || "")}</td>
+                        <td style="border:1px solid var(--line);padding:0.35rem;">${esc(m.role || "member")}</td>
+                        <td style="border:1px solid var(--line);padding:0.35rem;">
+                          ${selectedRole === "owner" && m.user_id !== currentUser?.id ? `<button data-remove-member="${esc(m.user_id)}">Remove</button>` : '<span class="muted">-</span>'}
+                        </td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+            `;
+            if (selectedRole === "owner") {
+              teamList.querySelectorAll("[data-remove-member]").forEach((btn) => {
+                btn.addEventListener("click", async () => {
+                  const userId = btn.getAttribute("data-remove-member");
+                  if (!userId) return;
+                  try {
+                    await TheBaseCloud.removeMember(selectedProject.id, userId);
+                    await renderTeam();
+                  } catch (err) {
+                    setMsg(teamStatus, err?.message || "Failed to remove member", false);
+                  }
+                });
+              });
+            }
+          } catch (err) {
+            setMsg(teamStatus, err?.message || "Failed to load team", false);
+          }
+        }
+
+        document.getElementById("projectCreateBtn")?.addEventListener("click", async () => {
+          const name = document.getElementById("projectNameInput")?.value || "";
+          const description = document.getElementById("projectDescInput")?.value || "";
+          if (!name.trim()) {
+            setMsg(createStatus, "Project name is required", false);
+            return;
+          }
+          try {
+            const project = await TheBaseCloud.createProject(name, description);
+            setMsg(createStatus, "Project created.", true);
+            TheBaseCloud.setActiveProject({ id: project.id, name: project.name });
+            document.getElementById("projectNameInput").value = "";
+            document.getElementById("projectDescInput").value = "";
+            await renderProjectList();
+          } catch (err) {
+            setMsg(createStatus, err?.message || "Create project failed", false);
+          }
+        });
+
+        document.getElementById("projectAddMemberBtn")?.addEventListener("click", async () => {
+          if (!selectedProject || selectedRole !== "owner") return;
+          const email = document.getElementById("projectMemberEmail")?.value || "";
+          const role = document.getElementById("projectMemberRole")?.value || "member";
+          try {
+            await TheBaseCloud.addMemberByEmail(selectedProject.id, email, role);
+            setMsg(teamStatus, "Team member added.", true);
+            document.getElementById("projectMemberEmail").value = "";
+            await renderTeam();
+          } catch (err) {
+            setMsg(teamStatus, err?.message || "Failed to add member", false);
+          }
+        });
+
+        logoutBtn?.addEventListener("click", async () => {
+          try {
+            await TheBaseCloud.signOut();
+          } finally {
+            window.location.href = "login.html?next=projects.html";
+          }
+        });
+
+        async function bootstrap() {
+          if (!window.TheBaseCloud || !TheBaseCloud.isConfigured()) return;
+          try {
+            await TheBaseCloud.init();
+            currentUser = await TheBaseCloud.getUser();
+            if (!currentUser) {
+              const modeText = TheBaseCloud.isCloudMode && TheBaseCloud.isCloudMode()
+                ? "Cloud mode: not signed in. Login to access project database."
+                : "Local mode: not signed in. Create/login account to access projects.";
+              setMuted(cloudStatus, modeText);
+              loginBtn.style.display = "inline-block";
+              logoutBtn.style.display = "none";
+              workspace.style.display = "none";
+              return;
+            }
+            await TheBaseCloud.ensureProfile(currentUser);
+            userLabel.textContent = `${currentUser.user_metadata?.name || currentUser.email || "User"}`;
+            loginBtn.style.display = "none";
+            logoutBtn.style.display = "inline-block";
+            workspace.style.display = "block";
+            setMuted(
+              cloudStatus,
+              (TheBaseCloud.isCloudMode && TheBaseCloud.isCloudMode())
+                ? "Cloud connected. Projects are private to assigned team members."
+                : "Local mode active. Projects are private per local account and project membership."
+            );
+            await renderProjectList();
+          } catch (err) {
+            setMsg(cloudStatus, err?.message || "Failed to initialize cloud", false);
+            workspace.style.display = "none";
+          }
+        }
+
+        bootstrap();
+      })();
     </script>
   </body>
 </html>

@@ -1,0 +1,562 @@
+<?xml version="1.0"?>
+<MA xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/2.8.123/MA.xsd" xmlns="http://schemas.malighting.de/grandma2/xml/MA" major_vers="3" minor_vers="7" stream_vers="0">
+    <FixtureType name="pixelPATT" mode="Mode 4 - Pixel RGBW">
+        <InfoItems>
+            <Info type="Revision" date="2023-07-18T11:53:31">Converted GDTF to grandMA2 fixture type with Share Converter version 1.4.0</Info>
+            <Info type="Revision" date="2020-03-13T15:35:27">full mode 6 initial</Info>
+            <Info type="Revision" date="2020-03-13T18:55:13">initial test2</Info>
+            <Info type="Revision" date="2020-03-13T19:19:04">initial testing</Info>
+            <Info type="Revision" date="2020-03-13T20:20:03">initial test, Uploaded to GDTF Share.</Info>
+            <Info type="Revision" date="2020-03-24T05:11:56">reupload as manufacturer, Uploaded to GDTF Share.</Info>
+            <Info type="Revision" date="2020-03-24T05:38:05">new guid, Uploaded to GDTF Share.</Info>
+            <Info type="Revision" date="2020-06-08T10:03:25">real_values-shutter-missing</Info>
+            <Info type="Revision" date="2020-06-08T12:33:26">08062020UC</Info>
+            <Info type="Revision" date="2020-06-09T12:25:48">09062020UC</Info>
+            <Info type="Revision" date="2020-06-10T12:47:49">10062020</Info>
+            <Info type="Revision" date="2020-06-11T08:27:30">progress12</Info>
+            <Info type="Revision" date="2020-06-11T13:46:53">progress 18</Info>
+            <Info type="Revision" date="2020-06-12T09:59:47">progres 20</Info>
+            <Info type="Revision" date="2020-06-12T11:16:31">12062020F</Info>
+            <Info type="Revision" date="2020-06-15T10:11:07">15062020F</Info>
+            <Info type="Revision" date="2020-06-15T13:06:44">15062020FF</Info>
+            <Info type="Revision" date="2020-06-15T19:04:40">fixed mode 3 base geometry</Info>
+            <Info type="Revision" date="2020-06-16T14:04:37">16062020, Uploaded to GDTF Share.</Info>
+            <Info type="Revision" date="2020-06-22T07:46:21">22062020</Info>
+            <Info type="Revision" date="2020-06-22T09:48:51">22062020, Uploaded to GDTF Share.</Info>
+            <Info type="Revision" date="2021-01-11T09:38:48">11012020</Info>
+            <Info type="Revision" date="2021-01-11T09:58:32">11012021</Info>
+            <Info type="Revision" date="2021-01-11T10:07:09">11012022</Info>
+            <Info type="Revision" date="2021-01-11T13:18:04">11012025</Info>
+            <Info type="Revision" date="2021-01-11T13:24:01">11012026</Info>
+            <Info type="Revision" date="2021-01-11T14:10:46">11012033</Info>
+            <Info type="Revision" date="2021-01-12T08:29:58">12012021v2</Info>
+            <Info type="Revision" date="2021-01-12T11:08:54">12012021v8</Info>
+            <Info type="Revision" date="2021-01-14T13:03:56">14012021v2</Info>
+            <Info type="Revision" date="2021-01-14T13:06:03">14012021v3</Info>
+            <Info type="Revision" date="2021-01-14T13:10:47">14012021v4</Info>
+            <Info type="Revision" date="2021-01-14T13:37:40">14012021v5</Info>
+            <Info type="Revision" date="2021-01-15T11:59:04">15012021v2</Info>
+            <Info type="Revision" date="2021-01-15T13:09:28">15012021v3</Info>
+            <Info type="Revision" date="2021-01-15T14:10:13">15012021v3, Uploaded to GDTF Share.</Info>
+            <Info type="Revision" date="2021-07-13T10:42:55">13072021</Info>
+            <Info type="Revision" date="2022-11-01T16:46:45">2022-11-01  Convert models to glb</Info>
+            <Info type="Revision" date="2022-11-10T21:49:06">2022-11-10  DMX Input adjustment</Info>
+            <Info type="Revision" date="2022-11-28T08:41:41">2022-11-28  Major update</Info>
+            <Info type="Revision" date="2022-12-06T07:47:41">2022-12-06  RDM revision  DMX channel geometry update</Info>
+            <Info type="Revision" date="2023-02-17T13:38:42">2023-02-17  Mode for One PATT added</Info>
+            <Info type="Revision" date="2023-03-03T11:43:15">2023-03-03  Geometry revision  OnePATT mode removed</Info>
+            <Info type="Revision" date="2023-03-07T13:36:10">2023-03-07  Dmx defaults and highlights revision</Info>
+            <Info type="Revision" date="2023-05-16T11:08:50">2023-05-16  Wiring object revision</Info>
+            <Info>Joining Robe’s line of retro style lighting products is pixelPATT, the latest addition to the PATT family. In spite of its eye catching retro design, pixelPATT is based on modern LED pixel controlled technology.
+
+For full data (consuption, voltage etc.) please add PATT Driver.</Info>
+            <Info type="Revision" date="2023-07-18T11:53:39.317">2023-07-18%20%20Update%20from%20GDTF%20release, Uploaded to Fixture Share.</Info>
+        </InfoItems>
+        <short_name>pixelPATT</short_name>
+        <manufacturer>Robe lighting</manufacturer>
+        <short_manufacturer>Robe Lighting</short_manufacturer>
+        <Modules>
+            <Module name="Main Module" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model name="Base" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                </Model>
+                <ChannelType coarse="1" default="0" attribute="CONTROL" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="CONTROL" attribute="CONTROL" feature="Control" preset="Control" from="0" to="3.53" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="592137">
+                        <ChannelSet name="No function" from_dmx="0" to_dmx="0"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="DMXSOURCESELECT" attribute="CONTROL" feature="Control" preset="Control" from="3.53" to="7.45" physfrom="0" physto="1" min_dmx_24="657930" max_dmx_24="1250067">
+                        <ChannelSet name="Wired DMX" from_dmx="10" to_dmx="14" slot_from="0" slot_to="1"/>
+                        <ChannelSet name="Wireless DMX" from_dmx="15" to_dmx="19" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="FIXTUREDISPLAY" attribute="CONTROL" feature="Control" preset="Control" from="7.45" to="11.37" physfrom="0" physto="1" min_dmx_24="1315860" max_dmx_24="1907997">
+                        <ChannelSet name="Display ON" from_dmx="20" to_dmx="24" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="Display OFF" from_dmx="25" to_dmx="29" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="COLORMIXMODE" attribute="CONTROL" feature="Control" preset="Control" from="11.37" to="15.29" physfrom="0" physto="1" min_dmx_24="1973790" max_dmx_24="2565927">
+                        <ChannelSet name="RGBW colour mixing mode" from_dmx="30" to_dmx="34" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="CMY colour mixing mode" from_dmx="35" to_dmx="39" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="DIMMERCURVE" attribute="CONTROL" feature="Control" preset="Control" from="15.29" to="19.22" physfrom="0" physto="1" min_dmx_24="2631720" max_dmx_24="3223857">
+                        <ChannelSet name="Dimmer curve Square law" from_dmx="40" to_dmx="44" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="Dimmer curve Linear" from_dmx="45" to_dmx="49" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="ColorCalibrationMode" attribute="CONTROL" feature="Control" preset="Control" from="19.22" to="23.14" physfrom="0" physto="1" min_dmx_24="3289650" max_dmx_24="3881787">
+                        <ChannelSet name="White point 8000K On" from_dmx="50" to_dmx="54" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="White point 8000K Off" from_dmx="55" to_dmx="59" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="CONTROL" feature="Control" preset="Control" from="23.14" to="66.27" physfrom="0" physto="1" min_dmx_24="3947580" max_dmx_24="11119017"/>
+                    <ChannelFunction subattribute="CONTROL" attribute="CONTROL" feature="Control" preset="Control" from="66.27" to="70.98" physfrom="0" physto="0" min_dmx_24="11184810" max_dmx_24="11908533">
+                        <ChannelSet name="Tungsten effect simulation 750W" from_dmx="170" to_dmx="171"/>
+                        <ChannelSet name="Tungsten effect simulation 1000W" from_dmx="172" to_dmx="173"/>
+                        <ChannelSet name="Tungsten effect simulation 1200W" from_dmx="174" to_dmx="175"/>
+                        <ChannelSet name="Tungsten effect simulation 2000W" from_dmx="176" to_dmx="177"/>
+                        <ChannelSet name="Tungsten effect simulation 2500W" from_dmx="178" to_dmx="179"/>
+                        <ChannelSet name="Tungsten effect simulation Off" from_dmx="180" to_dmx="181"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="CONTROL" feature="Control" preset="Control" from="70.98" to="100" physfrom="0" physto="1" min_dmx_24="11974326" max_dmx_24="16777215"/>
+                </ChannelType>
+                <ChannelType coarse="16" default="45" attribute="COLORMIXMODE" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="COLORMIXMODE" attribute="COLORMIXMODE" feature="Control" preset="Control" from="0" to="100" physfrom="0" physto="0" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Global colors" from_dmx="0" to_dmx="9"/>
+                        <ChannelSet name="Maximum mode" from_dmx="10" to_dmx="19"/>
+                        <ChannelSet name="Minimum mode" from_dmx="20" to_dmx="29"/>
+                        <ChannelSet name="Multiply mode" from_dmx="30" to_dmx="39"/>
+                        <ChannelSet name="Addition mode" from_dmx="40" to_dmx="49"/>
+                        <ChannelSet name="Subtraction mode" from_dmx="50" to_dmx="59"/>
+                        <ChannelSet name="Inverted subtraction mode" from_dmx="60" to_dmx="69"/>
+                        <ChannelSet name="Colored background" from_dmx="70" to_dmx="79"/>
+                        <ChannelSet name="No function" from_dmx="80" to_dmx="127"/>
+                        <ChannelSet name="Global colors" from_dmx="128" to_dmx="128"/>
+                        <ChannelSet name="Crossfade" from_dmx="129" to_dmx="254"/>
+                        <ChannelSet name="Pixel colors" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="17" default="32" attribute="SHUTTER" feature="SHUTTER" preset="BEAM">
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="0" to="24.71" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="4144959">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="31" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="Open" from_dmx="32" to_dmx="63" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="24.71" to="37.25" physfrom="0.3" physto="20" min_dmx_24="4210752" max_dmx_24="6250335">
+                        <ChannelSet name="Slow to fast 1/12" from_dmx="64" to_dmx="67" slot_from="0.3" slot_to="0.352941"/>
+                        <ChannelSet name="" from_dmx="68" to_dmx="70" slot_from="0.375" slot_to="0.425532"/>
+                        <ChannelSet name="" from_dmx="71" to_dmx="73" slot_from="0.463679" slot_to="0.540541"/>
+                        <ChannelSet name="" from_dmx="74" to_dmx="76" slot_from="0.580271" slot_to="1.176471"/>
+                        <ChannelSet name="" from_dmx="77" to_dmx="79" slot_from="1.666667" slot_to="2.857143"/>
+                        <ChannelSet name="Slow to fast 6/12" from_dmx="80" to_dmx="82" slot_from="3.488372" slot_to="4.477612"/>
+                        <ChannelSet name="" from_dmx="83" to_dmx="85" slot_from="5" slot_to="6"/>
+                        <ChannelSet name="" from_dmx="86" to_dmx="88" slot_from="6.521739" slot_to="8.108108"/>
+                        <ChannelSet name="" from_dmx="89" to_dmx="90" slot_from="9.090909" slot_to="10"/>
+                        <ChannelSet name="" from_dmx="91" to_dmx="92" slot_from="11.111111" slot_to="13.043478"/>
+                        <ChannelSet name="" from_dmx="93" to_dmx="94" slot_from="15" slot_to="17.647059"/>
+                        <ChannelSet name="Slow to fast 12/12" from_dmx="95" to_dmx="95" slot_from="20" slot_to="20"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="37.25" to="49.8" physfrom="1" physto="1" min_dmx_24="6316128" max_dmx_24="8355711">
+                        <ChannelSet name="Shutter open" from_dmx="96" to_dmx="127"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE_PULSE_OPEN" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="49.8" to="56.08" physfrom="0.12" physto="0.5" min_dmx_24="8421504" max_dmx_24="9408399">
+                        <ChannelSet name="Slow to fast 1/7" from_dmx="128" to_dmx="130" slot_from="0.125" slot_to="0.138889"/>
+                        <ChannelSet name="" from_dmx="131" to_dmx="132" slot_from="0.147059" slot_to="0.15625"/>
+                        <ChannelSet name="" from_dmx="133" to_dmx="134" slot_from="0.166667" slot_to="0.178465"/>
+                        <ChannelSet name="Slow to fast 4/7" from_dmx="135" to_dmx="136" slot_from="0.192184" slot_to="0.208189"/>
+                        <ChannelSet name="" from_dmx="137" to_dmx="138" slot_from="0.227101" slot_to="0.249792"/>
+                        <ChannelSet name="" from_dmx="139" to_dmx="140" slot_from="0.277521" slot_to="0.312175"/>
+                        <ChannelSet name="Slow to fast 7/7" from_dmx="141" to_dmx="143" slot_from="0.356718" slot_to="0.499168"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE_PULSE_CLOSE" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="56.08" to="62.35" physfrom="0.5" physto="0.1" min_dmx_24="9474192" max_dmx_24="10461087">
+                        <ChannelSet name="Fast to slow 1/7" from_dmx="144" to_dmx="145" slot_from="0.5" slot_to="0.416089"/>
+                        <ChannelSet name="" from_dmx="146" to_dmx="147" slot_from="0.356718" slot_to="0.312175"/>
+                        <ChannelSet name="" from_dmx="148" to_dmx="149" slot_from="0.277521" slot_to="0.249792"/>
+                        <ChannelSet name="Fast to slow 4/7" from_dmx="150" to_dmx="151" slot_from="0.227101" slot_to="0.208189"/>
+                        <ChannelSet name="" from_dmx="152" to_dmx="153" slot_from="0.192184" slot_to="0.178465"/>
+                        <ChannelSet name="" from_dmx="154" to_dmx="155" slot_from="0.166667" slot_to="0.15625"/>
+                        <ChannelSet name="Fast to slow 7/7" from_dmx="156" to_dmx="159" slot_from="0.147059" slot_to="0.125"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="62.35" to="74.9" physfrom="1" physto="1" min_dmx_24="10526880" max_dmx_24="12566463">
+                        <ChannelSet name="Shutter open" from_dmx="160" to_dmx="191"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE_RANDOM" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="74.9" to="87.45" physfrom="0.125" physto="10" min_dmx_24="12632256" max_dmx_24="14671839">
+                        <ChannelSet name="Random strobe slow" from_dmx="192" to_dmx="192"/>
+                        <ChannelSet name="Random strobe fast" from_dmx="223" to_dmx="223"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="87.45" to="100" physfrom="1" physto="1" min_dmx_24="14737632" max_dmx_24="16777215">
+                        <ChannelSet name="Shutter open" from_dmx="224" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="18" fine="19" default="0" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Open" from_dmx="65535" to_dmx="65535"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+            <Module name="Background" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model/>
+                <ChannelType coarse="2" default="0" attribute="COLORMACROS" feature="Color" preset="Color">
+                    <ChannelFunction subattribute="COLORMACROS" attribute="COLORMACROS" feature="Color" preset="Color" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215" wheel="1">
+                        <ChannelSet name="No function" from_dmx="0" to_dmx="0" slot_index="0"/>
+                        <ChannelSet name="Filter 4 (Medium Bastard Amber)" from_dmx="1" to_dmx="2" slot_index="1"/>
+                        <ChannelSet name="Filter 25 (Sunset red)" from_dmx="3" to_dmx="4" slot_index="2"/>
+                        <ChannelSet name="Filter 19 (Fire)" from_dmx="5" to_dmx="6" slot_index="3"/>
+                        <ChannelSet name="Filter 26 (Bright Red)" from_dmx="7" to_dmx="8" slot_index="4"/>
+                        <ChannelSet name="Filter 58 (Lavender)" from_dmx="9" to_dmx="10" slot_index="5"/>
+                        <ChannelSet name="Filter 68 (Sky Blue)" from_dmx="11" to_dmx="12" slot_index="6"/>
+                        <ChannelSet name="Fliter 36 (Medium Pink)" from_dmx="13" to_dmx="14" slot_index="7"/>
+                        <ChannelSet name="Filter 89 (Moss Green)" from_dmx="15" to_dmx="16" slot_index="8"/>
+                        <ChannelSet name="Filter 88 (Lime Green)" from_dmx="17" to_dmx="18" slot_index="9"/>
+                        <ChannelSet name="Filter 90 (Dark Yellow Green)" from_dmx="19" to_dmx="20" slot_index="10"/>
+                        <ChannelSet name="Filter 49 (Medium Purple)" from_dmx="21" to_dmx="22" slot_index="11"/>
+                        <ChannelSet name="Filter 52 (Light Lavender)" from_dmx="23" to_dmx="24" slot_index="12"/>
+                        <ChannelSet name="Filter 102 (Light Amber)" from_dmx="25" to_dmx="26" slot_index="13"/>
+                        <ChannelSet name="Filter 103 (Straw)" from_dmx="27" to_dmx="28" slot_index="14"/>
+                        <ChannelSet name="Filter 140 (Summer Blue)" from_dmx="29" to_dmx="30" slot_index="15"/>
+                        <ChannelSet name="Fliter 124 (Dark Green)" from_dmx="31" to_dmx="32" slot_index="16"/>
+                        <ChannelSet name="Filter 106 (Primary Red)" from_dmx="33" to_dmx="34" slot_index="17"/>
+                        <ChannelSet name="Filter 111 (Dark Pink)" from_dmx="35" to_dmx="36" slot_index="18"/>
+                        <ChannelSet name="Filter 115 (Peacock Blue)" from_dmx="37" to_dmx="38" slot_index="19"/>
+                        <ChannelSet name="Filter 126 (Mauve)" from_dmx="39" to_dmx="40" slot_index="20"/>
+                        <ChannelSet name="Filter 117 (Steel Blue)" from_dmx="41" to_dmx="42" slot_index="21"/>
+                        <ChannelSet name="Filter 118 (Light Blue)" from_dmx="43" to_dmx="44" slot_index="22"/>
+                        <ChannelSet name="Filter 122 (Fern Green)" from_dmx="45" to_dmx="46" slot_index="23"/>
+                        <ChannelSet name="Filter 182 (Light Red)" from_dmx="47" to_dmx="48" slot_index="24"/>
+                        <ChannelSet name="Filter 121 (Filter Green)" from_dmx="49" to_dmx="50" slot_index="25"/>
+                        <ChannelSet name="Filter 128 (Bright Pink)" from_dmx="51" to_dmx="52" slot_index="26"/>
+                        <ChannelSet name="Filter 131 (Marine Blue)" from_dmx="53" to_dmx="54" slot_index="27"/>
+                        <ChannelSet name="Filter 132 (Medium Blue)" from_dmx="55" to_dmx="56" slot_index="28"/>
+                        <ChannelSet name="Filter 134 (Golden Amber)" from_dmx="57" to_dmx="58" slot_index="29"/>
+                        <ChannelSet name="Filter 135 (Deep Golden Amber)" from_dmx="59" to_dmx="60" slot_index="30"/>
+                        <ChannelSet name="Filter 136 (Pale Lavender)" from_dmx="61" to_dmx="62" slot_index="31"/>
+                        <ChannelSet name="Filter 137 (Special Lavender)" from_dmx="63" to_dmx="64" slot_index="32"/>
+                        <ChannelSet name="Filter 138 (Pale Green)" from_dmx="65" to_dmx="66" slot_index="33"/>
+                        <ChannelSet name="Filter 798 (Chrysalis Pink)" from_dmx="67" to_dmx="68" slot_index="34"/>
+                        <ChannelSet name="Filter 141 (Bright Blue)" from_dmx="69" to_dmx="70" slot_index="35"/>
+                        <ChannelSet name="Filter 147 (Apricot)" from_dmx="71" to_dmx="72" slot_index="36"/>
+                        <ChannelSet name="Filter 148 (Bright Rose)" from_dmx="73" to_dmx="74" slot_index="37"/>
+                        <ChannelSet name="Filter 152 (Pale Gold)" from_dmx="75" to_dmx="76" slot_index="38"/>
+                        <ChannelSet name="Filter 154 (Pale Rose) " from_dmx="77" to_dmx="78" slot_index="39"/>
+                        <ChannelSet name="Filter 157 (Pink)" from_dmx="79" to_dmx="80" slot_index="40"/>
+                        <ChannelSet name="Filter 143 (Pale Navy Blue)" from_dmx="81" to_dmx="82" slot_index="41"/>
+                        <ChannelSet name="Filter 162 (Bastard Amber)" from_dmx="83" to_dmx="84" slot_index="42"/>
+                        <ChannelSet name="Filter 164 (Flame Red)" from_dmx="85" to_dmx="86" slot_index="43"/>
+                        <ChannelSet name="Filter 165 (Daylight Blue)" from_dmx="87" to_dmx="88" slot_index="44"/>
+                        <ChannelSet name="Filter 169 (Lilac Tint)" from_dmx="89" to_dmx="90" slot_index="45"/>
+                        <ChannelSet name="Filter 170 (Deep Lavender)" from_dmx="91" to_dmx="92" slot_index="46"/>
+                        <ChannelSet name="Filter 172 (Lagoon Blue)" from_dmx="93" to_dmx="94" slot_index="47"/>
+                        <ChannelSet name="Filter 194 (Surprise Pink)" from_dmx="95" to_dmx="96" slot_index="48"/>
+                        <ChannelSet name="Filter 180 (Dark Lavender)" from_dmx="97" to_dmx="98" slot_index="49"/>
+                        <ChannelSet name="Filter 181 (Congo Blue)" from_dmx="99" to_dmx="100" slot_index="50"/>
+                        <ChannelSet name="Filter 197 (Alice Blue)" from_dmx="101" to_dmx="102" slot_index="51"/>
+                        <ChannelSet name="Filter 201 (Full CT Blue)" from_dmx="103" to_dmx="104" slot_index="52"/>
+                        <ChannelSet name="Filter 202 (Half CT Blue)" from_dmx="105" to_dmx="106" slot_index="53"/>
+                        <ChannelSet name="Filter 203 (Quarter CT Blue)" from_dmx="107" to_dmx="108" slot_index="54"/>
+                        <ChannelSet name="Filter 204 (Full CT Orange)" from_dmx="109" to_dmx="110" slot_index="55"/>
+                        <ChannelSet name="Filter 219 (Fluorescent Green)" from_dmx="111" to_dmx="112" slot_index="56"/>
+                        <ChannelSet name="Filter 206 (Quarter CT Orange)" from_dmx="113" to_dmx="114" slot_index="57"/>
+                        <ChannelSet name="Filter 247 (Filter Minus Green)" from_dmx="115" to_dmx="116" slot_index="58"/>
+                        <ChannelSet name="Filter 248 (Half Minus Green)" from_dmx="117" to_dmx="118" slot_index="59"/>
+                        <ChannelSet name="Filter 281 (Three Quarter CT Blue)" from_dmx="119" to_dmx="120" slot_index="60"/>
+                        <ChannelSet name="Filter 285 (Three Quarter CT Orange)" from_dmx="121" to_dmx="122" slot_index="61"/>
+                        <ChannelSet name="Filter 352 (Glacier Blue)" from_dmx="123" to_dmx="124" slot_index="62"/>
+                        <ChannelSet name="Filter 353 (Lighter Blue)" from_dmx="125" to_dmx="126" slot_index="63"/>
+                        <ChannelSet name="Filter 507 (Madge)" from_dmx="127" to_dmx="128" slot_index="64"/>
+                        <ChannelSet name="Filter 778 (Millennium Gold)" from_dmx="129" to_dmx="130" slot_index="65"/>
+                        <ChannelSet name="Filter 793 (Vanity Fair)" from_dmx="131" to_dmx="132" slot_index="66"/>
+                        <ChannelSet name="Ranbow effect (with fade time) from slow to fast" from_dmx="236" to_dmx="245" slot_from="0" slot_to="1"/>
+                        <ChannelSet name="Ranbow effect (without fade time) from slow to fast" from_dmx="246" to_dmx="255" slot_from="0" slot_to="1"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="3" fine="4" default="65535" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB1" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="65535" to_dmx="65535"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="5" fine="6" default="65535" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB2" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="65535" to_dmx="65535"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="7" fine="8" default="65535" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB3" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="65535" to_dmx="65535"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="9" fine="10" default="65535" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB5" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="65535" to_dmx="65535"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="11" default="0" attribute="CTO" feature="CTC" preset="COLOR">
+                    <ChannelFunction subattribute="CTO" attribute="CTO" feature="CTC" preset="COLOR" from="0" to="100" physfrom="8000" physto="2700" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="8000K" from_dmx="0" to_dmx="0" slot_from="8000" slot_to="8000"/>
+                        <ChannelSet name="5600K" from_dmx="64" to_dmx="64" slot_from="5600" slot_to="5600"/>
+                        <ChannelSet name="4200K" from_dmx="128" to_dmx="128" slot_from="4200" slot_to="4200"/>
+                        <ChannelSet name="3200K" from_dmx="192" to_dmx="192" slot_from="3200" slot_to="3200"/>
+                        <ChannelSet name="2700K" from_dmx="255" to_dmx="255" slot_from="2700" slot_to="2700"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="12" default="32" attribute="SHUTTER" feature="SHUTTER" preset="BEAM">
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="0" to="24.71" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="4144959">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="31" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="Open" from_dmx="32" to_dmx="63" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="24.71" to="37.25" physfrom="0.3" physto="20" min_dmx_24="4210752" max_dmx_24="6250335">
+                        <ChannelSet name="Slow to fast 1/12" from_dmx="64" to_dmx="67" slot_from="0.3" slot_to="0.352941"/>
+                        <ChannelSet name="" from_dmx="68" to_dmx="70" slot_from="0.375" slot_to="0.425532"/>
+                        <ChannelSet name="" from_dmx="71" to_dmx="73" slot_from="0.463679" slot_to="0.540541"/>
+                        <ChannelSet name="" from_dmx="74" to_dmx="76" slot_from="0.580271" slot_to="1.176471"/>
+                        <ChannelSet name="" from_dmx="77" to_dmx="79" slot_from="1.666667" slot_to="2.857143"/>
+                        <ChannelSet name="Slow to fast 6/12" from_dmx="80" to_dmx="82" slot_from="3.488372" slot_to="4.477612"/>
+                        <ChannelSet name="" from_dmx="83" to_dmx="85" slot_from="5" slot_to="6"/>
+                        <ChannelSet name="" from_dmx="86" to_dmx="88" slot_from="6.521739" slot_to="8.108108"/>
+                        <ChannelSet name="" from_dmx="89" to_dmx="90" slot_from="9.090909" slot_to="10"/>
+                        <ChannelSet name="" from_dmx="91" to_dmx="92" slot_from="11.111111" slot_to="13.043478"/>
+                        <ChannelSet name="" from_dmx="93" to_dmx="94" slot_from="15" slot_to="17.647059"/>
+                        <ChannelSet name="Slow to fast 12/12" from_dmx="95" to_dmx="95" slot_from="20" slot_to="20"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="37.25" to="49.8" physfrom="1" physto="1" min_dmx_24="6316128" max_dmx_24="8355711">
+                        <ChannelSet name="Shutter open" from_dmx="96" to_dmx="127"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE_PULSE_OPEN" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="49.8" to="56.08" physfrom="0.12" physto="0.5" min_dmx_24="8421504" max_dmx_24="9408399">
+                        <ChannelSet name="Slow to fast 1/7" from_dmx="128" to_dmx="130" slot_from="0.125" slot_to="0.138889"/>
+                        <ChannelSet name="" from_dmx="131" to_dmx="132" slot_from="0.147059" slot_to="0.15625"/>
+                        <ChannelSet name="" from_dmx="133" to_dmx="134" slot_from="0.166667" slot_to="0.178465"/>
+                        <ChannelSet name="Slow to fast 4/7" from_dmx="135" to_dmx="136" slot_from="0.192184" slot_to="0.208189"/>
+                        <ChannelSet name="" from_dmx="137" to_dmx="138" slot_from="0.227101" slot_to="0.249792"/>
+                        <ChannelSet name="" from_dmx="139" to_dmx="140" slot_from="0.277521" slot_to="0.312175"/>
+                        <ChannelSet name="Slow to fast 7/7" from_dmx="141" to_dmx="143" slot_from="0.356718" slot_to="0.499168"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE_PULSE_CLOSE" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="56.08" to="62.35" physfrom="0.5" physto="0.1" min_dmx_24="9474192" max_dmx_24="10461087">
+                        <ChannelSet name="Fast to slow 1/7" from_dmx="144" to_dmx="145" slot_from="0.5" slot_to="0.416089"/>
+                        <ChannelSet name="" from_dmx="146" to_dmx="147" slot_from="0.356718" slot_to="0.312175"/>
+                        <ChannelSet name="" from_dmx="148" to_dmx="149" slot_from="0.277521" slot_to="0.249792"/>
+                        <ChannelSet name="Fast to slow 4/7" from_dmx="150" to_dmx="151" slot_from="0.227101" slot_to="0.208189"/>
+                        <ChannelSet name="" from_dmx="152" to_dmx="153" slot_from="0.192184" slot_to="0.178465"/>
+                        <ChannelSet name="" from_dmx="154" to_dmx="155" slot_from="0.166667" slot_to="0.15625"/>
+                        <ChannelSet name="Fast to slow 7/7" from_dmx="156" to_dmx="159" slot_from="0.147059" slot_to="0.125"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="62.35" to="74.9" physfrom="1" physto="1" min_dmx_24="10526880" max_dmx_24="12566463">
+                        <ChannelSet name="Shutter open" from_dmx="160" to_dmx="191"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE_RANDOM" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="74.9" to="87.45" physfrom="0.125" physto="10" min_dmx_24="12632256" max_dmx_24="14671839">
+                        <ChannelSet name="Random strobe slow" from_dmx="192" to_dmx="192"/>
+                        <ChannelSet name="Random strobe fast" from_dmx="223" to_dmx="223"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="87.45" to="100" physfrom="1" physto="1" min_dmx_24="14737632" max_dmx_24="16777215">
+                        <ChannelSet name="Shutter open" from_dmx="224" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="13" fine="14" default="65535" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Open" from_dmx="65535" to_dmx="65535"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="15" default="0" attribute="LEDZoneMode" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="LEDZoneMode" attribute="LEDZoneMode" feature="Control" preset="Control" from="0" to="3.14" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="526344">
+                        <ChannelSet name="All pixels" from_dmx="0" to_dmx="2"/>
+                        <ChannelSet name="Rings" from_dmx="3" to_dmx="4"/>
+                        <ChannelSet name="Halves" from_dmx="5" to_dmx="6"/>
+                        <ChannelSet name="Quarters" from_dmx="7" to_dmx="8"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="LEDZoneMode" feature="Control" preset="Control" from="3.14" to="100" physfrom="0" physto="1" min_dmx_24="592137" max_dmx_24="16777215"/>
+                </ChannelType>
+            </Module>
+            <Module name="Patt beam 1" class="Conventional" beamtype="Wash" beam_intensity="240" beam_angle="58">
+                <Model name="Patt beam 1" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Vertices>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</Vertices>
+                    <Faces>2AAAAAAAAQACAAkAAAACAAEAVAACAFQATwACAE8ASgACAEoARQACAEUAQAACAEAAOwACADsANgACADYAMQACADEALAACACwAJwACACcAIgACACIAHQACAA4ACQACABMADgACABgAEwACAB0AGAACAAMABAAFAFwAAwAFAAYABwAIAA0ABwAGAAgABwBYAFgABwBTAFMABwBOAE4ABwBJAEkABwBEAEQABwA/AD8ABwA6ADoABwA1ADUABwAwADAABwArACsABwAmABIABwANABcABwASABwABwAXACEABwAcACYABwAhAAoACwAMAF0ACgAMAA8AEAARAF4ADwARABQAFQAWAF8AFAAWABkAGgAbAGAAGQAbAB4AHwAgAGEAHgAgACMAJAAlAGIAIwAlACgAKQAqAGMAKAAqAC0ALgAvAGQALQAvADIAMwA0AGUAMgA0ADcAOAA5AGYANwA5ADwAPQA+AGcAPAA+AEEAQgBDAGgAQQBDAEYARwBIAGkARgBIAEsATABNAGoASwBNAFAAUQBSAGsAUABSAFUAVgBXAGwAVQBXAFkAWgBbAG0AWQBbAA==</Faces>
+                    <SubSets>
+                        <SubSet3d material_index="0" FaceStart="0" FacesCount="72"/>
+                    </SubSets>
+                    <Materials>
+                        <Material3d name="black" specularPower="0.1">
+                            <DiffuseColor r="0.157" g="0.157" b="0.157" a="1"/>
+                            <SpecularColor r="0.898" g="0.898" b="0.898" a="0"/>
+                            <EmissiveColor r="0" g="0" b="0" a="1"/>
+                            <DiffuseInking x="0" y="0" z="0"/>
+                            <EmissiveInking x="0" y="0" z="0"/>
+                            <SurfaceTexture/>
+                            <AlphaTexture/>
+                        </Material3d>
+                    </Materials>
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                </Model>
+                <ChannelType default="4294967295" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="65535"/>
+                        <ChannelSet name="Open" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="20" default="0" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR">
+                    <ChannelFunction subattribute="COLORRGB1" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="21" default="0" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR">
+                    <ChannelFunction subattribute="COLORRGB2" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="22" default="0" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR">
+                    <ChannelFunction subattribute="COLORRGB3" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="23" default="0" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR">
+                    <ChannelFunction subattribute="COLORRGB5" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+            <Module name="Patt beam 2" class="Conventional" beamtype="Wash" beam_intensity="240" beam_angle="58">
+                <Model name="Patt beam 2" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Model name="Beam" model_type="Beam">
+                        <Offset>
+                            <Location x="0.000000" y="0.000000" z="0.000000"/>
+                            <Rotation x="0.000000" y="-3.141593" z="0.000000"/>
+                            <Scaling x="1" y="1" z="1"/>
+                        </Offset>
+                        <BeamClippingDistance>-0.066</BeamClippingDistance>
+                        <BeamDiameterAtOffset>0.189000</BeamDiameterAtOffset>
+                    </Model>
+                    <Vertices>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</Vertices>
+                    <Faces>2AAAAAAAAQACAAkAAAACAAEAVAACAFQATwACAE8ASgACAEoARQACAEUAQAACAEAAOwACADsANgACADYAMQACADEALAACACwAJwACACcAIgACACIAHQACAA4ACQACABMADgACABgAEwACAB0AGAACAAMABAAFAFwAAwAFAAYABwAIAA0ABwAGAAgABwBYAFgABwBTAFMABwBOAE4ABwBJAEkABwBEAEQABwA/AD8ABwA6ADoABwA1ADUABwAwADAABwArACsABwAmABIABwANABcABwASABwABwAXACEABwAcACYABwAhAAoACwAMAF0ACgAMAA8AEAARAF4ADwARABQAFQAWAF8AFAAWABkAGgAbAGAAGQAbAB4AHwAgAGEAHgAgACMAJAAlAGIAIwAlACgAKQAqAGMAKAAqAC0ALgAvAGQALQAvADIAMwA0AGUAMgA0ADcAOAA5AGYANwA5ADwAPQA+AGcAPAA+AEEAQgBDAGgAQQBDAEYARwBIAGkARgBIAEsATABNAGoASwBNAFAAUQBSAGsAUABSAFUAVgBXAGwAVQBXAFkAWgBbAG0AWQBbAA==</Faces>
+                    <SubSets>
+                        <SubSet3d material_index="0" FaceStart="0" FacesCount="72"/>
+                    </SubSets>
+                    <Materials>
+                        <Material3d name="black" specularPower="0.1">
+                            <DiffuseColor r="0.157" g="0.157" b="0.157" a="1"/>
+                            <SpecularColor r="0.898" g="0.898" b="0.898" a="0"/>
+                            <EmissiveColor r="0" g="0" b="0" a="1"/>
+                            <DiffuseInking x="0" y="0" z="0"/>
+                            <EmissiveInking x="0" y="0" z="0"/>
+                            <SurfaceTexture/>
+                            <AlphaTexture/>
+                        </Material3d>
+                    </Materials>
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                </Model>
+                <ChannelType default="4294967295" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="65535"/>
+                        <ChannelSet name="Open" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="24" default="0" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR">
+                    <ChannelFunction subattribute="COLORRGB1" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="25" default="0" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR">
+                    <ChannelFunction subattribute="COLORRGB2" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="26" default="0" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR">
+                    <ChannelFunction subattribute="COLORRGB3" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="27" default="0" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR">
+                    <ChannelFunction subattribute="COLORRGB5" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+        </Modules>
+        <Instances>
+            <Instance module_index="0" patch="1" locked="true"/>
+            <Instance module_index="1" patch="1" locked="true"/>
+            <Instance module_index="2" patch="1" locked="true" Z="-0.12"/>
+            <Instance module_index="2" patch="1" locked="true" Z="-0.12"/>
+            <Instance module_index="2" patch="9" locked="true" X="-0.26" Y="-0.15" Z="-0.12"/>
+            <Instance module_index="2" patch="7" locked="true" X="-0.26" Y="-0.15" Z="-0.12"/>
+            <Instance module_index="2" patch="17" locked="true" X="0.26" Y="-0.15" Z="-0.12"/>
+            <Instance module_index="2" patch="13" locked="true" X="0.26" Y="-0.15" Z="-0.12"/>
+            <Instance module_index="2" patch="25" locked="true" Y="0.3" Z="-0.12"/>
+            <Instance module_index="2" patch="19" locked="true" Y="0.3" Z="-0.12"/>
+            <Instance module_index="3" patch="1" locked="true" X="-0.26" Y="0.15" Z="-0.12"/>
+            <Instance module_index="3" patch="1" locked="true" X="-0.26" Y="0.15" Z="-0.12"/>
+            <Instance module_index="3" patch="9" locked="true" Y="-0.3" Z="-0.12"/>
+            <Instance module_index="3" patch="7" locked="true" Y="-0.3" Z="-0.12"/>
+            <Instance module_index="3" patch="17" locked="true" X="0.26" Y="0.15" Z="-0.12"/>
+            <Instance module_index="3" patch="13" locked="true" X="0.26" Y="0.15" Z="-0.12"/>
+        </Instances>
+        <Wheels>
+            <Wheel index="0" preset="Color" feature="Color" attribute="COLORMACROS" subattribute="COLORMACROS">
+                <Slot index="0" media_name="No function" r="254" g="255" b="255"/>
+                <Slot index="1" media_name="Filter 4 (Medium Bastard Amber)" r="255" g="190" b="125"/>
+                <Slot index="2" media_name="Filter 25 (Sunset red)" r="255" g="73" b="0"/>
+                <Slot index="3" media_name="Filter 19 (Fire)" r="255" g="0" b="0"/>
+                <Slot index="4" media_name="Filter 26 (Bright Red)" r="255" g="0" b="0"/>
+                <Slot index="5" media_name="Filter 58 (Lavender)" r="191" g="63" b="201"/>
+                <Slot index="6" media_name="Filter 68 (Sky Blue)" r="0" g="149" b="245"/>
+                <Slot index="7" media_name="Fliter 36 (Medium Pink)" r="255" g="129" b="95"/>
+                <Slot index="8" media_name="Filter 89 (Moss Green)" r="0" g="192" b="0"/>
+                <Slot index="9" media_name="Filter 88 (Lime Green)" r="191" g="195" b="0"/>
+                <Slot index="10" media_name="Filter 90 (Dark Yellow Green)" r="0" g="203" b="0"/>
+                <Slot index="11" media_name="Filter 49 (Medium Purple)" r="255" g="0" b="172"/>
+                <Slot index="12" media_name="Filter 52 (Light Lavender)" r="255" g="165" b="157"/>
+                <Slot index="13" media_name="Filter 102 (Light Amber)" r="221" g="141" b="0"/>
+                <Slot index="14" media_name="Filter 103 (Straw)" r="222" g="146" b="46"/>
+                <Slot index="15" media_name="Filter 140 (Summer Blue)" r="163" g="231" b="195"/>
+                <Slot index="16" media_name="Fliter 124 (Dark Green)" r="0" g="209" b="27"/>
+                <Slot index="17" media_name="Filter 106 (Primary Red)" r="255" g="0" b="0"/>
+                <Slot index="18" media_name="Filter 111 (Dark Pink)" r="255" g="42" b="115"/>
+                <Slot index="19" media_name="Filter 115 (Peacock Blue)" r="0" g="203" b="157"/>
+                <Slot index="20" media_name="Filter 126 (Mauve)" r="255" g="0" b="194"/>
+                <Slot index="21" media_name="Filter 117 (Steel Blue)" r="218" g="230" b="179"/>
+                <Slot index="22" media_name="Filter 118 (Light Blue)" r="0" g="198" b="229"/>
+                <Slot index="23" media_name="Filter 122 (Fern Green)" r="106" g="203" b="0"/>
+                <Slot index="24" media_name="Filter 182 (Light Red)" r="255" g="0" b="0"/>
+                <Slot index="25" media_name="Filter 121 (Filter Green)" r="176" g="195" b="0"/>
+                <Slot index="26" media_name="Filter 128 (Bright Pink)" r="255" g="0" b="140"/>
+                <Slot index="27" media_name="Filter 131 (Marine Blue)" r="116" g="200" b="161"/>
+                <Slot index="28" media_name="Filter 132 (Medium Blue)" r="0" g="168" b="255"/>
+                <Slot index="29" media_name="Filter 134 (Golden Amber)" r="195" g="94" b="0"/>
+                <Slot index="30" media_name="Filter 135 (Deep Golden Amber)" r="255" g="63" b="0"/>
+                <Slot index="31" media_name="Filter 136 (Pale Lavender)" r="219" g="142" b="136"/>
+                <Slot index="32" media_name="Filter 137 (Special Lavender)" r="201" g="136" b="171"/>
+                <Slot index="33" media_name="Filter 138 (Pale Green)" r="240" g="217" b="93"/>
+                <Slot index="34" media_name="Filter 798 (Chrysalis Pink)" r="156" g="0" b="195"/>
+                <Slot index="35" media_name="Filter 141 (Bright Blue)" r="0" g="140" b="174"/>
+                <Slot index="36" media_name="Filter 147 (Apricot)" r="227" g="122" b="0"/>
+                <Slot index="37" media_name="Filter 148 (Bright Rose)" r="255" g="36" b="92"/>
+                <Slot index="38" media_name="Filter 152 (Pale Gold)" r="221" g="135" b="64"/>
+                <Slot index="39" media_name="Filter 154 (Pale Rose)" r="255" g="161" b="100"/>
+                <Slot index="40" media_name="Filter 157 (Pink)" r="255" g="118" b="97"/>
+                <Slot index="41" media_name="Filter 143 (Pale Navy Blue)" r="77" g="174" b="210"/>
+                <Slot index="42" media_name="Filter 162 (Bastard Amber)" r="227" g="152" b="81"/>
+                <Slot index="43" media_name="Filter 164 (Flame Red)" r="255" g="0" b="0"/>
+                <Slot index="44" media_name="Filter 165 (Daylight Blue)" r="0" g="202" b="255"/>
+                <Slot index="45" media_name="Filter 169 (Lilac Tint)" r="225" g="127" b="55"/>
+                <Slot index="46" media_name="Filter 170 (Deep Lavender)" r="250" g="132" b="187"/>
+                <Slot index="47" media_name="Filter 172 (Lagoon Blue)" r="0" g="187" b="204"/>
+                <Slot index="48" media_name="Filter 194 (Surprise Pink)" r="255" g="187" b="254"/>
+                <Slot index="49" media_name="Filter 180 (Dark Lavender)" r="240" g="113" b="255"/>
+                <Slot index="50" media_name="Filter 181 (Congo Blue)" r="137" g="0" b="255"/>
+                <Slot index="51" media_name="Filter 197 (Alice Blue)" r="138" g="149" b="238"/>
+                <Slot index="52" media_name="Filter 201 (Full CT Blue)" r="225" g="219" b="233"/>
+                <Slot index="53" media_name="Filter 202 (Half CT Blue)" r="253" g="222" b="210"/>
+                <Slot index="54" media_name="Filter 203 (Quarter CT Blue)" r="255" g="228" b="191"/>
+                <Slot index="55" media_name="Filter 204 (Full CT Orange)" r="240" g="131" b="0"/>
+                <Slot index="56" media_name="Filter 219 (Fluorescent Green)" r="134" g="146" b="91"/>
+                <Slot index="57" media_name="Filter 206 (Quarter CT Orange)" r="248" g="176" b="91"/>
+                <Slot index="58" media_name="Filter 247 (Filter Minus Green)" r="255" g="187" b="167"/>
+                <Slot index="59" media_name="Filter 248 (Half Minus Green)" r="255" g="204" b="151"/>
+                <Slot index="60" media_name="Filter 281 (Three Quarter CT Blue)" r="237" g="216" b="235"/>
+                <Slot index="61" media_name="Filter 285 (Three Quarter CT Orange)" r="208" g="134" b="18"/>
+                <Slot index="62" media_name="Filter 352 (Glacier Blue)" r="40" g="206" b="248"/>
+                <Slot index="63" media_name="Filter 353 (Lighter Blue)" r="111" g="197" b="217"/>
+                <Slot index="64" media_name="Filter 507 (Madge)" r="255" g="25" b="0"/>
+                <Slot index="65" media_name="Filter 778 (Millennium Gold)" r="255" g="86" b="0"/>
+                <Slot index="66" media_name="Filter 793 (Vanity Fair)" r="255" g="0" b="126"/>
+            </Wheel>
+        </Wheels>
+        <RDMKey ESTAId="21075" DeviceModelId="221"/>
+    </FixtureType>
+</MA>

@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<MA xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/2.8.123/MA.xsd" xmlns="http://schemas.malighting.de/grandma2/xml/MA" major_vers="3" minor_vers="7" stream_vers="0">
+    <FixtureType name="Robin 100 LEDBeam" mode="Mode 4 Macro colors 8bit">
+        <InfoItems>
+            <Info type="Revision" date="2023-07-18T12:03:18">Converted GDTF to grandMA2 fixture type with Share Converter version 1.4.0</Info>
+            <Info type="Revision" date="2021-03-23T09:09:21">23032021</Info>
+            <Info type="Revision" date="2021-07-13T10:02:08">13072021</Info>
+            <Info type="Revision" date="2021-11-29T09:23:20">adjusts pan/tilt real values.</Info>
+            <Info type="Revision" date="2021-11-29T10:11:05">adjusts pan-tilt real values</Info>
+            <Info type="Revision" date="2022-06-13T04:46:07">adjusted mode 3 tilt</Info>
+            <Info type="Revision" date="2022-10-11T07:43:14">2022-10-11  DMX revision</Info>
+            <Info type="Revision" date="2022-10-11T10:53:18">2022-10-11  Thumbnails revision</Info>
+            <Info type="Revision" date="2022-10-11T11:17:47">2022-10-11 Wiring objects revision</Info>
+            <Info type="Revision" date="2022-10-11T11:53:55">2022-10-11  DMX mode names revision</Info>
+            <Info type="Revision" date="2022-10-11T13:56:07">2022-10-11  DMX mode names revision</Info>
+            <Info type="Revision" date="2022-10-11T13:57:20">2022-10-11  Share release</Info>
+            <Info type="Revision" date="2022-10-12T07:55:41">2022-10-12  Beam geometry revision</Info>
+            <Info type="Revision" date="2022-10-13T07:35:00">2022-10-13  Share release</Info>
+            <Info type="Revision" date="2022-10-25T13:16:54">beam set to led</Info>
+            <Info type="Revision" date="2022-10-25T13:28:43">2022-10-25  Add color measurements</Info>
+            <Info type="Revision" date="2022-10-25T14:15:43">2022-10-25  Share release</Info>
+            <Info type="Revision" date="2022-11-08T10:04:07">2022-11-08  DMX default values revision</Info>
+            <Info type="Revision" date="2022-11-10T21:48:37">2022-11-10  DMX Input adjustment</Info>
+            <Info type="Revision" date="2023-01-17T07:18:59">2023-01-17  Lower 3D models definition revision</Info>
+            <Info type="Revision" date="2023-03-13T11:19:21">2023-03-13  Wiring objects revision  CTO channel update</Info>
+            <Info>A highly optimized motorised control produces speedy pan and tilt movement, three LED zones allow the creation of various colour chases, and the extra punchy 7 degree beam angle can be amplified with fast strobing. </Info>
+            <Info type="Revision" date="2023-07-18T12:03:29.315">2023-07-18%20%20Update%20from%20GDTF%20release, Uploaded to Fixture Share.</Info>
+        </InfoItems>
+        <short_name>Robin 100 LEDBeam</short_name>
+        <manufacturer>Robe lighting</manufacturer>
+        <short_manufacturer>Robe Lighting</short_manufacturer>
+        <Modules>
+            <Module name="Base no zones" class="Headmover" beamtype="Wash" beam_intensity="3220" beam_angle="7">
+                <Model name="Base no zones" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Model name="Yoke no zones" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="Pan">
+                        <AxisFactors x="0" y="0" z="1"/>
+                        <Offset>
+                            <Location x="0.000000" y="0.000000" z="-0.072739"/>
+                            <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                            <Scaling x="1" y="1" z="1"/>
+                        </Offset>
+                        <Model name="Head no zones" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="Tilt">
+                            <AxisFactors x="-1" y="0" z="-0"/>
+                            <Offset>
+                                <Location x="0.000000" y="0.000000" z="-0.141668"/>
+                                <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                                <Scaling x="1" y="1" z="1"/>
+                            </Offset>
+                            <Model name="Beam" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                                <Vertices>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</Vertices>
+                                <Faces>2AAAAAAAAQACAAkAAAACAAEAVAACAFQATwACAE8ASgACAEoARQACAEUAQAACAEAAOwACADsANgACADYAMQACADEALAACACwAJwACACcAIgACACIAHQACAA4ACQACABMADgACABgAEwACAB0AGAACAAMABAAFAFwAAwAFAAYABwAIAA0ABwAGAAgABwBYAFgABwBTAFMABwBOAE4ABwBJAEkABwBEAEQABwA/AD8ABwA6ADoABwA1ADUABwAwADAABwArACsABwAmABIABwANABcABwASABwABwAXACEABwAcACYABwAhAAoACwAMAF0ACgAMAA8AEAARAF4ADwARABQAFQAWAF8AFAAWABkAGgAbAGAAGQAbAB4AHwAgAGEAHgAgACMAJAAlAGIAIwAlACgAKQAqAGMAKAAqAC0ALgAvAGQALQAvADIAMwA0AGUAMgA0ADcAOAA5AGYANwA5ADwAPQA+AGcAPAA+AEEAQgBDAGgAQQBDAEYARwBIAGkARgBIAEsATABNAGoASwBNAFAAUQBSAGsAUABSAFUAVgBXAGwAVQBXAFkAWgBbAG0AWQBbAA==</Faces>
+                                <SubSets>
+                                    <SubSet3d material_index="0" FaceStart="0" FacesCount="72"/>
+                                </SubSets>
+                                <Materials>
+                                    <Material3d name="black" specularPower="0.1">
+                                        <DiffuseColor r="0.157" g="0.157" b="0.157" a="1"/>
+                                        <SpecularColor r="0.898" g="0.898" b="0.898" a="0"/>
+                                        <EmissiveColor r="0" g="0" b="0" a="1"/>
+                                        <DiffuseInking x="0" y="0" z="0"/>
+                                        <EmissiveInking x="0" y="0" z="0"/>
+                                        <SurfaceTexture/>
+                                        <AlphaTexture/>
+                                    </Material3d>
+                                </Materials>
+                                <Offset>
+                                    <Location x="0.000000" y="0.000000" z="-0.058932"/>
+                                    <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                                    <Scaling x="1" y="1" z="1"/>
+                                </Offset>
+                                <Model name="Beam" model_type="Beam">
+                                    <Offset>
+                                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                                        <Rotation x="0.000000" y="-3.141593" z="0.000000"/>
+                                        <Scaling x="1" y="1" z="1"/>
+                                    </Offset>
+                                    <BeamClippingDistance>-0.066</BeamClippingDistance>
+                                    <BeamDiameterAtOffset>0.139000</BeamDiameterAtOffset>
+                                </Model>
+                            </Model>
+                        </Model>
+                    </Model>
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                </Model>
+                <Body>
+                    <Size x="0.16" y="0.157" z="0.56"/>
+                </Body>
+                <ChannelType coarse="1" fine="2" default="32768" attribute="PAN" feature="POSITION" preset="POSITION">
+                    <ChannelFunction subattribute="PAN" attribute="PAN" feature="POSITION" preset="POSITION" from="-225" to="225" physfrom="-225" physto="225" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Center" from_dmx="32768" to_dmx="32768"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="3" fine="4" default="32768" attribute="TILT" feature="POSITION" preset="POSITION">
+                    <ChannelFunction subattribute="TILT" attribute="TILT" feature="POSITION" preset="POSITION" from="-150" to="150" physfrom="-150" physto="150" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Center" from_dmx="32768" to_dmx="32768"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="5" default="0" attribute="POSITIONMSPEED" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="POSITIONMSPEED" attribute="POSITIONMSPEED" feature="Control" preset="Control" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Standard mode" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="max" from_dmx="1" to_dmx="1"/>
+                        <ChannelSet name="min" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="6" default="0" attribute="CONTROL" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="CONTROL" attribute="CONTROL" feature="Control" preset="Control" from="0" to="11.37" physfrom="0" physto="0" min_dmx_24="0" max_dmx_24="1907997">
+                        <ChannelSet name="No function" from_dmx="0" to_dmx="29"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="COLORMIXMODE" attribute="CONTROL" feature="Control" preset="Control" from="11.37" to="19.22" physfrom="0" physto="1" min_dmx_24="1973790" max_dmx_24="3223857">
+                        <ChannelSet name="RGBW color mixing mode" from_dmx="30" to_dmx="39" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="CMY color mixing mode" from_dmx="40" to_dmx="49" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="PanTiltMode" attribute="CONTROL" feature="Control" preset="Control" from="19.22" to="27.06" physfrom="0" physto="1" min_dmx_24="3289650" max_dmx_24="4539717">
+                        <ChannelSet name="P/T speed mode" from_dmx="50" to_dmx="59" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="P/T time mode" from_dmx="60" to_dmx="69" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="BLACKOUT" attribute="CONTROL" feature="Control" preset="Control" from="27.06" to="34.9" physfrom="1" physto="0" min_dmx_24="4605510" max_dmx_24="5855577">
+                        <ChannelSet name="enable blackout while p/t moving" from_dmx="70" to_dmx="79" slot_from="1" slot_to="1"/>
+                        <ChannelSet name="disable blackout while p/t moving" from_dmx="80" to_dmx="89" slot_from="0" slot_to="0"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="CONTROL" feature="Control" preset="Control" from="34.9" to="42.75" physfrom="0" physto="0" min_dmx_24="5921370" max_dmx_24="7171437"/>
+                    <ChannelFunction subattribute="ColorCalibrationMode" attribute="CONTROL" feature="Control" preset="Control" from="42.75" to="46.67" physfrom="1" physto="0" min_dmx_24="7237230" max_dmx_24="7829367">
+                        <ChannelSet name="color calibration mode ON" from_dmx="110" to_dmx="114" slot_from="1" slot_to="1"/>
+                        <ChannelSet name="color calibration mode OFF" from_dmx="115" to_dmx="119" slot_from="0" slot_to="0"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="TILTMODE" attribute="CONTROL" feature="Control" preset="Control" from="46.67" to="50.59" physfrom="1" physto="0" min_dmx_24="7895160" max_dmx_24="8487297">
+                        <ChannelSet name="tilt movement reduction ON" from_dmx="120" to_dmx="124" slot_from="1" slot_to="1"/>
+                        <ChannelSet name="tilt movement reduction OFF" from_dmx="125" to_dmx="129" slot_from="0" slot_to="0"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="CONTROL" feature="Control" preset="Control" from="50.59" to="54.51" physfrom="0" physto="0" min_dmx_24="8553090" max_dmx_24="9145227"/>
+                    <ChannelFunction subattribute="POSITIONRESET" attribute="CONTROL" feature="Control" preset="Control" from="54.51" to="58.43" physfrom="0" physto="0" min_dmx_24="9211020" max_dmx_24="9803157">
+                        <ChannelSet name="Pan/Tilt reset" from_dmx="140" to_dmx="149"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="DUMMY" attribute="CONTROL" feature="Control" preset="Control" from="58.43" to="78.04" physfrom="0" physto="0" min_dmx_24="9868950" max_dmx_24="13092807"/>
+                    <ChannelFunction subattribute="FIXTUREGLOBALRESET" attribute="CONTROL" feature="Control" preset="Control" from="78.04" to="81.96" physfrom="0" physto="0" min_dmx_24="13158600" max_dmx_24="13750737">
+                        <ChannelSet name="Total Reset" from_dmx="200" to_dmx="209"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="CONTROL" feature="Control" preset="Control" from="81.96" to="100" physfrom="0" physto="0" min_dmx_24="13816530" max_dmx_24="16777215"/>
+                </ChannelType>
+                <ChannelType coarse="7" default="0" attribute="COLOR1" feature="Color" preset="Color" highlight_value="0">
+                    <ChannelFunction subattribute="COLOR1" attribute="COLOR1" feature="Color" preset="Color" from="0" to="96.86" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16250871" wheel="1">
+                        <ChannelSet name="Open" from_dmx="0" to_dmx="0" slot_from="1" slot_to="1" slot_index="0"/>
+                        <ChannelSet name="White 2700K" from_dmx="1" to_dmx="2" slot_from="1" slot_to="1" slot_index="1"/>
+                        <ChannelSet name="White 2700K Halogen" from_dmx="3" to_dmx="3" slot_from="1" slot_to="1" slot_index="2"/>
+                        <ChannelSet name="White 3200K" from_dmx="4" to_dmx="5" slot_from="1" slot_to="1" slot_index="3"/>
+                        <ChannelSet name="White 3200K Halogen" from_dmx="6" to_dmx="6" slot_from="1" slot_to="1" slot_index="4"/>
+                        <ChannelSet name="White 4200K" from_dmx="7" to_dmx="9" slot_from="1" slot_to="1" slot_index="5"/>
+                        <ChannelSet name="White 5600K" from_dmx="10" to_dmx="12" slot_from="1" slot_to="1" slot_index="6"/>
+                        <ChannelSet name="White 8000K" from_dmx="13" to_dmx="15" slot_from="1" slot_to="1" slot_index="7"/>
+                        <ChannelSet name="Blue" from_dmx="16" to_dmx="16" slot_from="-0.5" slot_to="0.5" slot_index="8"/>
+                        <ChannelSet name="Light Blue" from_dmx="56" to_dmx="56" slot_from="-0.5" slot_to="0.5" slot_index="9"/>
+                        <ChannelSet name="Green" from_dmx="96" to_dmx="96" slot_from="-0.5" slot_to="0.5" slot_index="10"/>
+                        <ChannelSet name="Yellow" from_dmx="135" to_dmx="135" slot_from="-0.5" slot_to="0.5" slot_index="11"/>
+                        <ChannelSet name="Red" from_dmx="175" to_dmx="175" slot_from="-0.5" slot_to="0.5" slot_index="12"/>
+                        <ChannelSet name="Magenta" from_dmx="215" to_dmx="215" slot_from="-0.5" slot_to="0.5" slot_index="13"/>
+                        <ChannelSet name="Blue" from_dmx="247" to_dmx="247" slot_from="-0.5" slot_to="1" slot_index="14"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="COLOREFFECT" attribute="COLOR1" feature="Color" preset="Color" from="96.86" to="100" physfrom="0" physto="1" min_dmx_24="16316664" max_dmx_24="16777215">
+                        <ChannelSet name="Rainbow (fade time)" from_dmx="248" to_dmx="248"/>
+                        <ChannelSet name="Rainbow" from_dmx="249" to_dmx="249"/>
+                        <ChannelSet name="Zone effect 1" from_dmx="250" to_dmx="250"/>
+                        <ChannelSet name="Zone effect 2" from_dmx="251" to_dmx="251"/>
+                        <ChannelSet name="Zone effect 3" from_dmx="252" to_dmx="252"/>
+                        <ChannelSet name="Zone effect 4" from_dmx="253" to_dmx="253"/>
+                        <ChannelSet name="Zone effect 5" from_dmx="254" to_dmx="254"/>
+                        <ChannelSet name="Zone effect 6" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="8" default="255" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" highlight_value="100">
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="0" to="12.16" physfrom="0" physto="0" min_dmx_24="0" max_dmx_24="2039583">
+                        <ChannelSet name="Shutter closed" from_dmx="0" to_dmx="31" slot_from="0" slot_to="0"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="12.16" to="49.8" physfrom="1" physto="10" min_dmx_24="2105376" max_dmx_24="8355711">
+                        <ChannelSet name="Strobe slow to fast (zone 2 + 3)" from_dmx="32" to_dmx="63" slot_from="1" slot_to="10"/>
+                        <ChannelSet name="Strobe slow to fast (all zones)" from_dmx="64" to_dmx="95" slot_from="1" slot_to="10"/>
+                        <ChannelSet name="Effect + rainbow speed slow to fast" from_dmx="96" to_dmx="111" slot_from="1" slot_to="10"/>
+                        <ChannelSet name="Effect + rainbow speed fast to slow" from_dmx="112" to_dmx="127" slot_from="10" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE_PULSE_OPEN" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="49.8" to="56.08" physfrom="1" physto="10" min_dmx_24="8421504" max_dmx_24="9408399">
+                        <ChannelSet name="Strobe Opening slow to fast" from_dmx="128" to_dmx="143"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE_PULSE_CLOSE" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="56.08" to="62.35" physfrom="10" physto="1" min_dmx_24="9474192" max_dmx_24="10461087">
+                        <ChannelSet name="Strobe Closing fast to slow" from_dmx="144" to_dmx="159" slot_from="10" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE_RANDOM" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="62.35" to="87.84" physfrom="1" physto="10" min_dmx_24="10526880" max_dmx_24="14737632">
+                        <ChannelSet name="Random Strobe slow to fast (random zone)" from_dmx="160" to_dmx="175" slot_from="1" slot_to="10"/>
+                        <ChannelSet name="Random Strobe slow to fast (random zone + random strobe)" from_dmx="176" to_dmx="191" slot_from="1" slot_to="10"/>
+                        <ChannelSet name="Random Strobe slow to fast (all zones)" from_dmx="192" to_dmx="224" slot_from="1" slot_to="10"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="87.84" to="100" physfrom="1" physto="1" min_dmx_24="14803425" max_dmx_24="16777215">
+                        <ChannelSet name="Shutter Open" from_dmx="225" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="9" default="0" react_to_master="1" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Open" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+        </Modules>
+        <Instances>
+            <Instance module_index="0" patch="1" locked="true"/>
+        </Instances>
+        <Wheels>
+            <Wheel index="0" preset="Color" feature="Color" attribute="COLOR1" subattribute="COLOR1">
+                <Slot index="0" media_name="Open" r="254" g="255" b="255"/>
+                <Slot index="1" media_name="White 2700K" r="232" g="157" b="88"/>
+                <Slot index="2" media_name="White 2700K (Halogen)" r="232" g="157" b="88"/>
+                <Slot index="3" media_name="White 3200K" r="243" g="181" b="127"/>
+                <Slot index="4" media_name="White 3200K (Halogen)" r="243" g="181" b="127"/>
+                <Slot index="5" media_name="White 4200K" r="255" g="231" b="198"/>
+                <Slot index="6" media_name="White 5600K" r="253" g="237" b="224"/>
+                <Slot index="7" media_name="White 8000K" r="234" g="235" b="254"/>
+                <Slot index="8" media_name="Blue" r="0" g="95" b="255"/>
+                <Slot index="9" media_name="Light Blue" r="0" g="255" b="255"/>
+                <Slot index="10" media_name="Green" r="41" g="255" b="0"/>
+                <Slot index="11" media_name="Yellow" r="255" g="255" b="0"/>
+                <Slot index="12" media_name="Red" r="255" g="35" b="0"/>
+                <Slot index="13" media_name="Magenta" r="255" g="0" b="255"/>
+                <Slot index="14" media_name="Blue" r="0" g="0" b="255"/>
+            </Wheel>
+        </Wheels>
+        <RDMKey ESTAId="21075" DeviceModelId="95"/>
+    </FixtureType>
+</MA>

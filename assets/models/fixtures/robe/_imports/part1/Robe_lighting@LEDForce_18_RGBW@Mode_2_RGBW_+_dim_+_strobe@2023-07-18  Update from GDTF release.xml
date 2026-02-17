@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<MA xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/2.8.123/MA.xsd" xmlns="http://schemas.malighting.de/grandma2/xml/MA" major_vers="3" minor_vers="7" stream_vers="0">
+    <FixtureType name="LEDForce 18 RGBW" mode="Mode 2 RGBW + dim + strobe">
+        <InfoItems>
+            <Info type="Revision" date="2023-07-18T12:21:52">Converted GDTF to grandMA2 fixture type with Share Converter version 1.4.0</Info>
+            <Info type="Revision" date="2021-07-05T07:57:07">N/A</Info>
+            <Info type="Revision" date="2022-09-20T15:38:02">1.0.0</Info>
+            <Info type="Revision" date="2022-09-21T11:11:25">1.0.7</Info>
+            <Info type="Revision" date="2022-09-21T12:11:36">1.0.8</Info>
+            <Info type="Revision" date="2022-09-21T12:40:10">1.0.9</Info>
+            <Info type="Revision" date="2022-09-21T12:53:53">1.1.0</Info>
+            <Info type="Revision" date="2022-09-21T13:36:36">1.1.1</Info>
+            <Info type="Revision" date="2022-09-22T14:18:01">default values fix</Info>
+            <Info type="Revision" date="2022-09-23T10:24:51">reaction to grandmaster added</Info>
+            <Info type="Revision" date="2022-09-29T10:08:36">beam geometry fix</Info>
+            <Info type="Revision" date="2022-09-29T14:31:15">3D model proportion fix</Info>
+            <Info type="Revision" date="2022-10-03T08:07:21">virtual body tilt default fix</Info>
+            <Info type="Revision" date="2022-10-03T12:25:21">Colors added</Info>
+            <Info type="Revision" date="2022-10-03T12:32:17">Initial release</Info>
+            <Info type="Revision" date="2022-10-03T13:00:01">Wiring object layer edit</Info>
+            <Info type="Revision" date="2022-10-04T15:54:01">20221004 Revise master pixel diameter, upload to Share</Info>
+            <Info type="Revision" date="2022-10-10T11:26:27">2022-10-10  Shutter channel revision</Info>
+            <Info type="Revision" date="2022-10-24T05:55:30">2022-10-24  Fixture update</Info>
+            <Info type="Revision" date="2022-11-04T07:40:39">2022-11-04  Color wheels correction</Info>
+            <Info>GDTF info: 3D model does not match 100% physical appearance of the light. Proportions of 3D model are correct. 
+
+LEDForce 18 RGB and LEDForce 18 RGBW Par Cans will blind you with powerful light output of 18 x 3IN1 RGB LED or 18 x 4IN1 RGBW LED multichip New Tri-color and Quad-color LED technology. Superior color mixing with no multicolor shadows and extremely bright beam of 25°beam angle will please any lighting professional. Die cast aluminum casting with double hanging brackets – for truss mounting and floor standing allows mounting in any position. Gel frame included as standard and optional 10° lens kit available upon demand.</Info>
+            <Info type="Revision" date="2023-07-18T12:21:54.465">2023-07-18%20%20Update%20from%20GDTF%20release, Uploaded to Fixture Share.</Info>
+        </InfoItems>
+        <short_name>LEDForce 18 RGBW</short_name>
+        <manufacturer>Robe lighting</manufacturer>
+        <short_manufacturer>Robe Lighting</short_manufacturer>
+        <Modules>
+            <Module name="Yoke" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model name="Yoke" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                </Model>
+                <ChannelType coarse="1" default="255" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB1" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="2" default="255" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB2" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="3" default="255" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB3" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="4" default="255" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB5" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="5" default="0" react_to_master="1" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Open" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="6" default="0" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" highlight_value="0">
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="0" to="0" physfrom="1" physto="1" min_dmx_24="0" max_dmx_24="0">
+                        <ChannelSet name="Open" from_dmx="0" to_dmx="0"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="0" to="100" physfrom="0.28" physto="8.2" min_dmx_24="65793" max_dmx_24="16777215">
+                        <ChannelSet name="Slow to Fast" from_dmx="1" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="2147483647" attribute="TILT" feature="POSITION" preset="POSITION">
+                    <ChannelFunction subattribute="TILT" attribute="TILT" feature="POSITION" preset="POSITION" from="-180" to="180" physfrom="-180" physto="180" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="Center" from_dmx="8388608" to_dmx="8388608"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+        </Modules>
+        <Instances>
+            <Instance module_index="0" patch="1" locked="true"/>
+        </Instances>
+        <Wheels/>
+    </FixtureType>
+</MA>

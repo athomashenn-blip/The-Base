@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<MA xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/2.8.123/MA.xsd" xmlns="http://schemas.malighting.de/grandma2/xml/MA" major_vers="3" minor_vers="7" stream_vers="0">
+    <FixtureType name="MediaSpinner 100 AT" mode="Standard Mode">
+        <InfoItems>
+            <Info type="Revision" date="2023-07-18T11:54:05">Converted GDTF to grandMA2 fixture type with Share Converter version 1.4.0</Info>
+            <Info type="Revision" date="2021-07-13T10:35:21">13072021</Info>
+            <Info type="Revision" date="2022-10-10T07:32:37">2022-10-10  Wiring objects revision</Info>
+            <Info type="Revision" date="2022-10-10T07:52:16">2022-10-10  Wiring objects revision</Info>
+            <Info type="Revision" date="2022-10-10T07:58:01">2022-10-10  Share release</Info>
+            <Info type="Revision" date="2023-05-16T06:22:24">2023-05-16  Wiring object revision</Info>
+            <Info type="Revision" date="2023-05-16T09:10:14">2023-05-16  Wiring object revision</Info>
+            <Info>The MediaSpinner 100 AT is enhanced with a panel for the connection of audio, video and power supplies, so plasma screens, LCD diplays, projectors or loudspeakers and similar devices can be attached and rotated. The MediaSpinner 100 AT is constructed to enable the display and rotation of advertising banners - at exhibitions, on stage, in theatres and other applications where advertising needs to be highlighted and showcased. </Info>
+            <Info type="Revision" date="2023-07-18T11:54:09.070">2023-07-18%20%20Update%20from%20GDTF%20release, Uploaded to Fixture Share.</Info>
+        </InfoItems>
+        <short_name>MediaSpinner 100 AT</short_name>
+        <manufacturer>Robe lighting</manufacturer>
+        <short_manufacturer>Robe Lighting</short_manufacturer>
+        <Modules>
+            <Module name="Main Module" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model name="Base" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                    <Model name="Yoke" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="Pan">
+                        <AxisFactors x="0" y="0" z="1"/>
+                        <Offset>
+                            <Location x="0.000000" y="0.000000" z="-0.137000"/>
+                            <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                            <Scaling x="1" y="1" z="1"/>
+                        </Offset>
+                    </Model>
+                </Model>
+                <ChannelType coarse="1" fine="2" default="32768" attribute="PAN" feature="POSITION" preset="POSITION">
+                    <ChannelFunction subattribute="PAN" attribute="PAN" feature="POSITION" preset="POSITION" from="-225" to="225" physfrom="-225" physto="225" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Center" from_dmx="32768" to_dmx="32768"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="3" default="0" attribute="POSITIONMSPEED" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="POSITIONMSPEED" attribute="POSITIONMSPEED" feature="Control" preset="Control" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Standard mode" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Speed/Time max to min" from_dmx="1" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="4" default="0" attribute="CONTROL" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="CONTROL" attribute="CONTROL" feature="Control" preset="Control" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Standard operation fixture is controlled by channels 1 2 and 3" from_dmx="0" to_dmx="129"/>
+                        <ChannelSet name="Reset of pan" from_dmx="130" to_dmx="139"/>
+                        <ChannelSet name="Reserved" from_dmx="140" to_dmx="209"/>
+                        <ChannelSet name="Switching On power supply of load" from_dmx="210" to_dmx="219"/>
+                        <ChannelSet name="Reserved" from_dmx="220" to_dmx="229"/>
+                        <ChannelSet name="Switching Off power supply of load" from_dmx="230" to_dmx="239"/>
+                        <ChannelSet name="Reserved" from_dmx="240" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+        </Modules>
+        <Instances>
+            <Instance module_index="0" patch="1" locked="true"/>
+        </Instances>
+        <Wheels/>
+    </FixtureType>
+</MA>

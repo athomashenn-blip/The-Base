@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<MA xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/2.8.123/MA.xsd" xmlns="http://schemas.malighting.de/grandma2/xml/MA" major_vers="3" minor_vers="7" stream_vers="0">
+    <FixtureType name="SVOPATT" mode="Mode 5 - One channel mode 2700K">
+        <InfoItems>
+            <Info type="Revision" date="2025-08-05T08:21:12">Converted GDTF to grandMA2 fixture type with Share Converter version 1.4.1</Info>
+            <Info type="Revision" date="2024-08-27T10:55:41">New fixture type based on SVOPATTT from Robe Lighting</Info>
+            <Info type="Revision" date="2024-08-30T11:52:02">2024-08-30  Initial release</Info>
+            <Info type="Revision" date="2024-09-05T05:42:31">2024-09-05  Description revision</Info>
+            <Info type="Revision" date="2024-09-10T12:20:00">2024-09-10  Pixel position fix  Mode 5 added</Info>
+            <Info type="Revision" date="2024-09-16T12:27:04">2024-09-16  Mode 5 added  Updated on DMX V1-2</Info>
+            <Info type="Revision" date="2024-09-16T12:44:49">2024-09-16  Mode 5 added  Updated on DMX V1-2</Info>
+            <Info type="Revision" date="2024-10-02T08:27:47">2024-10-02  No function channel 6 added</Info>
+            <Info type="Revision" date="2024-10-07T07:17:37">2024-10-07  Macro color channel fix</Info>
+            <Info type="Revision" date="2024-10-07T10:45:47">2024-10-07  3D models revision</Info>
+            <Info type="Revision" date="2024-10-07T10:56:21">2024-10-07  3D models revision</Info>
+            <Info type="Revision" date="2024-10-21T12:54:41">2024-10-21  SVG 2D symbol revision</Info>
+            <Info type="Revision" date="2024-10-22T10:33:47">2024-10-22  2D symbol updated</Info>
+            <Info type="Revision" date="2025-02-26T11:58:39">2025-02-26  Mode 3 pixels bug fix</Info>
+            <Info type="Revision" date="2025-02-26T12:43:19">2025-02-26  Mode 3 pixels fix</Info>
+            <Info type="Revision" date="2025-02-26T13:36:48">2025-02-26  Tilt revision</Info>
+            <Info type="Revision" date="2025-02-27T07:25:46">2025-02-27  Absolute pixels rotation</Info>
+            <Info type="Revision" date="2025-02-27T07:31:26">2025-02-27  Absolute pixels rotation</Info>
+            <Info type="Revision" date="2025-02-27T12:25:04">2025-02-27  Additional virtual tilt channel sets added</Info>
+            <Info type="Revision" date="2025-02-27T13:07:04">2025-02-27  Zoom real fade time added</Info>
+            <Info type="Revision" date="2025-04-25T05:25:43">2025-04-25  Pattern effect channel update</Info>
+            <Info type="Revision" date="2025-08-05T05:57:12">2025-08-05  Pixel virtual dimmers added in M3 and M4</Info>
+            <Info type="Revision" date="2025-08-05T07:08:43">2025-08-05  Pixel virtual dimmers added in M3 and M4</Info>
+            <Info>Iconic Luminaires are instantly recognisable in the lighting world. As a proudly Czechia based manufacturer, we pay homage to the past, bringing you a new icon, the SVOPATT™.
+
+Transforming into the modern age, you cannot fail to make an impact with the SVOPATT™ both as a scenic element and a source of captivating effects. With nine individual modules each containing 7 x 40W RGBW multichips and the centre pixel also containing a 200W white LED strobe, the fixture generates over 75.000 lm (integrating sphere). You have a source worthy of its lineage.</Info>
+            <Info type="Revision" date="2025-08-05T08:21:25.752">2025-08-05%20%20Pixel%20virtual%20dimmers%20added%20in%20M3%20and%20M4%20-%20official%20GDTF%20converted, Uploaded to Fixture Share.</Info>
+        </InfoItems>
+        <short_name>SVOPATT</short_name>
+        <manufacturer>Robe lighting</manufacturer>
+        <short_manufacturer>Robe Lighting</short_manufacturer>
+        <Modules>
+            <Module name="Arms" class="None" beamtype="None" beam_intensity="" index="0" beam_angle="1">
+                <Model name="Arms" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                    <Model name="Body" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="Tilt">
+                        <AxisFactors x="-1" y="0" z="-0"/>
+                        <Offset>
+                            <Location x="0.000000" y="0.000000" z="-0.284000"/>
+                            <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                            <Scaling x="1" y="1" z="1"/>
+                        </Offset>
+                        <Model name="AllRGBWpixels" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                            <Offset>
+                                <Location x="0.000000" y="0.000000" z="0.000000"/>
+                                <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                                <Scaling x="1" y="1" z="1"/>
+                            </Offset>
+                        </Model>
+                    </Model>
+                </Model>
+                <ChannelType coarse="1" default="0" react_to_master="1" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Open" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="0" attribute="CTO" feature="CTC" preset="COLOR" highlight_value="0">
+                    <ChannelFunction subattribute="CTO" attribute="CTO" feature="CTC" preset="COLOR" from="0" to="100" physfrom="2700" physto="2700" min_dmx_24="0" max_dmx_24="16777216"/>
+                </ChannelType>
+                <ChannelType default="2147483648" attribute="ZOOM" feature="FOCUS" preset="FOCUS">
+                    <ChannelFunction subattribute="ZOOM" attribute="ZOOM" feature="FOCUS" preset="FOCUS" from="0" to="100" physfrom="3.8" physto="3.8" min_dmx_24="0" max_dmx_24="16777216"/>
+                </ChannelType>
+                <ChannelType default="2147483648" attribute="TILT" feature="POSITION" preset="POSITION">
+                    <ChannelFunction subattribute="TILT" attribute="TILT" feature="POSITION" preset="POSITION" from="-180" to="180" physfrom="-180" physto="180" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="-90" from_dmx="4194303" to_dmx="4194303"/>
+                        <ChannelSet name="Center" from_dmx="8388607" to_dmx="8388607"/>
+                        <ChannelSet name="90" from_dmx="12582911" to_dmx="12582911"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+            <Module name="AllStrobes" class="None" beamtype="None" beam_intensity="" index="73" beam_angle="">
+                <Model/>
+                <ChannelType default="0" attribute="COLOR1" feature="COLOR1" preset="COLOR" highlight_value="0">
+                    <ChannelFunction subattribute="COLOR1" attribute="COLOR1" feature="COLOR1" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777216" wheel="2">
+                        <ChannelSet name="OFF" from_dmx="0" to_dmx="16777216" slot_from="0" slot_to="1" slot_index="0"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="0" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="0">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777216"/>
+                </ChannelType>
+            </Module>
+        </Modules>
+        <Instances>
+            <Instance module_index="0" patch="1" locked="true"/>
+            <Instance module_index="1" patch="1" locked="true"/>
+        </Instances>
+        <Wheels>
+            <Wheel index="0" preset="COLOR" feature="COLOR1" attribute="COLOR1" subattribute="COLOR1">
+                <Slot index="0" media_name="No function" r="254" g="255" b="255"/>
+                <Slot index="1" media_name="Filter 4 (Medium Bastard Amber)" r="255" g="173" b="141"/>
+                <Slot index="2" media_name="Filter 25 (Sunset red)" r="255" g="58" b="0"/>
+                <Slot index="3" media_name="Filter 19 (Fire)" r="255" g="0" b="0"/>
+                <Slot index="4" media_name="Filter 26 (Bright Red)" r="255" g="0" b="0"/>
+                <Slot index="5" media_name="Filter 58 (Lavender)" r="232" g="68" b="255"/>
+                <Slot index="6" media_name="Filter 68 (Sky Blue)" r="0" g="163" b="255"/>
+                <Slot index="7" media_name="Fliter 36 (Medium Pink)" r="255" g="102" b="79"/>
+                <Slot index="8" media_name="Filter 89 (Moss Green)" r="0" g="204" b="0"/>
+                <Slot index="9" media_name="Filter 88 (Lime Green)" r="193" g="191" b="0"/>
+                <Slot index="10" media_name="Filter 90 (Dark Yellow Green)" r="0" g="211" b="5"/>
+                <Slot index="11" media_name="Filter 49 (Medium Purple)" r="255" g="0" b="143"/>
+                <Slot index="12" media_name="Filter 52 (Light Lavender)" r="255" g="166" b="178"/>
+                <Slot index="13" media_name="Filter 102 (Light Amber)" r="234" g="159" b="0"/>
+                <Slot index="14" media_name="Filter 103 (Straw)" r="230" g="156" b="66"/>
+                <Slot index="15" media_name="Filter 140 (Summer Blue)" r="133" g="232" b="207"/>
+                <Slot index="16" media_name="Fliter 124 (Dark Green)" r="0" g="212" b="34"/>
+                <Slot index="17" media_name="Filter 106 (Primary Red)" r="255" g="0" b="0"/>
+                <Slot index="18" media_name="Filter 111 (Dark Pink)" r="255" g="109" b="114"/>
+                <Slot index="19" media_name="Filter 115 (Peacock Blue)" r="0" g="214" b="156"/>
+                <Slot index="20" media_name="Filter 126 (Mauve)" r="255" g="0" b="177"/>
+                <Slot index="21" media_name="Filter 117 (Steel Blue)" r="216" g="242" b="193"/>
+                <Slot index="22" media_name="Filter 118 (Light Blue)" r="0" g="207" b="223"/>
+                <Slot index="23" media_name="Filter 122 (Fern Green)" r="86" g="207" b="9"/>
+                <Slot index="24" media_name="Filter 182 (Light Red)" r="255" g="0" b="0"/>
+                <Slot index="25" media_name="Filter 121 (Filter Green)" r="169" g="204" b="0"/>
+                <Slot index="26" media_name="Filter 128 (Bright Pink)" r="255" g="0" b="108"/>
+                <Slot index="27" media_name="Filter 131 (Marine Blue)" r="45" g="206" b="146"/>
+                <Slot index="28" media_name="Filter 132 (Medium Blue)" r="0" g="160" b="255"/>
+                <Slot index="29" media_name="Filter 134 (Golden Amber)" r="226" g="108" b="0"/>
+                <Slot index="30" media_name="Filter 135 (Deep Golden Amber)" r="255" g="62" b="0"/>
+                <Slot index="31" media_name="Filter 136 (Pale Lavender)" r="211" g="137" b="159"/>
+                <Slot index="32" media_name="Filter 137 (Special Lavender)" r="201" g="134" b="213"/>
+                <Slot index="33" media_name="Filter 138 (Pale Green)" r="222" g="212" b="90"/>
+                <Slot index="34" media_name="Filter 798 (Chrysalis Pink)" r="150" g="0" b="255"/>
+                <Slot index="35" media_name="Filter 141 (Bright Blue)" r="0" g="165" b="221"/>
+                <Slot index="36" media_name="Filter 147 (Apricot)" r="237" g="127" b="28"/>
+                <Slot index="37" media_name="Filter 148 (Bright Rose)" r="255" g="0" b="73"/>
+                <Slot index="38" media_name="Filter 152 (Pale Gold)" r="232" g="145" b="75"/>
+                <Slot index="39" media_name="Filter 154 (Pale Rose)" r="242" g="143" b="86"/>
+                <Slot index="40" media_name="Filter 157 (Pink)" r="255" g="100" b="94"/>
+                <Slot index="41" media_name="Filter 143 (Pale Navy Blue)" r="89" g="213" b="255"/>
+                <Slot index="42" media_name="Filter 162 (Bastard Amber)" r="236" g="165" b="91"/>
+                <Slot index="43" media_name="Filter 164 (Flame Red)" r="255" g="0" b="0"/>
+                <Slot index="44" media_name="Filter 165 (Daylight Blue)" r="0" g="208" b="255"/>
+                <Slot index="45" media_name="Filter 169 (Lilac Tint)" r="250" g="178" b="142"/>
+                <Slot index="46" media_name="Filter 170 (Deep Lavender)" r="242" g="137" b="174"/>
+                <Slot index="47" media_name="Filter 172 (Lagoon Blue)" r="0" g="202" b="205"/>
+                <Slot index="48" media_name="Filter 194 (Surprise Pink)" r="255" g="177" b="242"/>
+                <Slot index="49" media_name="Filter 180 (Dark Lavender)" r="227" g="52" b="255"/>
+                <Slot index="50" media_name="Filter 181 (Congo Blue)" r="171" g="0" b="255"/>
+                <Slot index="51" media_name="Filter 197 (Alice Blue)" r="145" g="164" b="255"/>
+                <Slot index="52" media_name="Filter 201 (Full CT Blue)" r="186" g="202" b="208"/>
+                <Slot index="53" media_name="Filter 202 (Half CT Blue)" r="209" g="195" b="167"/>
+                <Slot index="54" media_name="Filter 203 (Quarter CT Blue)" r="220" g="196" b="148"/>
+                <Slot index="55" media_name="Filter 204 (Full CT Orange)" r="239" g="137" b="7"/>
+                <Slot index="56" media_name="Filter 219 (Fluorescent Green)" r="148" g="171" b="130"/>
+                <Slot index="57" media_name="Filter 206 (Quarter CT Orange)" r="233" g="166" b="97"/>
+                <Slot index="58" media_name="Filter 247 (Filter Minus Green)" r="255" g="185" b="188"/>
+                <Slot index="59" media_name="Filter 248 (Half Minus Green)" r="255" g="194" b="159"/>
+                <Slot index="60" media_name="Filter 281 (Three Quarter CT Blue)" r="242" g="234" b="255"/>
+                <Slot index="61" media_name="Filter 285 (Three Quarter CT Orange)" r="224" g="143" b="35"/>
+                <Slot index="62" media_name="Filter 352 (Glacier Blue)" r="28" g="184" b="244"/>
+                <Slot index="63" media_name="Filter 353 (Lighter Blue)" r="70" g="172" b="200"/>
+                <Slot index="64" media_name="Filter 507 (Madge)" r="255" g="0" b="0"/>
+                <Slot index="65" media_name="Filter 778 (Millennium Gold)" r="255" g="81" b="0"/>
+                <Slot index="66" media_name="Filter 793 (Vanity Fair)" r="255" g="0" b="93"/>
+            </Wheel>
+            <Wheel index="1" preset="COLOR" feature="COLOR1" attribute="COLOR1" subattribute="COLOR1">
+                <Slot index="0" media_name="OFF" r="0" g="0" b="0"/>
+            </Wheel>
+        </Wheels>
+        <RDMKey ESTAId="21075" DeviceModelId="332"/>
+    </FixtureType>
+</MA>

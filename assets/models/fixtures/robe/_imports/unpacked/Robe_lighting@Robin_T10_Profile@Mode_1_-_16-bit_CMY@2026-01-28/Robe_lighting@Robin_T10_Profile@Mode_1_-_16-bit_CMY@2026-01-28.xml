@@ -1,0 +1,801 @@
+<?xml version="1.0"?>
+<MA xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/2.8.123/MA.xsd" xmlns="http://schemas.malighting.de/grandma2/xml/MA" major_vers="3" minor_vers="7" stream_vers="0">
+    <FixtureType name="Robin T10 Profile" mode="Mode 1 - 16-bit CMY">
+        <InfoItems>
+            <Info type="Revision" date="2026-01-28T10:06:42">Converted GDTF to grandMA2 fixture type with Share Converter version 1.4.1</Info>
+            <Info type="Revision" date="2025-11-14T08:44:14">New fixture type based on Robin T10 Profile from Robe Lighting</Info>
+            <Info type="Revision" date="2025-12-05T18:40:39">2025-12-05  Initial release</Info>
+            <Info type="Revision" date="2026-01-06T13:57:09">2026-01-06  Static gobo channel fix</Info>
+            <Info type="Revision" date="2026-01-14T08:35:58">2026-01-14 Gobo numbers and pictures update</Info>
+            <Info>T10 Profile™
+Offering a more compact design for smaller theatres and studios, the T10 ProfileTM retains all the features and benefits of our larger award winning T11 ProfileTM to deliver both superb performance and total generic flexibility!
+The T10 uses the MSLTM (Multi-Spectral Light) additive colour mixing concept combined with innovative TETM technology to maintain the exceptional colour finesse of the T-Series.
+With the MSL-TETM 200W LED Engine generating 8.300 lm (integrating sphere) from the Profile fixture and all the advantages of cost, Exchange or replacement, this LED technology provides identical colour characteristics, responses, and control of T-series luminaires, giving absolute</Info>
+            <Info type="Revision" date="2026-01-28T10:06:52.778">2026-01-28, Uploaded to Fixture Share.</Info>
+        </InfoItems>
+        <short_name>Robin T10 Profile</short_name>
+        <manufacturer>Robe lighting</manufacturer>
+        <short_manufacturer>Robe Lighting</short_manufacturer>
+        <Modules>
+            <Module name="Arms" class="None" beamtype="None" beam_intensity="" index="0" beam_angle="1">
+                <Model name="Arms" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                    <Model name="Head" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="Tilt">
+                        <AxisFactors x="-1" y="0" z="-0"/>
+                        <Offset>
+                            <Location x="0.000000" y="0.000000" z="-0.246000"/>
+                            <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                            <Scaling x="1" y="1" z="1"/>
+                        </Offset>
+                    </Model>
+                </Model>
+                <ChannelType default="0" attribute="GOBO3" feature="GOBO3" preset="GOBO">
+                    <ChannelFunction subattribute="GOBO3" attribute="GOBO3" feature="GOBO3" preset="GOBO" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777216" wheel="4">
+                        <ChannelSet name="Open" from_dmx="0" to_dmx="8386930" slot_from="0" slot_to="0" slot_index="0"/>
+                        <ChannelSet name="Gobo1" from_dmx="8388607" to_dmx="16777216" slot_from="1" slot_to="1" slot_index="1"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="2147483647" attribute="ZOOM" feature="FOCUS" preset="FOCUS">
+                    <ChannelFunction subattribute="ZOOM" attribute="ZOOM" feature="FOCUS" preset="FOCUS" from="0" to="100" physfrom="55" physto="5" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="max" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="min" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="2147483647" attribute="TILT" feature="POSITION" preset="POSITION">
+                    <ChannelFunction subattribute="TILT" attribute="TILT" feature="POSITION" preset="POSITION" from="135" to="-135" physfrom="135" physto="-135" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="Horizontal position" from_dmx="13980454" to_dmx="13980454"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="0" attribute="FROST" feature="BEAM1" preset="BEAM">
+                    <ChannelFunction subattribute="FROST" attribute="FROST" feature="BEAM1" preset="BEAM" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="Off" from_dmx="0" to_dmx="8386930" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="On" from_dmx="8388607" to_dmx="16777216" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="0" attribute="BLADE1A" feature="SHAPER" preset="SHAPERS">
+                    <ChannelFunction subattribute="BLADE1A" attribute="BLADE1A" feature="SHAPER" preset="SHAPERS" from="0" to="100" physfrom="0" physto="0.76" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="max" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="2147483647" attribute="BLADE1B" feature="SHAPER" preset="SHAPERS">
+                    <ChannelFunction subattribute="BLADE1R" attribute="BLADE1B" feature="SHAPER" preset="SHAPERS" from="0" to="100" physfrom="42" physto="-42" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="center" from_dmx="8388607" to_dmx="8388607"/>
+                        <ChannelSet name="max" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="0" attribute="BLADE2A" feature="SHAPER" preset="SHAPERS">
+                    <ChannelFunction subattribute="BLADE2A" attribute="BLADE2A" feature="SHAPER" preset="SHAPERS" from="0" to="100" physfrom="0" physto="0.76" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="max" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="2147483647" attribute="BLADE2B" feature="SHAPER" preset="SHAPERS">
+                    <ChannelFunction subattribute="BLADE2R" attribute="BLADE2B" feature="SHAPER" preset="SHAPERS" from="0" to="100" physfrom="42" physto="-42" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="center" from_dmx="8388607" to_dmx="8388607"/>
+                        <ChannelSet name="max" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="0" attribute="BLADE3A" feature="SHAPER" preset="SHAPERS">
+                    <ChannelFunction subattribute="BLADE3A" attribute="BLADE3A" feature="SHAPER" preset="SHAPERS" from="0" to="100" physfrom="0" physto="0.76" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="max" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="2147483647" attribute="BLADE3B" feature="SHAPER" preset="SHAPERS">
+                    <ChannelFunction subattribute="BLADE3R" attribute="BLADE3B" feature="SHAPER" preset="SHAPERS" from="0" to="100" physfrom="42" physto="-42" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="center" from_dmx="8388607" to_dmx="8388607"/>
+                        <ChannelSet name="max" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="0" attribute="BLADE4A" feature="SHAPER" preset="SHAPERS">
+                    <ChannelFunction subattribute="BLADE4A" attribute="BLADE4A" feature="SHAPER" preset="SHAPERS" from="0" to="100" physfrom="0" physto="0.76" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="max" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="2147483647" attribute="BLADE4B" feature="SHAPER" preset="SHAPERS">
+                    <ChannelFunction subattribute="BLADE4R" attribute="BLADE4B" feature="SHAPER" preset="SHAPERS" from="0" to="100" physfrom="42" physto="-42" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="center" from_dmx="8388607" to_dmx="8388607"/>
+                        <ChannelSet name="max" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="0" attribute="IRIS" feature="BEAM1" preset="BEAM">
+                    <ChannelFunction subattribute="IRIS" attribute="IRIS" feature="BEAM1" preset="BEAM" from="0" to="100" physfrom="1" physto="0" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="Open" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Closed" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="1" default="0" attribute="CONTROL" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="CONTROL" attribute="CONTROL" feature="Control" preset="Control" from="0" to="7.45" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="1250067">
+                        <ChannelSet name="No function" from_dmx="0" to_dmx="19"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="FIXTUREDISPLAY" attribute="CONTROL" feature="Control" preset="Control" from="7.45" to="11.37" physfrom="0" physto="1" min_dmx_24="1315860" max_dmx_24="1907997">
+                        <ChannelSet name="Display On" from_dmx="20" to_dmx="24" slot_from="0" slot_to="1"/>
+                        <ChannelSet name="Display Off" from_dmx="25" to_dmx="29" slot_from="0" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="CONTROL" feature="Control" preset="Control" from="11.37" to="23.14" physfrom="0" physto="1" min_dmx_24="1973790" max_dmx_24="3881787"/>
+                    <ChannelFunction subattribute="BLACKOUT" attribute="CONTROL" feature="Control" preset="Control" from="23.14" to="27.06" physfrom="0" physto="1" min_dmx_24="3947580" max_dmx_24="4539717">
+                        <ChannelSet name="BO while Gobo moving: ON" from_dmx="60" to_dmx="64" slot_from="1" slot_to="1"/>
+                        <ChannelSet name="BO while Gobo moving: OFF" from_dmx="65" to_dmx="69" slot_from="0" slot_to="0"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="FANSPEED" attribute="CONTROL" feature="Control" preset="Control" from="27.06" to="29.02" physfrom="0" physto="1" min_dmx_24="4605510" max_dmx_24="4868682">
+                        <ChannelSet name="Fan mode Auto" from_dmx="70" to_dmx="74" slot_from="0" slot_to="0"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="CONTROL" feature="Control" preset="Control" from="29.02" to="30.98" physfrom="0" physto="1" min_dmx_24="4934475" max_dmx_24="5197647"/>
+                    <ChannelFunction subattribute="Fan1" attribute="CONTROL" feature="Control" preset="Control" from="30.98" to="34.9" physfrom="0" physto="1" min_dmx_24="5263440" max_dmx_24="5855577">
+                        <ChannelSet name="Fans On at blackout" from_dmx="80" to_dmx="84"/>
+                        <ChannelSet name="Fans Off at blackout" from_dmx="85" to_dmx="89"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="CONTROL" feature="Control" preset="Control" from="34.9" to="50.59" physfrom="0" physto="1" min_dmx_24="5921370" max_dmx_24="8487297"/>
+                    <ChannelFunction subattribute="CONTROL2" attribute="CONTROL" feature="Control" preset="Control" from="50.59" to="52.55" physfrom="0" physto="1" min_dmx_24="8553090" max_dmx_24="8816262">
+                        <ChannelSet name="Simple mode OFF" from_dmx="130" to_dmx="134" slot_from="0" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="CONTROL" feature="Control" preset="Control" from="52.55" to="62.35" physfrom="0" physto="1" min_dmx_24="8882055" max_dmx_24="10461087"/>
+                    <ChannelFunction subattribute="GOBOWHEELRESET" attribute="CONTROL" feature="Control" preset="Control" from="62.35" to="66.27" physfrom="0" physto="1" min_dmx_24="10526880" max_dmx_24="11119017" wheel="1">
+                        <ChannelSet name="Gobos reset" from_dmx="160" to_dmx="169" slot_from="0" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="CONTROL" feature="Control" preset="Control" from="66.27" to="74.12" physfrom="0" physto="1" min_dmx_24="11184810" max_dmx_24="12434877"/>
+                    <ChannelFunction subattribute="BEAMRESET" attribute="CONTROL" feature="Control" preset="Control" from="74.12" to="78.04" physfrom="0" physto="1" min_dmx_24="12500670" max_dmx_24="13092807">
+                        <ChannelSet name="Iris reset" from_dmx="190" to_dmx="199" slot_from="0" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="FIXTUREGLOBALRESET" attribute="CONTROL" feature="Control" preset="Control" from="78.04" to="81.96" physfrom="0" physto="1" min_dmx_24="13158600" max_dmx_24="13750737">
+                        <ChannelSet name="Total fixture reset" from_dmx="200" to_dmx="209"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="TintCalibration" attribute="CONTROL" feature="Control" preset="Control" from="81.96" to="82.75" physfrom="0" physto="1" min_dmx_24="13816530" max_dmx_24="13882323">
+                        <ChannelSet name="Green/Blue correction calibration" from_dmx="210" to_dmx="211"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="CONTROL" feature="Control" preset="Control" from="82.75" to="85.49" physfrom="0" physto="1" min_dmx_24="13948116" max_dmx_24="14342874"/>
+                    <ChannelFunction subattribute="GOBO1WHEELSELECTMSPEED" attribute="CONTROL" feature="Control" preset="Control" from="85.49" to="87.84" physfrom="0" physto="1" min_dmx_24="14408667" max_dmx_24="14737632">
+                        <ChannelSet name="Gobo indexing Maximum speed and shortcut " from_dmx="219" to_dmx="220"/>
+                        <ChannelSet name="Gobo indexing Follow speed and direction" from_dmx="221" to_dmx="222"/>
+                        <ChannelSet name="Gobo indexing Maximum speed and follow direction" from_dmx="223" to_dmx="224"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="CONTROL" feature="Control" preset="Control" from="87.84" to="93.73" physfrom="0" physto="1" min_dmx_24="14803425" max_dmx_24="15724527"/>
+                    <ChannelFunction subattribute="FANS" attribute="CONTROL" feature="Control" preset="Control" from="93.73" to="100" physfrom="0" physto="1" min_dmx_24="15790320" max_dmx_24="16777215">
+                        <ChannelSet name="Disabled Quiet mode" from_dmx="240" to_dmx="240"/>
+                        <ChannelSet name="Quiet mode min to max" from_dmx="241" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="2" default="10" attribute="LEDFrequency" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="LEDFrequency" attribute="LEDFrequency" feature="Control" preset="Control" from="0" to="11.37" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="1907997">
+                        <ChannelSet name="PWM frequency from Display menu" from_dmx="0" to_dmx="4" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="300 Hz" from_dmx="5" to_dmx="9" slot_from="300" slot_to="300"/>
+                        <ChannelSet name="600 Hz" from_dmx="10" to_dmx="14" slot_from="600" slot_to="600"/>
+                        <ChannelSet name="1200 Hz" from_dmx="15" to_dmx="19" slot_from="1200" slot_to="1200"/>
+                        <ChannelSet name="2400 Hz" from_dmx="20" to_dmx="24" slot_from="2400" slot_to="2400"/>
+                        <ChannelSet name="High (25000 Hz)" from_dmx="25" to_dmx="29" slot_from="0" slot_to="0"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="LEDFrequency" feature="Control" preset="Control" from="11.37" to="100" physfrom="0" physto="1" min_dmx_24="1973790" max_dmx_24="16777215"/>
+                </ChannelType>
+                <ChannelType coarse="3" default="128" attribute="LEDFrequencyAdjust" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="LEDFrequencyAdjust" attribute="LEDFrequencyAdjust" feature="Control" preset="Control" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Selected LED frequency" from_dmx="0" to_dmx="1"/>
+                        <ChannelSet name="LED Frequency (step -126)" from_dmx="2" to_dmx="2"/>
+                        <ChannelSet name="LED Frequency (step -125)" from_dmx="3" to_dmx="3"/>
+                        <ChannelSet name="LED Frequency (step -124)" from_dmx="4" to_dmx="4"/>
+                        <ChannelSet name="LED Frequency (step -123)" from_dmx="5" to_dmx="5"/>
+                        <ChannelSet name="LED Frequency (step -122)" from_dmx="6" to_dmx="6"/>
+                        <ChannelSet name="LED Frequency (step -121)" from_dmx="7" to_dmx="7"/>
+                        <ChannelSet name="LED Frequency (step -120)" from_dmx="8" to_dmx="8"/>
+                        <ChannelSet name="LED Frequency (step -119)" from_dmx="9" to_dmx="9"/>
+                        <ChannelSet name="LED Frequency (step -118)" from_dmx="10" to_dmx="10"/>
+                        <ChannelSet name="LED Frequency (step -117)" from_dmx="11" to_dmx="11"/>
+                        <ChannelSet name="LED Frequency (step -116)" from_dmx="12" to_dmx="12"/>
+                        <ChannelSet name="LED Frequency (step -115)" from_dmx="13" to_dmx="13"/>
+                        <ChannelSet name="LED Frequency (step -114)" from_dmx="14" to_dmx="14"/>
+                        <ChannelSet name="LED Frequency (step -113)" from_dmx="15" to_dmx="15"/>
+                        <ChannelSet name="LED Frequency (step -112)" from_dmx="16" to_dmx="16"/>
+                        <ChannelSet name="LED Frequency (step -111)" from_dmx="17" to_dmx="17"/>
+                        <ChannelSet name="LED Frequency (step -110)" from_dmx="18" to_dmx="18"/>
+                        <ChannelSet name="LED Frequency (step -109)" from_dmx="19" to_dmx="19"/>
+                        <ChannelSet name="LED Frequency (step -108)" from_dmx="20" to_dmx="20"/>
+                        <ChannelSet name="LED Frequency (step -107)" from_dmx="21" to_dmx="21"/>
+                        <ChannelSet name="LED Frequency (step -106)" from_dmx="22" to_dmx="22"/>
+                        <ChannelSet name="LED Frequency (step -105)" from_dmx="23" to_dmx="23"/>
+                        <ChannelSet name="LED Frequency (step -104)" from_dmx="24" to_dmx="24"/>
+                        <ChannelSet name="LED Frequency (step -103)" from_dmx="25" to_dmx="25"/>
+                        <ChannelSet name="LED Frequency (step -102)" from_dmx="26" to_dmx="26"/>
+                        <ChannelSet name="LED Frequency (step -101)" from_dmx="27" to_dmx="27"/>
+                        <ChannelSet name="LED Frequency (step -100)" from_dmx="28" to_dmx="28"/>
+                        <ChannelSet name="LED Frequency (step -99)" from_dmx="29" to_dmx="29"/>
+                        <ChannelSet name="LED Frequency (step -98)" from_dmx="30" to_dmx="30"/>
+                        <ChannelSet name="LED Frequency (step -97)" from_dmx="31" to_dmx="31"/>
+                        <ChannelSet name="LED Frequency (step -96)" from_dmx="32" to_dmx="32"/>
+                        <ChannelSet name="LED Frequency (step -95)" from_dmx="33" to_dmx="33"/>
+                        <ChannelSet name="LED Frequency (step -94)" from_dmx="34" to_dmx="34"/>
+                        <ChannelSet name="LED Frequency (step -93)" from_dmx="35" to_dmx="35"/>
+                        <ChannelSet name="LED Frequency (step -92)" from_dmx="36" to_dmx="36"/>
+                        <ChannelSet name="LED Frequency (step -91)" from_dmx="37" to_dmx="37"/>
+                        <ChannelSet name="LED Frequency (step -90)" from_dmx="38" to_dmx="38"/>
+                        <ChannelSet name="LED Frequency (step -89)" from_dmx="39" to_dmx="39"/>
+                        <ChannelSet name="LED Frequency (step -88)" from_dmx="40" to_dmx="40"/>
+                        <ChannelSet name="LED Frequency (step -87)" from_dmx="41" to_dmx="41"/>
+                        <ChannelSet name="LED Frequency (step -86)" from_dmx="42" to_dmx="42"/>
+                        <ChannelSet name="LED Frequency (step -85)" from_dmx="43" to_dmx="43"/>
+                        <ChannelSet name="LED Frequency (step -84)" from_dmx="44" to_dmx="44"/>
+                        <ChannelSet name="LED Frequency (step -83)" from_dmx="45" to_dmx="45"/>
+                        <ChannelSet name="LED Frequency (step -82)" from_dmx="46" to_dmx="46"/>
+                        <ChannelSet name="LED Frequency (step -81)" from_dmx="47" to_dmx="47"/>
+                        <ChannelSet name="LED Frequency (step -80)" from_dmx="48" to_dmx="48"/>
+                        <ChannelSet name="LED Frequency (step -79)" from_dmx="49" to_dmx="49"/>
+                        <ChannelSet name="LED Frequency (step -78)" from_dmx="50" to_dmx="50"/>
+                        <ChannelSet name="LED Frequency (step -77)" from_dmx="51" to_dmx="51"/>
+                        <ChannelSet name="LED Frequency (step -76)" from_dmx="52" to_dmx="52"/>
+                        <ChannelSet name="LED Frequency (step -75)" from_dmx="53" to_dmx="53"/>
+                        <ChannelSet name="LED Frequency (step -74)" from_dmx="54" to_dmx="54"/>
+                        <ChannelSet name="LED Frequency (step -73)" from_dmx="55" to_dmx="55"/>
+                        <ChannelSet name="LED Frequency (step -72)" from_dmx="56" to_dmx="56"/>
+                        <ChannelSet name="LED Frequency (step -71)" from_dmx="57" to_dmx="57"/>
+                        <ChannelSet name="LED Frequency (step -70)" from_dmx="58" to_dmx="58"/>
+                        <ChannelSet name="LED Frequency (step -69)" from_dmx="59" to_dmx="59"/>
+                        <ChannelSet name="LED Frequency (step -68)" from_dmx="60" to_dmx="60"/>
+                        <ChannelSet name="LED Frequency (step -67)" from_dmx="61" to_dmx="61"/>
+                        <ChannelSet name="LED Frequency (step -66)" from_dmx="62" to_dmx="62"/>
+                        <ChannelSet name="LED Frequency (step -65)" from_dmx="63" to_dmx="63"/>
+                        <ChannelSet name="LED Frequency (step -64)" from_dmx="64" to_dmx="64"/>
+                        <ChannelSet name="LED Frequency (step -63)" from_dmx="65" to_dmx="65"/>
+                        <ChannelSet name="LED Frequency (step -62)" from_dmx="66" to_dmx="66"/>
+                        <ChannelSet name="LED Frequency (step -61)" from_dmx="67" to_dmx="67"/>
+                        <ChannelSet name="LED Frequency (step -60)" from_dmx="68" to_dmx="68"/>
+                        <ChannelSet name="LED Frequency (step -59)" from_dmx="69" to_dmx="69"/>
+                        <ChannelSet name="LED Frequency (step -58)" from_dmx="70" to_dmx="70"/>
+                        <ChannelSet name="LED Frequency (step -57)" from_dmx="71" to_dmx="71"/>
+                        <ChannelSet name="LED Frequency (step -56)" from_dmx="72" to_dmx="72"/>
+                        <ChannelSet name="LED Frequency (step -55)" from_dmx="73" to_dmx="73"/>
+                        <ChannelSet name="LED Frequency (step -54)" from_dmx="74" to_dmx="74"/>
+                        <ChannelSet name="LED Frequency (step -53)" from_dmx="75" to_dmx="75"/>
+                        <ChannelSet name="LED Frequency (step -52)" from_dmx="76" to_dmx="76"/>
+                        <ChannelSet name="LED Frequency (step -51)" from_dmx="77" to_dmx="77"/>
+                        <ChannelSet name="LED Frequency (step -50)" from_dmx="78" to_dmx="78"/>
+                        <ChannelSet name="LED Frequency (step -49)" from_dmx="79" to_dmx="79"/>
+                        <ChannelSet name="LED Frequency (step -48)" from_dmx="80" to_dmx="80"/>
+                        <ChannelSet name="LED Frequency (step -47)" from_dmx="81" to_dmx="81"/>
+                        <ChannelSet name="LED Frequency (step -46)" from_dmx="82" to_dmx="82"/>
+                        <ChannelSet name="LED Frequency (step -45)" from_dmx="83" to_dmx="83"/>
+                        <ChannelSet name="LED Frequency (step -44)" from_dmx="84" to_dmx="84"/>
+                        <ChannelSet name="LED Frequency (step -43)" from_dmx="85" to_dmx="85"/>
+                        <ChannelSet name="LED Frequency (step -42)" from_dmx="86" to_dmx="86"/>
+                        <ChannelSet name="LED Frequency (step -41)" from_dmx="87" to_dmx="87"/>
+                        <ChannelSet name="LED Frequency (step -40)" from_dmx="88" to_dmx="88"/>
+                        <ChannelSet name="LED Frequency (step -39)" from_dmx="89" to_dmx="89"/>
+                        <ChannelSet name="LED Frequency (step -38)" from_dmx="90" to_dmx="90"/>
+                        <ChannelSet name="LED Frequency (step -37)" from_dmx="91" to_dmx="91"/>
+                        <ChannelSet name="LED Frequency (step -36)" from_dmx="92" to_dmx="92"/>
+                        <ChannelSet name="LED Frequency (step -35)" from_dmx="93" to_dmx="93"/>
+                        <ChannelSet name="LED Frequency (step -34)" from_dmx="94" to_dmx="94"/>
+                        <ChannelSet name="LED Frequency (step -33)" from_dmx="95" to_dmx="95"/>
+                        <ChannelSet name="LED Frequency (step -32)" from_dmx="96" to_dmx="96"/>
+                        <ChannelSet name="LED Frequency (step -31)" from_dmx="97" to_dmx="97"/>
+                        <ChannelSet name="LED Frequency (step -30)" from_dmx="98" to_dmx="98"/>
+                        <ChannelSet name="LED Frequency (step -29)" from_dmx="99" to_dmx="99"/>
+                        <ChannelSet name="LED Frequency (step -28)" from_dmx="100" to_dmx="100"/>
+                        <ChannelSet name="LED Frequency (step -27)" from_dmx="101" to_dmx="101"/>
+                        <ChannelSet name="LED Frequency (step -26)" from_dmx="102" to_dmx="102"/>
+                        <ChannelSet name="LED Frequency (step -25)" from_dmx="103" to_dmx="103"/>
+                        <ChannelSet name="LED Frequency (step -24)" from_dmx="104" to_dmx="104"/>
+                        <ChannelSet name="LED Frequency (step -23)" from_dmx="105" to_dmx="105"/>
+                        <ChannelSet name="LED Frequency (step -22)" from_dmx="106" to_dmx="106"/>
+                        <ChannelSet name="LED Frequency (step -21)" from_dmx="107" to_dmx="107"/>
+                        <ChannelSet name="LED Frequency (step -20)" from_dmx="108" to_dmx="108"/>
+                        <ChannelSet name="LED Frequency (step -19)" from_dmx="109" to_dmx="109"/>
+                        <ChannelSet name="LED Frequency (step -18)" from_dmx="110" to_dmx="110"/>
+                        <ChannelSet name="LED Frequency (step -17)" from_dmx="111" to_dmx="111"/>
+                        <ChannelSet name="LED Frequency (step -16)" from_dmx="112" to_dmx="112"/>
+                        <ChannelSet name="LED Frequency (step -15)" from_dmx="113" to_dmx="113"/>
+                        <ChannelSet name="LED Frequency (step -14)" from_dmx="114" to_dmx="114"/>
+                        <ChannelSet name="LED Frequency (step -13)" from_dmx="115" to_dmx="115"/>
+                        <ChannelSet name="LED Frequency (step -12)" from_dmx="116" to_dmx="116"/>
+                        <ChannelSet name="LED Frequency (step -11)" from_dmx="117" to_dmx="117"/>
+                        <ChannelSet name="LED Frequency (step -10)" from_dmx="118" to_dmx="118"/>
+                        <ChannelSet name="LED Frequency (step -9)" from_dmx="119" to_dmx="119"/>
+                        <ChannelSet name="LED Frequency (step -8)" from_dmx="120" to_dmx="120"/>
+                        <ChannelSet name="LED Frequency (step -7)" from_dmx="121" to_dmx="121"/>
+                        <ChannelSet name="LED Frequency (step -6)" from_dmx="122" to_dmx="122"/>
+                        <ChannelSet name="LED Frequency (step -5)" from_dmx="123" to_dmx="123"/>
+                        <ChannelSet name="LED Frequency (step -4)" from_dmx="124" to_dmx="124"/>
+                        <ChannelSet name="LED Frequency (step -3)" from_dmx="125" to_dmx="125"/>
+                        <ChannelSet name="LED Frequency (step -2)" from_dmx="126" to_dmx="126"/>
+                        <ChannelSet name="LED Frequency (step -1)" from_dmx="127" to_dmx="127"/>
+                        <ChannelSet name="Selected LED Frequency" from_dmx="128" to_dmx="128"/>
+                        <ChannelSet name="LED Frequency (step 1)" from_dmx="129" to_dmx="129"/>
+                        <ChannelSet name="LED Frequency (step 2)" from_dmx="130" to_dmx="130"/>
+                        <ChannelSet name="LED Frequency (step 3)" from_dmx="131" to_dmx="131"/>
+                        <ChannelSet name="LED Frequency (step 4)" from_dmx="132" to_dmx="132"/>
+                        <ChannelSet name="LED Frequency (step 5)" from_dmx="133" to_dmx="133"/>
+                        <ChannelSet name="LED Frequency (step 6)" from_dmx="134" to_dmx="134"/>
+                        <ChannelSet name="LED Frequency (step 7)" from_dmx="135" to_dmx="135"/>
+                        <ChannelSet name="LED Frequency (step 8)" from_dmx="136" to_dmx="136"/>
+                        <ChannelSet name="LED Frequency (step 9)" from_dmx="137" to_dmx="137"/>
+                        <ChannelSet name="LED Frequency (step 10)" from_dmx="138" to_dmx="138"/>
+                        <ChannelSet name="LED Frequency (step 11)" from_dmx="139" to_dmx="139"/>
+                        <ChannelSet name="LED Frequency (step 12)" from_dmx="140" to_dmx="140"/>
+                        <ChannelSet name="LED Frequency (step 13)" from_dmx="141" to_dmx="141"/>
+                        <ChannelSet name="LED Frequency (step 14)" from_dmx="142" to_dmx="142"/>
+                        <ChannelSet name="LED Frequency (step 15)" from_dmx="143" to_dmx="143"/>
+                        <ChannelSet name="LED Frequency (step 16)" from_dmx="144" to_dmx="144"/>
+                        <ChannelSet name="LED Frequency (step 17)" from_dmx="145" to_dmx="145"/>
+                        <ChannelSet name="LED Frequency (step 18)" from_dmx="146" to_dmx="146"/>
+                        <ChannelSet name="LED Frequency (step 19)" from_dmx="147" to_dmx="147"/>
+                        <ChannelSet name="LED Frequency (step 20)" from_dmx="148" to_dmx="148"/>
+                        <ChannelSet name="LED Frequency (step 21)" from_dmx="149" to_dmx="149"/>
+                        <ChannelSet name="LED Frequency (step 22)" from_dmx="150" to_dmx="150"/>
+                        <ChannelSet name="LED Frequency (step 23)" from_dmx="151" to_dmx="151"/>
+                        <ChannelSet name="LED Frequency (step 24)" from_dmx="152" to_dmx="152"/>
+                        <ChannelSet name="LED Frequency (step 25)" from_dmx="153" to_dmx="153"/>
+                        <ChannelSet name="LED Frequency (step 26)" from_dmx="154" to_dmx="154"/>
+                        <ChannelSet name="LED Frequency (step 27)" from_dmx="155" to_dmx="155"/>
+                        <ChannelSet name="LED Frequency (step 28)" from_dmx="156" to_dmx="156"/>
+                        <ChannelSet name="LED Frequency (step 29)" from_dmx="157" to_dmx="157"/>
+                        <ChannelSet name="LED Frequency (step 30)" from_dmx="158" to_dmx="158"/>
+                        <ChannelSet name="LED Frequency (step 31)" from_dmx="159" to_dmx="159"/>
+                        <ChannelSet name="LED Frequency (step 32)" from_dmx="160" to_dmx="160"/>
+                        <ChannelSet name="LED Frequency (step 33)" from_dmx="161" to_dmx="161"/>
+                        <ChannelSet name="LED Frequency (step 34)" from_dmx="162" to_dmx="162"/>
+                        <ChannelSet name="LED Frequency (step 35)" from_dmx="163" to_dmx="163"/>
+                        <ChannelSet name="LED Frequency (step 36)" from_dmx="164" to_dmx="164"/>
+                        <ChannelSet name="LED Frequency (step 37)" from_dmx="165" to_dmx="165"/>
+                        <ChannelSet name="LED Frequency (step 38)" from_dmx="166" to_dmx="166"/>
+                        <ChannelSet name="LED Frequency (step 39)" from_dmx="167" to_dmx="167"/>
+                        <ChannelSet name="LED Frequency (step 40)" from_dmx="168" to_dmx="168"/>
+                        <ChannelSet name="LED Frequency (step 41)" from_dmx="169" to_dmx="169"/>
+                        <ChannelSet name="LED Frequency (step 42)" from_dmx="170" to_dmx="170"/>
+                        <ChannelSet name="LED Frequency (step 43)" from_dmx="171" to_dmx="171"/>
+                        <ChannelSet name="LED Frequency (step 44)" from_dmx="172" to_dmx="172"/>
+                        <ChannelSet name="LED Frequency (step 45)" from_dmx="173" to_dmx="173"/>
+                        <ChannelSet name="LED Frequency (step 46)" from_dmx="174" to_dmx="174"/>
+                        <ChannelSet name="LED Frequency (step 47)" from_dmx="175" to_dmx="175"/>
+                        <ChannelSet name="LED Frequency (step 48)" from_dmx="176" to_dmx="176"/>
+                        <ChannelSet name="LED Frequency (step 49)" from_dmx="177" to_dmx="177"/>
+                        <ChannelSet name="LED Frequency (step 50)" from_dmx="178" to_dmx="178"/>
+                        <ChannelSet name="LED Frequency (step 51)" from_dmx="179" to_dmx="179"/>
+                        <ChannelSet name="LED Frequency (step 52)" from_dmx="180" to_dmx="180"/>
+                        <ChannelSet name="LED Frequency (step 53)" from_dmx="181" to_dmx="181"/>
+                        <ChannelSet name="LED Frequency (step 54)" from_dmx="182" to_dmx="182"/>
+                        <ChannelSet name="LED Frequency (step 55)" from_dmx="183" to_dmx="183"/>
+                        <ChannelSet name="LED Frequency (step 56)" from_dmx="184" to_dmx="184"/>
+                        <ChannelSet name="LED Frequency (step 57)" from_dmx="185" to_dmx="185"/>
+                        <ChannelSet name="LED Frequency (step 58)" from_dmx="186" to_dmx="186"/>
+                        <ChannelSet name="LED Frequency (step 59)" from_dmx="187" to_dmx="187"/>
+                        <ChannelSet name="LED Frequency (step 60)" from_dmx="188" to_dmx="188"/>
+                        <ChannelSet name="LED Frequency (step 61)" from_dmx="189" to_dmx="189"/>
+                        <ChannelSet name="LED Frequency (step 62)" from_dmx="190" to_dmx="190"/>
+                        <ChannelSet name="LED Frequency (step 63)" from_dmx="191" to_dmx="191"/>
+                        <ChannelSet name="LED Frequency (step 64)" from_dmx="192" to_dmx="192"/>
+                        <ChannelSet name="LED Frequency (step 65)" from_dmx="193" to_dmx="193"/>
+                        <ChannelSet name="LED Frequency (step 66)" from_dmx="194" to_dmx="194"/>
+                        <ChannelSet name="LED Frequency (step 67)" from_dmx="195" to_dmx="195"/>
+                        <ChannelSet name="LED Frequency (step 68)" from_dmx="196" to_dmx="196"/>
+                        <ChannelSet name="LED Frequency (step 69)" from_dmx="197" to_dmx="197"/>
+                        <ChannelSet name="LED Frequency (step 70)" from_dmx="198" to_dmx="198"/>
+                        <ChannelSet name="LED Frequency (step 71)" from_dmx="199" to_dmx="199"/>
+                        <ChannelSet name="LED Frequency (step 72)" from_dmx="200" to_dmx="200"/>
+                        <ChannelSet name="LED Frequency (step 73)" from_dmx="201" to_dmx="201"/>
+                        <ChannelSet name="LED Frequency (step 74)" from_dmx="202" to_dmx="202"/>
+                        <ChannelSet name="LED Frequency (step 75)" from_dmx="203" to_dmx="203"/>
+                        <ChannelSet name="LED Frequency (step 76)" from_dmx="204" to_dmx="204"/>
+                        <ChannelSet name="LED Frequency (step 77)" from_dmx="205" to_dmx="205"/>
+                        <ChannelSet name="LED Frequency (step 78)" from_dmx="206" to_dmx="206"/>
+                        <ChannelSet name="LED Frequency (step 79)" from_dmx="207" to_dmx="207"/>
+                        <ChannelSet name="LED Frequency (step 80)" from_dmx="208" to_dmx="208"/>
+                        <ChannelSet name="LED Frequency (step 81)" from_dmx="209" to_dmx="209"/>
+                        <ChannelSet name="LED Frequency (step 82)" from_dmx="210" to_dmx="210"/>
+                        <ChannelSet name="LED Frequency (step 83)" from_dmx="211" to_dmx="211"/>
+                        <ChannelSet name="LED Frequency (step 84)" from_dmx="212" to_dmx="212"/>
+                        <ChannelSet name="LED Frequency (step 85)" from_dmx="213" to_dmx="213"/>
+                        <ChannelSet name="LED Frequency (step 86)" from_dmx="214" to_dmx="214"/>
+                        <ChannelSet name="LED Frequency (step 87)" from_dmx="215" to_dmx="215"/>
+                        <ChannelSet name="LED Frequency (step 88)" from_dmx="216" to_dmx="216"/>
+                        <ChannelSet name="LED Frequency (step 89)" from_dmx="217" to_dmx="217"/>
+                        <ChannelSet name="LED Frequency (step 90)" from_dmx="218" to_dmx="218"/>
+                        <ChannelSet name="LED Frequency (step 91)" from_dmx="219" to_dmx="219"/>
+                        <ChannelSet name="LED Frequency (step 92)" from_dmx="220" to_dmx="220"/>
+                        <ChannelSet name="LED Frequency (step 93)" from_dmx="221" to_dmx="221"/>
+                        <ChannelSet name="LED Frequency (step 94)" from_dmx="222" to_dmx="222"/>
+                        <ChannelSet name="LED Frequency (step 95)" from_dmx="223" to_dmx="223"/>
+                        <ChannelSet name="LED Frequency (step 96)" from_dmx="224" to_dmx="224"/>
+                        <ChannelSet name="LED Frequency (step 97)" from_dmx="225" to_dmx="225"/>
+                        <ChannelSet name="LED Frequency (step 98)" from_dmx="226" to_dmx="226"/>
+                        <ChannelSet name="LED Frequency (step 99)" from_dmx="227" to_dmx="227"/>
+                        <ChannelSet name="LED Frequency (step 100)" from_dmx="228" to_dmx="228"/>
+                        <ChannelSet name="LED Frequency (step 101)" from_dmx="229" to_dmx="229"/>
+                        <ChannelSet name="LED Frequency (step 102)" from_dmx="230" to_dmx="230"/>
+                        <ChannelSet name="LED Frequency (step 103)" from_dmx="231" to_dmx="231"/>
+                        <ChannelSet name="LED Frequency (step 104)" from_dmx="232" to_dmx="232"/>
+                        <ChannelSet name="LED Frequency (step 105)" from_dmx="233" to_dmx="233"/>
+                        <ChannelSet name="LED Frequency (step 106)" from_dmx="234" to_dmx="234"/>
+                        <ChannelSet name="LED Frequency (step 107)" from_dmx="235" to_dmx="235"/>
+                        <ChannelSet name="LED Frequency (step 108)" from_dmx="236" to_dmx="236"/>
+                        <ChannelSet name="LED Frequency (step 109)" from_dmx="237" to_dmx="237"/>
+                        <ChannelSet name="LED Frequency (step 110)" from_dmx="238" to_dmx="238"/>
+                        <ChannelSet name="LED Frequency (step 111)" from_dmx="239" to_dmx="239"/>
+                        <ChannelSet name="LED Frequency (step 112)" from_dmx="240" to_dmx="240"/>
+                        <ChannelSet name="LED Frequency (step 113)" from_dmx="241" to_dmx="241"/>
+                        <ChannelSet name="LED Frequency (step 114)" from_dmx="242" to_dmx="242"/>
+                        <ChannelSet name="LED Frequency (step 115)" from_dmx="243" to_dmx="243"/>
+                        <ChannelSet name="LED Frequency (step 116)" from_dmx="244" to_dmx="244"/>
+                        <ChannelSet name="LED Frequency (step 117)" from_dmx="245" to_dmx="245"/>
+                        <ChannelSet name="LED Frequency (step 118)" from_dmx="246" to_dmx="246"/>
+                        <ChannelSet name="LED Frequency (step 119)" from_dmx="247" to_dmx="247"/>
+                        <ChannelSet name="LED Frequency (step 120)" from_dmx="248" to_dmx="248"/>
+                        <ChannelSet name="LED Frequency (step 121)" from_dmx="249" to_dmx="249"/>
+                        <ChannelSet name="LED Frequency (step 122)" from_dmx="250" to_dmx="250"/>
+                        <ChannelSet name="LED Frequency (step 123)" from_dmx="251" to_dmx="251"/>
+                        <ChannelSet name="LED Frequency (step 124)" from_dmx="252" to_dmx="252"/>
+                        <ChannelSet name="LED Frequency (step 125)" from_dmx="253" to_dmx="253"/>
+                        <ChannelSet name="LED Frequency (step 126)" from_dmx="254" to_dmx="254"/>
+                        <ChannelSet name="Selected LED Frequency" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="4" default="1" attribute="ColorControl" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="NOFEATURE" attribute="DUMMY" feature="CONTROL" preset="CONTROL" from="0" to="11.37" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="1907997">
+                        <ChannelSet name="No function" from_dmx="0" to_dmx="29"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="ExtendedCTO" attribute="ColorControl" feature="Control" preset="Control" from="11.37" to="15.29" physfrom="0" physto="1" min_dmx_24="1973790" max_dmx_24="2565927">
+                        <ChannelSet name="Standard CTO 8000-2700K" from_dmx="30" to_dmx="34"/>
+                        <ChannelSet name="Extended CTO 10000-1800K" from_dmx="35" to_dmx="39"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="COLORMIXMODE" attribute="ColorControl" feature="Control" preset="Control" from="15.29" to="19.22" physfrom="0" physto="1" min_dmx_24="2631720" max_dmx_24="3223857">
+                        <ChannelSet name="Colour mixing mode: CMY (DMX mode 1+2+6 and 8 only)" from_dmx="40" to_dmx="44"/>
+                        <ChannelSet name="Colour mixing mode: RGB (DMX mode 1+2+6 and 7 only)" from_dmx="45" to_dmx="49"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="DIMMERCURVE" attribute="ColorControl" feature="Control" preset="Control" from="19.22" to="25.1" physfrom="0" physto="1" min_dmx_24="3289650" max_dmx_24="4210752">
+                        <ChannelSet name=" Square law" from_dmx="50" to_dmx="54" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="Linear" from_dmx="55" to_dmx="59" slot_from="1" slot_to="1"/>
+                        <ChannelSet name="Super square law" from_dmx="60" to_dmx="64" slot_from="1.11" slot_to="1.56"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="ColorControl" feature="Control" preset="Control" from="25.1" to="30.98" physfrom="0" physto="1" min_dmx_24="4276545" max_dmx_24="5197647"/>
+                    <ChannelFunction subattribute="INTENSITYMODE" attribute="ColorControl" feature="Control" preset="Control" from="30.98" to="42.75" physfrom="0" physto="1" min_dmx_24="5263440" max_dmx_24="7171437">
+                        <ChannelSet name="Tungsten effect simulation (750W): On" from_dmx="80" to_dmx="84"/>
+                        <ChannelSet name="Tungsten effect simulation (1000W): On" from_dmx="85" to_dmx="89"/>
+                        <ChannelSet name="Tungsten effect simulation (1200W): On" from_dmx="90" to_dmx="94"/>
+                        <ChannelSet name="Tungsten effect simulation (2000W): On" from_dmx="95" to_dmx="99"/>
+                        <ChannelSet name="Tungsten effect simulation (2500W): On" from_dmx="100" to_dmx="104"/>
+                        <ChannelSet name="Tungsten effect simulation: Off" from_dmx="105" to_dmx="109"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="CustomColor" attribute="ColorControl" feature="Control" preset="Control" from="42.75" to="44.71" physfrom="0" physto="1" min_dmx_24="7237230" max_dmx_24="7500402">
+                        <ChannelSet name="Save user colour" from_dmx="110" to_dmx="114" slot_from="0" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="CHROMATICSMODESELECT" attribute="ColorControl" feature="Control" preset="Control" from="44.71" to="48.63" physfrom="0" physto="1" min_dmx_24="7566195" max_dmx_24="8158332">
+                        <ChannelSet name="Chromatic white On" from_dmx="115" to_dmx="119" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="Chromatic white Off" from_dmx="120" to_dmx="124" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="ColorConsistency" attribute="ColorControl" feature="Control" preset="Control" from="48.63" to="56.47" physfrom="0" physto="1" min_dmx_24="8224125" max_dmx_24="9474192">
+                        <ChannelSet name="Light output stability On" from_dmx="125" to_dmx="129"/>
+                        <ChannelSet name="Light output stability Off" from_dmx="130" to_dmx="134"/>
+                        <ChannelSet name="Uniformity On" from_dmx="135" to_dmx="139"/>
+                        <ChannelSet name="Uniformity Off" from_dmx="140" to_dmx="144"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="ColorControl" feature="Control" preset="Control" from="56.47" to="59.61" physfrom="0" physto="1" min_dmx_24="9539985" max_dmx_24="10000536"/>
+                    <ChannelFunction subattribute="CONTROL" attribute="ColorControl" feature="Control" preset="Control" from="59.61" to="71.37" physfrom="0" physto="1" min_dmx_24="10066329" max_dmx_24="11974326">
+                        <ChannelSet name="Green/Blue correction-1800K/CRI 80" from_dmx="153" to_dmx="154"/>
+                        <ChannelSet name="Green/Blue correction-2700K/CRI 80" from_dmx="155" to_dmx="156"/>
+                        <ChannelSet name="Green/Blue correction-3200K/CRI 80" from_dmx="157" to_dmx="158"/>
+                        <ChannelSet name="Green/Blue correction-4200K/CRI 80" from_dmx="159" to_dmx="160"/>
+                        <ChannelSet name="Green/Blue correction-5600K/CRI 80" from_dmx="161" to_dmx="162"/>
+                        <ChannelSet name="Green/Blue correction-8000K/CRI 80" from_dmx="163" to_dmx="164"/>
+                        <ChannelSet name="Green/Blue correction-10000K/CRI 80" from_dmx="165" to_dmx="166"/>
+                        <ChannelSet name="Green/Blue correction-1800K/CRI 90" from_dmx="167" to_dmx="168"/>
+                        <ChannelSet name="Green/Blue correction-2700K/CRI 90" from_dmx="169" to_dmx="170"/>
+                        <ChannelSet name="Green/Blue correction-3200K/CRI 90" from_dmx="171" to_dmx="172"/>
+                        <ChannelSet name="Green/Blue correction-4200K/CRI 90" from_dmx="173" to_dmx="174"/>
+                        <ChannelSet name="Green/Blue correction-5600K/CRI 90" from_dmx="175" to_dmx="176"/>
+                        <ChannelSet name="Green/Blue correction-8000K/CRI 90" from_dmx="177" to_dmx="178"/>
+                        <ChannelSet name="Green/Blue correction-10000K/CRI 90" from_dmx="179" to_dmx="180"/>
+                        <ChannelSet name="Save G/B correction" from_dmx="181" to_dmx="182"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="ColorControl" feature="Control" preset="Control" from="71.37" to="100" physfrom="0" physto="1" min_dmx_24="12040119" max_dmx_24="16777215"/>
+                </ChannelType>
+                <ChannelType coarse="5" default="0" attribute="CRIMode" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="CRIMode" attribute="CRIMode" feature="Control" preset="Control" from="0" to="100" physfrom="80" physto="90" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="CRI 80" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="CRI 90+" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="6" default="0" attribute="COLOR1" feature="COLOR1" preset="COLOR" highlight_value="0">
+                    <ChannelFunction subattribute="COLOR1" attribute="COLOR1" feature="COLOR1" preset="COLOR" from="0" to="92.16" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="15461355" wheel="2">
+                        <ChannelSet name="No function" from_dmx="0" to_dmx="0" slot_index="0"/>
+                        <ChannelSet name="Filter 4 (Medium Bastard Amber)" from_dmx="1" to_dmx="2" slot_index="1"/>
+                        <ChannelSet name="Filter 10 (Medium Yellow)" from_dmx="3" to_dmx="4" slot_index="2"/>
+                        <ChannelSet name="Filter 19 (Fire)" from_dmx="5" to_dmx="6" slot_index="3"/>
+                        <ChannelSet name="Filter 26 (Bright Red)" from_dmx="7" to_dmx="8" slot_index="4"/>
+                        <ChannelSet name="Filter 58 (Lavender)" from_dmx="9" to_dmx="10" slot_index="5"/>
+                        <ChannelSet name="Filter 68 (Sky Blue)" from_dmx="11" to_dmx="12" slot_index="6"/>
+                        <ChannelSet name="Filter 71 (Tokyo Blue)" from_dmx="13" to_dmx="14" slot_index="7"/>
+                        <ChannelSet name="Filter 79 (Just Blue)" from_dmx="15" to_dmx="16" slot_index="8"/>
+                        <ChannelSet name="Filter 88 (Lime Green)" from_dmx="17" to_dmx="18" slot_index="9"/>
+                        <ChannelSet name="Filter 90 (Dark Yellow Green)" from_dmx="19" to_dmx="20" slot_index="10"/>
+                        <ChannelSet name="Filter 100 (Spring Yellow)" from_dmx="21" to_dmx="22" slot_index="11"/>
+                        <ChannelSet name="Filter 101 (Yellow)" from_dmx="23" to_dmx="24" slot_index="12"/>
+                        <ChannelSet name="Filter 102 (Light Amber)" from_dmx="25" to_dmx="26" slot_index="13"/>
+                        <ChannelSet name="Filter 103 (Straw)" from_dmx="27" to_dmx="28" slot_index="14"/>
+                        <ChannelSet name="Filter 104 (Deep Amber)" from_dmx="29" to_dmx="30" slot_index="15"/>
+                        <ChannelSet name="Filter 105 (Orange)" from_dmx="31" to_dmx="32" slot_index="16"/>
+                        <ChannelSet name="Filter 106 (Primary Red)" from_dmx="33" to_dmx="34" slot_index="17"/>
+                        <ChannelSet name="Filter 111 (Dark Pink)" from_dmx="35" to_dmx="36" slot_index="18"/>
+                        <ChannelSet name="Filter 115 (Peacock Blue)" from_dmx="37" to_dmx="38" slot_index="19"/>
+                        <ChannelSet name="Filter 116 (Medium Blue - Green)" from_dmx="39" to_dmx="40" slot_index="20"/>
+                        <ChannelSet name="Filter 117 (Steel Blue)" from_dmx="41" to_dmx="42" slot_index="21"/>
+                        <ChannelSet name="Filter 118 (Light Blue)" from_dmx="43" to_dmx="44" slot_index="22"/>
+                        <ChannelSet name="Filter 119 (Dark Blue)" from_dmx="45" to_dmx="46" slot_index="23"/>
+                        <ChannelSet name="Filter 120 (Deep Blue)" from_dmx="47" to_dmx="48" slot_index="24"/>
+                        <ChannelSet name="Filter 121 (Filter Green)" from_dmx="49" to_dmx="50" slot_index="25"/>
+                        <ChannelSet name="Filter 128 (Bright Pink)" from_dmx="51" to_dmx="52" slot_index="26"/>
+                        <ChannelSet name="Filter 131 (Marine Blue)" from_dmx="53" to_dmx="54" slot_index="27"/>
+                        <ChannelSet name="Filter 132 (Medium Blue)" from_dmx="55" to_dmx="56" slot_index="28"/>
+                        <ChannelSet name="Filter 134 (Golden Amber)" from_dmx="57" to_dmx="58" slot_index="29"/>
+                        <ChannelSet name="Filter 135 (Deep Golden Amber)" from_dmx="59" to_dmx="60" slot_index="30"/>
+                        <ChannelSet name="Filter 136 (Pale Lavender)" from_dmx="61" to_dmx="62" slot_index="31"/>
+                        <ChannelSet name="Filter 137 (Special Lavender)" from_dmx="63" to_dmx="64" slot_index="32"/>
+                        <ChannelSet name="Filter 138 (Pale Green)" from_dmx="65" to_dmx="66" slot_index="33"/>
+                        <ChannelSet name="Filter 139 (Primary Green)" from_dmx="67" to_dmx="68" slot_index="34"/>
+                        <ChannelSet name="Filter 141 (Bright Blue)" from_dmx="69" to_dmx="70" slot_index="35"/>
+                        <ChannelSet name="Filter 147 (Apricot)" from_dmx="71" to_dmx="72" slot_index="36"/>
+                        <ChannelSet name="Filter 148 (Bright Rose)" from_dmx="73" to_dmx="74" slot_index="37"/>
+                        <ChannelSet name="Filter 152 (Pale Gold)" from_dmx="75" to_dmx="76" slot_index="38"/>
+                        <ChannelSet name="Filter 154 (Pale Rose)" from_dmx="77" to_dmx="78" slot_index="39"/>
+                        <ChannelSet name="Filter 157 (Pink)" from_dmx="79" to_dmx="80" slot_index="40"/>
+                        <ChannelSet name="Filter 158 (Deep Orange)" from_dmx="81" to_dmx="82" slot_index="41"/>
+                        <ChannelSet name="Filter 162 (Bastard Amber)" from_dmx="83" to_dmx="84" slot_index="42"/>
+                        <ChannelSet name="Filter 164 (Flame Red)" from_dmx="85" to_dmx="86" slot_index="43"/>
+                        <ChannelSet name="Filter 165 (Daylight Blue)" from_dmx="87" to_dmx="88" slot_index="44"/>
+                        <ChannelSet name="Filter 169 (Lilac Tint)" from_dmx="89" to_dmx="90" slot_index="45"/>
+                        <ChannelSet name="Filter 170 (Deep Lavender)" from_dmx="91" to_dmx="92" slot_index="46"/>
+                        <ChannelSet name="Filter 172 (Lagoon Blue)" from_dmx="93" to_dmx="94" slot_index="47"/>
+                        <ChannelSet name="Filter 179 (Chrome Orange)" from_dmx="95" to_dmx="96" slot_index="48"/>
+                        <ChannelSet name="Filter 180 (Dark Lavender)" from_dmx="97" to_dmx="98" slot_index="49"/>
+                        <ChannelSet name="Filter 181 (Congo Blue)" from_dmx="99" to_dmx="100" slot_index="50"/>
+                        <ChannelSet name="Filter 197 (Alice Blue)" from_dmx="101" to_dmx="102" slot_index="51"/>
+                        <ChannelSet name="Filter 201 (Full CT Blue)" from_dmx="103" to_dmx="104" slot_index="52"/>
+                        <ChannelSet name="Filter 202 (Half CT Blue)" from_dmx="105" to_dmx="106" slot_index="53"/>
+                        <ChannelSet name="Filter 203 (Quarter CT Blue)" from_dmx="107" to_dmx="108" slot_index="54"/>
+                        <ChannelSet name="Filter 204 (Full CT Orange)" from_dmx="109" to_dmx="110" slot_index="55"/>
+                        <ChannelSet name="Filter 205 (Half CT Orange)" from_dmx="111" to_dmx="112" slot_index="56"/>
+                        <ChannelSet name="Filter 206 (Quarter CT Orange)" from_dmx="113" to_dmx="114" slot_index="57"/>
+                        <ChannelSet name="Filter 247 (Filter Minus Green)" from_dmx="115" to_dmx="116" slot_index="58"/>
+                        <ChannelSet name="Filter 248 (Half Minus Green)" from_dmx="117" to_dmx="118" slot_index="59"/>
+                        <ChannelSet name="Filter 281 (Three Quarter CT Blue)" from_dmx="119" to_dmx="120" slot_index="60"/>
+                        <ChannelSet name="Filter 285 (Three Quarter CT Orange)" from_dmx="121" to_dmx="122" slot_index="61"/>
+                        <ChannelSet name="Filter 352 (Glacier Blue)" from_dmx="123" to_dmx="124" slot_index="62"/>
+                        <ChannelSet name="Filter 353 (Lighter Blue)" from_dmx="125" to_dmx="126" slot_index="63"/>
+                        <ChannelSet name="Filter 715 (Cabana Blue)" from_dmx="127" to_dmx="128" slot_index="64"/>
+                        <ChannelSet name="Filter 778 (Millennium Gold)" from_dmx="129" to_dmx="130" slot_index="65"/>
+                        <ChannelSet name="Filter 793 (Vanity Fair)" from_dmx="131" to_dmx="132" slot_index="66"/>
+                        <ChannelSet name="Reserved" from_dmx="133" to_dmx="215" slot_index="0"/>
+                        <ChannelSet name="User colour 1" from_dmx="216" to_dmx="217" slot_index="0"/>
+                        <ChannelSet name="User colour 2" from_dmx="218" to_dmx="219" slot_index="0"/>
+                        <ChannelSet name="User colour 3" from_dmx="220" to_dmx="221" slot_index="0"/>
+                        <ChannelSet name="User colour 4" from_dmx="222" to_dmx="223" slot_index="0"/>
+                        <ChannelSet name="User colour 5" from_dmx="224" to_dmx="225" slot_index="0"/>
+                        <ChannelSet name="User colour 6" from_dmx="226" to_dmx="227" slot_index="0"/>
+                        <ChannelSet name="User colour 7" from_dmx="228" to_dmx="229" slot_index="0"/>
+                        <ChannelSet name="User colour 8" from_dmx="230" to_dmx="231" slot_index="0"/>
+                        <ChannelSet name="User colour 9" from_dmx="232" to_dmx="233" slot_index="0"/>
+                        <ChannelSet name="User colour 10" from_dmx="234" to_dmx="235" slot_index="0"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="RainbowEffect" attribute="COLOR1" feature="COLOR1" preset="COLOR" from="92.16" to="100" physfrom="0" physto="1" min_dmx_24="15527148" max_dmx_24="16777215">
+                        <ChannelSet name="Rainbow effect (with fade time) from slow-> fast" from_dmx="236" to_dmx="245"/>
+                        <ChannelSet name="Rainbow effect (without fade time) from slow-> fast" from_dmx="246" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="7" fine="8" default="0" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB1" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" physfrom="1" physto="0" from="100" to="0" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="65535" to_dmx="65535"/>
+                        <ChannelSet name="Max" from_dmx="0" to_dmx="0"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="9" fine="10" default="0" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB2" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" physfrom="1" physto="0" from="100" to="0" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="65535" to_dmx="65535"/>
+                        <ChannelSet name="Max" from_dmx="0" to_dmx="0"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="11" fine="12" default="0" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" highlight_value="100">
+                    <ChannelFunction subattribute="COLORRGB3" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" physfrom="1" physto="0" from="100" to="0" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="65535" to_dmx="65535"/>
+                        <ChannelSet name="Max" from_dmx="0" to_dmx="0"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="13" default="110" attribute="CTO" feature="CTC" preset="COLOR">
+                    <ChannelFunction subattribute="CTO" attribute="CTO" feature="CTC" preset="COLOR" from="0" to="100" physfrom="8000" physto="2700" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="8000 K" from_dmx="0" to_dmx="1" slot_from="8000" slot_to="8000"/>
+                        <ChannelSet name="7978 K - > 6622 K " from_dmx="2" to_dmx="64" slot_from="7978" slot_to="6622"/>
+                        <ChannelSet name="6600 K" from_dmx="65" to_dmx="65" slot_from="6600" slot_to="6600"/>
+                        <ChannelSet name="6578K - > 5622 K" from_dmx="66" to_dmx="109" slot_from="6578" slot_to="5622"/>
+                        <ChannelSet name="5600 K" from_dmx="110" to_dmx="110" slot_from="5600" slot_to="5600"/>
+                        <ChannelSet name="5580 K - > 4220 K" from_dmx="111" to_dmx="179" slot_from="5580" slot_to="4220"/>
+                        <ChannelSet name="4200 K" from_dmx="180" to_dmx="180" slot_from="4200" slot_to="4200"/>
+                        <ChannelSet name="4180 K - > 3220 K" from_dmx="181" to_dmx="229" slot_from="4180" slot_to="3220"/>
+                        <ChannelSet name="3200 K" from_dmx="230" to_dmx="230" slot_from="3200" slot_to="3200"/>
+                        <ChannelSet name="3180 K - > 2720 K" from_dmx="231" to_dmx="254" slot_from="3180" slot_to="2720"/>
+                        <ChannelSet name="2700K" from_dmx="255" to_dmx="255" slot_from="2700" slot_to="2700"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="14" default="128" attribute="Tint" feature="Color" preset="Color">
+                    <ChannelFunction subattribute="Tint" attribute="Tint" feature="Color" preset="Color" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Uncorrected white" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Minus green - > Uncorrected white" from_dmx="1" to_dmx="127"/>
+                        <ChannelSet name="Uncorrected white" from_dmx="128" to_dmx="128"/>
+                        <ChannelSet name="Uncorrected white - > Plus green" from_dmx="129" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="15" default="0" attribute="COLORMIXMODE" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="COLORMIXMODE" attribute="COLORMIXMODE" feature="Control" preset="Control" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Virtual colours (Virtual has priority)" from_dmx="0" to_dmx="9"/>
+                        <ChannelSet name="Maximum mode (highest values have priority)" from_dmx="10" to_dmx="19"/>
+                        <ChannelSet name="Minimum mode (lowest values have priority)" from_dmx="20" to_dmx="29"/>
+                        <ChannelSet name="Multiply mode (multiply Virtual and Colour mix)" from_dmx="30" to_dmx="39"/>
+                        <ChannelSet name="Addition mode (Virtual + Colour mix)" from_dmx="40" to_dmx="49"/>
+                        <ChannelSet name="Subtraction mode (Virtual - Colour mix)" from_dmx="50" to_dmx="59"/>
+                        <ChannelSet name="Inverted Subtraction mode (Colour mix - Virtual)" from_dmx="60" to_dmx="69"/>
+                        <ChannelSet name="White Point Off" from_dmx="70" to_dmx="79"/>
+                        <ChannelSet name="Reserved" from_dmx="80" to_dmx="128"/>
+                        <ChannelSet name="Crossfade Virtual only" from_dmx="129" to_dmx="129"/>
+                        <ChannelSet name="Crossfade between Virtual and Colour mix" from_dmx="130" to_dmx="254"/>
+                        <ChannelSet name="Crossfade Color mix only" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="16" default="32" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" highlight_value="12.549019607843137">
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="0" to="24.71" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="4144959">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="31" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="Open" from_dmx="32" to_dmx="63" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="24.71" to="37.25" physfrom="0.294638" physto="19.406895" min_dmx_24="4210752" max_dmx_24="6250335">
+                        <ChannelSet name="Slow to fast - Slow" from_dmx="64" to_dmx="67" slot_from="0.294638" slot_to="0.444664"/>
+                        <ChannelSet name="" from_dmx="68" to_dmx="70" slot_from="0.495074" slot_to="0.59653"/>
+                        <ChannelSet name="" from_dmx="71" to_dmx="73" slot_from="0.647566" slot_to="0.750257"/>
+                        <ChannelSet name="" from_dmx="74" to_dmx="76" slot_from="0.801938" slot_to="1.548464"/>
+                        <ChannelSet name="" from_dmx="77" to_dmx="79" slot_from="2.109445" slot_to="3.307805"/>
+                        <ChannelSet name="" from_dmx="80" to_dmx="82" slot_from="3.870541" slot_to="4.661757"/>
+                        <ChannelSet name="" from_dmx="83" to_dmx="85" slot_from="5.018592" slot_to="5.822651"/>
+                        <ChannelSet name="" from_dmx="86" to_dmx="88" slot_from="6.307083" slot_to="7.762758"/>
+                        <ChannelSet name="" from_dmx="89" to_dmx="90" slot_from="8.733976" slot_to="9.703447"/>
+                        <ChannelSet name="" from_dmx="91" to_dmx="92" slot_from="10.674859" slot_to="12.610068"/>
+                        <ChannelSet name="" from_dmx="93" to_dmx="94" slot_from="14.558811" slot_to="16.97891"/>
+                        <ChannelSet name="Slow to fast - Fast" from_dmx="95" to_dmx="95" slot_from="19.406895" slot_to="19.406895"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="37.25" to="49.8" physfrom="1" physto="1" min_dmx_24="6316128" max_dmx_24="8355711">
+                        <ChannelSet name="open" from_dmx="96" to_dmx="127"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE_PULSE_OPEN" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="49.8" to="56.08" physfrom="0.112" physto="0.589" min_dmx_24="8421504" max_dmx_24="9408399">
+                        <ChannelSet name="Slow to fast - Slow" from_dmx="128" to_dmx="130" slot_from="0.111651" slot_to="0.166897"/>
+                        <ChannelSet name="" from_dmx="131" to_dmx="132" slot_from="0.194319" slot_to="0.221498"/>
+                        <ChannelSet name="" from_dmx="133" to_dmx="134" slot_from="0.24868" slot_to="0.275586"/>
+                        <ChannelSet name="" from_dmx="135" to_dmx="136" slot_from="0.302528" slot_to="0.328967"/>
+                        <ChannelSet name="" from_dmx="137" to_dmx="138" slot_from="0.355441" slot_to="0.381773"/>
+                        <ChannelSet name="" from_dmx="139" to_dmx="140" slot_from="0.407229" slot_to="0.433485"/>
+                        <ChannelSet name="Slow to fast - Fast" from_dmx="141" to_dmx="143" slot_from="0.486251" slot_to="0.589419"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE_PULSE_CLOSE" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="56.08" to="62.35" physfrom="0.589" physto="0.112" min_dmx_24="9474192" max_dmx_24="10461087">
+                        <ChannelSet name="Fast to slow - Fast" from_dmx="144" to_dmx="145" slot_from="0.589419" slot_to="0.538379"/>
+                        <ChannelSet name="" from_dmx="146" to_dmx="147" slot_from="0.486251" slot_to="0.433485"/>
+                        <ChannelSet name="" from_dmx="148" to_dmx="149" slot_from="0.407229" slot_to="0.381773"/>
+                        <ChannelSet name="" from_dmx="150" to_dmx="151" slot_from="0.355441" slot_to="0.328967"/>
+                        <ChannelSet name="" from_dmx="152" to_dmx="153" slot_from="0.302528" slot_to="0.275586"/>
+                        <ChannelSet name="" from_dmx="154" to_dmx="155" slot_from="0.24868" slot_to="0.221498"/>
+                        <ChannelSet name="Fast to slow - Slow" from_dmx="156" to_dmx="159" slot_from="0.194319" slot_to="0.111651"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="62.35" to="74.9" physfrom="1" physto="1" min_dmx_24="10526880" max_dmx_24="12566463">
+                        <ChannelSet name="open" from_dmx="160" to_dmx="191"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="STROBE_RANDOM" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="74.9" to="87.45" physfrom="0.125" physto="10" min_dmx_24="12632256" max_dmx_24="14671839">
+                        <ChannelSet name="Random strobe from slow to fast" from_dmx="192" to_dmx="223"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="SHUTTER" attribute="SHUTTER" feature="SHUTTER" preset="BEAM" from="87.45" to="100" physfrom="1" physto="1" min_dmx_24="14737632" max_dmx_24="16777215">
+                        <ChannelSet name="open" from_dmx="224" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="17" fine="18" default="0" react_to_master="1" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Open" from_dmx="65535" to_dmx="65535"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+        </Modules>
+        <Instances>
+            <Instance module_index="0" patch="1" locked="true"/>
+        </Instances>
+        <Wheels>
+            <Wheel index="0" preset="Control" feature="Control" attribute="CONTROL" subattribute="GOBOWHEELRESET">
+                <Slot index="0" media_name="Open"/>
+                <Slot index="1" media_name="G01" media_filename="Robe Lighting/15020472.png">
+                    <media width="64" height="64">
+                        <Image>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgAAAFYAAACHAAAArwAAAM8AAADmAAAA9gAAAP0AAAD9AAAA9gAAAOYAAADOAAAArwAAAIYAAABWAAAAHQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAADwAAACQAAAA2wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADbAAAAkAAAADwAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASAAAAdwAAAN0AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA3AAAAHYAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABIAAACIAAAA8wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA8gAAAIcAAAASAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAGwAAADtAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA7QAAAGsAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJwAAAMgAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAxwAAACcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXwAAAPQAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD0AAAAXgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAkgAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAACRAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAArwAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAK4AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAuAAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAtwAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAArwAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/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AAAA/wAAAP8AAAD/AAAA/wAAAP8nJyf/Hx8f/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP9sbGz/cHBw/wcHB/8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADGAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACcAAAD0AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD0AAAAJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXwAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAXgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACRAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAK8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAArgAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAtwAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAtwAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAACvAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAArgAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAJEAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAkAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXgAAAPQAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD0AAAAXQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAnAAAAxwAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADGAAAAJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAABrAAAA7QAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAO0AAABqAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEAAACHAAAA8gAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA8gAAAIYAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEAAAB2AAAA3AAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADcAAAAdQAAABEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA7AAAAjwAAANoAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA2gAAAI8AAAA7AAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHQAAAFUAAACGAAAArgAAAM4AAADlAAAA9QAAAP0AAAD9AAAA9QAAAOUAAADNAAAArgAAAIUAAABVAAAAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</Image>
+                    </media>
+                </Slot>
+                <Slot index="2" media_name="G02" media_filename="Robe Lighting/15020471.png">
+                    <media width="64" height="64">
+                        <Image>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgAAAFYAAACHAAAArwAAAM8AAADmAAAA9gAAAP0AAAD9AAAA9gAAAOYAAADOAAAArwAAAIYAAABWAAAAHQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAADwAAACQAAAA2wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADbAAAAkAAAADwAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASAAAAdwAAAN0AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA3AAAAHYAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABIAAACIAAAA8wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA8gAAAIcAAAASAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAGwAAADtAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA7QAAAGsAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJwAAAMgAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAxwAAACcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXwAAAPQAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD0AAAAXgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAkgAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAACRAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAArwAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAK4AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAuAAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAtwAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAArwAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/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AAAA/wAAAP+ysrL//////wMDA/+enp7//////xYWFv+Li4v//////yoqKv93d3f//////z09Pf9kZGT//////1FRUf9QUFD//////2RkZP89PT3//////3h4eP8pKSn//////4uLi/8WFhb//////5+fn/8DAwP//////7Kysv8AAAD/7u7u/8bGxv8AAAD/29vb/9nZ2f8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAA7AAAAAAAAAAAAAAABAAAA3AAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/bm5u/56env8CAgL/YmJi/56env8ODg7/VlZW/56env8aGhr/SkpK/56env8mJib/Pj4+/56env8yMjL/MjIy/56env8+Pj7/JiYm/56env9KSkr/Ghoa/56env9WVlb/Dg4O/56env9iYmL/AgIC/56env9ubm7/AAAA/5SUlP97e3v/AAAA/4iIiP+Hh4f/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADcAAAAAQAAAAAAAAAAAAAAAAAAAHYAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8DAwP/AAAA/wICAv8DAwP/AAAA/wICAv8DAwP/AQEB/wICAv8DAwP/AQEB/wEBAf8DAwP/AQEB/wEBAf8DAwP/AQEB/wEBAf8DAwP/AgIC/wEBAf8DAwP/AgIC/wAAAP8DAwP/AgIC/wAAAP8DAwP/AgIC/wAAAP8DAwP/AwMD/wAAAP8DAwP/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAdQAAAAAAAAAAAAAAAAAAAAAAAAARAAAA8gAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/j4+P/wMDA/+enp7//////xYWFv+Li4v//////yoqKv93d3f//////z09Pf9kZGT//////1FRUf9QUFD//////2RkZP89PT3//////3h4eP8pKSn//////4uLi/8WFhb//////5+fn/8DAwP//////7Kysv8AAAD/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AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAK8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAArgAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAtwAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAtwAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAACvAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAArgAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAJEAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAkAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXgAAAPQAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD0AAAAXQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAnAAAAxwAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADGAAAAJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAABrAAAA7QAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAO0AAABqAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEAAACHAAAA8gAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA8gAAAIYAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEAAAB2AAAA3AAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADcAAAAdQAAABEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA7AAAAjwAAANoAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA2gAAAI8AAAA7AAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHQAAAFUAAACGAAAArgAAAM4AAADlAAAA9QAAAP0AAAD9AAAA9QAAAOUAAADNAAAArgAAAIUAAABVAAAAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</Image>
+                    </media>
+                </Slot>
+            </Wheel>
+            <Wheel index="1" preset="COLOR" feature="COLOR1" attribute="COLOR1" subattribute="COLOR1">
+                <Slot index="0" media_name="Open" r="254" g="255" b="255"/>
+                <Slot index="1" media_name="Medium Bastard Amber" r="255" g="161" b="79"/>
+                <Slot index="2" media_name="Medium Yellow" r="255" g="192" b="0"/>
+                <Slot index="3" media_name="Fire" r="255" g="0" b="0"/>
+                <Slot index="4" media_name="Bright Red" r="255" g="0" b="0"/>
+                <Slot index="5" media_name="Lavender" r="255" g="80" b="230"/>
+                <Slot index="6" media_name="Sky Blue" r="140" g="134" b="255"/>
+                <Slot index="7" media_name="Tokyo Blue" r="90" g="0" b="255"/>
+                <Slot index="8" media_name="Just Blue" r="147" g="134" b="255"/>
+                <Slot index="9" media_name="Lime Green" r="211" g="215" b="0"/>
+                <Slot index="10" media_name="Dark Yellow Green" r="0" g="207" b="18"/>
+                <Slot index="11" media_name="Spring Yellow" r="255" g="218" b="0"/>
+                <Slot index="12" media_name="Yellow" r="255" g="187" b="0"/>
+                <Slot index="13" media_name="Light Amber" r="255" g="186" b="50"/>
+                <Slot index="14" media_name="Straw" r="255" g="196" b="45"/>
+                <Slot index="15" media_name="Deep Amber" r="255" g="168" b="0"/>
+                <Slot index="16" media_name="Orange" r="255" g="121" b="0"/>
+                <Slot index="17" media_name="Primary Red" r="255" g="0" b="0"/>
+                <Slot index="18" media_name="Dark Pink" r="255" g="118" b="89"/>
+                <Slot index="19" media_name="Peacock Blue" r="0" g="172" b="134"/>
+                <Slot index="20" media_name="Medium Blue - Green" r="0" g="170" b="110"/>
+                <Slot index="21" media_name="Steel Blue" r="141" g="223" b="174"/>
+                <Slot index="22" media_name="Light Blue" r="0" g="173" b="145"/>
+                <Slot index="23" media_name="Dark Blue" r="0" g="116" b="255"/>
+                <Slot index="24" media_name="Deep Blue" r="0" g="118" b="255"/>
+                <Slot index="25" media_name="Filter Green" r="169" g="160" b="0"/>
+                <Slot index="26" media_name="Bright Pink" r="255" g="0" b="98"/>
+                <Slot index="27" media_name="Marine Blue" r="0" g="185" b="198"/>
+                <Slot index="28" media_name="Medium Blue" r="0" g="151" b="229"/>
+                <Slot index="29" media_name="Golden Amber" r="255" g="131" b="0"/>
+                <Slot index="30" media_name="Deep Golden Amber" r="255" g="70" b="0"/>
+                <Slot index="31" media_name="Pale Lavender" r="255" g="134" b="224"/>
+                <Slot index="32" media_name="Special Lavender" r="255" g="198" b="216"/>
+                <Slot index="33" media_name="Pale Green" r="230" g="225" b="53"/>
+                <Slot index="34" media_name="Primary Green" r="0" g="180" b="0"/>
+                <Slot index="35" media_name="Bright Blue" r="0" g="171" b="201"/>
+                <Slot index="36" media_name="Apricot" r="255" g="163" b="1"/>
+                <Slot index="37" media_name="Bright Rose" r="255" g="53" b="65"/>
+                <Slot index="38" media_name="Pale Gold" r="255" g="159" b="85"/>
+                <Slot index="39" media_name="Pale Rose" r="255" g="163" b="108"/>
+                <Slot index="40" media_name="Pink" r="255" g="80" b="66"/>
+                <Slot index="41" media_name="Deep Orange" r="255" g="88" b="0"/>
+                <Slot index="42" media_name="Bastard Amber" r="255" g="179" b="82"/>
+                <Slot index="43" media_name="Flame Red" r="255" g="0" b="0"/>
+                <Slot index="44" media_name="Daylight Blue" r="0" g="191" b="255"/>
+                <Slot index="45" media_name="Lilac Tint" r="255" g="133" b="158"/>
+                <Slot index="46" media_name="Deep Lavender" r="255" g="131" b="223"/>
+                <Slot index="47" media_name="Lagoon Blue" r="0" g="226" b="241"/>
+                <Slot index="48" media_name="Chrome Orange" r="255" g="161" b="0"/>
+                <Slot index="49" media_name="Dark Lavender" r="187" g="54" b="255"/>
+                <Slot index="50" media_name="Congo Blue" r="187" g="0" b="255"/>
+                <Slot index="51" media_name="Alice Blue" r="0" g="120" b="255"/>
+                <Slot index="52" media_name="Full CT Blue" r="111" g="255" b="255"/>
+                <Slot index="53" media_name="Half CT Blue" r="208" g="236" b="255"/>
+                <Slot index="54" media_name="Quarter CT Blue" r="220" g="252" b="211"/>
+                <Slot index="55" media_name="Full CT Orange" r="255" g="132" b="0"/>
+                <Slot index="56" media_name="Half CT Orange" r="255" g="182" b="64"/>
+                <Slot index="57" media_name="Quarter CT Orange" r="255" g="179" b="134"/>
+                <Slot index="58" media_name="Filter Minus Green" r="255" g="147" b="189"/>
+                <Slot index="59" media_name="Half Minus Green" r="255" g="213" b="195"/>
+                <Slot index="60" media_name="Three Quarter CT Blue" r="127" g="229" b="235"/>
+                <Slot index="61" media_name="Three Quarter CT Orange" r="255" g="166" b="0"/>
+                <Slot index="62" media_name="Glacier Blue" r="0" g="192" b="242"/>
+                <Slot index="63" media_name="Lighter Blue" r="0" g="197" b="186"/>
+                <Slot index="64" media_name="Cabana Blue" r="0" g="111" b="255"/>
+                <Slot index="65" media_name="Millennium Gold" r="255" g="97" b="0"/>
+                <Slot index="66" media_name="Vanity Fair" r="255" g="0" b="156"/>
+            </Wheel>
+            <Wheel index="3" preset="GOBO" feature="GOBO3" attribute="GOBO3" subattribute="GOBO3">
+                <Slot index="0" media_name="Open"/>
+                <Slot index="1" media_name="Gobo1" media_filename="Robe Lighting/15020100.png">
+                    <media width="64" height="64">
+                        <Image>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgAAAFMAAACEAAAArQAAAM0AAADlAAAA9QAAAP0AAAD9AAAA9gAAAOYAAADOAAAArgAAAIYAAABVAAAAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAADkAAACNAAAA1wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADZAAAAjgAAADoAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAdAAAANoAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA2gAAAHMAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEAAACGAAAA8QAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA8QAAAIQAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAGsAAADtAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA6wAAAGgAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJwAAAMcAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAxQAAACYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAPQAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD0AAAAXQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAkgAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAACQAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAsAAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAK8AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAuQAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAuAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAsAAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AgIC/xcXF/8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAACvAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkQAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/h4eH/+fn5/95eXn/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAJEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXgAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/2ZmZv+np6f/Dg4O/xsbG/+qqqr/gYGB/1xcXP+1tbX/9vb2/zAwMP+Tk5P/FxcX/xcXF/+MjIz/Hx8f/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAXwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJgAAAPQAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/dHR0/wQEBP8tLS3/n5+f/9DQ0P8BAQH/wMDA//f39/9UVFT/Gxsb/y0tLf97e3v/ubm5/4qKiv/r6+v//v7+//b29v/h4eH/ISEh/w8PD/8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAPQAAAAnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAMYAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/FRUV/01NTf8cHBz/AwMD/6ampv8oKCj/AAAA/x0dHf9LS0v/KSkp/wQEBP8EBAT/W1tb/+Xl5f9QUFD/8vLy/1FRUf9kZGT/kJCQ/62trf9ra2v/mZmZ/+3t7f+Kior/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAxgAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGkAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/KSkp/+fn5//+/v7/Wlpa/wAAAP9CQkL/AAAA/wAAAP/Kysr/YWFh/5ycnP+0tLT/ISEh/wQEBP+goKD/ERER/yAgIP/l5eX/AAAA/wAAAP8AAAD/AAAA/wAAAP81NTX/JiYm/5eXl/8jIyP/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAABpAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAADsAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/BgYG/9TU1P+AgID/fHx8/zAwMP8qKir/ycnJ/8rKyv9aWlr/1NTU/3Nzc/8ICAj/wsLC/1RUVP+IiIj/MTEx/wAAAP8AAAD/Ghoa/2VlZf9LS0v/CQkJ/2pqav+7u7v/2dnZ/0FBQf+IiIj/paWl/xYWFv8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA7AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACFAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/0tLS/++vr7/AgIC/xEREf9CQkL/q6ur/+vr6//+/v7/5ubm/0JCQv8AAAD/PDw8//n5+f++vr7/2tra/25ubv9YWFj/AQEB/wAAAP9KSkr/9/f3/+vr6//d3d3/wsLC/3R0dP8NDQ3/r6+v//7+/v/7+/v/ioqK/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAACFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA8QAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP+UlJT/g4OD/5aWlv/6+vr/PT09/9HR0f/c3Nz/JSUl/zMzM/8rKyv/Li4u/0RERP/s7Oz//v7+//7+/v/19fX/lJSU/xMTE//S0tL/uLi4/7q6uv/x8fH/TExM/7y8vP8AAAD/BwcH/4yMjP/e3t7/mZmZ//7+/v84ODj/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA8QAAABAAAAAAAAAAAAAAAAAAAAAAAAAAdAAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/Nzc3/x0dHf+Pj4//sLCw/wYGBv/r6+v/WFhY/y8vL/8AAAD/hYWF/+/v7//CwsL//v7+//7+/v/+/v7/T09P/wAAAP8ICAj/vLy8/5ubm/8VFRX/Ozs7/2hoaP8hISH/AwMD/zAwMP8AAAD/AAAA/7a2tv/Gxsb/Kysr/7+/v/8ICAj/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAByAAAAAAAAAAAAAAAAAAAAAQAAANoAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/woKCv9gYGD/AAAA/1BQUP+srKz/6urq/1dXV/8AAAD/WVlZ/wICAv+vr6//AAAA/xMTE/8ODg7/Ly8v/52dnf/6+vr//v7+/+/v7/97e3v/eXl5/1FRUf8AAAD/AAAA/w8PD/8xMTH/T09P/9zc3P/6+vr/Ojo6/wAAAP8ICAj/MTEx/8rKyv92dnb/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA2QAAAAEAAAAAAAAAAAAAADoAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP9CQkL/9vb2/zAwMP9OTk7//v7+//7+/v9dXV3/AAAA/wAAAP8wMDD/f39//1dXV/9paWn/CAgI/wgICP90dHT//v7+//7+/v/+/v7/c3Nz/wYGBv8bGxv/zMzM/4SEhP9ISEj/mpqa/3R0dP8TExP/4ODg/+np6f8dHR3/AAAA/1paWv/+/v7/39/f/wcHB/8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAA4AAAAAAAAAAAAAACOAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/ysrK//Pz8/8uLi7/9vb2//7+/v+pqan/FxcX/1BQUP8CAgL/IiIi/wEBAf8AAAD/DAwM/35+fv+/v7///f39/3l5ef/d3d3//v7+/5mZmf8AAAD/AAAA/01NTf/w8PD/vLy8/0BAQP+1tbX/DQ0N/wQEBP8NDQ3/Li4u/+zs7P/Z2dn/ysrK/yQkJP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAjAAAAAAAAAAAAAAA2QAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/kJCQ//z8/P/f39//AAAA/zg4OP8hISH/AAAA/6Kiov+kpKT/h4eH/3p6ev8AAAD/GBgY/wMDA/8AAAD/CAgI/zs7O/8SEhL/Pj4+/x8fH/9BQUH/srKy/3Fxcf8AAAD/KCgo//f39/+Dg4P//v7+/6SkpP8EBAT/AAAA/7i4uP/e3t7//Pz8//b29v8vLy//AwMD/xYWFv8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAANYAAAAAAAAAHAAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/xAQEP9wcHD/r6+v/xISEv8AAAD/MzMz/z4+Pv+urq7/p6en/3BwcP/Hx8f/DAwM/7a2tv9qamr/lZWV/wAAAP9cXFz/mpqa/xMTE/8JCQn/GBgY/5iYmP/w8PD/AAAA/4SEhP/+/v7//v7+//39/f/+/v7/v7+//y4uLv+Hh4f/BwcH/9/f3/8pKSn/Ly8v/x8fH//T09P/ExMT/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAGQAAAFYAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP/Y2Nj/Pj4+/wUFBf8iIiL/KCgo//7+/v/t7e3/vLy8/w8PD/+7u7v//v7+/+Li4v8ZGRn/Ozs7//7+/v+IiIj/BQUF/6urq//X19f//v7+/xQUFP8ODg7/ZGRk/0xMTP87Ozv/xcXF/3h4eP8CAgL/CAgI/wAAAP9DQ0P/SEhI//z8/P+fn5//39/f/wMDA/8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAFIAAACGAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/hYWF/19fX/9UVFT//v7+/+vr6/8AAAD/AAAA/01NTf/t7e3/+vr6/xsbG/8AAAD/Dw8P/56env+fn5//FBQU/wAAAP8mJib/JiYm/xMTE/+AgID//f39/+Hh4f8hISH/AAAA/wEBAf8AAAD/CgoK/0pKSv9lZWX/JSUl/97e3v8HBwf/JCQk/x0dHf+ysrL/qKio/+vr6/+EhIT/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAACDAAAArwAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/0tLS/8KCgr/AAAA/7Ozs//8/Pz/dHR0/ykpKf8AAAD/b29v//7+/v+UlJT/p6en/yMjI//h4eH/+vr6/+7u7v9ISEj/Gxsb/z8/P/8jIyP/m5ub/9/f3/8kJCT/HBwc/9PT0/9FRUX/AAAA/z09Pf+4uLj/6urq//7+/v/09PT/Ghoa/4eHh/8tLS3/TU1N/wAAAP9OTk7/6enp/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAArAAAAM8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/ycnJ/8rKyv/AAAA/wAAAP9NTU3/l5eX/9XV1f/u7u7/NDQ0/2ZmZv/u7u7//v7+//39/f8UFBT/aGho/0dHR//BwcH/rKys/xwcHP+bm5v/Ozs7/wAAAP8DAwP/AAAA/2FhYf/w8PD/cnJy/8nJyf8bGxv/AAAA/z4+Pv/z8/P/Kioq/wAAAP8AAAD/IyMj/+3t7f9bW1v/AAAA/xoaGv8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAMwAAADmAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/xgYGP/v7+//+vr6/56env9hYWH/AAAA/wAAAP9jY2P//v7+/+3t7f8vLy//xcXF/zAwMP9SUlL/EBAQ/xkZGf8AAAD/AAAA/zU1Nf8VFRX/KSkp//X19f9ERET/0dHR/+/v7//e3t7/9fX1//7+/v+dnZ3/AAAA/4KCgv/h4eH/k5OT/x8fH/+4uLj/hYWF/wAAAP/x8fH/vr6+/wkJCf8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADkAAAA9gAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8iIiL/nJyc//7+/v/+/v7/h4eH/wAAAP8AAAD/BQUF/319ff8kJCT/EBAQ/x8fH/8VFRX/0dHR//7+/v/+/v7/pKSk/ycnJ/9CQkL/Jycn/x8fH/+EhIT/Kioq/xYWFv9NTU3/ZGRk/xUVFf8hISH/AgIC/wwMDP/r6+v/tLS0/19fX//s7Oz/2dnZ//j4+P9/f3//UFBQ/zw8PP8vLy//R0dH/01NTf8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA9QAAAP0AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/Dw8P/6ampv/+/v7//v7+/7i4uP8CAgL/BwcH/8TExP9UVFT/Dw8P/1xcXP/Kysr/ZGRk//7+/v+ZmZn/ZGRk/5KSkv9nZ2f/DAwM/zk5Of8AAAD/BQUF/wkJCf8DAwP/AAAA/93d3f90dHT/QUFB/wAAAP8bGxv/SEhI/wEBAf+srKz//v7+/4eHh/9CQkL/SEhI/wAAAP+BgYH//v7+//39/f9sbGz/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP0AAAD9AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/0hISP/x8fH/8/Pz/66urv9xcXH/enp6/+Xl5f/+/v7//v7+/0hISP8BAQH/l5eX//7+/v/+/v7/w8PD/wAAAP83Nzf/+/v7/+7u7v+oqKj/OTk5/729vf9CQkL/paWl/ygoKP+srKz//v7+/7W1tf8AAAD/ZWVl/6ioqP8AAAD/i4uL/9vb2/+6urr/QkJC/wAAAP8WFhb/CwsL/xkZGf+QkJD/CQkJ/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD9AAAA9QAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/Gxsb/w0NDf8AAAD/AAAA/09PT/9/f3///f39//7+/v8/Pz//AAAA/woKCv9OTk7/WFhY/15eXv8AAAD/BgYG/1lZWf/z8/P/UVFR//Pz8//29vb/FBQU/wAAAP8KCgr/4ODg//7+/v/IyMj/ZGRk/+/v7/+6urr/BgYG/yUlJf8LCwv/q6ur/9LS0v8+Pj7/+/v7/8/Pz/+rq6v/Ozs7/ygoKP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA9QAAAOUAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/FRUV/6Ojo/9BQUH/AAAA/wAAAP8AAAD/cnJy/5ycnP/+/v7/Li4u/yoqKv+kpKT/BgYG/wAAAP8AAAD/AAAA/wAAAP+MjIz/9fX1//7+/v/5+fn/Z2dn/xsbG/8AAAD/Ojo6//z8/P/6+vr/9/f3//b29v+VlZX/dXV1/x4eHv8oKCj/AAAA/0NDQ/8EBAT/LCws//v7+//+/v7//v7+//j4+P/q6ur/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAOUAAADNAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/xAQEP8hISH/Kysr/xUVFf+vr6//PT09/wEBAf84ODj/UlJS/wICAv9sbGz//v7+/9TU1P9kZGT/AAAA/zs7O//Nzc3/hISE/1VVVf91dXX/5OTk/25ubv8AAAD/AAAA/wAAAP8nJyf/Ozs7/xYWFv83Nzf/AAAA/wAAAP+YmJj/0dHR/wMDA/8CAgL/mpqa/0VFRf8qKir/u7u7/9vb2/8CAgL/FBQU/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADNAAAArQAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/EBAQ/87Ozv/y8vL//v7+/8zMzP8QEBD/AAAA/xYWFv+Xl5f/AAAA/2FhYf9KSkr/Gxsb/wAAAP9WVlb/zc3N//j4+P/r6+v/MTEx/wMDA/+lpaX/Nzc3/wAAAP96enr/Hh4e/yYmJv+VlZX/AwMD/wAAAP9dXV3/aGho//7+/v+8vLz/JCQk/z8/P//s7Oz/EBAQ/w0NDf9tbW3/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAArQAAAIQAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8EBAT/pqam//7+/v+MjIz/EBAQ/wAAAP+fn5///Pz8/39/f/8AAAD/AAAA/6ampv9jY2P/Kioq/5SUlP8XFxf/aWlp/zY2Nv8AAAD/f39//6ysrP9cXFz//v7+/9ra2v8nJyf/EhIS/ycnJ/+3t7f/+fn5//7+/v/+/v7/ZWVl/xgYGP+lpaX/8/Pz/7e3t/8ZGRn/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAIUAAABTAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/GBgY/0BAQP/7+/v//v7+/zc3N/8pKSn/9vb2/9jY2P/19fX/g4OD/xMTE/9RUVH/4eHh/4uLi/8CAgL/ERER/ykpKf8UFBT/AAAA/wAAAP8BAQH/a2tr/8nJyf/+/v7/0dHR/1dXV/+ysrL//v7+/87Ozv+5ubn/+fn5/wQEBP8AAAD/cXFx/3p6ev/h4eH/ODg4/05OTv8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAABUAAAAGgAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/FRUV/+fn5//Q0ND/19fX/9nZ2f8AAAD/AgIC/05OTv8BAQH/ampq//Pz8//c3Nz/jo6O/zIyMv/6+vr/7+/v/+7u7v/BwcH/KCgo/2RkZP9ubm7/Hh4e/ygoKP+4uLj/pKSk/1RUVP/Jycn/SUlJ/+bm5v9ZWVn/tbW1/9PT0/8AAAD/AAAA/yEhIf8BAQH/jIyM/2pqav+9vb3/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAGwAAAAAAAADXAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/yQkJP+Hh4f/VVVV/wMDA/8ODg7/AAAA/wQEBP8FBQX/Tk5O/3Jycv8AAAD/PT09/5eXl//09PT/AwMD/15eXv/5+fn//f39/+Tk5P/s7Oz/ExMT/wgICP/FxcX/+/v7/56env8JCQn/AAAA/xcXF/8QEBD/AAAA/wMDA//d3d3/w8PD/5mZmf8XFxf/EBAQ/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA2AAAAAAAAAAAAAAAjAAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8LCwv/dnZ2//7+/v/b29v/RkZG/wAAAP8ICAj/ZGRk/4GBgf8gICD/AAAA/1VVVf+kpKT/d3d3/wcHB/9DQ0P/xMTE/zs7O/+JiYn/7+/v/ygoKP+np6f/8PDw/+7u7v/j4+P/ERER/wAAAP+BgYH/ra2t/z4+Pv8oKCj/1dXV//7+/v/u7u7/FhYW/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAI0AAAAAAAAAAAAAADgAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/jIyM/+rq6v/+/v7/09PT/xUVFf+xsbH/8vLy/z8/P/+dnZ3/8PDw/6Ojo/8hISH/oqKi/5GRkf8XFxf/Kysr/xAQEP8gICD/2NjY/9jY2P8AAAD/Ojo6/0tLS/8hISH/c3Nz/+np6f+6urr/+/v7/4CAgP8wMDD/Jycn/xMTE/+5ubn/2dnZ/x4eHv8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAA5AAAAAAAAAAAAAAABAAAA2QAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/BwcH//n5+f9RUVH/WFhY/8zMzP9vb2//FRUV/8PDw/9NTU3/AAAA/ygoKP85OTn/FhYW/wAAAP8AAAD/ExMT/+7u7v/w8PD/Gxsb/4eHh/9wcHD/AAAA/wgICP+mpqb/goKC/zIyMv/o6Oj/zc3N/8vLy/8AAAD/FBQU/7q6uv8kJCT/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADZAAAAAQAAAAAAAAAAAAAAAAAAAHMAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP89PT3/EhIS/wAAAP8AAAD/AAAA/wAAAP+UlJT/5+fn/5ycnP8iIiL/Ghoa//z8/P9oaGj/kZGR/zk5Of/Jycn/Y2Nj/ysrK/81NTX/Li4u/ygoKP/l5eX//f39//Dw8P8SEhL/Ghoa/wICAv8gICD/gICA/+jo6P/AwMD/BwcH/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAcgAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA8QAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/zIyMv/Gxsb/6Ojo/319ff+EhIT/cXFx/wQEBP+3t7f/5OTk/wMDA/9qamr//v7+/+3t7f9oaGj/Ly8v/yYmJv+UlJT/6enp/+3t7f84ODj/QUFB/3V1df/d3d3/FRUV/1tbW/8FBQX/cnJy/+Hh4f9AQED/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA8AAAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIUAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8MDAz/4+Pj/3Fxcf+Pj4///Pz8//n5+f+NjY3/ExMT/ysrK/9sbGz/7+/v//7+/v8pKSn/AAAA/yEhIf/a2tr/5eXl/zw8PP91dXX/AgIC/wcHB/8iIiL/S0tL/0tLS//o6Oj/ODg4/y0tLf9RUVH/FhYW/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAIMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARAAAA7AAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wgICP8AAAD/AAAA/zk5Of+5ubn/SkpK/wICAv8AAAD/NTU1/yEhIf+fn5//R0dH/yAgIP8XFxf/oaGh//7+/v8oKCj/Li4u/wAAAP/Jycn/3t7e/01NTf9jY2P/vLy8/4KCgv/19fX//f39/zMzM/8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAOsAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGoAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8MDAz/sLCw/wMDA/8+Pj7/RUVF/wAAAP8NDQ3/nJyc//n5+f/IyMj/sLCw/2FhYf+4uLj/MDAw/4+Pj/81NTX/5OTk//7+/v9NTU3/AAAA/xoaGv9GRkb/T09P/2RkZP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAABnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAxwAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/JSUl//7+/v93d3f/29vb/2FhYf9xcXH/ZWVl//j4+P/t7e3/AQEB/xgYGP9OTk7/rKys/wAAAP8GBgb/FxcX/4eHh//+/v7/U1NT/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADEAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACcAAAD0AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP9zc3P/oaGh/3d3d//ExMT/pKSk/w8PD/+EhIT/RERE/zIyMv8bGxv/AAAA/wAAAP8AAAD/ioqK/7+/v/9DQ0P/2dnZ/zExMf8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADzAAAAJQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXwAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/BAQE/wMDA/8AAAD/AAAA/yoqKv/29vb/YmJi/xoaGv+RkZH/CAgI/wAAAP8QEBD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACSAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8YGBj/a2tr/wEBAf8DAwP/0NDQ/0RERP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAjwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAK8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAArgAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAuAAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAtwAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAACvAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAArgAAAAcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAJAAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAkQAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXQAAAPMAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD0AAAAXgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlAAAAxQAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADGAAAAJgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAABoAAAA6wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAOwAAABpAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAACEAAAA8QAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA8QAAAIQAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAABzAAAA2gAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAADZAAAAcgAAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA5AAAAjQAAANgAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA1gAAAIsAAAA3AAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHAAAAFUAAACFAAAArgAAAM4AAADlAAAA9QAAAP0AAAD9AAAA9QAAAOQAAADMAAAArAAAAIMAAABSAAAAGQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</Image>
+                    </media>
+                </Slot>
+            </Wheel>
+        </Wheels>
+        <RDMKey ESTAId="21075" DeviceModelId="353"/>
+    </FixtureType>
+</MA>

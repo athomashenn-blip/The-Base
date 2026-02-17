@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<MA xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/2.8.123/MA.xsd" xmlns="http://schemas.malighting.de/grandma2/xml/MA" major_vers="3" minor_vers="7" stream_vers="0">
+    <FixtureType name="Robin T15 PC" mode="Mode 6 - Only dimmer">
+        <InfoItems>
+            <Info type="Revision" date="2024-10-17T07:10:57">Converted GDTF to grandMA2 fixture type with Share Converter version 1.4.1</Info>
+            <Info type="Revision" date="2024-03-14T12:43:10">2024-03-13  UUDI changed</Info>
+            <Info type="Revision" date="2024-03-14T12:53:28">2024-03-14  Initial release</Info>
+            <Info type="Revision" date="2024-04-15T10:24:48">2024-04-15  Photometric data added</Info>
+            <Info type="Revision" date="2024-09-20T06:19:13">2024-09-20  Power consuption update</Info>
+            <Info>Catering to the needs of broadcast, film, and theatrical professionals who seek compact yet powerful manual wash luminaires, the T15 Fresnel™ and T15 PC™ emerge as an indispensable addition to the acclaimed Robe T Series.</Info>
+            <Info type="Revision" date="2024-10-17T07:11:00.028">2024-10-17%20%20Updated%20from%20GDTF%20release, Uploaded to Fixture Share.</Info>
+        </InfoItems>
+        <short_name>Robin T15 PC</short_name>
+        <manufacturer>Robe lighting</manufacturer>
+        <short_manufacturer>Robe Lighting</short_manufacturer>
+        <Modules>
+            <Module name="Yoke" class="None" beamtype="None" beam_intensity="" index="0" beam_angle="">
+                <Model name="Yoke" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                    <Model name="Head" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="Tilt">
+                        <AxisFactors x="-1" y="0" z="-0"/>
+                        <Offset>
+                            <Location x="0.000000" y="0.000000" z="-0.293000"/>
+                            <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                            <Scaling x="1" y="1" z="1"/>
+                        </Offset>
+                    </Model>
+                </Model>
+                <ChannelType coarse="1" default="0" react_to_master="1" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Open" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="2147483647" attribute="TILT" feature="POSITION" preset="POSITION">
+                    <ChannelFunction subattribute="TILT" attribute="TILT" feature="POSITION" preset="POSITION" from="135" to="-135" physfrom="135" physto="-135" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="Horizontal position" from_dmx="13980454" to_dmx="13980454"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+        </Modules>
+        <Instances>
+            <Instance module_index="0" patch="1" locked="true"/>
+        </Instances>
+        <Wheels>
+            <Wheel index="0" preset="COLOR" feature="COLOR1" attribute="COLOR1" subattribute="COLOR1">
+                <Slot index="0" media_name="Open" r="245" g="254" b="255"/>
+                <Slot index="1" media_name="Medium Bastard Amber" r="255" g="157" b="84"/>
+                <Slot index="2" media_name="Medium Yellow" r="255" g="196" b="0"/>
+                <Slot index="3" media_name="Fire" r="255" g="0" b="0"/>
+                <Slot index="4" media_name="Bright Red" r="255" g="0" b="0"/>
+                <Slot index="5" media_name="Lavender" r="255" g="67" b="233"/>
+                <Slot index="6" media_name="Sky Blue" r="149" g="125" b="255"/>
+                <Slot index="7" media_name="Tokyo Blue" r="115" g="0" b="255"/>
+                <Slot index="8" media_name="Just Blue" r="168" g="123" b="255"/>
+                <Slot index="9" media_name="Lime Green" r="220" g="219" b="0"/>
+                <Slot index="10" media_name="Dark Yellow Green" r="0" g="213" b="2"/>
+                <Slot index="11" media_name="Spring Yellow" r="255" g="234" b="0"/>
+                <Slot index="12" media_name="Yellow" r="255" g="194" b="0"/>
+                <Slot index="13" media_name="Light Amber" r="255" g="191" b="36"/>
+                <Slot index="14" media_name="Straw" r="255" g="202" b="34"/>
+                <Slot index="15" media_name="Deep Amber" r="255" g="172" b="0"/>
+                <Slot index="16" media_name="Orange" r="255" g="117" b="0"/>
+                <Slot index="17" media_name="Primary Red" r="255" g="0" b="0"/>
+                <Slot index="18" media_name="Dark Pink" r="255" g="114" b="92"/>
+                <Slot index="19" media_name="Peacock Blue" r="0" g="177" b="141"/>
+                <Slot index="20" media_name="Medium Blue - Green" r="0" g="175" b="116"/>
+                <Slot index="21" media_name="Steel Blue" r="135" g="219" b="176"/>
+                <Slot index="22" media_name="Light Blue" r="0" g="177" b="153"/>
+                <Slot index="23" media_name="Dark Blue" r="0" g="110" b="255"/>
+                <Slot index="24" media_name="Deep Blue" r="0" g="113" b="255"/>
+                <Slot index="25" media_name="Filter Green" r="172" g="164" b="0"/>
+                <Slot index="26" media_name="Bright Pink" r="255" g="0" b="105"/>
+                <Slot index="27" media_name="Marine Blue" r="0" g="188" b="211"/>
+                <Slot index="28" media_name="Medium Blue" r="0" g="154" b="245"/>
+                <Slot index="29" media_name="Golden Amber" r="255" g="126" b="0"/>
+                <Slot index="30" media_name="Deep Golden Amber" r="255" g="42" b="0"/>
+                <Slot index="31" media_name="Pale Lavender" r="255" g="130" b="245"/>
+                <Slot index="32" media_name="Special Lavender" r="255" g="202" b="226"/>
+                <Slot index="33" media_name="Pale Green" r="241" g="229" b="59"/>
+                <Slot index="34" media_name="Primary Green" r="0" g="185" b="0"/>
+                <Slot index="35" media_name="Bright Blue" r="0" g="174" b="215"/>
+                <Slot index="36" media_name="Apricot" r="255" g="167" b="28"/>
+                <Slot index="37" media_name="Bright Rose" r="255" g="11" b="76"/>
+                <Slot index="38" media_name="Pale Gold" r="255" g="162" b="91"/>
+                <Slot index="39" media_name="Pale Rose" r="255" g="166" b="115"/>
+                <Slot index="40" media_name="Pink" r="255" g="66" b="74"/>
+                <Slot index="41" media_name="Deep Orange" r="255" g="77" b="0"/>
+                <Slot index="42" media_name="Bastard Amber" r="255" g="179" b="85"/>
+                <Slot index="43" media_name="Flame Red" r="255" g="0" b="0"/>
+                <Slot index="44" media_name="Daylight Blue" r="0" g="189" b="255"/>
+                <Slot index="45" media_name="Lilac Tint" r="255" g="129" b="166"/>
+                <Slot index="46" media_name="Deep Lavender" r="255" g="129" b="236"/>
+                <Slot index="47" media_name="Lagoon Blue" r="0" g="234" b="252"/>
+                <Slot index="48" media_name="Chrome Orange" r="255" g="164" b="0"/>
+                <Slot index="49" media_name="Dark Lavender" r="208" g="0" b="255"/>
+                <Slot index="50" media_name="Congo Blue" r="210" g="0" b="255"/>
+                <Slot index="51" media_name="Alice Blue" r="0" g="117" b="255"/>
+                <Slot index="52" media_name="Full CT Blue" r="102" g="255" b="255"/>
+                <Slot index="53" media_name="Half CT Blue" r="227" g="247" b="255"/>
+                <Slot index="54" media_name="Quarter CT Blue" r="218" g="249" b="211"/>
+                <Slot index="55" media_name="Full CT Orange" r="255" g="128" b="0"/>
+                <Slot index="56" media_name="Half CT Orange" r="255" g="188" b="70"/>
+                <Slot index="57" media_name="Quarter CT Orange" r="255" g="180" b="138"/>
+                <Slot index="58" media_name="Filter Minus Green" r="255" g="143" b="196"/>
+                <Slot index="59" media_name="Half Minus Green" r="255" g="226" b="206"/>
+                <Slot index="60" media_name="Three Quarter CT Blue" r="124" g="225" b="244"/>
+                <Slot index="61" media_name="Three Quarter CT Orange" r="255" g="170" b="0"/>
+                <Slot index="62" media_name="Glacier Blue" r="0" g="193" b="255"/>
+                <Slot index="63" media_name="Lighter Blue" r="0" g="202" b="198"/>
+                <Slot index="64" media_name="Cabana Blue" r="0" g="103" b="255"/>
+                <Slot index="65" media_name="Millennium Gold" r="255" g="89" b="0"/>
+                <Slot index="66" media_name="Vanity Fair" r="255" g="0" b="164"/>
+            </Wheel>
+        </Wheels>
+        <RDMKey ESTAId="21075" DeviceModelId="321"/>
+    </FixtureType>
+</MA>

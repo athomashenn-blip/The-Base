@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+<MA xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/2.8.123/MA.xsd" xmlns="http://schemas.malighting.de/grandma2/xml/MA" major_vers="3" minor_vers="7" stream_vers="0">
+    <FixtureType name="OnePATT" mode="Mode 7 - One PATT only">
+        <InfoItems>
+            <Info type="Revision" date="2023-07-18T11:52:36">Converted GDTF to grandMA2 fixture type with Share Converter version 1.4.0</Info>
+            <Info type="Revision" date="2023-03-01T15:10:04">New fixture type based on OnePATT from Robe Lighting</Info>
+            <Info type="Revision" date="2023-03-01T14:10:26">2023-03-01  Initial Release</Info>
+            <Info type="Revision" date="2023-03-03T12:13:18">2023-03-01  Initial Release, Uploaded to GDTF Share.</Info>
+            <Info type="Revision" date="2023-03-03T12:04:38">2023-03-03  Fixture update</Info>
+            <Info type="Revision" date="2023-03-03T12:43:20">2023-03-03  Fixture update</Info>
+            <Info type="Revision" date="2023-03-06T09:22:19">2023-03-06  Wiring object revision</Info>
+            <Info type="Revision" date="2023-03-07T12:55:26">2023-03-07  Dmx defaults and highlights revision</Info>
+            <Info type="Revision" date="2023-05-10T07:39:46">2023-05-10  Wiring objects revision</Info>
+            <Info type="Revision" date="2023-05-16T11:12:50">2023-05-16  Wiring object revision</Info>
+            <Info>Note: For controlling OnePATTs individually, use mode 7 ("Mode 7 - One PATT only") and patch the fixture in this mode as many times as the number of OnePATTs your show has.
+Modes 1-7 are standard modes from PixelPATT
+Joining Robe’s line of retro style lighting products is pixelPATT, the latest addition to the PATT family. In spite of its eye catching retro design, pixelPATT is based on modern LED pixel controlled technology.
+For full data (consuption, voltage etc.) please add PATT Driver.</Info>
+            <Info type="Revision" date="2023-07-18T11:52:39.524">2023-07-18%20%20Update%20from%20GDTF%20release, Uploaded to Fixture Share.</Info>
+        </InfoItems>
+        <short_name>OnePATT</short_name>
+        <manufacturer>Robe lighting</manufacturer>
+        <short_manufacturer>Robe Lighting</short_manufacturer>
+        <Modules>
+            <Module name="Patt beam" class="Conventional" beamtype="Wash" beam_intensity="240" beam_angle="58">
+                <Model name="Patt beam" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Model name="Beam" model_type="Beam">
+                        <Offset>
+                            <Location x="0.000000" y="0.000000" z="0.000000"/>
+                            <Rotation x="0.000000" y="-3.141593" z="0.000000"/>
+                            <Scaling x="1" y="1" z="1"/>
+                        </Offset>
+                        <BeamClippingDistance>-0.066</BeamClippingDistance>
+                        <BeamDiameterAtOffset>0.189000</BeamDiameterAtOffset>
+                    </Model>
+                    <Vertices>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</Vertices>
+                    <Faces>2AAAAAAAAQACAAkAAAACAAEAVAACAFQATwACAE8ASgACAEoARQACAEUAQAACAEAAOwACADsANgACADYAMQACADEALAACACwAJwACACcAIgACACIAHQACAA4ACQACABMADgACABgAEwACAB0AGAACAAMABAAFAFwAAwAFAAYABwAIAA0ABwAGAAgABwBYAFgABwBTAFMABwBOAE4ABwBJAEkABwBEAEQABwA/AD8ABwA6ADoABwA1ADUABwAwADAABwArACsABwAmABIABwANABcABwASABwABwAXACEABwAcACYABwAhAAoACwAMAF0ACgAMAA8AEAARAF4ADwARABQAFQAWAF8AFAAWABkAGgAbAGAAGQAbAB4AHwAgAGEAHgAgACMAJAAlAGIAIwAlACgAKQAqAGMAKAAqAC0ALgAvAGQALQAvADIAMwA0AGUAMgA0ADcAOAA5AGYANwA5ADwAPQA+AGcAPAA+AEEAQgBDAGgAQQBDAEYARwBIAGkARgBIAEsATABNAGoASwBNAFAAUQBSAGsAUABSAFUAVgBXAGwAVQBXAFkAWgBbAG0AWQBbAA==</Faces>
+                    <SubSets>
+                        <SubSet3d material_index="0" FaceStart="0" FacesCount="72"/>
+                    </SubSets>
+                    <Materials>
+                        <Material3d name="black" specularPower="0.1">
+                            <DiffuseColor r="0.157" g="0.157" b="0.157" a="1"/>
+                            <SpecularColor r="0.898" g="0.898" b="0.898" a="0"/>
+                            <EmissiveColor r="0" g="0" b="0" a="1"/>
+                            <DiffuseInking x="0" y="0" z="0"/>
+                            <EmissiveInking x="0" y="0" z="0"/>
+                            <SurfaceTexture/>
+                            <AlphaTexture/>
+                        </Material3d>
+                    </Materials>
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                </Model>
+                <ChannelType default="0" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="65535"/>
+                        <ChannelSet name="Open" from_dmx="16777216" to_dmx="16777216"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="1" default="255" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR">
+                    <ChannelFunction subattribute="COLORRGB1" attribute="COLORRGB1" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="2" default="255" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR">
+                    <ChannelFunction subattribute="COLORRGB2" attribute="COLORRGB2" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="3" default="255" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR">
+                    <ChannelFunction subattribute="COLORRGB3" attribute="COLORRGB3" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="4" default="255" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR">
+                    <ChannelFunction subattribute="COLORRGB5" attribute="COLORRGB5" feature="COLORRGB" preset="COLOR" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Min" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+        </Modules>
+        <Instances>
+            <Instance module_index="0" patch="1" locked="true" Z="-0.055"/>
+            <Instance module_index="0" patch="1" locked="true" Z="-0.055"/>
+        </Instances>
+        <Wheels>
+            <Wheel index="0" preset="Color" feature="Color" attribute="COLORMACROS" subattribute="COLORMACROS">
+                <Slot index="0" media_name="No function" r="254" g="255" b="255"/>
+                <Slot index="1" media_name="Filter 4 (Medium Bastard Amber)" r="255" g="190" b="125"/>
+                <Slot index="2" media_name="Filter 25 (Sunset red)" r="255" g="73" b="0"/>
+                <Slot index="3" media_name="Filter 19 (Fire)" r="255" g="0" b="0"/>
+                <Slot index="4" media_name="Filter 26 (Bright Red)" r="255" g="0" b="0"/>
+                <Slot index="5" media_name="Filter 58 (Lavender)" r="191" g="63" b="201"/>
+                <Slot index="6" media_name="Filter 68 (Sky Blue)" r="0" g="149" b="245"/>
+                <Slot index="7" media_name="Fliter 36 (Medium Pink)" r="255" g="129" b="95"/>
+                <Slot index="8" media_name="Filter 89 (Moss Green)" r="0" g="192" b="0"/>
+                <Slot index="9" media_name="Filter 88 (Lime Green)" r="191" g="195" b="0"/>
+                <Slot index="10" media_name="Filter 90 (Dark Yellow Green)" r="0" g="203" b="0"/>
+                <Slot index="11" media_name="Filter 49 (Medium Purple)" r="255" g="0" b="172"/>
+                <Slot index="12" media_name="Filter 52 (Light Lavender)" r="255" g="165" b="157"/>
+                <Slot index="13" media_name="Filter 102 (Light Amber)" r="221" g="141" b="0"/>
+                <Slot index="14" media_name="Filter 103 (Straw)" r="222" g="146" b="46"/>
+                <Slot index="15" media_name="Filter 140 (Summer Blue)" r="163" g="231" b="195"/>
+                <Slot index="16" media_name="Fliter 124 (Dark Green)" r="0" g="209" b="27"/>
+                <Slot index="17" media_name="Filter 106 (Primary Red)" r="255" g="0" b="0"/>
+                <Slot index="18" media_name="Filter 111 (Dark Pink)" r="255" g="42" b="115"/>
+                <Slot index="19" media_name="Filter 115 (Peacock Blue)" r="0" g="203" b="157"/>
+                <Slot index="20" media_name="Filter 126 (Mauve)" r="255" g="0" b="194"/>
+                <Slot index="21" media_name="Filter 117 (Steel Blue)" r="218" g="230" b="179"/>
+                <Slot index="22" media_name="Filter 118 (Light Blue)" r="0" g="198" b="229"/>
+                <Slot index="23" media_name="Filter 122 (Fern Green)" r="106" g="203" b="0"/>
+                <Slot index="24" media_name="Filter 182 (Light Red)" r="255" g="0" b="0"/>
+                <Slot index="25" media_name="Filter 121 (Filter Green)" r="176" g="195" b="0"/>
+                <Slot index="26" media_name="Filter 128 (Bright Pink)" r="255" g="0" b="140"/>
+                <Slot index="27" media_name="Filter 131 (Marine Blue)" r="116" g="200" b="161"/>
+                <Slot index="28" media_name="Filter 132 (Medium Blue)" r="0" g="168" b="255"/>
+                <Slot index="29" media_name="Filter 134 (Golden Amber)" r="195" g="94" b="0"/>
+                <Slot index="30" media_name="Filter 135 (Deep Golden Amber)" r="255" g="63" b="0"/>
+                <Slot index="31" media_name="Filter 136 (Pale Lavender)" r="219" g="142" b="136"/>
+                <Slot index="32" media_name="Filter 137 (Special Lavender)" r="201" g="136" b="171"/>
+                <Slot index="33" media_name="Filter 138 (Pale Green)" r="240" g="217" b="93"/>
+                <Slot index="34" media_name="Filter 798 (Chrysalis Pink)" r="156" g="0" b="195"/>
+                <Slot index="35" media_name="Filter 141 (Bright Blue)" r="0" g="140" b="174"/>
+                <Slot index="36" media_name="Filter 147 (Apricot)" r="227" g="122" b="0"/>
+                <Slot index="37" media_name="Filter 148 (Bright Rose)" r="255" g="36" b="92"/>
+                <Slot index="38" media_name="Filter 152 (Pale Gold)" r="221" g="135" b="64"/>
+                <Slot index="39" media_name="Filter 154 (Pale Rose)" r="255" g="161" b="100"/>
+                <Slot index="40" media_name="Filter 157 (Pink)" r="255" g="118" b="97"/>
+                <Slot index="41" media_name="Filter 143 (Pale Navy Blue)" r="77" g="174" b="210"/>
+                <Slot index="42" media_name="Filter 162 (Bastard Amber)" r="227" g="152" b="81"/>
+                <Slot index="43" media_name="Filter 164 (Flame Red)" r="255" g="0" b="0"/>
+                <Slot index="44" media_name="Filter 165 (Daylight Blue)" r="0" g="202" b="255"/>
+                <Slot index="45" media_name="Filter 169 (Lilac Tint)" r="225" g="127" b="55"/>
+                <Slot index="46" media_name="Filter 170 (Deep Lavender)" r="250" g="132" b="187"/>
+                <Slot index="47" media_name="Filter 172 (Lagoon Blue)" r="0" g="187" b="204"/>
+                <Slot index="48" media_name="Filter 194 (Surprise Pink)" r="255" g="187" b="254"/>
+                <Slot index="49" media_name="Filter 180 (Dark Lavender)" r="240" g="113" b="255"/>
+                <Slot index="50" media_name="Filter 181 (Congo Blue)" r="137" g="0" b="255"/>
+                <Slot index="51" media_name="Filter 197 (Alice Blue)" r="138" g="149" b="238"/>
+                <Slot index="52" media_name="Filter 201 (Full CT Blue)" r="225" g="219" b="233"/>
+                <Slot index="53" media_name="Filter 202 (Half CT Blue)" r="253" g="222" b="210"/>
+                <Slot index="54" media_name="Filter 203 (Quarter CT Blue)" r="255" g="228" b="191"/>
+                <Slot index="55" media_name="Filter 204 (Full CT Orange)" r="240" g="131" b="0"/>
+                <Slot index="56" media_name="Filter 219 (Fluorescent Green)" r="134" g="146" b="91"/>
+                <Slot index="57" media_name="Filter 206 (Quarter CT Orange)" r="248" g="176" b="91"/>
+                <Slot index="58" media_name="Filter 247 (Filter Minus Green)" r="255" g="187" b="167"/>
+                <Slot index="59" media_name="Filter 248 (Half Minus Green)" r="255" g="204" b="151"/>
+                <Slot index="60" media_name="Filter 281 (Three Quarter CT Blue)" r="237" g="216" b="235"/>
+                <Slot index="61" media_name="Filter 285 (Three Quarter CT Orange)" r="208" g="134" b="18"/>
+                <Slot index="62" media_name="Filter 352 (Glacier Blue)" r="40" g="206" b="248"/>
+                <Slot index="63" media_name="Filter 353 (Lighter Blue)" r="111" g="197" b="217"/>
+                <Slot index="64" media_name="Filter 507 (Madge)" r="255" g="25" b="0"/>
+                <Slot index="65" media_name="Filter 778 (Millennium Gold)" r="255" g="86" b="0"/>
+                <Slot index="66" media_name="Filter 793 (Vanity Fair)" r="255" g="0" b="126"/>
+            </Wheel>
+        </Wheels>
+        <RDMKey ESTAId="21075" DeviceModelId="221"/>
+    </FixtureType>
+</MA>

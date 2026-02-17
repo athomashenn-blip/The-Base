@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<MA xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/2.8.123/MA.xsd" xmlns="http://schemas.malighting.de/grandma2/xml/MA" major_vers="3" minor_vers="7" stream_vers="0">
+    <FixtureType name="PATT 2013" mode="Needs external dimmer - mode with 16 bit dimmer channel 1">
+        <InfoItems>
+            <Info type="Revision" date="2023-07-18T12:05:08">Converted GDTF to grandMA2 fixture type with Share Converter version 1.4.0</Info>
+            <Info type="Revision" date="2020-07-29T08:05:32">virtual tilt</Info>
+            <Info type="Revision" date="2020-07-29T09:26:08">default value</Info>
+            <Info type="Revision" date="2020-07-29T13:21:13">29072020, Uploaded to GDTF Share.</Info>
+            <Info type="Revision" date="2021-07-13T10:36:44">13072021</Info>
+            <Info type="Revision" date="2022-05-25T21:20:58">adjust head rotation</Info>
+            <Info type="Revision" date="2022-10-05T11:14:16">2022-10-05  Weight added  Dimmer react to master grand  Dimmer highlight added</Info>
+            <Info type="Revision" date="2022-10-05T13:48:23">2022-10-05  2D svg model added Wiring Geometry update</Info>
+            <Info type="Revision" date="2022-10-10T08:12:03">2022-10-10  DMX modes added</Info>
+            <Info type="Revision" date="2022-10-10T08:17:46">2022-10-10  Share release</Info>
+            <Info type="Revision" date="2022-10-24T05:42:25">2022-10-24  Wiring objects revision</Info>
+            <Info type="Revision" date="2023-03-10T06:50:52">2023-03-10  Geometry and wiring object reivison</Info>
+            <Info>Patt 2013 is the first in a series of retro style lighting – designed specifically to further the current trend for tungsten eye-candy on stage and set - for bands, television, film and general prop lighting. </Info>
+            <Info type="Revision" date="2023-07-18T12:05:09.088">2023-07-18%20%20Update%20from%20GDTF%20release, Uploaded to Fixture Share.</Info>
+        </InfoItems>
+        <short_name>PATT 2013</short_name>
+        <manufacturer>Robe lighting</manufacturer>
+        <short_manufacturer>Robe Lighting</short_manufacturer>
+        <Modules>
+            <Module name="Yoke" class="Headmover" beamtype="Wash" beam_intensity="400" beam_angle="17">
+                <Model name="Yoke" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                    <Model name="Head" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="Tilt">
+                        <AxisFactors x="-1" y="0" z="-0"/>
+                        <Offset>
+                            <Location x="0.000000" y="0.000000" z="-0.409000"/>
+                            <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                            <Scaling x="1" y="1" z="1"/>
+                        </Offset>
+                        <Model name="Beam" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                            <Vertices>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</Vertices>
+                            <Faces>2AAAAAAAAQACAAkAAAACAAEAVAACAFQATwACAE8ASgACAEoARQACAEUAQAACAEAAOwACADsANgACADYAMQACADEALAACACwAJwACACcAIgACACIAHQACAA4ACQACABMADgACABgAEwACAB0AGAACAAMABAAFAFwAAwAFAAYABwAIAA0ABwAGAAgABwBYAFgABwBTAFMABwBOAE4ABwBJAEkABwBEAEQABwA/AD8ABwA6ADoABwA1ADUABwAwADAABwArACsABwAmABIABwANABcABwASABwABwAXACEABwAcACYABwAhAAoACwAMAF0ACgAMAA8AEAARAF4ADwARABQAFQAWAF8AFAAWABkAGgAbAGAAGQAbAB4AHwAgAGEAHgAgACMAJAAlAGIAIwAlACgAKQAqAGMAKAAqAC0ALgAvAGQALQAvADIAMwA0AGUAMgA0ADcAOAA5AGYANwA5ADwAPQA+AGcAPAA+AEEAQgBDAGgAQQBDAEYARwBIAGkARgBIAEsATABNAGoASwBNAFAAUQBSAGsAUABSAFUAVgBXAGwAVQBXAFkAWgBbAG0AWQBbAA==</Faces>
+                            <SubSets>
+                                <SubSet3d material_index="0" FaceStart="0" FacesCount="72"/>
+                            </SubSets>
+                            <Materials>
+                                <Material3d name="black" specularPower="0.1">
+                                    <DiffuseColor r="0.157" g="0.157" b="0.157" a="1"/>
+                                    <SpecularColor r="0.898" g="0.898" b="0.898" a="0"/>
+                                    <EmissiveColor r="0" g="0" b="0" a="1"/>
+                                    <DiffuseInking x="0" y="0" z="0"/>
+                                    <EmissiveInking x="0" y="0" z="0"/>
+                                    <SurfaceTexture/>
+                                    <AlphaTexture/>
+                                </Material3d>
+                            </Materials>
+                            <Offset>
+                                <Location x="0.000000" y="0.000000" z="-0.108000"/>
+                                <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                                <Scaling x="1" y="1" z="1"/>
+                            </Offset>
+                            <Model name="Beam" model_type="Beam">
+                                <Offset>
+                                    <Location x="0.000000" y="0.000000" z="0.000000"/>
+                                    <Rotation x="0.000000" y="-3.141593" z="0.000000"/>
+                                    <Scaling x="1" y="1" z="1"/>
+                                </Offset>
+                                <BeamClippingDistance>-0.066</BeamClippingDistance>
+                                <BeamDiameterAtOffset>0.550000</BeamDiameterAtOffset>
+                            </Model>
+                        </Model>
+                    </Model>
+                </Model>
+                <Body>
+                    <Size x="0.55254" y="0.598285" z="1.6"/>
+                </Body>
+                <ChannelType coarse="1" fine="2" default="0" react_to_master="1" attribute="DIM" feature="DIMMER" preset="DIMMER" highlight_value="100">
+                    <ChannelFunction subattribute="DIM" attribute="DIM" feature="DIMMER" preset="DIMMER" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Closed" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Open" from_dmx="65535" to_dmx="65535"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType default="2147483648" attribute="TILT" feature="POSITION" preset="POSITION">
+                    <ChannelFunction subattribute="TILT" attribute="TILT" feature="POSITION" preset="POSITION" from="-180" to="180" physfrom="-180" physto="180" min_dmx_24="0" max_dmx_24="16777216">
+                        <ChannelSet name="Center" from_dmx="8388607" to_dmx="8388607"/>
+                    </ChannelFunction>
+                </ChannelType>
+            </Module>
+        </Modules>
+        <Instances>
+            <Instance module_index="0" patch="1" locked="true"/>
+        </Instances>
+        <Wheels/>
+    </FixtureType>
+</MA>

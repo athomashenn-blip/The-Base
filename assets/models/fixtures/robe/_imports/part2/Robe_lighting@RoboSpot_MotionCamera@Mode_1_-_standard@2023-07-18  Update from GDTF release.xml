@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<MA xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.malighting.de/grandma2/xml/MA http://schemas.malighting.de/grandma2/xml/2.8.123/MA.xsd" xmlns="http://schemas.malighting.de/grandma2/xml/MA" major_vers="3" minor_vers="7" stream_vers="0">
+    <FixtureType name="RoboSpot MotionCamera" mode="Mode 1 - standard">
+        <InfoItems>
+            <Info type="Revision" date="2023-07-18T12:08:10">Converted GDTF to grandMA2 fixture type with Share Converter version 1.4.0</Info>
+            <Info type="Revision" date="2023-01-23T13:59:41">New fixture type based on RoboSpot MotionCamera from Robe Lighting</Info>
+            <Info type="Revision" date="2023-01-23T13:49:21">2023-01-23  Initial release</Info>
+            <Info type="Revision" date="2023-01-24T13:10:37">2023-01-24  3D models simplification</Info>
+            <Info type="Revision" date="2023-01-25T09:22:01">2023-01-25  3D models simplification</Info>
+            <Info type="Revision" date="2023-02-08T12:19:34">2023-02-08  DMX mode name revision</Info>
+            <Info>The RoboSpot MotionCamera is a revolutionary moving head fixture featuring an integrated HD camera remotely controlled via DMX to pan, tilt, zoom and autofocus.
+Featuring a full HD camera with high light sensitivity capabilities down to 0.3 Lux illumination levels, the fixture provides a “first person view” for the followspot operator to track the performer across the stage. Video signals are instantly transferred to the RoboSpot BaseStation via a high-speed Ethernet cat5 cable.</Info>
+            <Info type="Revision" date="2023-07-18T12:08:19.092">2023-07-18%20%20Update%20from%20GDTF%20release, Uploaded to Fixture Share.</Info>
+        </InfoItems>
+        <short_name>RoboSpot MotionCamera</short_name>
+        <manufacturer>Robe lighting</manufacturer>
+        <short_manufacturer>Robe Lighting</short_manufacturer>
+        <Modules>
+            <Module name="Main Module" class="None" beamtype="None" beam_intensity="" beam_angle="">
+                <Model name="Base" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="None">
+                    <Offset>
+                        <Location x="0.000000" y="0.000000" z="0.000000"/>
+                        <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                        <Scaling x="1" y="1" z="1"/>
+                    </Offset>
+                    <Model name="Yoke" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="Pan">
+                        <AxisFactors x="0" y="0" z="1"/>
+                        <Offset>
+                            <Location x="0.000000" y="0.000000" z="-0.084400"/>
+                            <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                            <Scaling x="1" y="1" z="1"/>
+                        </Offset>
+                        <Model name="Head" sunshadeType="ExcludeOwnBeam" vertices_have_pos="true" vertices_have_tex0="true" model_type="Model" axis_to_parent="Tilt">
+                            <AxisFactors x="-1" y="0" z="-0"/>
+                            <Offset>
+                                <Location x="0.000000" y="0.000000" z="-0.197600"/>
+                                <Rotation x="0.000000" y="-0.000000" z="0.000000"/>
+                                <Scaling x="1" y="1" z="1"/>
+                            </Offset>
+                        </Model>
+                    </Model>
+                </Model>
+                <ChannelType coarse="1" fine="2" default="32768" attribute="PAN" feature="POSITION" preset="POSITION">
+                    <ChannelFunction subattribute="PAN" attribute="PAN" feature="POSITION" preset="POSITION" from="-270" to="270" physfrom="-270" physto="270" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Center" from_dmx="32768" to_dmx="32768"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="3" fine="4" default="32768" attribute="TILT" feature="POSITION" preset="POSITION">
+                    <ChannelFunction subattribute="TILT" attribute="TILT" feature="POSITION" preset="POSITION" from="135" to="-135" physfrom="135" physto="-135" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Center" from_dmx="32768" to_dmx="32768"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="5" default="0" attribute="POSITIONMSPEED" feature="Control" preset="Control">
+                    <ChannelFunction subattribute="POSITIONMSPEED" attribute="POSITIONMSPEED" feature="Control" preset="Control" from="0" to="100" physfrom="1" physto="0.01" min_dmx_24="0" max_dmx_24="16777215">
+                        <ChannelSet name="Standard mode" from_dmx="0" to_dmx="0"/>
+                        <ChannelSet name="Max" from_dmx="1" to_dmx="1"/>
+                        <ChannelSet name="Min" from_dmx="255" to_dmx="255"/>
+                    </ChannelFunction>
+                </ChannelType>
+                <ChannelType coarse="6" default="0" attribute="FIXTUREDISPLAY" feature="FIXTURE" preset="CONTROL">
+                    <ChannelFunction subattribute="NOFEATURE" attribute="DUMMY" feature="CONTROL" preset="CONTROL" from="0" to="7.45" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="1250067"/>
+                    <ChannelFunction subattribute="FIXTUREDISPLAY" attribute="FIXTUREDISPLAY" feature="FIXTURE" preset="CONTROL" from="7.45" to="11.37" physfrom="0" physto="1" min_dmx_24="1315860" max_dmx_24="1907997">
+                        <ChannelSet name="Display ON" from_dmx="20" to_dmx="24" slot_from="0" slot_to="0"/>
+                        <ChannelSet name="Display OFF" from_dmx="25" to_dmx="29" slot_from="1" slot_to="1"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="PanTiltMode" attribute="FIXTUREDISPLAY" feature="FIXTURE" preset="CONTROL" from="11.37" to="15.29" physfrom="0" physto="1" min_dmx_24="1973790" max_dmx_24="2565927">
+                        <ChannelSet name="Pan/Tilt speed mode" from_dmx="30" to_dmx="34"/>
+                        <ChannelSet name="Pan/Tilt time mode" from_dmx="35" to_dmx="39"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="FIXTUREDISPLAY" feature="FIXTURE" preset="CONTROL" from="15.29" to="19.22" physfrom="0" physto="1" min_dmx_24="2631720" max_dmx_24="3223857"/>
+                    <ChannelFunction subattribute="POSITIONRESET" attribute="FIXTUREDISPLAY" feature="FIXTURE" preset="CONTROL" from="19.22" to="21.18" physfrom="0" physto="1" min_dmx_24="3289650" max_dmx_24="3552822">
+                        <ChannelSet name="Pan/Tilt reset" from_dmx="50" to_dmx="54"/>
+                    </ChannelFunction>
+                    <ChannelFunction subattribute="NOFEATURE" attribute="FIXTUREDISPLAY" feature="FIXTURE" preset="CONTROL" from="21.18" to="100" physfrom="0" physto="1" min_dmx_24="3618615" max_dmx_24="16777215"/>
+                </ChannelType>
+                <ChannelType coarse="7" default="0" attribute="DUMMY" feature="CONTROL" preset="CONTROL">
+                    <ChannelFunction subattribute="NOFEATURE" attribute="DUMMY" feature="CONTROL" preset="CONTROL" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215"/>
+                </ChannelType>
+                <ChannelType coarse="8" default="0" attribute="DUMMY" feature="CONTROL" preset="CONTROL">
+                    <ChannelFunction subattribute="NOFEATURE" attribute="DUMMY" feature="CONTROL" preset="CONTROL" from="0" to="100" physfrom="0" physto="1" min_dmx_24="0" max_dmx_24="16777215"/>
+                </ChannelType>
+            </Module>
+        </Modules>
+        <Instances>
+            <Instance module_index="0" patch="1" locked="true"/>
+        </Instances>
+        <Wheels/>
+        <RDMKey ESTAId="21075" DeviceModelId="231"/>
+    </FixtureType>
+</MA>
