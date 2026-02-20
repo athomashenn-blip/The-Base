@@ -1,0 +1,9 @@
+.DS_Store
+**/.DS_Store
+
+# Large import/intermediate files (not runtime)
+assets/gdtf/inbox/
+assets/gdtf/extracted/
+
+# Prevent accidental nested project copies
+The Base/

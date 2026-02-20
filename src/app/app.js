@@ -1,0 +1,13414 @@
+      (function () {
+        const LED_PANELS = [
+          { id: "absen_d2v_2_9_05", name: "Absen D2V 2.9 0.5x0.5m", panelW: 0.5, panelH: 0.5, pxW: 168, pxH: 168, family: "absen_d2v", avgW: 45, maxW: 135, avgA: 0.2, maxA: 0.61, maxPanelsPerPort: 16, maxPanelsPerPowerLine: 16 },
+          { id: "absen_pl_2_9_05", name: "Absen PL 2.9 0.5x0.5m", panelW: 0.5, panelH: 0.5, pxW: 168, pxH: 168, family: "absen_pl", avgW: 45, maxW: 135, avgA: 0.2, maxA: 0.61, maxPanelsPerPort: 16, maxPanelsPerPowerLine: 16 },
+          { id: "absen_nt_2_9_05", name: "Absen NT 2.9 0.5x0.5m", panelW: 0.5, panelH: 0.5, pxW: 168, pxH: 168, family: "absen_nt", avgW: 57.5, maxW: 172.5, avgA: 0.26, maxA: 0.78, maxPanelsPerPort: 16, maxPanelsPerPowerLine: 16 },
+          { id: "absen_nt_2_9_10", name: "Absen NT 2.9 1x0.5m", panelW: 0.5, panelH: 1, pxW: 168, pxH: 336, family: "absen_nt", halfPairId: "absen_nt_2_9_05", avgW: 83, maxW: 249, avgA: 0.37, maxA: 1.13, maxPanelsPerPort: 8, maxPanelsPerPowerLine: 8 },
+          { id: "absen_fl_2_9_05", name: "Absen FL 2.9 0.5x0.5m", panelW: 0.5, panelH: 0.5, pxW: 168, pxH: 168, family: "absen_fl", avgW: 57.5, maxW: 172.5, avgA: 0.26, maxA: 0.78, maxPanelsPerPort: 16, maxPanelsPerPowerLine: 16 },
+          { id: "digiled_5_9_05", name: "DigiLED 5.9 0.5x0.5m", panelW: 0.5, panelH: 0.5, pxW: 84, pxH: 84, family: "digiled_59", avgW: 50, maxW: 150, avgA: 0.22, maxA: 0.68, maxPanelsPerPort: 15, maxPanelsPerPowerLine: 8 },
+          { id: "digiled_5_9_10", name: "DigiLED 5.9 1x0.5m", panelW: 0.5, panelH: 1, pxW: 84, pxH: 168, family: "digiled_59", halfPairId: "digiled_5_9_05", avgW: 100, maxW: 300, avgA: 0.45, maxA: 1.36, maxPanelsPerPort: 15, maxPanelsPerPowerLine: 8 }
+        ];
+        const LED_CONTROLLERS = [
+          { id: "novastar_hd", name: "NovaStar HD", ports: 4 },
+          { id: "novastar_4k", name: "NovaStar 4K", ports: 16 }
+        ];
+        const LIGHTING_FIXTURE_FALLBACK = [];
+        const TRUSS_FALLBACK = [
+          { id: "prolyte_h30d", manufacturer: "Prolyte", series: "H30D", connection: "CCS6", weight_per_m_kg: 5.1, available_lengths_m: [0.25, 0.29, 0.5, 0.71, 0.75, 1, 1.5, 2, 2.5, 3, 4], verified: true },
+          { id: "prolyte_h30l", manufacturer: "Prolyte", series: "H30L", connection: "CCS6", weight_per_m_kg: 3.017, available_lengths_m: [0.25, 0.29, 0.5, 0.75, 1, 1.5, 2, 2.5, 3, 4], verified: false },
+          { id: "prolyte_h30v", manufacturer: "Prolyte", series: "H30V", connection: "CCS6", weight_per_m_kg: 7.0, available_lengths_m: [0.25, 0.29, 0.5, 0.71, 0.75, 1, 1.5, 2, 2.5, 3, 4], verified: true },
+          { id: "prolyte_h40d", manufacturer: "Prolyte", series: "H40D", connection: "CCS6", weight_per_m_kg: 5.24, available_lengths_m: [0.25, 0.5, 0.75, 0.81, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5], verified: true },
+          { id: "prolyte_h40l", manufacturer: "Prolyte", series: "H40L", connection: "CCS6", weight_per_m_kg: 3.217, available_lengths_m: [0.25, 0.5, 0.75, 0.81, 1, 1.5, 2, 2.5, 3, 4], verified: false },
+          { id: "prolyte_h40r", manufacturer: "Prolyte", series: "H40R", connection: "CCS6", weight_per_m_kg: 7.12, available_lengths_m: [0.5, 1, 1.5, 2, 2.5, 3, 4], verified: true },
+          { id: "prolyte_h40v", manufacturer: "Prolyte", series: "H40V", connection: "CCS6", weight_per_m_kg: 7.717, available_lengths_m: [0.25, 0.5, 0.75, 0.81, 1, 1.5, 2, 2.5, 3, 4], verified: true },
+          { id: "prolyte_x30d", manufacturer: "Prolyte", series: "X30D", connection: "CCS6", weight_per_m_kg: 4.4, available_lengths_m: [0.25, 0.29, 0.5, 0.71, 0.75, 1, 1.5, 2, 2.5, 3, 4], verified: true },
+          { id: "prolyte_x30l", manufacturer: "Prolyte", series: "X30L", connection: "CCS6", weight_per_m_kg: 2.47, available_lengths_m: [0.25, 0.29, 0.5, 0.71, 0.75, 1, 1.5, 2, 2.5, 3, 4], verified: false },
+          { id: "prolyte_x30v", manufacturer: "Prolyte", series: "X30V", connection: "CCS6", weight_per_m_kg: 6.0, available_lengths_m: [0.25, 0.29, 0.5, 0.71, 0.75, 1, 1.5, 2, 2.5, 3, 4], verified: true }
+        ];
+        const ALLOWED_TRUSS_IDS = new Set(TRUSS_FALLBACK.map((t) => t.id));
+        const MOTOR_FALLBACK = [
+          { id: "cm_lodestar_1t", brand: "CM", model: "Lodestar 1T", wll_kg: 1000, self_weight_kg: 47, chain_kg_per_m: 1.4, max_lift_m: 24, verified: true },
+          { id: "generic_hoist_1t", brand: "Generic", model: "Chain Hoist 1T", wll_kg: 1000, self_weight_kg: null, chain_kg_per_m: null, max_lift_m: null, verified: false }
+        ];
+        const CABLE_CATALOG = [
+          { type: "SDI", maxDistanceM: 100 },
+          { type: "HDMI", maxDistanceM: 10 },
+          { type: "HDMI Fibre", maxDistanceM: 100 },
+          { type: "XLR", maxDistanceM: 100 },
+          { type: "CAT 5", maxDistanceM: 100 },
+          { type: "CAT 6", maxDistanceM: 100 },
+          { type: "DMX 5 PIN", maxDistanceM: 300 },
+          { type: "DMX 3 PIN", maxDistanceM: 300 },
+          { type: "LC Fibre", maxDistanceM: 300 },
+          { type: "SC Fibre", maxDistanceM: 300 }
+        ];
+        const RIGGING_ADDITIONALS = [
+          { id: "pa_150", name: "PA", weightKg: 150 },
+          { id: "projector_25", name: "Projector", weightKg: 25 }
+        ];
+        const PROLYTE_STAGE_DECK_SIZES = [
+          { id: "stagedex_2x1", name: "Prolyte StageDex 2.0m x 1.0m", widthM: 2.0, depthM: 1.0, deckWeightKg: 42 },
+          { id: "stagedex_2x0_75", name: "Prolyte StageDex 2.0m x 0.75m", widthM: 2.0, depthM: 0.75, deckWeightKg: 36 },
+          { id: "stagedex_2x0_5", name: "Prolyte StageDex 2.0m x 0.5m", widthM: 2.0, depthM: 0.5, deckWeightKg: 30 },
+          { id: "stagedex_1_5x1", name: "Prolyte StageDex 1.5m x 1.0m", widthM: 1.5, depthM: 1.0, deckWeightKg: 33 },
+          { id: "stagedex_1_5x0_5", name: "Prolyte StageDex 1.5m x 0.5m", widthM: 1.5, depthM: 0.5, deckWeightKg: 24 },
+          { id: "stagedex_1x1", name: "Prolyte StageDex 1.0m x 1.0m", widthM: 1.0, depthM: 1.0, deckWeightKg: 26 },
+          { id: "stagedex_1x0_75", name: "Prolyte StageDex 1.0m x 0.75m", widthM: 1.0, depthM: 0.75, deckWeightKg: 22 },
+          { id: "stagedex_1x0_5", name: "Prolyte StageDex 1.0m x 0.5m", widthM: 1.0, depthM: 0.5, deckWeightKg: 18 },
+          { id: "stagedex_0_75x0_75", name: "Prolyte StageDex 0.75m x 0.75m", widthM: 0.75, depthM: 0.75, deckWeightKg: 16 },
+          { id: "stagedex_0_5x0_5", name: "Prolyte StageDex 0.5m x 0.5m", widthM: 0.5, depthM: 0.5, deckWeightKg: 12 }
+        ];
+        let riggingAdditionalCatalog = RIGGING_ADDITIONALS.slice();
+        const MODEL_ASSET_MAP = window.THE_BASE_MODEL_ASSETS && typeof window.THE_BASE_MODEL_ASSETS === "object"
+          ? window.THE_BASE_MODEL_ASSETS
+          : { fixtures: {}, truss: {}, defaults: {} };
+        const GDTF_MODEL_MAP = window.THE_BASE_GDTF_MODELS && typeof window.THE_BASE_GDTF_MODELS === "object"
+          ? window.THE_BASE_GDTF_MODELS
+          : {};
+        const GDTF_PREVIEW_MAP = window.THE_BASE_GDTF_PREVIEWS && typeof window.THE_BASE_GDTF_PREVIEWS === "object"
+          ? window.THE_BASE_GDTF_PREVIEWS
+          : {};
+
+        const SETTINGS_SEED_KEY = "thebase.settings.seeded.v1";
+        const SETTINGS_DEFAULT_DEPTS = ["Video", "Lighting", "Audio", "Rigging", "Power", "Venue"];
+        function buildSeedSettingsFromRuntime() {
+          const seed = {
+            departments: {
+              Video: { equipment: [] },
+              Lighting: { equipment: [] },
+              Audio: { equipment: [] },
+              Rigging: { equipment: [] },
+              Power: { equipment: [] },
+              Venue: { equipment: [] }
+            }
+          };
+          LED_PANELS.forEach((p) => {
+            seed.departments.Video.equipment.push({
+              id: `vid_panel_${p.id}`,
+              manufacturer: String(p.name || "").split(" ")[0] || "Video",
+              name: p.name,
+              weight_kg: null,
+              power_use: { watts: Number.isFinite(Number(p.maxW)) ? Number(p.maxW) : null, amps: Number.isFinite(Number(p.maxA)) ? Number(p.maxA) : null },
+              notes: `Panel ${p.panelW}m x ${p.panelH}m | ${p.pxW} x ${p.pxH}`,
+              enabled: true,
+              meta: { led_panel: { ...p } }
+            });
+          });
+          LIGHTING_FIXTURE_FALLBACK.forEach((f, i) => {
+            seed.departments.Lighting.equipment.push({
+              id: `lx_seed_${i + 1}`,
+              manufacturer: f.manufacturer,
+              name: f.model,
+              weight_kg: Number.isFinite(Number(f.weight_kg)) ? Number(f.weight_kg) : null,
+              power_use: { watts: Number.isFinite(Number(f?.power?.max_w)) ? Number(f.power.max_w) : null, amps: null },
+              notes: f.category || "",
+              enabled: true,
+              meta: { fixture_modes: Array.isArray(f.modes) ? f.modes : [] }
+            });
+          });
+          RIGGING_ADDITIONALS.forEach((a, i) => {
+            seed.departments.Rigging.equipment.push({
+              id: `rig_add_${i + 1}`,
+              manufacturer: "Generic",
+              name: a.name,
+              weight_kg: Number(a.weightKg || 0),
+              power_use: { watts: null, amps: null },
+              notes: "Rigging additional",
+              enabled: true
+            });
+          });
+          return seed;
+        }
+
+        function ensureSettingsSeeded() {
+          if (!window.TheBaseSettings) return;
+          const wasSeeded = localStorage.getItem(SETTINGS_SEED_KEY) === "1";
+          if (wasSeeded) return;
+          const existing = localStorage.getItem(TheBaseSettings.STORAGE_KEY);
+          if (existing) {
+            localStorage.setItem(SETTINGS_SEED_KEY, "1");
+            return;
+          }
+          const seeded = TheBaseSettings.createDefaultSettings(buildSeedSettingsFromRuntime());
+          TheBaseSettings.saveSettings(seeded);
+          localStorage.setItem(SETTINGS_SEED_KEY, "1");
+        }
+
+        function getSettingsState() {
+          if (!window.TheBaseSettings) return null;
+          const seed = buildSeedSettingsFromRuntime();
+          return TheBaseSettings.loadSettings(seed);
+        }
+
+        function applySettingsToRuntime(settings) {
+          if (!settings || typeof settings !== "object") return;
+          SETTINGS_DEFAULT_DEPTS.forEach((dept) => {
+            if (!settings.departments?.[dept]) settings.departments[dept] = { equipment: [], rules: {} };
+          });
+          const lightingEquip = (settings.departments.Lighting?.equipment || []).filter((x) => x && x.enabled !== false);
+          mergeLightingEquipmentIntoLibrary(lightingEquip);
+          const riggingEquip = (settings.departments.Rigging?.equipment || []).filter((x) => x && x.enabled !== false);
+          if (riggingEquip.length) {
+            riggingAdditionalCatalog = riggingEquip.map((eq, idx) => ({
+              id: String(eq.id || `rig_additional_${idx + 1}`),
+              name: String(eq.name || `Additional ${idx + 1}`),
+              weightKg: Number.isFinite(Number(eq.weight_kg)) ? Number(eq.weight_kg) : 0
+            }));
+          }
+          const powerRules = settings.departments?.Power?.rules;
+          if (powerRules && typeof powerRules === "object") {
+            powerState.settings = {
+              ...powerState.settings,
+              ...powerRules
+            };
+          }
+          const globalSettings = settings.global || {};
+          if (globalSettings.safety_factors) {
+            const rigSF = Number(globalSettings.safety_factors.rigging);
+            if (Number.isFinite(rigSF) && rigSF > 0) riggingState.safetyFactor = rigSF;
+          }
+        }
+
+        const logo = document.getElementById("brandLogo");
+        const fallback = document.getElementById("brandFallback");
+        const main = document.querySelector("main.main");
+        const moduleSidebar = document.getElementById("moduleSidebar");
+        const propertyTabsEl = document.getElementById("propertyTabs");
+        const propertyPanelBodyEl = document.getElementById("propertyPanelBody");
+        const propObjectTypeEl = document.getElementById("propObjectType");
+        const systemStatusPillEl = document.getElementById("systemStatusPill");
+        const systemStatusTextEl = document.getElementById("systemStatusText");
+        const activeModuleIndicatorEl = document.getElementById("activeModuleIndicator");
+        const modeIndicatorEl = document.getElementById("modeIndicator");
+        let currentEngineeringSection = "Video";
+        let currentUiMode = "canvas";
+        const PROPERTY_TABS = ["General", "Signal / Routing", "Power", "Network", "Physical", "Notes"];
+        const PROPERTY_TAB_KEY = "thebase.propertyTabs.v1";
+        let propertyTabMemory = {};
+        try {
+          propertyTabMemory = JSON.parse(localStorage.getItem(PROPERTY_TAB_KEY) || "{}") || {};
+        } catch {
+          propertyTabMemory = {};
+        }
+        const MODULE_MENU = [
+          { id: "Video", label: "Video", iconKey: "video", color: "#57b36a" },
+          { id: "Lighting", label: "Lighting", iconKey: "lighting", color: "#e25555" },
+          { id: "Sound", label: "Audio", iconKey: "audio", color: "#4f82ff" },
+          { id: "Rigging", label: "Rigging", iconKey: "rigging", color: "#f08a3c" },
+          { id: "Power", label: "Power", iconKey: "power", color: "#8b5cff" },
+          { id: "Venue", label: "3D", iconKey: "venue3d", color: "#35bdb0" }
+        ];
+        let lightingFixtureLibrary = LIGHTING_FIXTURE_FALLBACK.slice();
+        let trussCatalog = TRUSS_FALLBACK.slice();
+        let motorCatalog = MOTOR_FALLBACK.slice();
+        const ledState = {
+          mode: "single",
+          single: {
+            panelType: LED_PANELS[0].id,
+            width: 8,
+            height: 4.5,
+            name: "Main Wall",
+            color: "#53c5ff",
+            mapping: {
+              startCorner: "top-left",
+              primaryAxis: "rows",
+              pattern: "serpentine",
+              disabledCabinets: []
+            },
+            routing: {
+              controllers: [{ id: "novastar_4k", qty: 1 }],
+              assignments: {}
+            }
+          },
+          walls: [],
+          activeWallId: null,
+          powerSupplyType: "32a"
+        };
+        const lightingState = {
+          search: "",
+          selectedManufacturer: "",
+          selectedFixtureKey: "",
+          selectedModeName: "",
+          quantity: 1,
+          fixtures: [],
+          groups: [],
+          activeGroupId: null,
+          subSection: "planner",
+          selectedClientCiId: "none"
+        };
+        const audioState = {
+          activeTab: "system_design",
+          showInfo: {
+            eventName: "",
+            eventDate: "",
+            venue: "",
+            city: "",
+            roomName: "",
+            audienceSize: 300,
+            audienceMode: "seated",
+            roomType: "theatre",
+            stageW: 10,
+            stageD: 6,
+            stageH: 1,
+            trimH: 6,
+            fohDistanceM: 20,
+            programType: "corporate_speech",
+            constraints: ""
+          },
+          venue: {
+            roomL: 30,
+            roomW: 20,
+            roomH: 8,
+            materials: "mixed",
+            rt60Mode: "med",
+            rt60: "",
+            ambientDbA: 55,
+            audienceAbsorption: "partial",
+            balcony: false
+          },
+          system: {
+            topology: "stereo",
+            mainType: "line_array",
+            deployType: "flown",
+            throwDistanceM: 30,
+            horizCoverageDeg: 100,
+            subConfig: "ground",
+            dspModel: "",
+            riggingSafetyNote: "",
+            mainsPerSide: 4,
+            subsPerSide: 4,
+            frontFills: 4,
+            delayZones: 1
+          },
+          delays: {
+            alignPoint: "foh",
+            zones: [
+              { id: "zone_front", name: "Front Fill Zone", distanceM: 5, output: "M4", speakerType: "Front Fill" },
+              { id: "zone_mid", name: "Mid Audience", distanceM: 18, output: "M5", speakerType: "Delay" },
+              { id: "zone_rear", name: "Rear Audience", distanceM: 28, output: "M6", speakerType: "Delay" }
+            ]
+          },
+          console: {
+            consoleModel: "Generic Digital Console",
+            stageboxModel: "Generic Stagebox 32x16",
+            transport: "CAT",
+            inputs: [],
+            outputs: [
+              { id: "out_l", bus: "M1", destination: "Main Left", connector: "XLR", location: "Amp Rack", notes: "" },
+              { id: "out_r", bus: "M2", destination: "Main Right", connector: "XLR", location: "Amp Rack", notes: "" },
+              { id: "out_sub", bus: "M3", destination: "Subs", connector: "XLR", location: "Amp Rack", notes: "" }
+            ],
+            stageboxes: [{ id: "sb_1", name: "SB-A", inputs: 32, outputs: 16, spareInputs: 0 }]
+          },
+          rf: {
+            region: "ZA",
+            inventory: { handhelds: 4, beltpacks: 4, iemPacks: 4, antennaDistros: 1, paddles: 2 },
+            channels: [],
+            antennaRuns: [{ id: "ant_1", name: "FOH->Paddle L", cableType: "RG8", lengthM: 25 }],
+            batteryType: "AA",
+            showDays: 1
+          },
+          comms: {
+            type: "wired_partyline",
+            roles: ["FOH A1", "MON A2", "Stage Manager", "Playback", "Video Director", "Lighting"],
+            notes: ""
+          },
+          power: {
+            mainsType: "3P_63A",
+            cleanDirtySplit: true,
+            loads: [
+              { id: "p_console", name: "FOH Console + Surface", watts: 450, phase: "L1" },
+              { id: "p_stagebox", name: "Stagebox + I/O", watts: 180, phase: "L1" },
+              { id: "p_rf", name: "Wireless Rack", watts: 350, phase: "L2" },
+              { id: "p_amps", name: "Amp / DSP Rack", watts: 3200, phase: "L3" },
+              { id: "p_playback", name: "Playback + Network", watts: 260, phase: "L2" }
+            ]
+          },
+          cabling: {
+            fohToStageM: 35,
+            stageLeftToRightM: 14,
+            delayRunM: 22,
+            runs: []
+          },
+          crew: {
+            setupNotes: "",
+            soundcheckType: "corporate"
+          },
+          laPlanner: {
+            selectedSpeakerId: "la_kara",
+            selectedZone: "Main Left",
+            selectedControllerModelId: "la12x",
+            zones: [
+              { id: "zone_ml", name: "Main Left", distanceM: 25, matrixSource: "M1", delayMs: 0 },
+              { id: "zone_mr", name: "Main Right", distanceM: 25, matrixSource: "M2", delayMs: 0 },
+              { id: "zone_sub_l", name: "Sub Left", distanceM: 22, matrixSource: "M3", delayMs: 0 },
+              { id: "zone_sub_r", name: "Sub Right", distanceM: 22, matrixSource: "M3", delayMs: 0 },
+              { id: "zone_ff", name: "Front Fill", distanceM: 6, matrixSource: "M4", delayMs: 0 },
+              { id: "zone_d1", name: "Delay 1", distanceM: 36, matrixSource: "M5", delayMs: 0 }
+            ],
+            speakers: [
+              { id: "la_spk_1", speakerId: "la_kara", zoneId: "zone_ml", quantity: 8, rigging: "flown", x: -6, y: 0, z: 10, heightM: 8, aimDeg: 20 },
+              { id: "la_spk_2", speakerId: "la_kara", zoneId: "zone_mr", quantity: 8, rigging: "flown", x: 6, y: 0, z: 10, heightM: 8, aimDeg: -20 },
+              { id: "la_spk_3", speakerId: "la_arcs_sb18m", zoneId: "zone_sub_l", quantity: 4, rigging: "stacked", x: -4, y: 0, z: 8, heightM: 0.8, aimDeg: 0 },
+              { id: "la_spk_4", speakerId: "la_arcs_sb18m", zoneId: "zone_sub_r", quantity: 4, rigging: "stacked", x: 4, y: 0, z: 8, heightM: 0.8, aimDeg: 0 }
+            ],
+            racks: [
+              {
+                id: "rack_a",
+                name: "LA12X Rack A",
+                location: "Amp World",
+                powerSource: "3P-63A",
+                networkSwitchId: "sw_amp",
+                controllerModelId: "la12x",
+                controllerCount: 2,
+                outputs: [
+                  { ch: 1, zoneId: "zone_ml", speakerId: "la_kara", quantity: 8, preset: "KARA_MAIN", destination: "Left Hang" },
+                  { ch: 2, zoneId: "zone_mr", speakerId: "la_kara", quantity: 8, preset: "KARA_MAIN", destination: "Right Hang" },
+                  { ch: 3, zoneId: "zone_sub_l", speakerId: "la_arcs_sb18m", quantity: 4, preset: "SB18M_SUB", destination: "Sub Left" },
+                  { ch: 4, zoneId: "zone_sub_r", speakerId: "la_arcs_sb18m", quantity: 4, preset: "SB18M_SUB", destination: "Sub Right" }
+                ]
+              }
+            ],
+            switches: [
+              { id: "sw_foh", name: "FOH Switch", location: "FOH", ports: 24 },
+              { id: "sw_amp", name: "Amp World Switch", location: "Amp World", ports: 24 }
+            ],
+            networkLinks: [
+              { id: "net_1", rackId: "rack_a", switchId: "sw_amp", port: 1, ip: "10.10.0.21", secondaryIp: "10.20.0.21" }
+            ],
+            consoleRouting: [
+              { id: "cr_1", consoleOut: "Matrix 1", rackId: "rack_a", input: "In 1", zoneId: "zone_ml" },
+              { id: "cr_2", consoleOut: "Matrix 2", rackId: "rack_a", input: "In 2", zoneId: "zone_mr" },
+              { id: "cr_3", consoleOut: "Matrix 3", rackId: "rack_a", input: "In 3", zoneId: "zone_sub_l" },
+              { id: "cr_4", consoleOut: "Matrix 4", rackId: "rack_a", input: "In 4", zoneId: "zone_ff" }
+            ]
+          }
+        };
+        const powerState = {
+          settings: PowerCalculator && PowerCalculator.POWER_DEFAULTS ? JSON.parse(JSON.stringify(PowerCalculator.POWER_DEFAULTS)) : {
+            frequency_hz: 50,
+            voltage_single_phase: 230,
+            voltage_three_phase_ll: 400,
+            pf_by_department: { Lighting: 0.95, Audio: 0.9, Video: 0.95, Other: 0.9 },
+            continuous_derate: 0.8,
+            incomer: { label: "Powerlock 250A 3-phase", per_phase_a: 250 },
+            outgoing_breakers: [15, 16, 32, 63],
+            imbalance_warn_ratio: 0.2,
+            department_phase_warn_ratio: 0.5,
+            generator: { base_headroom: 1.25, led_or_inrush_headroom: 1.3, inrush_extra: 1.1, sizes_kva: [20, 30, 40, 60, 80, 100, 150, 200, 250, 300, 400, 500] },
+            balance: { department_penalty_weight: 0.22 },
+            socapex: { head_rating_a: 16, phase_feed_limit_a: null }
+          },
+          manualLoads: [],
+          draft: {
+            name: "",
+            department: "Other",
+            quantity: 1,
+            watts_avg: "",
+            watts_max: "",
+            amps_avg: "",
+            amps_max: "",
+            pf: "",
+            inrush_multiplier: "1",
+            preferred_connection: "single_phase",
+            grouping_key: "",
+            soca_loom_id: "SOCA-1",
+            soca_head: ""
+          }
+        };
+        const riggingState = {
+          projectName: "Rigging Project",
+          units: "kg/m",
+          safetyFactor: 1.2,
+          activeBuildType: "linear",
+          workspaces: {},
+          cantileverEnabled: false,
+          selectedTrussType: "prolyte_h30v",
+          selectedMotorId: "cm_lodestar_1t",
+          fixtureSearch: "",
+          selectedFixtureKey: "",
+          selectedGroupId: "",
+          selectedGroupFixtureId: "",
+          selectedTrussGroupId: "",
+          selectedPlanGroupId: "",
+          selectedPlanFixtureId: "",
+          selectedAdditionalId: "pa_150",
+          graphScaleMode: "auto",
+          graphFixedMax: null,
+          groupFixturePositionM: 0,
+          groupMotorPositionM: 0,
+          groupMotorRoofWllKg: null,
+          groupMotorChainDropM: 8,
+          groupSegmentLengthMById: {},
+          groupExpandedById: {},
+          selectedSpanId: "",
+          fixturePositionM: 0,
+          fixtureQty: 1,
+          groups: [
+            { id: "rig_grp_1", name: "Main Rig", color: "#f08a3c" }
+          ],
+          nodes: [
+            { id: "N1", label: "P1", x: 0, y: 0 },
+            { id: "N2", label: "P2", x: 6, y: 0 },
+            { id: "N3", label: "P3", x: 12, y: 0 }
+          ],
+          spans: [
+            { id: "S1", nodeA: "N1", nodeB: "N2", trussTypeId: "prolyte_h30v", lengthM: 6 },
+            { id: "S2", nodeA: "N2", nodeB: "N3", trussTypeId: "prolyte_h30v", lengthM: 6 }
+          ],
+          pickups: [
+            { id: "PU1", nodeId: "N1", pickupType: "motor", motorId: "cm_lodestar_1t", roofPointWllKg: 1000, chainDropM: 8, notes: "" },
+            { id: "PU2", nodeId: "N2", pickupType: "motor", motorId: "cm_lodestar_1t", roofPointWllKg: 1000, chainDropM: 8, notes: "" },
+            { id: "PU3", nodeId: "N3", pickupType: "motor", motorId: "cm_lodestar_1t", roofPointWllKg: 1000, chainDropM: 8, notes: "" }
+          ],
+          fixturePlacements: [],
+          groupFixtures: [],
+          groupMotors: [],
+          accessories: [],
+          lastCalc: null
+        };
+        const venueState = {
+          widthM: 30,
+          depthM: 20,
+          majorStepM: 1,
+          minorStepM: 0.5,
+          zoom: 1,
+          viewX: null,
+          viewY: null,
+          floorPlanDataUrl: "",
+          floorPlanImageWidthPx: null,
+          floorPlanImageHeightPx: null,
+          floorPlanOpacity: 0.28,
+          floorPlanScale: 1,
+          floorPlanRotationDeg: 0,
+          floorPlanOffsetX: 0,
+          floorPlanOffsetY: 0,
+          floorPlanWorldMatrix: null,
+          floorPlanWizardOpen: false,
+          floorPlanWizardActivePoint: "scale",
+          floorPlanWizardRotationDeg: 0,
+          floorPlanWizardOriginPx: null,
+          floorPlanWizardZeroPx: null,
+          floorPlanWizardXPx: null,
+          floorPlanWizardYPx: null,
+          floorPlanWizardForceOpen: false,
+          floorPlanWizardDismissed: false,
+          floorPlanSourceName: "",
+          floorPlanPdfLastPage: 1,
+          floorPlanPdfTotalPages: 0,
+          floorPlanRenderScale: 2,
+          floorPlanImportStatus: "No floor plan loaded",
+          floorPlanImportError: "",
+          floorPlanWizardXDistanceM: 10,
+          floorPlanWizardYDistanceM: 10,
+          floorPlanCalibrating: false,
+          floorPlanKnownDistanceM: 10,
+          floorPlanCalPointA: null,
+          floorPlanCalPointB: null,
+          measureArmed: false,
+          measurePoints: [],
+          measurementLog: [],
+          measurementEditingId: "",
+          measurementEditingValue: "",
+          generalMeasureArmed: false,
+          generalMeasurePoints: [],
+          generalMeasurementLog: [],
+          trussPlacements: [],
+          suppressedRigGroupIds: [],
+          selectedTrussPlacementId: "",
+          selectedVenueRigGroupId: "",
+          model3dUrl: "",
+          model3dName: "",
+          model3dScale: 1,
+          sceneOutlinerCollapsed: {},
+          sceneOutlinerHidden: [],
+          ledOverlayMode: "panels",
+          projectionMode: "perspective",
+          venue3dInputProfile: "trackpad",
+          gizmoMode: "translate",
+          customVenueModels: [],
+          wallWidthM: 8,
+          wallHeightM: 4,
+          wallDepthM: 0.12,
+          wallScale: 1,
+          wallWeightKg: 120,
+          stageDeckSizeId: PROLYTE_STAGE_DECK_SIZES[0].id,
+          stageDeckHeightM: 0.6,
+          stageSpanWidthM: 10,
+          stageSpanDepthM: 6,
+          gridOriginX: 0,
+          gridOriginY: 0,
+          floorPlanScaleAdjust: 1
+        };
+        const gearState = {
+          placedItems: [],
+          selectedInventoryId: "",
+          selectedPlacedId: ""
+        };
+        let riggingDragPayload = null;
+        let venueRigDragPayload = null;
+        const venueFloorPlanPdfRuntime = {
+          bytes: null,
+          docPromise: null,
+          pageCache: new Map()
+        };
+        const riggingPlanDragState = { active: false, fixtureId: "", spanId: "", groupId: "", ax: 0, ay: 0, bx: 0, by: 0, spanLen: 0, markerGroup: null, lastProjected: null };
+        const riggingPlanMotorDragState = { active: false, motorId: "", groupId: "", markerGroup: null, posOffsetM: 0, lastProjectedPosM: null };
+        const venueTrussDragState = {
+          active: false,
+          id: "",
+          handle: "",
+          startX: 0,
+          startY: 0,
+          fixedX: 0,
+          fixedY: 0,
+          lengthM: 0,
+          pointerStartWX: 0,
+          pointerStartWY: 0,
+          origX1: 0,
+          origY1: 0,
+          origX2: 0,
+          origY2: 0
+        };
+        let riggingPlanDragBound = false;
+        let riggingPlanMotorDragBound = false;
+        let riggingPlanDeleteBound = false;
+        let ledWiringKeyHandler = null;
+        let venueTrussDragBound = false;
+        const venuePanState = { spaceDown: false, dragging: false, lastX: 0, lastY: 0 };
+        let venuePanBound = false;
+        let venue3dRuntime = null;
+        let gear3dRuntime = null;
+        let venue3dLibPromise = null;
+        const APP_MEMORY_KEY = "thebase.app.memory.v1";
+        let appMemoryTick = null;
+        let cloudSyncTick = null;
+        let cloudSyncInFlight = false;
+
+        function safeClone(value) {
+          return value == null ? value : JSON.parse(JSON.stringify(value));
+        }
+        function assignKnownState(target, source) {
+          if (!target || !source || typeof source !== "object") return;
+          Object.keys(target).forEach((k) => {
+            if (source[k] === undefined) return;
+            target[k] = safeClone(source[k]);
+          });
+        }
+        function buildAppMemorySnapshot() {
+          return {
+            version: 1,
+            savedAt: new Date().toISOString(),
+            currentEngineeringSection,
+            ledState: safeClone(ledState),
+            lightingState: safeClone(lightingState),
+            audioState: safeClone(audioState),
+            powerState: safeClone(powerState),
+            riggingState: safeClone(riggingState),
+            venueState: safeClone(venueState),
+            gearState: safeClone(gearState)
+          };
+        }
+        function applyAppMemorySnapshot(snapshot) {
+          if (!snapshot || typeof snapshot !== "object") return;
+          if (typeof snapshot.currentEngineeringSection === "string") {
+            currentEngineeringSection = snapshot.currentEngineeringSection;
+          }
+          assignKnownState(ledState, snapshot.ledState);
+          assignKnownState(lightingState, snapshot.lightingState);
+          assignKnownState(audioState, snapshot.audioState);
+          assignKnownState(powerState, snapshot.powerState);
+          assignKnownState(riggingState, snapshot.riggingState);
+          assignKnownState(venueState, snapshot.venueState);
+          assignKnownState(gearState, snapshot.gearState);
+        }
+        const DEFAULT_APP_SNAPSHOT = buildAppMemorySnapshot();
+        function saveAppMemory() {
+          try {
+            const snapshot = buildAppMemorySnapshot();
+            localStorage.setItem(APP_MEMORY_KEY, JSON.stringify(snapshot));
+          } catch (err) {
+            try {
+              // Fallback if localStorage quota is exceeded (usually from embedded floor-plan image data)
+              const snapshot = buildAppMemorySnapshot();
+              if (snapshot.venueState) {
+                snapshot.venueState.floorPlanDataUrl = "";
+              }
+              localStorage.setItem(APP_MEMORY_KEY, JSON.stringify(snapshot));
+            } catch (_) {}
+          }
+          saveCloudProjectSnapshot();
+        }
+        function restoreAppMemory() {
+          try {
+            const raw = localStorage.getItem(APP_MEMORY_KEY);
+            if (!raw) return;
+            const snapshot = JSON.parse(raw);
+            applyAppMemorySnapshot(snapshot);
+          } catch (_) {}
+        }
+        function startAppMemoryAutosave() {
+          if (appMemoryTick) clearInterval(appMemoryTick);
+          appMemoryTick = setInterval(saveAppMemory, 2000);
+          window.addEventListener("beforeunload", saveAppMemory);
+          document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "hidden") saveAppMemory();
+          });
+        }
+        async function saveCloudProjectSnapshot() {
+          if (cloudSyncInFlight) return;
+          if (!window.TheBaseCloud || !TheBaseCloud.isConfigured()) return;
+          const active = TheBaseCloud.getActiveProject();
+          if (!active?.id) return;
+          cloudSyncInFlight = true;
+          try {
+            await TheBaseCloud.saveProjectSnapshot(active.id, buildAppMemorySnapshot());
+          } catch (_) {
+          } finally {
+            cloudSyncInFlight = false;
+          }
+        }
+        function startCloudProjectAutosave() {
+          if (cloudSyncTick) clearInterval(cloudSyncTick);
+          cloudSyncTick = setInterval(() => {
+            if (document.visibilityState !== "visible") return;
+            saveCloudProjectSnapshot();
+          }, 12000);
+        }
+
+        function newLedWall(index = 1) {
+          return {
+            id: `wall_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+            name: `Wall ${index}`,
+            color: "#f08a3c",
+            panelType: LED_PANELS[0].id,
+            width: 8,
+            height: 4.5,
+            mapping: {
+              startCorner: "top-left",
+              primaryAxis: "rows",
+              pattern: "serpentine",
+              disabledCabinets: []
+            },
+            routing: {
+              controllers: [{ id: "novastar_4k", qty: 1 }],
+              assignments: {},
+              viewMode: "signal"
+            }
+          };
+        }
+        function newLightingGroup(index = 1) {
+          return {
+            id: `lx_group_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+            name: `Group ${index}`,
+            color: "#f08a3c"
+          };
+        }
+        function newAudioSpeakerGroup(index = 1) {
+          return {
+            id: `aud_group_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+            name: `Group ${index}`,
+            color: "#4f82ff"
+          };
+        }
+        const LIGHTING_CLIENT_CI_PRESETS = [
+          {
+            id: "none",
+            name: "Select Client",
+            colors: []
+          },
+          {
+            id: "client_absa",
+            name: "Absa",
+            colors: [
+              { name: "White", hex: "#FFFFFF" },
+              { name: "Silver", hex: "#736464" },
+              { name: "Platinum", hex: "#5A4B4B" },
+              { name: "Graphite", hex: "#2D2323" },
+              { name: "Energy", hex: "#F47721" },
+              { name: "Prepared", hex: "#FA551E" },
+              { name: "Agile", hex: "#F52D28" },
+              { name: "Passion", hex: "#DD0032" },
+              { name: "Warmth", hex: "#BE0028" },
+              { name: "Human", hex: "#AA052D" },
+              { name: "Grounded", hex: "#960528" },
+              { name: "Care", hex: "#F05A78" },
+              { name: "Smile", hex: "#F0325A" },
+              { name: "Surprise", hex: "#AF144B" },
+              { name: "Calm", hex: "#870A3C" },
+              { name: "Luxury", hex: "#640032" },
+              { name: "Depth", hex: "#500A28" },
+              { name: "Black", hex: "#000000" }
+            ]
+          },
+          {
+            id: "client_standard_bank",
+            name: "Standard Bank",
+            colors: [
+              { name: "Primary Blue", hex: "#0071B8" },
+              { name: "Blue Tint", hex: "#63A8D4" },
+              { name: "Off White", hex: "#EBEFF8" }
+            ]
+          },
+          {
+            id: "client_sanlam",
+            name: "Sanlam",
+            colors: [
+              { name: "Deep Blue", hex: "#004D6F" },
+              { name: "Bright Cyan", hex: "#00ADE3" },
+              { name: "Blue Alt", hex: "#0076BC" }
+            ]
+          },
+          {
+            id: "client_glacier",
+            name: "Glacier",
+            colors: [
+              { name: "Primary Blue (approx)", hex: "#506E9F" },
+              { name: "Secondary Blue (approx)", hex: "#859ABC" },
+              { name: "Light Blue (approx)", hex: "#CAD3E2" }
+            ]
+          },
+          {
+            id: "client_ninety_one",
+            name: "Ninety One",
+            colors: [
+              { name: "Springbok Cream - Primary", hex: "#DEDBCC" },
+              { name: "Springbok Cream - SC01", hex: "#E5E1D6" },
+              { name: "Springbok Cream - SC02", hex: "#DDD9C8" },
+              { name: "Springbok Cream - SC03", hex: "#CCC6AF" },
+              { name: "Springbok Cream - Accent Red", hex: "#EF233F" },
+              { name: "Springbok Cream - Accent Coral", hex: "#E7B1A7" },
+              { name: "Springbok Cream - Accent Teal", hex: "#0E9C84" },
+              { name: "Springbok Cream - Accent Grey", hex: "#8BA0A5" },
+              { name: "Galjoen Grey - Primary", hex: "#889CA3" },
+              { name: "Galjoen Grey - GG01", hex: "#95A9AF" },
+              { name: "Galjoen Grey - GG02", hex: "#7F969D" },
+              { name: "Galjoen Grey - GG03", hex: "#5F7E84" },
+              { name: "Galjoen Grey - Accent Cream", hex: "#E0DCC9" },
+              { name: "Galjoen Grey - Accent Teal", hex: "#005C5F" },
+              { name: "Galjoen Grey - Accent Coral", hex: "#E4AC9F" },
+              { name: "Cape Coral - Primary", hex: "#E3ACA1" },
+              { name: "Cape Coral - CC01", hex: "#E9BBB1" },
+              { name: "Cape Coral - CC02", hex: "#DDA69A" },
+              { name: "Cape Coral - CC03", hex: "#D09287" },
+              { name: "Cape Coral - Accent Burgundy", hex: "#7B0F4F" },
+              { name: "Cape Coral - Accent Red", hex: "#EF233F" },
+              { name: "Cape Coral - Accent Indigo", hex: "#302153" },
+              { name: "Warm Yellowwood - Primary", hex: "#F8BE00" },
+              { name: "Warm Yellowwood - WYO1", hex: "#FFC822" },
+              { name: "Warm Yellowwood - WYO2", hex: "#F3B600" },
+              { name: "Warm Yellowwood - WYO3", hex: "#DFA100" },
+              { name: "Warm Yellowwood - Accent Indigo", hex: "#302153" },
+              { name: "Warm Yellowwood - Accent Cream", hex: "#E0DCC9" },
+              { name: "Warm Yellowwood - Accent Teal", hex: "#005C5F" },
+              { name: "Pinotage Burgundy - Primary", hex: "#7B0F4F" },
+              { name: "Pinotage Burgundy - PB01", hex: "#8B1E5E" },
+              { name: "Pinotage Burgundy - PB02", hex: "#691145" },
+              { name: "Pinotage Burgundy - PB03", hex: "#501035" },
+              { name: "Pinotage Burgundy - Accent Coral", hex: "#E9B6AB" },
+              { name: "Pinotage Burgundy - Accent Indigo", hex: "#302153" },
+              { name: "Pinotage Burgundy - Accent Red", hex: "#EF233F" },
+              { name: "Leatherback Green - Primary", hex: "#005C5F" },
+              { name: "Leatherback Green - LG01", hex: "#0B6C6D" },
+              { name: "Leatherback Green - LG02", hex: "#005255" },
+              { name: "Leatherback Green - LG03", hex: "#004345" },
+              { name: "Leatherback Green - Accent Yellowwood", hex: "#F8BE00" },
+              { name: "Leatherback Green - Accent Indigo", hex: "#302153" },
+              { name: "Leatherback Green - Accent Coral", hex: "#E4AC9F" },
+              { name: "Agulhas Indigo - Primary", hex: "#302153" },
+              { name: "Agulhas Indigo - AL01", hex: "#3D2D66" },
+              { name: "Agulhas Indigo - AL02", hex: "#32245A" },
+              { name: "Agulhas Indigo - AL03", hex: "#261C45" },
+              { name: "Agulhas Indigo - Accent Coral", hex: "#E9B6AB" },
+              { name: "Agulhas Indigo - Accent Red", hex: "#EF233F" },
+              { name: "Agulhas Indigo - Accent Orange", hex: "#E07C11" },
+              { name: "Agulhas Indigo - Accent Yellowwood", hex: "#F8BE00" },
+              { name: "Agulhas Indigo - Accent Teal", hex: "#0E9C84" },
+              { name: "Marula Green - Primary", hex: "#0F3A24" },
+              { name: "Marula Green - MG01", hex: "#136B43" },
+              { name: "Marula Green - MG02", hex: "#0A5535" },
+              { name: "Marula Green - MG03", hex: "#1E2D1F" },
+              { name: "Marula Green - Accent Coral", hex: "#E9B6AB" },
+              { name: "Marula Green - Accent Red", hex: "#EF233F" },
+              { name: "Marula Green - Accent Teal", hex: "#0E9C84" },
+              { name: "Marula Green - Accent Orange", hex: "#E07C11" },
+              { name: "Ocean Teal - Primary", hex: "#0E9C84" },
+              { name: "Ocean Teal - OTO1", hex: "#17AD93" },
+              { name: "Ocean Teal - OTO2", hex: "#0D957E" },
+              { name: "Ocean Teal - OTO3", hex: "#0A816E" },
+              { name: "Ocean Teal - Accent Leatherback", hex: "#005C5F" },
+              { name: "Ocean Teal - Accent Coral", hex: "#E4AC9F" },
+              { name: "Ocean Teal - Accent Cream", hex: "#E0DCC9" },
+              { name: "Protea Red - Primary", hex: "#EF233F" },
+              { name: "Protea Red - PRO1", hex: "#F24A61" },
+              { name: "Protea Red - PRO2", hex: "#E02944" },
+              { name: "Protea Red - PRO3", hex: "#C81B39" },
+              { name: "Protea Red - Accent Cream", hex: "#E0DCC9" },
+              { name: "Protea Red - Accent Burgundy", hex: "#7B0F4F" },
+              { name: "Protea Red - Accent Coral", hex: "#E4AC9F" },
+              { name: "Protea Red - Accent Indigo", hex: "#302153" }
+            ]
+          },
+          {
+            id: "client_old_mutual",
+            name: "Old Mutual",
+            colors: [
+              { name: "Primary Teal", hex: "#009685" },
+              { name: "Lime Accent", hex: "#98CB5A" },
+              { name: "Light Mint", hex: "#E4F1D4" }
+            ]
+          },
+          {
+            id: "client_nedgroup",
+            name: "Nedgroup",
+            colors: [
+              { name: "Go Green", hex: "#00E677" },
+              { name: "Nedbank Green", hex: "#006341" },
+              { name: "Heritage Green", hex: "#004D36" },
+              { name: "Black", hex: "#020202" }
+            ]
+          },
+          {
+            id: "client_rmb",
+            name: "RMB",
+            colors: [
+              { name: "Primary Indigo", hex: "#221C5B" },
+              { name: "Gold Accent", hex: "#A48C4E" },
+              { name: "Warm Grey", hex: "#948D77" }
+            ]
+          }
+        ];
+        const AUDIO_TAB_ORDER = [
+          { id: "venue_acoustics", label: "Venue + Acoustics" },
+          { id: "system_design", label: "System Design (PA)" },
+          { id: "l_acoustics", label: "L-Acoustics Planner" },
+          { id: "delays_fills", label: "Delays + Fills" },
+          { id: "console_io", label: "Console + Stage I/O" },
+          { id: "wireless_rf", label: "Wireless + RF" },
+          { id: "comms_talkback", label: "Comms + Talkback" },
+          { id: "power_distribution", label: "Power + Distribution" },
+          { id: "cabling_looms", label: "Cabling + Looms" },
+          { id: "crew_workflow", label: "Crew + Workflow" },
+          { id: "outputs", label: "Outputs" }
+        ];
+        const LA_SPEAKER_LIBRARY = [
+          { id: "jbl_eon_206p", manufacturer: "JBL", model: "Eon 206P", category: "Powered / Point Source", maxElementsPerOutput: 1, coverageDeg: null, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "jbl_eon_515xt", manufacturer: "JBL", model: "Eon 515XT", category: "Powered / Point Source", maxElementsPerOutput: 1, coverageDeg: null, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "jbl_eon_610", manufacturer: "JBL", model: "Eon 610 (10\")", category: "Powered / Point Source", maxElementsPerOutput: 1, coverageDeg: null, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "jbl_eon_710_bt", manufacturer: "JBL", model: "Eon 710 (10\") B/T", category: "Powered / Point Source", maxElementsPerOutput: 1, coverageDeg: null, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "jbl_prx_712", manufacturer: "JBL", model: "PRX 712 (12\")", category: "Powered / Point Source", maxElementsPerOutput: 1, coverageDeg: null, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "jbl_prx_912_bt", manufacturer: "JBL", model: "PRX 912 (12\") B/T", category: "Powered / Point Source", maxElementsPerOutput: 1, coverageDeg: null, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "jbl_vrx_932", manufacturer: "JBL", model: "VRX 932 (Top)", category: "VRX Line Array System", maxElementsPerOutput: 4, coverageDeg: null, rigging: "flown/stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "jbl_vrx_918", manufacturer: "JBL", model: "VRX 918 (Sub)", category: "VRX Line Array System", maxElementsPerOutput: 2, coverageDeg: 360, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "jbl_vrx_ground_stack_pkg", manufacturer: "JBL", model: "VRX Ground Stack (2 Tops + 2 Subs / side)", category: "Package Option", maxElementsPerOutput: 1, coverageDeg: null, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "rcf_evox_j8", manufacturer: "RCF", model: "Evox J8", category: "Column Array Systems", maxElementsPerOutput: 1, coverageDeg: null, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "rcf_evox_jmix8", manufacturer: "RCF", model: "Evox JMix8", category: "Column Array Systems", maxElementsPerOutput: 1, coverageDeg: null, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "rcf_evox_j8_column_set", manufacturer: "RCF", model: "Evox J8 Column Array Set", category: "Package Option", maxElementsPerOutput: 1, coverageDeg: null, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "la_kara", manufacturer: "L-Acoustics", model: "Kara (2-Way Loudspeaker)", category: "Line Array", maxElementsPerOutput: 4, coverageDeg: null, rigging: "flown/stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "la_arcs_focus", manufacturer: "L-Acoustics", model: "ARCS Focus", category: "ARCS Series", maxElementsPerOutput: 4, coverageDeg: null, rigging: "flown/stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "la_arcs_wide", manufacturer: "L-Acoustics", model: "ARCS Wide", category: "ARCS Series", maxElementsPerOutput: 4, coverageDeg: null, rigging: "flown/stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "la_arcs_sb18m", manufacturer: "L-Acoustics", model: "ARCS SB18M Sub", category: "ARCS Series", maxElementsPerOutput: 2, coverageDeg: 360, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "la_x15", manufacturer: "L-Acoustics", model: "X15", category: "Point Source", maxElementsPerOutput: 2, coverageDeg: null, rigging: "flown/stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "la_kara_flown_pkg", manufacturer: "L-Acoustics", model: "Kara Flown (6 Tops + 2 Dual Subs / side)", category: "Complete System Packages", maxElementsPerOutput: 1, coverageDeg: null, rigging: "flown", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "la_kara_ground_pkg", manufacturer: "L-Acoustics", model: "Kara Ground Stacked (3 Tops + 3 Subs / side)", category: "Complete System Packages", maxElementsPerOutput: 1, coverageDeg: null, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null },
+          { id: "la_arcs_ground_pkg", manufacturer: "L-Acoustics", model: "ARCS Ground Stack (2 Tops + 3 Subs / side)", category: "Complete System Packages", maxElementsPerOutput: 1, coverageDeg: null, rigging: "stacked", maxSplDb: null, weightKg: null, powerW: null }
+        ];
+        const LA_CONTROLLER_MODELS = [
+          { id: "la4x", model: "LA4X", channels: 4, powerW: 900 },
+          { id: "la8", model: "LA8", channels: 4, powerW: 1400 },
+          { id: "la12x", model: "LA12X", channels: 4, powerW: 1800 }
+        ];
+        const AUDIO_PROGRAM_PROFILES = {
+          corporate_speech: {
+            name: "Corporate Speech",
+            target: "Intelligibility",
+            splAvgDbA: [70, 78],
+            headroomDb: 12
+          },
+          panel: {
+            name: "Panel Discussion",
+            target: "Intelligibility",
+            splAvgDbA: [72, 80],
+            headroomDb: 12
+          },
+          awards: {
+            name: "Awards Show",
+            target: "Balanced",
+            splAvgDbA: [82, 90],
+            headroomDb: 14
+          },
+          band: {
+            name: "Band",
+            target: "LF Energy",
+            splAvgDbA: [90, 100],
+            headroomDb: 15
+          },
+          dj: {
+            name: "DJ",
+            target: "LF Energy",
+            splAvgDbA: [94, 102],
+            headroomDb: 16
+          },
+          hybrid: {
+            name: "Hybrid",
+            target: "Balanced",
+            splAvgDbA: [80, 92],
+            headroomDb: 14
+          }
+        };
+        const AUDIO_CONSOLE_PRESETS = [
+          { id: "generic", console: "Generic Digital Console", stagebox: "Generic Stagebox 32x16", stageboxInputs: 32, stageboxOutputs: 16, deskPreamps: 16, systemInputChannels: 32, systemOutputChannels: 16 },
+          { id: "midas_m32", console: "Midas M32", stagebox: "Midas DL32", stageboxInputs: 32, stageboxOutputs: 16, deskPreamps: 32, systemInputChannels: 32, systemOutputChannels: 16 },
+          { id: "digico_sd10", console: "DigiCo SD10", stagebox: "DigiCo D-Rack", stageboxInputs: 32, stageboxOutputs: 16, deskPreamps: 8, systemInputChannels: 144, systemOutputChannels: 16 },
+          { id: "allan_heath_sq5", console: "Allan & Heath SQ5", stagebox: "Allan & Heath AR2412", stageboxInputs: 24, stageboxOutputs: 12, deskPreamps: 16, systemInputChannels: 48, systemOutputChannels: 12 },
+          { id: "allan_heath_sq6", console: "Allan & Heath SQ6", stagebox: "Allan & Heath AR2412", stageboxInputs: 24, stageboxOutputs: 12, deskPreamps: 24, systemInputChannels: 48, systemOutputChannels: 12 },
+          { id: "soundcraft_vi3000", console: "Soundcraft VI3000", stagebox: "Soundcraft Vi Stagebox", stageboxInputs: 64, stageboxOutputs: 32, deskPreamps: 32, systemInputChannels: 96, systemOutputChannels: 32 }
+        ];
+        function getAudioConsolePresetByName(name) {
+          const key = String(name || "").trim().toLowerCase();
+          return AUDIO_CONSOLE_PRESETS.find((p) => String(p.console || "").trim().toLowerCase() === key) || null;
+        }
+        function applyAudioConsolePreset(consoleCfg, preset) {
+          if (!consoleCfg || !preset) return;
+          consoleCfg.consoleModel = String(preset.console || consoleCfg.consoleModel || "");
+          consoleCfg.stageboxModel = String(preset.stagebox || consoleCfg.stageboxModel || "");
+          consoleCfg.onDeskInputs = Math.max(0, Number(preset.deskPreamps || 0));
+          consoleCfg.systemInputChannels = Math.max(1, Number(preset.systemInputChannels || preset.stageboxInputs || 32));
+          consoleCfg.systemOutputChannels = Math.max(1, Number(preset.systemOutputChannels || preset.stageboxOutputs || 16));
+          const inputs = Math.max(1, Number(preset.stageboxInputs || 32));
+          const outputs = Math.max(0, Number(preset.stageboxOutputs || 16));
+          consoleCfg.stageboxes = [{ id: "sb_1", name: "SB-A", inputs, outputs, spareInputs: 0 }];
+          const totalInputs = Math.max(1, Number(consoleCfg.systemInputChannels || 1));
+          consoleCfg.inputs = Array.from({ length: totalInputs }, (_, idx) => ({
+            id: `aud_in_${Date.now()}_${idx + 1}_${Math.random().toString(36).slice(2, 5)}`,
+            name: "",
+            sourceType: "wired",
+            patchChannel: idx + 1,
+            connector: "XLR",
+            phantom: false,
+            stageLocation: idx < Math.min(inputs, totalInputs) ? "stagebox" : "desk",
+            priority: "important",
+            notes: ""
+          }));
+          const totalOutputs = Math.max(1, Number(consoleCfg.systemOutputChannels || outputs || 1));
+          consoleCfg.outputs = Array.from({ length: totalOutputs }, (_, idx) => ({
+            id: `aud_out_${Date.now()}_${idx + 1}_${Math.random().toString(36).slice(2, 5)}`,
+            name: "",
+            sourceType: "wired",
+            patchChannel: idx + 1,
+            stageLocation: idx < Math.min(outputs, totalOutputs) ? "stagebox" : "desk",
+            connector: "XLR",
+            destination: "",
+            bus: `Out ${idx + 1}`,
+            location: "Stage Rack",
+            notes: ""
+          }));
+        }
+        function newRiggingGroup(index = 1) {
+          return {
+            id: `rig_group_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+            name: `Truss Group ${index}`,
+            color: "#f08a3c"
+          };
+        }
+        const RIGGING_BUILD_TYPES = [
+          { id: "linear", label: "Linear Truss" },
+          { id: "box", label: "Box Truss" },
+          { id: "circle", label: "Circle Truss" },
+          { id: "totem", label: "Totems" }
+        ];
+        const RIGGING_WORKSPACE_KEYS = [
+          "projectName",
+          "units",
+          "safetyFactor",
+          "cantileverEnabled",
+          "selectedTrussType",
+          "selectedMotorId",
+          "fixtureSearch",
+          "selectedFixtureKey",
+          "selectedGroupId",
+          "selectedGroupFixtureId",
+          "selectedTrussGroupId",
+          "selectedPlanGroupId",
+          "selectedPlanFixtureId",
+          "selectedAdditionalId",
+          "graphScaleMode",
+          "graphFixedMax",
+          "groupFixturePositionM",
+          "groupMotorPositionM",
+          "groupMotorRoofWllKg",
+          "groupMotorChainDropM",
+          "groupSegmentLengthMById",
+          "groupExpandedById",
+          "selectedSpanId",
+          "fixturePositionM",
+          "fixtureQty",
+          "groups",
+          "nodes",
+          "spans",
+          "pickups",
+          "fixturePlacements",
+          "groupFixtures",
+          "groupMotors",
+          "accessories",
+          "lastCalc"
+        ];
+        function buildDefaultRiggingWorkspace(buildType = "linear") {
+          const suffix = String(buildType || "linear");
+          const defaultTrussForType = getPreferredTrussTypeForBuildType(buildType);
+          return {
+            projectName: "Rigging Project",
+            units: "kg/m",
+            safetyFactor: 1.2,
+            cantileverEnabled: false,
+            selectedTrussType: defaultTrussForType || "prolyte_h30v",
+            selectedMotorId: "cm_lodestar_1t",
+            fixtureSearch: "",
+            selectedFixtureKey: "",
+            selectedGroupId: "",
+            selectedGroupFixtureId: "",
+            selectedTrussGroupId: "",
+            selectedPlanGroupId: "",
+            selectedPlanFixtureId: "",
+            selectedAdditionalId: "pa_150",
+            graphScaleMode: "auto",
+            graphFixedMax: null,
+            groupFixturePositionM: 0,
+            groupMotorPositionM: 0,
+            groupMotorRoofWllKg: null,
+            groupMotorChainDropM: 8,
+            groupSegmentLengthMById: {},
+            groupExpandedById: {},
+            selectedSpanId: "",
+            fixturePositionM: 0,
+            fixtureQty: 1,
+            groups: [{ id: `rig_${suffix}_grp_1`, name: "Main Rig", color: "#f08a3c" }],
+            nodes: [
+              { id: `N_${suffix}_1`, label: "P1", x: 0, y: 0 },
+              { id: `N_${suffix}_2`, label: "P2", x: 6, y: 0 },
+              { id: `N_${suffix}_3`, label: "P3", x: 12, y: 0 }
+            ],
+            spans: [
+              { id: `S_${suffix}_1`, nodeA: `N_${suffix}_1`, nodeB: `N_${suffix}_2`, trussTypeId: defaultTrussForType || "prolyte_h30v", lengthM: 6, groupId: `rig_${suffix}_grp_1` },
+              { id: `S_${suffix}_2`, nodeA: `N_${suffix}_2`, nodeB: `N_${suffix}_3`, trussTypeId: defaultTrussForType || "prolyte_h30v", lengthM: 6, groupId: `rig_${suffix}_grp_1` }
+            ],
+            pickups: [
+              { id: `PU_${suffix}_1`, nodeId: `N_${suffix}_1`, pickupType: "motor", motorId: "cm_lodestar_1t", roofPointWllKg: 1000, chainDropM: 8, notes: "" },
+              { id: `PU_${suffix}_2`, nodeId: `N_${suffix}_2`, pickupType: "motor", motorId: "cm_lodestar_1t", roofPointWllKg: 1000, chainDropM: 8, notes: "" },
+              { id: `PU_${suffix}_3`, nodeId: `N_${suffix}_3`, pickupType: "motor", motorId: "cm_lodestar_1t", roofPointWllKg: 1000, chainDropM: 8, notes: "" }
+            ],
+            fixturePlacements: [],
+            groupFixtures: [],
+            groupMotors: [],
+            accessories: [],
+            lastCalc: null
+          };
+        }
+        function captureRiggingWorkspaceSnapshot() {
+          const snap = {};
+          RIGGING_WORKSPACE_KEYS.forEach((k) => { snap[k] = safeClone(riggingState[k]); });
+          return snap;
+        }
+        function applyRiggingWorkspaceSnapshot(snapshot) {
+          const next = snapshot && typeof snapshot === "object" ? snapshot : buildDefaultRiggingWorkspace(riggingState.activeBuildType || "linear");
+          RIGGING_WORKSPACE_KEYS.forEach((k) => {
+            if (next[k] === undefined) return;
+            riggingState[k] = safeClone(next[k]);
+          });
+        }
+        function ensureRiggingWorkspaces() {
+          if (!riggingState.workspaces || typeof riggingState.workspaces !== "object") riggingState.workspaces = {};
+          RIGGING_BUILD_TYPES.forEach((bt) => {
+            if (!riggingState.workspaces[bt.id]) {
+              riggingState.workspaces[bt.id] = bt.id === "linear"
+                ? captureRiggingWorkspaceSnapshot()
+                : buildDefaultRiggingWorkspace(bt.id);
+            }
+          });
+          if (!RIGGING_BUILD_TYPES.some((x) => x.id === riggingState.activeBuildType)) {
+            riggingState.activeBuildType = "linear";
+          }
+        }
+        function switchRiggingBuildType(nextType = "linear") {
+          ensureRiggingWorkspaces();
+          const next = String(nextType || "linear");
+          if (!RIGGING_BUILD_TYPES.some((x) => x.id === next)) return;
+          const prev = String(riggingState.activeBuildType || "linear");
+          riggingState.workspaces[prev] = captureRiggingWorkspaceSnapshot();
+          riggingState.activeBuildType = next;
+          applyRiggingWorkspaceSnapshot(riggingState.workspaces[next] || buildDefaultRiggingWorkspace(next));
+          const allowed = getTrussCatalogForBuildType(next);
+          if (!allowed.some((t) => t.id === riggingState.selectedTrussType)) {
+            riggingState.selectedTrussType = getPreferredTrussTypeForBuildType(next) || allowed[0]?.id || riggingState.selectedTrussType;
+          }
+          relayoutAllRiggingGroupsByBuildType();
+          riggingState.lastCalc = null;
+        }
+        function colorWithAlpha(hex, alpha = 0.12) {
+          const safeAlpha = Math.max(0, Math.min(1, Number(alpha || 0)));
+          const h = String(hex || "").trim();
+          const short = /^#([0-9a-fA-F]{3})$/;
+          const full = /^#([0-9a-fA-F]{6})$/;
+          if (short.test(h)) {
+            const m = short.exec(h)[1];
+            const r = parseInt(m[0] + m[0], 16);
+            const g = parseInt(m[1] + m[1], 16);
+            const b = parseInt(m[2] + m[2], 16);
+            return `rgba(${r}, ${g}, ${b}, ${safeAlpha})`;
+          }
+          if (full.test(h)) {
+            const m = full.exec(h)[1];
+            const r = parseInt(m.slice(0, 2), 16);
+            const g = parseInt(m.slice(2, 4), 16);
+            const b = parseInt(m.slice(4, 6), 16);
+            return `rgba(${r}, ${g}, ${b}, ${safeAlpha})`;
+          }
+          return `rgba(138, 124, 255, ${safeAlpha})`;
+        }
+        function fixtureKey(fixture) {
+          return `${fixture.manufacturer}__${fixture.model}`;
+        }
+        function fixturePreviewByKey(key) {
+          const raw = GDTF_PREVIEW_MAP[String(key || "")];
+          if (!raw) return { path: "", dimensions_m: { length_m: null, width_m: null, height_m: null } };
+          if (typeof raw === "string") {
+            return { path: raw, symbol_role: "thumbnail", dimensions_m: { length_m: null, width_m: null, height_m: null } };
+          }
+          return {
+            path: String(raw.path || ""),
+            symbol_role: String(raw.symbol_role || "thumbnail"),
+            dimensions_m: raw.dimensions_m && typeof raw.dimensions_m === "object"
+              ? {
+                length_m: Number.isFinite(Number(raw.dimensions_m.length_m)) ? Number(raw.dimensions_m.length_m) : null,
+                width_m: Number.isFinite(Number(raw.dimensions_m.width_m)) ? Number(raw.dimensions_m.width_m) : null,
+                height_m: Number.isFinite(Number(raw.dimensions_m.height_m)) ? Number(raw.dimensions_m.height_m) : null
+              }
+              : { length_m: null, width_m: null, height_m: null }
+          };
+        }
+        function fixtureDimensionsMByKey(key) {
+          const f = getLightingFixtureByKey(key);
+          const d = f?.dimensions_mm || {};
+          return {
+            length_m: Number.isFinite(Number(d.length)) ? Number(d.length) / 1000 : null,
+            width_m: Number.isFinite(Number(d.width)) ? Number(d.width) / 1000 : null,
+            height_m: Number.isFinite(Number(d.height)) ? Number(d.height) / 1000 : null
+          };
+        }
+        function getLightingFixtureByKey(key) {
+          return lightingFixtureLibrary.find((f) => fixtureKey(f) === key) || lightingFixtureLibrary[0];
+        }
+        function applyLightingFixtureRows(rows) {
+          if (!Array.isArray(rows)) return false;
+          const clean = rows
+            .map((f) => ({
+              manufacturer: f.manufacturer || "Unknown",
+              model: f.model || "Unnamed Fixture",
+              category: f.category || "Fixture",
+              weight_kg: Number.isFinite(Number(f?.weight_kg)) ? Number(f.weight_kg) : null,
+              dimensions_mm: {
+                length: Number.isFinite(Number(f?.dimensions_mm?.length)) ? Number(f.dimensions_mm.length) : null,
+                width: Number.isFinite(Number(f?.dimensions_mm?.width)) ? Number(f.dimensions_mm.width) : null,
+                height: Number.isFinite(Number(f?.dimensions_mm?.height)) ? Number(f.dimensions_mm.height) : null
+              },
+              power: {
+                avg_w: Number.isFinite(Number(f?.power?.avg_w)) ? Number(f.power.avg_w) : null,
+                max_w: Number.isFinite(Number(f?.power?.max_w)) ? Number(f.power.max_w) : null
+              },
+              modes: Array.isArray(f.modes)
+                ? f.modes
+                  .filter((m) => m && Number.isInteger(m.channels) && m.channels > 0)
+                  .map((m) => ({ name: m.name || "Mode", channels: m.channels }))
+                : []
+            }))
+            .filter((f) => f.modes.length);
+          if (!clean.length) return false;
+          lightingFixtureLibrary = clean;
+          return true;
+        }
+        function mapLightingEquipmentToFixture(eq, idx) {
+          const modes = Array.isArray(eq?.meta?.fixture_modes) && eq.meta.fixture_modes.length
+            ? eq.meta.fixture_modes
+            : [{ name: "Standard", channels: 1 }];
+          return {
+            manufacturer: eq?.manufacturer || "Unknown",
+            model: eq?.name || `Fixture ${idx + 1}`,
+            category: String(eq?.notes || "Fixture"),
+            weight_kg: Number.isFinite(Number(eq?.weight_kg)) ? Number(eq.weight_kg) : null,
+            dimensions_mm: {
+              length: Number.isFinite(Number(eq?.meta?.dimensions_mm?.length)) ? Number(eq.meta.dimensions_mm.length) : null,
+              width: Number.isFinite(Number(eq?.meta?.dimensions_mm?.width)) ? Number(eq.meta.dimensions_mm.width) : null,
+              height: Number.isFinite(Number(eq?.meta?.dimensions_mm?.height)) ? Number(eq.meta.dimensions_mm.height) : null
+            },
+            power: {
+              avg_w: Number.isFinite(Number(eq?.power_use?.watts)) ? Number(eq.power_use.watts) : null,
+              max_w: Number.isFinite(Number(eq?.power_use?.watts)) ? Number(eq.power_use.watts) : null
+            },
+            modes: modes.map((m) => ({
+              name: String(m?.name || "Mode"),
+              channels: Number.isFinite(Number(m?.channels)) ? Math.max(1, Math.round(Number(m.channels))) : 1
+            }))
+          };
+        }
+        function mergeLightingEquipmentIntoLibrary(lightingEquip) {
+          if (!Array.isArray(lightingEquip) || !lightingEquip.length) return;
+          const map = new Map(lightingFixtureLibrary.map((f) => [fixtureKey(f), f]));
+          lightingEquip.forEach((eq, idx) => {
+            const eqId = String(eq?.id || "");
+            if (/^lx_seed_\d+$/i.test(eqId)) return;
+            const fixture = mapLightingEquipmentToFixture(eq, idx);
+            map.set(fixtureKey(fixture), fixture);
+          });
+          lightingFixtureLibrary = Array.from(map.values());
+        }
+        function loadLightingFixtures() {
+          if (applyLightingFixtureRows(window.THE_BASE_LIGHTING_FIXTURES || [])) {
+            const liveSettings = getSettingsState();
+            const lightingEquip = (liveSettings?.departments?.Lighting?.equipment || []).filter((x) => x && x.enabled !== false);
+            mergeLightingEquipmentIntoLibrary(lightingEquip);
+            if (currentEngineeringSection === "Lighting") renderLighting();
+            return;
+          }
+          if (typeof fetch !== "function") return;
+          fetch("data/lighting-fixtures.json")
+            .then((res) => (res.ok ? res.json() : Promise.reject(new Error("No lighting fixture dataset found."))))
+            .then((rows) => {
+              if (applyLightingFixtureRows(rows)) {
+                const liveSettings = getSettingsState();
+                const lightingEquip = (liveSettings?.departments?.Lighting?.equipment || []).filter((x) => x && x.enabled !== false);
+                mergeLightingEquipmentIntoLibrary(lightingEquip);
+                const active = currentEngineeringSection;
+                if (active === "Lighting") renderLighting();
+              }
+            })
+            .catch(() => {});
+        }
+        function applyTrussCatalog(rows) {
+          if (!Array.isArray(rows) || !rows.length) return false;
+          const countLoadRows = (t) => {
+            const rows = Array.isArray(t?.load_capabilities?.rows) ? t.load_capabilities.rows : [];
+            return rows.length;
+          };
+          const normSeries = (s) => String(s || "").trim().toUpperCase();
+          const clean = rows
+            .map((t) => ({
+              id: t.id || `${String(t.series || "truss").toLowerCase()}_${Math.random().toString(36).slice(2, 6)}`,
+              manufacturer: t.manufacturer || "Prolyte",
+              series: t.series || "Truss",
+              connection: t.connection || "",
+              height_mm: Number.isFinite(Number(t.height_mm)) ? Number(t.height_mm) : null,
+              width_mm: Number.isFinite(Number(t.width_mm)) ? Number(t.width_mm) : null,
+              weight_per_m_kg: Number.isFinite(Number(t.weight_per_m_kg)) ? Number(t.weight_per_m_kg) : null,
+              available_lengths_m: Array.isArray(t.available_lengths_m) ? t.available_lengths_m.map((x) => Number(x)).filter((x) => x > 0) : [],
+              load_capabilities: t.load_capabilities && typeof t.load_capabilities === "object" ? t.load_capabilities : null,
+              source_url: t.source_url || "",
+              datasheet_urls: Array.isArray(t.datasheet_urls) ? t.datasheet_urls : [],
+              verified: Boolean(t.verified),
+              notes: t.notes || ""
+            }))
+            .filter((t) => t.id && t.series);
+          const donorsBySeries = clean.reduce((acc, t) => {
+            const key = normSeries(t.series);
+            if (!key) return acc;
+            const prev = acc[key];
+            const better =
+              !prev
+              || countLoadRows(t) > countLoadRows(prev)
+              || (countLoadRows(t) === countLoadRows(prev) && Boolean(t.verified) && !Boolean(prev.verified));
+            if (better) acc[key] = t;
+            return acc;
+          }, {});
+          const enrichFromSeriesDonor = (base) => {
+            const donor = donorsBySeries[normSeries(base.series)];
+            if (!donor) return base;
+            const mergedLens = Array.from(new Set([...(base.available_lengths_m || []), ...(donor.available_lengths_m || [])].map((x) => Number(x))))
+              .filter((x) => x > 0)
+              .sort((a, b) => a - b);
+            return {
+              ...base,
+              weight_per_m_kg: Number.isFinite(Number(base.weight_per_m_kg)) ? Number(base.weight_per_m_kg) : Number(donor.weight_per_m_kg || 0),
+              available_lengths_m: mergedLens.length ? mergedLens : (base.available_lengths_m || []),
+              load_capabilities: countLoadRows(base) > 0 ? base.load_capabilities : donor.load_capabilities,
+              source_url: base.source_url || donor.source_url || "",
+              datasheet_urls: (base.datasheet_urls && base.datasheet_urls.length) ? base.datasheet_urls : (donor.datasheet_urls || []),
+              verified: Boolean(base.verified) && countLoadRows(base) > 0 ? true : Boolean(donor.verified)
+            };
+          };
+          const preferred = clean
+            .filter((t) => ALLOWED_TRUSS_IDS.has(t.id))
+            .map((t) => ({
+              ...t,
+              available_lengths_m: Array.from(new Set((t.available_lengths_m || []).map((x) => Number(x))))
+                .filter((x) => x > 0)
+                .sort((a, b) => a - b)
+            }))
+            .map(enrichFromSeriesDonor)
+            .sort((a, b) => String(a.series).localeCompare(String(b.series)));
+          if (preferred.length) {
+            trussCatalog = preferred;
+            return true;
+          }
+          trussCatalog = TRUSS_FALLBACK
+            .map((t) => enrichFromSeriesDonor({
+              ...t,
+              available_lengths_m: Array.from(new Set((t.available_lengths_m || []).map((x) => Number(x))))
+                .filter((x) => x > 0)
+                .sort((a, b) => a - b)
+            }));
+          return true;
+        }
+        function applyMotorCatalog(rows) {
+          if (!Array.isArray(rows) || !rows.length) return false;
+          const clean = rows
+            .map((m) => ({
+              id: m.id || `${String(m.model || "motor").toLowerCase()}_${Math.random().toString(36).slice(2, 6)}`,
+              brand: m.brand || "Generic",
+              model: m.model || "Hoist",
+              wll_kg: Number.isFinite(Number(m.wll_kg)) ? Number(m.wll_kg) : null,
+              self_weight_kg: Number.isFinite(Number(m.self_weight_kg)) ? Number(m.self_weight_kg) : null,
+              chain_kg_per_m: Number.isFinite(Number(m.chain_kg_per_m)) ? Number(m.chain_kg_per_m) : null,
+              max_lift_m: Number.isFinite(Number(m.max_lift_m)) ? Number(m.max_lift_m) : null,
+              verified: Boolean(m.verified)
+            }))
+            .filter((m) => m.id && m.model);
+          if (!clean.length) return false;
+          motorCatalog = clean;
+          return true;
+        }
+        function loadRiggingCatalogs() {
+          applyTrussCatalog(window.THE_BASE_TRUSS_CATALOG || []);
+          applyMotorCatalog(window.THE_BASE_MOTOR_CATALOG || []);
+        }
+        function getPreferredDefaultTrussId() {
+          const order = ["H30V", "H40V", "X30V", "H30D", "H40D", "X30D", "H40R", "H30L", "H40L", "X30L"];
+          for (const series of order) {
+            const hit = trussCatalog.find((t) => String(t.series || "").toUpperCase() === series);
+            if (hit) return hit.id;
+          }
+          return trussCatalog[0]?.id || "";
+        }
+        function getTrussLengthOptions(trussTypeId) {
+          const truss = getTrussType(trussTypeId);
+          const lens = Array.isArray(truss?.available_lengths_m) ? truss.available_lengths_m : [];
+          const sorted = Array.from(new Set(lens.map((x) => Number(x)).filter((x) => x > 0))).sort((a, b) => a - b);
+          return sorted.length ? sorted : [1, 2, 3, 4];
+        }
+        function getNearestTrussLength(lengthM, trussTypeId) {
+          const options = getTrussLengthOptions(trussTypeId);
+          const target = Number(lengthM);
+          if (!Number.isFinite(target)) return options[0];
+          return options.reduce((best, x) => (Math.abs(x - target) < Math.abs(best - target) ? x : best), options[0]);
+        }
+        function formatLengthWeightOption(lengthM, trussTypeId) {
+          const truss = getTrussType(trussTypeId);
+          const wpm = Number.isFinite(Number(truss?.weight_per_m_kg)) ? Number(truss.weight_per_m_kg) : null;
+          const weight = wpm === null ? null : (wpm * Number(lengthM));
+          const labelLen = Number(lengthM).toFixed(Number.isInteger(Number(lengthM)) ? 0 : 2);
+          if (weight === null) return `${labelLen}m`;
+          return `${labelLen}m (${weight.toFixed(1)}kg)`;
+        }
+        function getTrussType(id) {
+          return trussCatalog.find((x) => x.id === id) || trussCatalog[0];
+        }
+        function getMotor(id) {
+          return motorCatalog.find((x) => x.id === id) || motorCatalog[0];
+        }
+        function getNode(id) {
+          return riggingState.nodes.find((n) => n.id === id);
+        }
+        function getSpan(id) {
+          return riggingState.spans.find((s) => s.id === id);
+        }
+        function getTrussCatalogForBuildType(buildType = "linear") {
+          const type = String(buildType || "linear").toLowerCase();
+          const all = Array.isArray(trussCatalog) ? trussCatalog : [];
+          const include = (row) => {
+            const series = String(row?.series || "").toUpperCase();
+            if (type === "circle") return /D$/.test(series) || /R$/.test(series);
+            if (type === "totem") return /V$/.test(series) || /R$/.test(series);
+            if (type === "box") return /V$/.test(series) || /R$/.test(series) || /D$/.test(series);
+            return true;
+          };
+          const filtered = all.filter(include);
+          return filtered.length ? filtered : all;
+        }
+        function getPreferredTrussTypeForBuildType(buildType = "linear") {
+          const list = getTrussCatalogForBuildType(buildType);
+          const prefSeries = buildType === "circle"
+            ? ["H30D", "H40R", "X30D"]
+            : (buildType === "totem" ? ["H30V", "H40V", "X30V"] : ["H30V", "H40V", "X30V"]);
+          for (let i = 0; i < prefSeries.length; i += 1) {
+            const hit = list.find((x) => String(x.series || "").toUpperCase() === prefSeries[i]);
+            if (hit) return hit.id;
+          }
+          return list[0]?.id || "";
+        }
+        function getRiggingGroups() {
+          if (!Array.isArray(riggingState.groups)) riggingState.groups = [];
+          if (!riggingState.groups.length) {
+            riggingState.groups = [{ id: "rig_grp_1", name: "Main Rig", color: "#f08a3c" }];
+          }
+          return riggingState.groups;
+        }
+        function getOrderedGroupSpans(groupId) {
+          const rows = (riggingState.spans || []).filter((s) => (s.groupId || getRiggingGroups()[0]?.id || "") === groupId);
+          if (rows.length <= 1) return rows.slice();
+          const byNode = {};
+          rows.forEach((s) => {
+            byNode[s.nodeA] = byNode[s.nodeA] || [];
+            byNode[s.nodeB] = byNode[s.nodeB] || [];
+            byNode[s.nodeA].push(s);
+            byNode[s.nodeB].push(s);
+          });
+          const endpoints = Object.entries(byNode).filter(([, list]) => list.length === 1).map(([id]) => id);
+          const startNode = endpoints[0] || rows[0].nodeA;
+          const used = new Set();
+          const ordered = [];
+          let currentNode = startNode;
+          let guard = 0;
+          while (guard < rows.length + 4) {
+            guard += 1;
+            const next = (byNode[currentNode] || []).find((s) => !used.has(s.id));
+            if (!next) break;
+            used.add(next.id);
+            ordered.push(next);
+            currentNode = next.nodeA === currentNode ? next.nodeB : next.nodeA;
+          }
+          rows.forEach((s) => {
+            if (!used.has(s.id)) ordered.push(s);
+          });
+          return ordered;
+        }
+        function getRiggingSpanLabel(span) {
+          if (!span) return "";
+          const g = getRiggingGroups().find((x) => x.id === span.groupId);
+          const groupName = g?.name || "Ungrouped";
+          return `${groupName} - ${span.id} (${Number(span.lengthM || 0).toFixed(1)}m)`;
+        }
+        function getRiggingGroupSpans(groupId) {
+          const map = buildRiggingSpanCoordinateMap();
+          return getOrderedGroupSpans(groupId)
+            .map((s) => {
+              const ax = Number(map.nodeXById[s.nodeA] ?? getNode(s.nodeA)?.x ?? 0);
+              const bx = Number(map.nodeXById[s.nodeB] ?? getNode(s.nodeB)?.x ?? 0);
+              const startX = Math.min(ax, bx);
+              const endX = Math.max(ax, bx);
+              return {
+                span: s,
+                sortX: startX,
+                startX,
+                endX,
+                lengthM: Math.max(0, Number(s.lengthM || 0))
+              };
+            });
+        }
+        function getRiggingGroupTotalSpan(groupId) {
+          const spans = getRiggingGroupSpans(groupId);
+          if (!spans.length) return 0;
+          return spans.reduce((sum, item) => sum + Math.max(0, Number(item.lengthM || 0)), 0);
+        }
+        function mapGroupPositionToSpan(groupId, posM) {
+          const spans = getRiggingGroupSpans(groupId);
+          if (!spans.length) return null;
+          const total = spans.reduce((sum, item) => sum + Math.max(0, Number(item.lengthM || 0)), 0);
+          const clamped = Math.max(0, Math.min(Math.max(0, total), Number(posM || 0)));
+          let offset = 0;
+          let chosen = spans[spans.length - 1];
+          let local = Math.max(0, Number(chosen?.lengthM || 0));
+          for (let i = 0; i < spans.length; i += 1) {
+            const item = spans[i];
+            const len = Math.max(0, Number(item.lengthM || 0));
+            const end = offset + len;
+            if (clamped <= end + 1e-9 || i === spans.length - 1) {
+              chosen = item;
+              local = Math.max(0, Math.min(len, clamped - offset));
+              break;
+            }
+            offset = end;
+          }
+          return {
+            spanId: chosen.span.id,
+            positionM: local,
+            totalSpanM: total
+          };
+        }
+        function mapSpanLocalToGroupPosition(groupId, spanId, localPosM) {
+          const spans = getRiggingGroupSpans(groupId);
+          if (!spans.length) return null;
+          let offset = 0;
+          for (let i = 0; i < spans.length; i += 1) {
+            const item = spans[i];
+            const len = Math.max(0, Number(item.lengthM || 0));
+            if (item.span.id === spanId) {
+              const local = Math.max(0, Math.min(len, Number(localPosM || 0)));
+              return offset + local;
+            }
+            offset += len;
+          }
+          return null;
+        }
+        function relayoutRiggingGroupByBuildType(groupId, buildType = "linear") {
+          const ordered = getOrderedGroupSpans(groupId);
+          if (!ordered.length) return;
+          const nodesById = Object.fromEntries((riggingState.nodes || []).map((n) => [n.id, n]));
+          const nodeOrder = [];
+          ordered.forEach((s, idx) => {
+            if (idx === 0) nodeOrder.push(s.nodeA, s.nodeB);
+            else {
+              const last = nodeOrder[nodeOrder.length - 1];
+              nodeOrder.push(last === s.nodeA ? s.nodeB : s.nodeA);
+            }
+          });
+          if (nodeOrder.length < 2) return;
+          const lengths = ordered.map((s) => Math.max(0, Number(s.lengthM || 0)));
+          const total = lengths.reduce((a, b) => a + b, 0);
+          if (!(total > 0)) return;
+          const cum = [0];
+          for (let i = 0; i < lengths.length; i += 1) cum.push(cum[cum.length - 1] + lengths[i]);
+          const setNode = (id, x, y) => {
+            const node = nodesById[id];
+            if (!node) return;
+            node.x = Number(x.toFixed(3));
+            node.y = Number(y.toFixed(3));
+          };
+          const type = String(buildType || "linear").toLowerCase();
+          if (type === "circle") {
+            const r = Math.max(1, total / (2 * Math.PI));
+            for (let i = 0; i < nodeOrder.length; i += 1) {
+              const t = cum[Math.min(i, cum.length - 1)] / total;
+              const a = (Math.PI * 2 * t) - (Math.PI / 2);
+              setNode(nodeOrder[i], r * Math.cos(a), r * Math.sin(a));
+            }
+            return;
+          }
+          if (type === "box") {
+            const w = Math.max(1, total / 3);
+            const h = Math.max(0.6, (total - (2 * w)) / 2);
+            const per = Math.max(0.001, (2 * (w + h)));
+            const edgePoint = (dist) => {
+              let d = ((dist % per) + per) % per;
+              if (d <= w) return { x: d - (w / 2), y: -h / 2 };
+              d -= w;
+              if (d <= h) return { x: w / 2, y: d - (h / 2) };
+              d -= h;
+              if (d <= w) return { x: (w / 2) - d, y: h / 2 };
+              d -= w;
+              return { x: -w / 2, y: (h / 2) - d };
+            };
+            for (let i = 0; i < nodeOrder.length; i += 1) {
+              const p = edgePoint(cum[Math.min(i, cum.length - 1)]);
+              setNode(nodeOrder[i], p.x, p.y);
+            }
+            return;
+          }
+          if (type === "totem") {
+            for (let i = 0; i < nodeOrder.length; i += 1) {
+              setNode(nodeOrder[i], 0, cum[Math.min(i, cum.length - 1)]);
+            }
+            return;
+          }
+          for (let i = 0; i < nodeOrder.length; i += 1) {
+            setNode(nodeOrder[i], cum[Math.min(i, cum.length - 1)], 0);
+          }
+        }
+        function relayoutAllRiggingGroupsByBuildType() {
+          const bt = String(riggingState.activeBuildType || "linear");
+          getRiggingGroups().forEach((g) => relayoutRiggingGroupByBuildType(g.id, bt));
+        }
+        function projectPointerToRigPlanSpan(ev, groupId = "") {
+          const liveSvg = document.getElementById("rigPlanSvg");
+          if (!liveSvg) return null;
+          const viewBox = (liveSvg.getAttribute("viewBox") || "0 0 900 220").split(/\s+/).map(Number);
+          const vbW = viewBox[2] || 900;
+          const vbH = viewBox[3] || 220;
+          const rect = liveSvg.getBoundingClientRect();
+          const rw = rect.width || 1;
+          const rh = rect.height || 1;
+          const p = {
+            x: ((ev.clientX - rect.left) / rw) * vbW,
+            y: ((ev.clientY - rect.top) / rh) * vbH
+          };
+          const lines = Array.from(liveSvg.querySelectorAll("[data-rig-plan-drop-span]"));
+          let best = null;
+          lines.forEach((line) => {
+            const spanId = line.getAttribute("data-rig-plan-drop-span") || "";
+            if (!spanId) return;
+            const span = getSpan(spanId);
+            if (!span) return;
+            if (groupId && (span.groupId || "") !== groupId) return;
+            const len = Math.max(0, Number(span.lengthM || 0));
+            if (len <= 0.0001) return;
+            const ax = Number(line.getAttribute("data-rig-ax") || 0);
+            const ay = Number(line.getAttribute("data-rig-ay") || 0);
+            const bx = Number(line.getAttribute("data-rig-bx") || 0);
+            const by = Number(line.getAttribute("data-rig-by") || 0);
+            const vx = bx - ax;
+            const vy = by - ay;
+            const len2 = (vx * vx) + (vy * vy);
+            if (len2 <= 0.0001) return;
+            let t = (((p.x - ax) * vx) + ((p.y - ay) * vy)) / len2;
+            if (t < 0) t = 0;
+            if (t > 1) t = 1;
+            const px = ax + (t * vx);
+            const py = ay + (t * vy);
+            const d2 = ((p.x - px) * (p.x - px)) + ((p.y - py) * (p.y - py));
+            if (!best || d2 < best.d2) {
+              best = { d2, x: px, y: py, spanId, posInSpanM: t * len };
+            }
+          });
+          return best;
+        }
+        function getPointerGroupPositionFromRigPlan(ev, groupId = "") {
+          if (!groupId) return null;
+          const projected = projectPointerToRigPlanSpan(ev, groupId);
+          if (!projected) return null;
+          return mapSpanLocalToGroupPosition(groupId, projected.spanId, projected.posInSpanM);
+        }
+        function buildRiggingSpanCoordinateMap() {
+          const nodes = riggingState.nodes || [];
+          const spans = riggingState.spans || [];
+          if (!nodes.length) return { nodeXById: {}, minX: 0, maxX: 1, totalSpanM: 0 };
+          const totalSpanM = spans.reduce((a, s) => a + Math.max(0, Number(s.lengthM || 0)), 0);
+          const nodeXById = Object.fromEntries(nodes.map((n) => [n.id, Number(n.x || 0)]));
+          const xs = nodes.map((n) => Number(n.x || 0));
+          const minX = xs.length ? Math.min(...xs) : 0;
+          const maxX = xs.length ? Math.max(...xs) : 1;
+          return { nodeXById, minX, maxX: Math.max(1, maxX), totalSpanM };
+        }
+        function getFixtureWeightByKey(key) {
+          const fx = getLightingFixtureByKey(key);
+          return Number.isFinite(Number(fx?.weight_kg)) ? Number(fx.weight_kg) : null;
+        }
+        function calculateReactionsForSpan(spanLengthM, udlKgPerM, pointLoads) {
+          const L = Number(spanLengthM || 0);
+          const udl = Number(udlKgPerM || 0);
+          const points = (pointLoads || []).map((p) => ({ pos_m: Number(p.pos_m || 0), load_kg: Number(p.load_kg || 0) }));
+          if (L <= 0) {
+            return { R_left_kg: 0, R_right_kg: 0, details: { totalLoadKg: 0, momentAboutLeft: 0 } };
+          }
+          const udlTotal = udl * L;
+          const pointTotal = points.reduce((a, p) => a + p.load_kg, 0);
+          const totalLoad = udlTotal + pointTotal;
+          const momentLeft = (udlTotal * (L / 2)) + points.reduce((a, p) => a + (p.load_kg * p.pos_m), 0);
+          const rRight = momentLeft / L;
+          const rLeft = totalLoad - rRight;
+          return {
+            R_left_kg: rLeft,
+            R_right_kg: rRight,
+            details: { totalLoadKg: totalLoad, udlKg: udlTotal, pointKg: pointTotal, momentAboutLeft: momentLeft }
+          };
+        }
+        function normalizeRiggingSpanItems() {
+          const spans = riggingState.spans || [];
+          if (!spans.length) return;
+          const groups = getRiggingGroups();
+          const defaultGroupId = groups[0]?.id || "";
+          const pickFallbackSpan = (preferGroupId) =>
+            spans.find((s) => (s.groupId || defaultGroupId) === preferGroupId)
+            || spans.find((s) => (s.groupId || defaultGroupId) === defaultGroupId)
+            || spans[0]
+            || null;
+
+          (riggingState.fixturePlacements || []).forEach((fp) => {
+            let span = fp?.spanId ? getSpan(fp.spanId) : null;
+            if (!span) {
+              const inferredGroupId = (fp?.spanId ? (getSpan(fp.spanId)?.groupId || "") : "")
+                || riggingState.selectedPlanGroupId
+                || riggingState.selectedTrussGroupId
+                || defaultGroupId;
+              const fallback = pickFallbackSpan(inferredGroupId);
+              if (!fallback) return;
+              fp.spanId = fallback.id;
+              span = fallback;
+            }
+            const maxLen = Math.max(0, Number(span.lengthM || 0));
+            fp.positionM = Math.max(0, Math.min(maxLen, Number(fp.positionM || 0)));
+          });
+
+          (riggingState.accessories || []).forEach((a) => {
+            if (a.placement !== "span") return;
+            let span = a?.spanId ? getSpan(a.spanId) : null;
+            if (!span) {
+              const fallback = pickFallbackSpan(riggingState.selectedPlanGroupId || riggingState.selectedTrussGroupId || defaultGroupId);
+              if (!fallback) return;
+              a.spanId = fallback.id;
+              span = fallback;
+            }
+            const maxLen = Math.max(0, Number(span.lengthM || 0));
+            a.positionM = Math.max(0, Math.min(maxLen, Number(a.positionM || 0)));
+          });
+
+          (riggingState.groupMotors || []).forEach((gm) => {
+            const groupId = gm.groupId || riggingState.selectedTrussGroupId || defaultGroupId;
+            const maxPos = Math.max(0, Number(getRiggingGroupTotalSpan(groupId) || 0));
+            gm.groupId = groupId;
+            gm.positionM = Math.max(0, Math.min(maxPos, Number(gm.positionM || 0)));
+          });
+        }
+        function getProlyteRowsForTruss(truss) {
+          const rows = Array.isArray(truss?.load_capabilities?.rows) ? truss.load_capabilities.rows : [];
+          return rows
+            .map((r) => ({
+              span_m: Number(r.span_m || 0),
+              udl_kg_per_m: Number(r.udl_kg_per_m || 0),
+              center_point_load_kg: Number(r.center_point_load_kg || 0),
+              third_points_load_each_kg: Number(r.third_points_load_each_kg || 0),
+              fourth_points_load_each_kg: Number(r.fourth_points_load_each_kg || 0),
+              fifth_points_load_each_kg: Number(r.fifth_points_load_each_kg || 0),
+              total_weight_kg: Number(r.total_weight_kg || 0)
+            }))
+            .filter((r) => Number.isFinite(r.span_m) && r.span_m > 0)
+            .sort((a, b) => a.span_m - b.span_m);
+        }
+        function getConservativeProlyteRow(rows, spanLengthM) {
+          if (!rows.length) return { row: null, exact: false, outOfRangeHigh: false, outOfRangeLow: false, sourceSpans: [] };
+          const L = Number(spanLengthM || 0);
+          if (L <= rows[0].span_m) {
+            return { row: rows[0], exact: Math.abs(L - rows[0].span_m) < 1e-6, outOfRangeHigh: false, outOfRangeLow: L < rows[0].span_m, sourceSpans: [rows[0].span_m] };
+          }
+          if (L >= rows[rows.length - 1].span_m) {
+            return {
+              row: rows[rows.length - 1],
+              exact: Math.abs(L - rows[rows.length - 1].span_m) < 1e-6,
+              outOfRangeHigh: L > rows[rows.length - 1].span_m,
+              outOfRangeLow: false,
+              sourceSpans: [rows[rows.length - 1].span_m]
+            };
+          }
+          let hiIdx = rows.findIndex((r) => r.span_m >= L);
+          if (hiIdx <= 0) hiIdx = 1;
+          const lo = rows[hiIdx - 1];
+          const hi = rows[hiIdx];
+          if (Math.abs(hi.span_m - L) < 1e-6) {
+            return { row: hi, exact: true, outOfRangeHigh: false, outOfRangeLow: false, sourceSpans: [hi.span_m] };
+          }
+          const t = (L - lo.span_m) / Math.max(1e-9, hi.span_m - lo.span_m);
+          const keys = ["udl_kg_per_m", "center_point_load_kg", "third_points_load_each_kg", "fourth_points_load_each_kg", "fifth_points_load_each_kg"];
+          const row = { span_m: L, total_weight_kg: (Number(lo.total_weight_kg || 0) + Number(hi.total_weight_kg || 0)) / 2 };
+          keys.forEach((k) => {
+            const a = Number(lo[k] || 0);
+            const b = Number(hi[k] || 0);
+            const interp = a + ((b - a) * t);
+            row[k] = Math.min(interp, a, b);
+          });
+          return { row, exact: false, outOfRangeHigh: false, outOfRangeLow: false, sourceSpans: [lo.span_m, hi.span_m] };
+        }
+        function computeSpanMaxMoment(spanLengthM, udlKgPerM, pointLoads, reactionLeftKg) {
+          const L = Math.max(0.001, Number(spanLengthM || 0));
+          const udl = Number(udlKgPerM || 0);
+          const rLeft = Number(reactionLeftKg || 0);
+          const pts = (pointLoads || []).map((p) => ({ pos_m: Number(p.pos_m || 0), load_kg: Number(p.load_kg || 0) }));
+          const samples = Math.max(120, Math.round(L * 24));
+          let maxAbsMoment = 0;
+          for (let i = 0; i <= samples; i += 1) {
+            const x = (i / samples) * L;
+            let m = (rLeft * x) - ((udl * x * x) / 2);
+            pts.forEach((p) => {
+              if (p.pos_m <= x) m -= p.load_kg * (x - p.pos_m);
+            });
+            maxAbsMoment = Math.max(maxAbsMoment, Math.abs(m));
+          }
+          return maxAbsMoment;
+        }
+        function evaluateSpanAgainstProlyte(span, truss, spanLengthM, udlKgPerM, pointLoads, reaction) {
+          const rows = getProlyteRowsForTruss(truss);
+          if (!rows.length) {
+            return {
+              status: "FAIL",
+              reason: "no_load_table",
+              detail: "No Prolyte allowable load table rows found.",
+              utilizationPct: null
+            };
+          }
+          const selected = getConservativeProlyteRow(rows, spanLengthM);
+          const row = selected.row;
+          if (!row) {
+            return {
+              status: "FAIL",
+              reason: "invalid_load_table",
+              detail: "Failed to resolve Prolyte table row.",
+              utilizationPct: null
+            };
+          }
+          const L = Math.max(0.001, Number(spanLengthM || 0));
+          const mMax = computeSpanMaxMoment(L, udlKgPerM, pointLoads, reaction?.R_left_kg || 0);
+          const demand = {
+            udl_kg_per_m: (8 * mMax) / (L * L),
+            center_point_load_kg: (4 * mMax) / L,
+            third_points_load_each_kg: (3 * mMax) / L,
+            fourth_points_load_each_kg: (4 * mMax) / L,
+            fifth_points_load_each_kg: (5 * mMax) / L
+          };
+          const checks = [
+            { key: "udl_kg_per_m", label: "UDL kg/m" },
+            { key: "center_point_load_kg", label: "Center Point kg" },
+            { key: "third_points_load_each_kg", label: "Third Points kg(each)" },
+            { key: "fourth_points_load_each_kg", label: "Fourth Points kg(each)" },
+            { key: "fifth_points_load_each_kg", label: "Fifth Points kg(each)" }
+          ].map((c) => {
+            const limit = Number(row[c.key] || 0);
+            const dem = Number(demand[c.key] || 0);
+            const util = limit > 0 ? (dem / limit) * 100 : null;
+            return { ...c, demand: dem, limit, utilPct: util };
+          }).filter((c) => c.limit > 0 && Number.isFinite(c.utilPct));
+
+          if (!checks.length) {
+            return {
+              status: "FAIL",
+              reason: "empty_limits",
+              detail: "Prolyte row has no usable load limits.",
+              utilizationPct: null
+            };
+          }
+          const critical = checks.reduce((max, c) => (!max || c.utilPct > max.utilPct ? c : max), null);
+          let status = "PASS";
+          if (critical.utilPct > 100) status = "FAIL";
+          else if (critical.utilPct > 85) status = "WARN";
+          const notes = [];
+          if (selected.outOfRangeLow) notes.push(`Span ${L.toFixed(2)}m is below table min ${rows[0].span_m.toFixed(2)}m; using conservative min row.`);
+          if (selected.outOfRangeHigh) notes.push(`Span ${L.toFixed(2)}m exceeds table max ${rows[rows.length - 1].span_m.toFixed(2)}m; using max row (unsafe range).`);
+          if (!selected.exact && !selected.outOfRangeHigh && !selected.outOfRangeLow) notes.push(`Interpolated conservatively between ${selected.sourceSpans[0].toFixed(2)}m and ${selected.sourceSpans[1].toFixed(2)}m table rows.`);
+          return {
+            status,
+            reason: "ok",
+            rowSpanM: row.span_m,
+            sourceSpans: selected.sourceSpans,
+            momentMaxKgM: mMax,
+            checks,
+            criticalKey: critical.key,
+            criticalLabel: critical.label,
+            utilizationPct: critical.utilPct,
+            detail: `${critical.label} utilization ${critical.utilPct.toFixed(1)}%`,
+            notes
+          };
+        }
+        function runRiggingCalculation() {
+          normalizeRiggingSpanItems();
+          const buildType = String(riggingState.activeBuildType || "linear");
+          const buildTypeMeta = RIGGING_BUILD_TYPES.find((x) => x.id === buildType) || RIGGING_BUILD_TYPES[0];
+          const warnings = [];
+          const blockers = [];
+          const perNodeRaw = {};
+          const perNodeStructuralRaw = {};
+          const perNodeFactored = {};
+          const spanResults = [];
+          const spanMap = buildRiggingSpanCoordinateMap();
+          riggingState.nodes.forEach((n) => {
+            perNodeRaw[n.id] = 0;
+            perNodeStructuralRaw[n.id] = 0;
+            perNodeFactored[n.id] = 0;
+          });
+          const pickupByNode = {};
+          riggingState.pickups.forEach((p) => {
+            if (!pickupByNode[p.nodeId]) pickupByNode[p.nodeId] = [];
+            pickupByNode[p.nodeId].push(p);
+          });
+
+          riggingState.spans.forEach((span) => {
+            const nodeA = getNode(span.nodeA);
+            const nodeB = getNode(span.nodeB);
+            if (!nodeA || !nodeB) {
+              blockers.push(`Span ${span.id} has missing node reference.`);
+              return;
+            }
+            const hasLeftPickup = (pickupByNode[nodeA.id] || []).length > 0;
+            const hasRightPickup = (pickupByNode[nodeB.id] || []).length > 0;
+            if (!hasLeftPickup && !hasRightPickup) {
+              if (buildType === "totem") {
+                warnings.push(`Totem mode: ${span.id} has no pickup supports; treated as base-supported member for planning checks.`);
+              } else {
+                blockers.push(`Span ${span.id} has no pickup support at either end.`);
+                return;
+              }
+            }
+            if (!hasLeftPickup || !hasRightPickup) {
+              if (buildType !== "totem") {
+                warnings.push(`Span ${span.id} is missing pickup support at one end. Reactions will be estimated; verify support model.`);
+              }
+            }
+
+            const truss = getTrussType(span.trussTypeId);
+            const spanLength = Number(span.lengthM || 0);
+            const ax = Number.isFinite(Number(spanMap.nodeXById?.[nodeA.id])) ? Number(spanMap.nodeXById[nodeA.id]) : Number(nodeA.x || 0);
+            const bx = Number.isFinite(Number(spanMap.nodeXById?.[nodeB.id])) ? Number(spanMap.nodeXById[nodeB.id]) : Number(nodeB.x || 0);
+            const ay = Number(nodeA.y || 0);
+            const by = Number(nodeB.y || 0);
+            const geomLength = Math.sqrt(((bx - ax) ** 2) + ((by - ay) ** 2));
+            if (Number.isFinite(geomLength) && Math.abs(geomLength - spanLength) > 0.1) {
+              warnings.push(`Span ${span.id} length mismatch: configured ${spanLength.toFixed(2)}m vs calculated layout geometry ${geomLength.toFixed(2)}m.`);
+            }
+            const trussWeightPerM = Number.isFinite(Number(truss?.weight_per_m_kg)) ? Number(truss.weight_per_m_kg) : null;
+            if (!Number.isFinite(trussWeightPerM)) {
+              blockers.push(`Span ${span.id} truss weight is missing in catalog (${truss?.series || "Unknown"}).`);
+              return;
+            }
+            if (!truss?.verified) {
+              blockers.push(`Span ${span.id} uses UNVERIFIED truss ${truss.series}. Verify this truss entry in catalog before final calc.`);
+              return;
+            }
+
+            const pointLoads = [];
+            riggingState.fixturePlacements
+              .filter((fp) => fp.spanId === span.id)
+              .forEach((fp) => {
+                const fixtureWeight = Number.isFinite(Number(fp.weightKg)) ? Number(fp.weightKg) : getFixtureWeightByKey(fp.fixtureKey);
+                const clampWeight = Number.isFinite(Number(fp.clampWeightKg)) ? Number(fp.clampWeightKg) : 0;
+                if (!Number.isFinite(fixtureWeight)) {
+                  blockers.push(`Fixture ${fp.fixtureName || fp.fixtureKey} on ${span.id} has unknown weight.`);
+                  return;
+                }
+                const pos = Number(fp.positionM || 0);
+                if (pos < 0 || pos > spanLength) {
+                  blockers.push(`Fixture load on ${span.id} is outside truss segment length (${spanLength.toFixed(2)}m).`);
+                  return;
+                }
+                const unitWeight = fixtureWeight + clampWeight;
+                const qty = Math.max(1, Math.round(Number(fp.quantity || 1)));
+                pointLoads.push({ pos_m: pos, load_kg: unitWeight * qty });
+              });
+            riggingState.accessories
+              .filter((a) => a.placement === "span" && a.spanId === span.id)
+              .forEach((a) => {
+                const pos = Number(a.positionM || 0);
+                const load = Number(a.weightKg || 0);
+                if (!Number.isFinite(load) || load <= 0) {
+                  blockers.push(`Accessory ${a.name || "Unnamed"} on ${span.id} has invalid weight.`);
+                  return;
+                }
+                if (pos < 0 || pos > spanLength) {
+                  blockers.push(`Accessory ${a.name || "Unnamed"} on ${span.id} is outside truss segment length (${spanLength.toFixed(2)}m).`);
+                  return;
+                }
+                pointLoads.push({ pos_m: pos, load_kg: load });
+              });
+
+            const reaction = calculateReactionsForSpan(spanLength, trussWeightPerM, pointLoads);
+            let prolyte = { status: "PASS", utilizationPct: null, criticalLabel: "", detail: "", notes: [] };
+            if (buildType !== "totem") {
+              prolyte = evaluateSpanAgainstProlyte(span, truss, spanLength, trussWeightPerM, pointLoads, reaction);
+              if (prolyte.status === "FAIL") {
+                blockers.push(`Span ${span.id} Prolyte limit fail: ${prolyte.detail}`);
+              } else if (prolyte.status === "WARN") {
+                warnings.push(`Span ${span.id} high Prolyte utilization: ${prolyte.detail}`);
+              }
+              (prolyte.notes || []).forEach((n) => warnings.push(`Span ${span.id}: ${n}`));
+            } else {
+              prolyte.detail = "Totem mode uses member/load checks; span table utilization skipped.";
+            }
+            perNodeRaw[nodeA.id] += reaction.R_left_kg;
+            perNodeRaw[nodeB.id] += reaction.R_right_kg;
+            perNodeStructuralRaw[nodeA.id] += reaction.R_left_kg;
+            perNodeStructuralRaw[nodeB.id] += reaction.R_right_kg;
+            spanResults.push({
+              spanId: span.id,
+              nodeA: nodeA.label,
+              nodeB: nodeB.label,
+              lengthM: spanLength,
+              trussSeries: truss.series,
+              trussWeightPerM,
+              R_left_kg: reaction.R_left_kg,
+              R_right_kg: reaction.R_right_kg,
+              totalLoadKg: reaction.details.totalLoadKg,
+              prolyteStatus: prolyte.status,
+              prolyteUtilPct: Number.isFinite(Number(prolyte.utilizationPct)) ? Number(prolyte.utilizationPct) : null,
+              prolyteCritical: prolyte.criticalLabel || "",
+              prolyteDetail: prolyte.detail || ""
+            });
+          });
+
+          let nodeAppliedTotal = 0;
+          riggingState.nodes.forEach((node) => {
+            const nodeAccessories = riggingState.accessories.filter((a) => a.placement === "node" && a.nodeId === node.id);
+            nodeAccessories.forEach((a) => {
+              const w = Number(a.weightKg || 0);
+              if (!Number.isFinite(w) || w <= 0) blockers.push(`Node accessory ${a.name || "Unnamed"} has invalid weight.`);
+              else {
+                perNodeRaw[node.id] += w;
+                perNodeStructuralRaw[node.id] += w;
+                nodeAppliedTotal += w;
+              }
+            });
+
+            const nodeFixtures = riggingState.fixturePlacements.filter((fp) => fp.nodeId === node.id);
+            nodeFixtures.forEach((fp) => {
+              const fixtureWeight = Number.isFinite(Number(fp.weightKg)) ? Number(fp.weightKg) : getFixtureWeightByKey(fp.fixtureKey);
+              const clampWeight = Number.isFinite(Number(fp.clampWeightKg)) ? Number(fp.clampWeightKg) : 0;
+              const qty = Math.max(1, Math.round(Number(fp.quantity || 1)));
+              if (!Number.isFinite(fixtureWeight)) blockers.push(`Node fixture ${fp.fixtureName || fp.fixtureKey} has unknown weight.`);
+              else {
+                const load = (fixtureWeight + clampWeight) * qty;
+                perNodeRaw[node.id] += load;
+                perNodeStructuralRaw[node.id] += load;
+                nodeAppliedTotal += load;
+              }
+            });
+          });
+
+          riggingState.pickups.forEach((p) => {
+            const pickupNode = getNode(p.nodeId);
+            if (!pickupNode) {
+              blockers.push(`Pickup ${p.id} references missing node ${p.nodeId}.`);
+              return;
+            }
+            const motor = getMotor(p.motorId);
+            if (!motor) blockers.push(`Pickup ${p.id} motor not found.`);
+            if (!Number.isFinite(Number(motor?.self_weight_kg))) blockers.push(`Pickup ${p.id} motor self-weight missing.`);
+            if (!Number.isFinite(Number(motor?.chain_kg_per_m))) blockers.push(`Pickup ${p.id} chain kg/m missing.`);
+            const motorWeight = Number.isFinite(Number(motor?.self_weight_kg)) ? Number(motor.self_weight_kg) : 0;
+            const chain = Number.isFinite(Number(motor?.chain_kg_per_m)) && Number.isFinite(Number(p.chainDropM))
+              ? Number(motor.chain_kg_per_m) * Number(p.chainDropM || 0)
+              : 0;
+            perNodeRaw[p.nodeId] += motorWeight + chain;
+            nodeAppliedTotal += motorWeight + chain;
+            if (!Number.isFinite(Number(p.roofPointWllKg))) {
+              warnings.push(`Pickup ${p.id} is missing roof WLL; utilization omitted.`);
+            }
+          });
+
+          if (Number(riggingState.safetyFactor || 1) < 1.2) {
+            warnings.push("Safety factor is below 1.20. Keep 1.00 for raw engineering checks only; increase for production planning policy.");
+          }
+
+          riggingState.nodes.forEach((n) => {
+            if (!pickupByNode[n.id] || pickupByNode[n.id].length === 0) {
+              if ((perNodeStructuralRaw[n.id] || 0) > 0.01) warnings.push(`Unsupported node ${n.label} has ${perNodeStructuralRaw[n.id].toFixed(1)} kg structural load.`);
+            }
+            perNodeFactored[n.id] = perNodeRaw[n.id] * Number(riggingState.safetyFactor || 1);
+          });
+
+          Object.entries(pickupByNode).forEach(([nodeId, list]) => {
+            if (list.length > 1) {
+              warnings.push(`Node ${getNode(nodeId)?.label || nodeId} has ${list.length} pickups. Node load is equally distributed across those pickups.`);
+            }
+          });
+
+          const supportOverridesByPickupId = {};
+          const cantileverSeen = new Set();
+          getRiggingGroups().forEach((g) => {
+            const model = buildRiggingStructuralProfile(g.id, 160);
+            if (!model?.reactionsByPickupId) return;
+            Object.entries(model.reactionsByPickupId).forEach(([pickupId, r]) => {
+              supportOverridesByPickupId[pickupId] = Number(r || 0);
+            });
+            if (model.hasCantilever) {
+              const left = Number(model.leftOverhangM || 0);
+              const right = Number(model.rightOverhangM || 0);
+              const key = `${g.id}:${left.toFixed(2)}:${right.toFixed(2)}`;
+              if (!cantileverSeen.has(key)) {
+                cantileverSeen.add(key);
+                warnings.push(`Auto-detected cantilever in ${g.name}: left ${left.toFixed(2)}m, right ${right.toFixed(2)}m (included in support-aware moment model).`);
+              }
+            }
+          });
+          const pickupResults = riggingState.pickups.map((p) => {
+            const motor = getMotor(p.motorId);
+            const pickupCountAtNode = Math.max(1, (pickupByNode[p.nodeId] || []).length);
+            const nodePayloadRaw = Number(perNodeStructuralRaw[p.nodeId] || 0) / pickupCountAtNode;
+            const motorWeight = Number.isFinite(Number(motor?.self_weight_kg)) ? Number(motor.self_weight_kg) : 0;
+            const chain = Number.isFinite(Number(motor?.chain_kg_per_m)) && Number.isFinite(Number(p.chainDropM))
+              ? Number(motor.chain_kg_per_m) * Number(p.chainDropM || 0)
+              : 0;
+            const supportPayloadRaw = Number.isFinite(Number(supportOverridesByPickupId[p.id])) ? Number(supportOverridesByPickupId[p.id]) : null;
+            const payloadRaw = supportPayloadRaw !== null ? supportPayloadRaw : nodePayloadRaw;
+            const roofRaw = payloadRaw + motorWeight + chain;
+            const payloadFactored = payloadRaw * Number(riggingState.safetyFactor || 1);
+            const roofFactored = roofRaw * Number(riggingState.safetyFactor || 1);
+            const roofWLL = Number.isFinite(Number(p.roofPointWllKg)) ? Number(p.roofPointWllKg) : null;
+            const motorWLL = Number.isFinite(Number(motor?.wll_kg)) ? Number(motor.wll_kg) : null;
+            const roofUtil = roofWLL ? (roofFactored / roofWLL) * 100 : null;
+            const motorUtil = motorWLL ? (payloadFactored / motorWLL) * 100 : null;
+            if (roofUtil !== null && roofUtil > 100) warnings.push(`Roof point overload at ${p.id}: ${roofUtil.toFixed(1)}%.`);
+            if (motorUtil !== null && motorUtil > 100) warnings.push(`Motor overload at ${p.id}: ${motorUtil.toFixed(1)}%.`);
+            return {
+              pickupId: p.id,
+              nodeId: p.nodeId,
+              nodeLabel: getNode(p.nodeId)?.label || p.nodeId,
+              rawLoadKg: roofRaw,
+              factoredLoadKg: roofFactored,
+              payloadRawKg: payloadRaw,
+              payloadFactoredKg: payloadFactored,
+              roofWllKg: roofWLL,
+              motorWllKg: motorWLL,
+              roofUtilPct: roofUtil,
+              motorUtilPct: motorUtil
+            };
+          });
+
+          const totalSpanLoad = spanResults.reduce((a, s) => a + s.totalLoadKg, 0);
+          const missingWllCount = riggingState.pickups.filter((p) => !Number.isFinite(Number(p.roofPointWllKg))).length;
+          const unsupportedNodeCount = buildType === "totem"
+            ? 0
+            : riggingState.nodes.filter((n) => (!pickupByNode[n.id] || pickupByNode[n.id].length === 0) && (perNodeRaw[n.id] || 0) > 0.01).length;
+          const unverifiedSpanCount = riggingState.spans.filter((s) => {
+            const truss = getTrussType(s.trussTypeId);
+            return Boolean(truss && !truss.verified);
+          }).length;
+          const roofWarnCount = pickupResults.filter((p) => p.roofUtilPct !== null && p.roofUtilPct >= 85 && p.roofUtilPct <= 100).length;
+          const roofFailCount = pickupResults.filter((p) => p.roofUtilPct !== null && p.roofUtilPct > 100).length;
+          const motorWarnCount = pickupResults.filter((p) => p.motorUtilPct !== null && p.motorUtilPct >= 85 && p.motorUtilPct <= 100).length;
+          const motorFailCount = pickupResults.filter((p) => p.motorUtilPct !== null && p.motorUtilPct > 100).length;
+          const prolyteWarnCount = spanResults.filter((s) => s.prolyteStatus === "WARN").length;
+          const prolyteFailCount = spanResults.filter((s) => s.prolyteStatus === "FAIL").length;
+          const missingMass = blockers.filter((b) => /unknown weight|invalid weight|self-weight missing|chain kg\/m missing|truss weight is missing|UNVERIFIED/i.test(String(b))).length;
+          if (roofWarnCount > 0) warnings.push(`${roofWarnCount} roof point(s) above 85% utilization.`);
+          if (motorWarnCount > 0) warnings.push(`${motorWarnCount} motor(s) above 85% utilization.`);
+          const buildTypeRows = [];
+          const buildTypeWarnings = [];
+          const buildTypeBlockers = [];
+          getRiggingGroups().forEach((g) => {
+            const spans = (riggingState.spans || []).filter((s) => (s.groupId || getRiggingGroups()[0]?.id || "") === g.id);
+            if (!spans.length) return;
+            const motors = (riggingState.groupMotors || []).filter((m) => (m.groupId || "") === g.id);
+            const nodeDegree = {};
+            spans.forEach((s) => {
+              nodeDegree[s.nodeA] = (nodeDegree[s.nodeA] || 0) + 1;
+              nodeDegree[s.nodeB] = (nodeDegree[s.nodeB] || 0) + 1;
+            });
+            const isClosedLoop = spans.length >= 4 && Object.values(nodeDegree).every((d) => Number(d) === 2);
+            const totalSpan = Number(getRiggingGroupTotalSpan(g.id) || 0);
+            if (buildType === "box") {
+              if (!isClosedLoop) buildTypeWarnings.push(`Box Truss: ${g.name} is not a closed loop (recommended: 4+ sides with each corner node degree 2).`);
+              if (motors.length < 4) buildTypeWarnings.push(`Box Truss: ${g.name} has ${motors.length} motor(s); 4+ pickups are recommended for perimeter support.`);
+              buildTypeRows.push({
+                group: g.name,
+                rule: "Closed perimeter",
+                value: isClosedLoop ? "Closed" : "Open / chain",
+                status: isClosedLoop ? "PASS" : "WARN"
+              });
+            } else if (buildType === "circle") {
+              const segOk = spans.length >= 8;
+              const motorOk = motors.length >= 3;
+              if (!segOk) buildTypeWarnings.push(`Circle Truss: ${g.name} uses ${spans.length} segment(s); use 8+ for a stable round approximation.`);
+              if (!motorOk) buildTypeWarnings.push(`Circle Truss: ${g.name} has ${motors.length} motor(s); 3+ evenly spaced motors recommended.`);
+              buildTypeRows.push({
+                group: g.name,
+                rule: "Round approximation",
+                value: `${spans.length} seg (${(totalSpan > 0 ? (totalSpan / Math.PI) : 0).toFixed(2)}m eq. dia)`,
+                status: (segOk && motorOk) ? "PASS" : "WARN"
+              });
+            } else if (buildType === "totem") {
+              const singleSpan = spans.length === 1;
+              const baseAnchored = motors.length >= 1;
+              if (!singleSpan) buildTypeWarnings.push(`Totem: ${g.name} has ${spans.length} spans; usually model a totem as a single vertical member.`);
+              if (!baseAnchored) buildTypeWarnings.push(`Totem: ${g.name} has no motor/base anchor entry; support capacity check is incomplete.`);
+              buildTypeRows.push({
+                group: g.name,
+                rule: "Tower setup",
+                value: `${spans.length} span / ${motors.length} anchor`,
+                status: (singleSpan && baseAnchored) ? "PASS" : "WARN"
+              });
+            } else {
+              if (motors.length < 2) buildTypeWarnings.push(`Linear Truss: ${g.name} has ${motors.length} motor(s); 2+ supports recommended for beam behavior.`);
+              buildTypeRows.push({
+                group: g.name,
+                rule: "Beam supports",
+                value: `${motors.length} motor(s)`,
+                status: motors.length >= 2 ? "PASS" : "WARN"
+              });
+            }
+          });
+          buildTypeWarnings.forEach((w) => warnings.push(w));
+          buildTypeBlockers.forEach((b) => blockers.push(b));
+
+          const complianceChecks = [
+            {
+              id: "build_type_rules",
+              title: `${buildTypeMeta.label} Rules`,
+              status: buildTypeBlockers.length > 0 ? "FAIL" : (buildTypeWarnings.length > 0 ? "WARN" : "PASS"),
+              detail: buildTypeBlockers.length > 0
+                ? `${buildTypeBlockers.length} blocker(s) for ${buildTypeMeta.label} workflow.`
+                : (buildTypeWarnings.length > 0 ? `${buildTypeWarnings.length} recommendation warning(s) for ${buildTypeMeta.label}.` : `${buildTypeMeta.label} rules satisfied.`)
+            },
+            {
+              id: "verified_truss",
+              title: "Verified Truss Data",
+              status: unverifiedSpanCount > 0 ? "FAIL" : "PASS",
+              detail: unverifiedSpanCount > 0
+                ? `${unverifiedSpanCount} span(s) use unverified truss data.`
+                : "All spans use verified truss entries."
+            },
+            {
+              id: "prolyte_span_loading",
+              title: "Prolyte Span Load Compliance",
+              status: prolyteFailCount > 0 ? "FAIL" : (prolyteWarnCount > 0 ? "WARN" : "PASS"),
+              detail: prolyteFailCount > 0
+                ? `${prolyteFailCount} span(s) exceed Prolyte allowable loading.`
+                : (prolyteWarnCount > 0 ? `${prolyteWarnCount} span(s) above 85% of Prolyte loading.` : "All spans within Prolyte allowable loading.")
+            },
+            {
+              id: "weights_complete",
+              title: "All Required Mass Data Present",
+              status: missingMass > 0 ? "FAIL" : "PASS",
+              detail: missingMass > 0
+                ? `${missingMass} missing/invalid mass issue(s) block final calculation.`
+                : "No missing mass blockers detected."
+            },
+            {
+              id: "pickup_wll",
+              title: "Pickup WLL Defined",
+              status: missingWllCount > 0 ? "WARN" : "PASS",
+              detail: missingWllCount > 0
+                ? `${missingWllCount} pickup point(s) missing roof WLL.`
+                : "All pickup points have WLL values."
+            },
+            {
+              id: "supported_nodes",
+              title: "Supported Loaded Nodes",
+              status: unsupportedNodeCount > 0 ? "FAIL" : "PASS",
+              detail: buildType === "totem"
+                ? "Totem mode uses base-supported tower assumptions for unsupported node checks."
+                : (unsupportedNodeCount > 0
+                ? `${unsupportedNodeCount} loaded node(s) have no pickup support.`
+                : "All loaded nodes are supported.")
+            },
+            {
+              id: "roof_utilization",
+              title: "Roof Utilization Limits",
+              status: roofFailCount > 0 ? "FAIL" : (roofWarnCount > 0 ? "WARN" : "PASS"),
+              detail: roofFailCount > 0
+                ? `${roofFailCount} roof point(s) exceed 100% utilization.`
+                : (roofWarnCount > 0 ? `${roofWarnCount} roof point(s) above 85%.` : "All roof points below 85%.")
+            },
+            {
+              id: "motor_utilization",
+              title: "Motor Utilization Limits",
+              status: motorFailCount > 0 ? "FAIL" : (motorWarnCount > 0 ? "WARN" : "PASS"),
+              detail: motorFailCount > 0
+                ? `${motorFailCount} motor(s) exceed 100% utilization.`
+                : (motorWarnCount > 0 ? `${motorWarnCount} motor(s) above 85%.` : "All motors below 85%.")
+            }
+          ];
+          const failCount = complianceChecks.filter((c) => c.status === "FAIL").length;
+          const warnCount = complianceChecks.filter((c) => c.status === "WARN").length;
+          const result = {
+            blocked: blockers.length > 0,
+            blockers,
+            warnings,
+            buildType,
+            buildTypeLabel: buildTypeMeta.label,
+            buildTypeRows,
+            safetyFactor: Number(riggingState.safetyFactor || 1),
+            totalWeightKg: totalSpanLoad + nodeAppliedTotal,
+            perNodeRaw,
+            perNodeFactored,
+            spanResults,
+            pickupResults,
+            compliance: {
+              checks: complianceChecks,
+              failCount,
+              warnCount,
+              exportLocked: failCount > 0
+            },
+            timestamp: new Date().toISOString()
+          };
+          riggingState.lastCalc = result;
+          return result;
+        }
+        function buildBeamLoadProfile(sampleCount = 200, spanFilterIds = null) {
+          const spanFilterSet = spanFilterIds instanceof Set ? spanFilterIds : null;
+          const spanMap = buildRiggingSpanCoordinateMap();
+          const nodesById = Object.fromEntries((riggingState.nodes || []).map((n) => [n.id, n]));
+          const spans = (riggingState.spans || []).filter((s) => {
+            if (!spanFilterSet) return true;
+            return spanFilterSet.has(s.id);
+          }).map((s) => {
+            const a = nodesById[s.nodeA];
+            const b = nodesById[s.nodeB];
+            if (!a || !b) return null;
+            const truss = getTrussType(s.trussTypeId);
+            const wpm = Number.isFinite(Number(truss?.weight_per_m_kg)) ? Number(truss.weight_per_m_kg) : 0;
+            return {
+              id: s.id,
+              xA: Number(spanMap.nodeXById[a.id] ?? 0),
+              xB: Number(spanMap.nodeXById[b.id] ?? 0),
+              lenM: Math.max(0.001, Number(s.lengthM || 0.001)),
+              wpm
+            };
+          }).filter(Boolean);
+          if (!spans.length) {
+            return { minX: 0, maxX: 1, points: [{ x: 0, intensity: 0 }, { x: 1, intensity: 0 }], maxIntensity: 0 };
+          }
+          const minX = Math.min(...spans.flatMap((s) => [s.xA, s.xB]));
+          const maxX = Math.max(...spans.flatMap((s) => [s.xA, s.xB]));
+          const width = Math.max(0.5, maxX - minX);
+          const sigma = Math.max(0.18, width / 140);
+          const invSigmaNorm = 1 / (sigma * Math.sqrt(2 * Math.PI));
+
+          const pointLoads = [];
+          (riggingState.fixturePlacements || []).forEach((fp) => {
+            if (!fp.spanId) return;
+            if (spanFilterSet && !spanFilterSet.has(fp.spanId)) return;
+            const s = spans.find((x) => x.id === fp.spanId);
+            if (!s) return;
+            const t = Math.max(0, Math.min(1, Number(fp.positionM || 0) / s.lenM));
+            const x = s.xA + ((s.xB - s.xA) * t);
+            const unit = (Number(fp.weightKg || 0) + Number(fp.clampWeightKg || 0));
+            const q = Math.max(1, Math.round(Number(fp.quantity || 1)));
+            const load = unit * q;
+            if (load > 0) pointLoads.push({ x, load });
+          });
+          (riggingState.accessories || []).forEach((a) => {
+            if (a.placement !== "span") return;
+            if (spanFilterSet && !spanFilterSet.has(a.spanId)) return;
+            const s = spans.find((x) => x.id === a.spanId);
+            if (!s) return;
+            const t = Math.max(0, Math.min(1, Number(a.positionM || 0) / s.lenM));
+            const x = s.xA + ((s.xB - s.xA) * t);
+            const load = Number(a.weightKg || 0);
+            if (load > 0) pointLoads.push({ x, load });
+          });
+
+          const points = [];
+          let maxIntensity = 0;
+          for (let i = 0; i <= sampleCount; i += 1) {
+            const x = minX + ((i / sampleCount) * width);
+            let intensity = 0;
+            spans.forEach((s) => {
+              const lo = Math.min(s.xA, s.xB);
+              const hi = Math.max(s.xA, s.xB);
+              if (x >= lo && x <= hi) intensity += Math.max(0, s.wpm);
+            });
+            pointLoads.forEach((p) => {
+              const dx = x - p.x;
+              intensity += p.load * invSigmaNorm * Math.exp(-(dx * dx) / (2 * sigma * sigma));
+            });
+            if (intensity > maxIntensity) maxIntensity = intensity;
+            points.push({ x, intensity });
+          }
+          return { minX, maxX, points, maxIntensity };
+        }
+        function buildRiggingStructuralProfile(groupId, sampleCount = 220) {
+          if (!groupId) return null;
+          const spanMap = buildRiggingSpanCoordinateMap();
+          const spans = getRiggingGroupSpans(groupId).map((x) => x.span).filter(Boolean);
+          if (!spans.length) return null;
+          const spanIds = new Set(spans.map((s) => s.id));
+          const spanSegments = spans.map((s) => {
+            const a = getNode(s.nodeA);
+            const b = getNode(s.nodeB);
+            if (!a || !b) return null;
+            const ax = Number(spanMap.nodeXById[a.id] ?? 0);
+            const bx = Number(spanMap.nodeXById[b.id] ?? 0);
+            const lo = Math.min(ax, bx);
+            const hi = Math.max(ax, bx);
+            const truss = getTrussType(s.trussTypeId);
+            const wpm = Number.isFinite(Number(truss?.weight_per_m_kg)) ? Number(truss.weight_per_m_kg) : 0;
+            return { id: s.id, lo, hi, lenM: Math.max(0.001, Number(s.lengthM || 0.001)), wpm, ax, bx };
+          }).filter(Boolean);
+          if (!spanSegments.length) return null;
+
+          const minX = Math.min(...spanSegments.map((s) => s.lo));
+          const maxX = Math.max(...spanSegments.map((s) => s.hi));
+          const width = Math.max(0.001, maxX - minX);
+
+          const fixtures = (riggingState.fixturePlacements || [])
+            .filter((fp) => spanIds.has(fp.spanId))
+            .map((fp) => {
+              const s = spanSegments.find((x) => x.id === fp.spanId);
+              if (!s) return null;
+              const t = Math.max(0, Math.min(1, Number(fp.positionM || 0) / s.lenM));
+              const x = s.ax + ((s.bx - s.ax) * t);
+              const unit = Number(fp.weightKg || 0) + Number(fp.clampWeightKg || 0);
+              const qty = Math.max(1, Math.round(Number(fp.quantity || 1)));
+              return { x, p: Math.max(0, unit * qty) };
+            })
+            .filter(Boolean);
+          const accessories = (riggingState.accessories || [])
+            .filter((a) => a.placement === "span" && spanIds.has(a.spanId))
+            .map((a) => {
+              const s = spanSegments.find((x) => x.id === a.spanId);
+              if (!s) return null;
+              const t = Math.max(0, Math.min(1, Number(a.positionM || 0) / s.lenM));
+              const x = s.ax + ((s.bx - s.ax) * t);
+              return { x, p: Math.max(0, Number(a.weightKg || 0)) };
+            })
+            .filter(Boolean);
+          const pointLoads = [...fixtures, ...accessories].filter((p) => p && p.p > 0);
+          const qAt = (x) => spanSegments.reduce((sum, s) => (x >= s.lo && x <= s.hi ? sum + Math.max(0, s.wpm) : sum), 0);
+
+          const groupPosToWorldX = (posM) => {
+            const mapped = mapGroupPositionToSpan(groupId, posM);
+            if (!mapped) return null;
+            const s = spanSegments.find((x) => x.id === mapped.spanId);
+            if (!s) return null;
+            const t = Math.max(0, Math.min(1, Number(mapped.positionM || 0) / s.lenM));
+            return s.ax + ((s.bx - s.ax) * t);
+          };
+
+          const rawSupports = (riggingState.groupMotors || [])
+            .filter((m) => m.groupId === groupId)
+            .map((m) => ({ gm: m, x: groupPosToWorldX(Number(m.positionM || 0)) }))
+            .filter((s) => Number.isFinite(s.x))
+            .sort((a, b) => a.x - b.x);
+          if (!rawSupports.length) return null;
+
+          const tol = 0.03;
+          const supports = [];
+          rawSupports.forEach((s) => {
+            const last = supports[supports.length - 1];
+            if (last && Math.abs(last.x - s.x) <= tol) {
+              last.members.push(s.gm);
+            } else {
+              supports.push({ x: s.x, members: [s.gm], reaction: 0 });
+            }
+          });
+
+          const supportXs = supports.map((s) => s.x);
+          let supportModel = "continuous_stiffness";
+          const solveLinearSystem = (A, b) => {
+            const n = A.length;
+            if (!n) return [];
+            const M = A.map((row, i) => [...row, b[i]]);
+            for (let col = 0; col < n; col += 1) {
+              let pivot = col;
+              for (let r = col + 1; r < n; r += 1) {
+                if (Math.abs(M[r][col]) > Math.abs(M[pivot][col])) pivot = r;
+              }
+              if (Math.abs(M[pivot][col]) < 1e-12) return null;
+              if (pivot !== col) {
+                const tmp = M[col];
+                M[col] = M[pivot];
+                M[pivot] = tmp;
+              }
+              const diag = M[col][col];
+              for (let c = col; c <= n; c += 1) M[col][c] /= diag;
+              for (let r = 0; r < n; r += 1) {
+                if (r === col) continue;
+                const f = M[r][col];
+                if (Math.abs(f) < 1e-14) continue;
+                for (let c = col; c <= n; c += 1) M[r][c] -= f * M[col][c];
+              }
+            }
+            return M.map((row) => row[n]);
+          };
+          const solveContinuousBeamSupportReactions = () => {
+            if (!supports.length) return null;
+            const xsRaw = [
+              minX,
+              maxX,
+              ...supports.map((s) => s.x),
+              ...spanSegments.flatMap((s) => [s.lo, s.hi]),
+              ...pointLoads.map((p) => p.x)
+            ].filter((x) => Number.isFinite(x));
+            xsRaw.sort((a, b) => a - b);
+            const xs = [];
+            xsRaw.forEach((x) => {
+              if (!xs.length || Math.abs(x - xs[xs.length - 1]) > 1e-6) xs.push(x);
+            });
+            if (xs.length < 2) return null;
+            const nodeCount = xs.length;
+            const dofCount = nodeCount * 2;
+            const K = Array.from({ length: dofCount }, () => Array(dofCount).fill(0));
+            const F = Array(dofCount).fill(0);
+            const nearestNodeIndex = (x) => {
+              let best = 0;
+              let dBest = Infinity;
+              for (let i = 0; i < xs.length; i += 1) {
+                const d = Math.abs(xs[i] - x);
+                if (d < dBest) {
+                  dBest = d;
+                  best = i;
+                }
+              }
+              return best;
+            };
+            for (let e = 0; e < nodeCount - 1; e += 1) {
+              const x0 = xs[e];
+              const x1 = xs[e + 1];
+              const L = x1 - x0;
+              if (!(L > 1e-9)) continue;
+              const mid = (x0 + x1) / 2;
+              const q = Math.max(0, qAt(mid));
+              const iw = 2 * e;
+              const it = iw + 1;
+              const jw = 2 * (e + 1);
+              const jt = jw + 1;
+              const L2 = L * L;
+              const L3 = L2 * L;
+              const k = [
+                [12 / L3, 6 / L2, -12 / L3, 6 / L2],
+                [6 / L2, 4 / L, -6 / L2, 2 / L],
+                [-12 / L3, -6 / L2, 12 / L3, -6 / L2],
+                [6 / L2, 2 / L, -6 / L2, 4 / L]
+              ];
+              const dofs = [iw, it, jw, jt];
+              for (let r = 0; r < 4; r += 1) {
+                for (let c = 0; c < 4; c += 1) {
+                  K[dofs[r]][dofs[c]] += k[r][c];
+                }
+              }
+              // Consistent equivalent nodal loads for downward UDL q.
+              F[iw] += (-q * L / 2);
+              F[it] += (-q * L2 / 12);
+              F[jw] += (-q * L / 2);
+              F[jt] += (q * L2 / 12);
+            }
+            pointLoads.forEach((p) => {
+              const idx = nearestNodeIndex(p.x);
+              F[2 * idx] += -Math.max(0, Number(p.p || 0));
+            });
+
+            const constrained = new Set();
+            supports.forEach((s) => {
+              const i = nearestNodeIndex(s.x);
+              constrained.add(2 * i); // vertical translation fixed at support
+            });
+            const free = [];
+            for (let i = 0; i < dofCount; i += 1) {
+              if (!constrained.has(i)) free.push(i);
+            }
+            const d = Array(dofCount).fill(0);
+            if (free.length) {
+              const Af = free.map((r) => free.map((c) => K[r][c]));
+              const bf = free.map((r) => F[r]);
+              const xf = solveLinearSystem(Af, bf);
+              if (!xf) return null;
+              free.forEach((dof, i) => { d[dof] = xf[i]; });
+            }
+            const reactionsBySupportX = {};
+            supports.forEach((s) => {
+              const i = nearestNodeIndex(s.x);
+              const dof = 2 * i;
+              let kd = 0;
+              for (let c = 0; c < dofCount; c += 1) kd += K[dof][c] * d[c];
+              const R = kd - F[dof];
+              reactionsBySupportX[s.x] = Number(R || 0);
+            });
+            const totalSpanUdlKg = spanSegments.reduce((sum, seg) => (
+              sum + (Math.max(0, Number(seg.wpm || 0)) * Math.max(0, Number(seg.hi || 0) - Number(seg.lo || 0)))
+            ), 0);
+            const totalPointKg = pointLoads.reduce((sum, p) => sum + Math.max(0, Number(p.p || 0)), 0);
+            const totalDownKg = totalSpanUdlKg + totalPointKg;
+            const supportKeys = Object.keys(reactionsBySupportX);
+            const totalUpKg = supportKeys.reduce((sum, key) => sum + Number(reactionsBySupportX[key] || 0), 0);
+            const driftKg = totalDownKg - totalUpKg;
+            if (supportKeys.length && Math.abs(driftKg) > 1e-6) {
+              const per = driftKg / supportKeys.length;
+              supportKeys.forEach((key) => {
+                reactionsBySupportX[key] = Number(reactionsBySupportX[key] || 0) + per;
+              });
+            }
+            return { reactionsBySupportX };
+          };
+          const solvedReactions = solveContinuousBeamSupportReactions();
+          if (solvedReactions?.reactionsBySupportX) {
+            supports.forEach((s) => {
+              s.reaction = Number(solvedReactions.reactionsBySupportX[s.x] || 0);
+            });
+          }
+
+          const collectRangeLoads = (x0, x1, includeLeft, includeRight) => {
+            const loads = [];
+            const L = Math.max(0, x1 - x0);
+            if (!(L > 0.001)) return loads;
+            const udlStep = Math.max(0.06, Math.min(0.25, L / 40));
+            for (let x = x0 + (udlStep / 2); x < x1 - 1e-9; x += udlStep) {
+              const q = qAt(x);
+              const p = q * udlStep;
+              if (p > 0.0001) loads.push({ x, p });
+            }
+            pointLoads.forEach((l) => {
+              const leftOk = includeLeft ? l.x >= x0 - 1e-9 : l.x > x0 + 1e-9;
+              const rightOk = includeRight ? l.x <= x1 + 1e-9 : l.x < x1 - 1e-9;
+              if (leftOk && rightOk) loads.push({ x: l.x, p: l.p });
+            });
+            return loads;
+          };
+
+          if (!solvedReactions && supports.length === 1) {
+            supportModel = "fallback_segmented";
+            const sx = supports[0].x;
+            const leftLoads = collectRangeLoads(minX, sx, true, false);
+            const rightLoads = collectRangeLoads(sx, maxX, false, true);
+            supports[0].reaction += leftLoads.reduce((s, l) => s + l.p, 0) + rightLoads.reduce((s, l) => s + l.p, 0);
+          } else if (!solvedReactions) {
+            supportModel = "fallback_segmented";
+            const leftLoads = collectRangeLoads(minX, supports[0].x, true, false);
+            supports[0].reaction += leftLoads.reduce((s, l) => s + l.p, 0);
+            for (let i = 0; i < supports.length - 1; i += 1) {
+              const a = supports[i].x;
+              const b = supports[i + 1].x;
+              const L = b - a;
+              if (!(L > 0.001)) continue;
+              const loads = collectRangeLoads(a, b, false, false);
+              const totalP = loads.reduce((sum, l) => sum + l.p, 0);
+              const momentA = loads.reduce((sum, l) => sum + (l.p * (l.x - a)), 0);
+              const Rr = totalP > 0 ? (momentA / L) : 0;
+              const Rl = totalP - Rr;
+              supports[i].reaction += Rl;
+              supports[i + 1].reaction += Rr;
+            }
+            const rightLoads = collectRangeLoads(supports[supports.length - 1].x, maxX, false, true);
+            supports[supports.length - 1].reaction += rightLoads.reduce((s, l) => s + l.p, 0);
+          }
+
+          const reactionsByMotorId = {};
+          const reactionsByPickupId = {};
+          supports.forEach((s) => {
+            const per = s.members.length ? s.reaction / s.members.length : 0;
+            s.members.forEach((gm) => {
+              reactionsByMotorId[gm.id] = per;
+              if (gm.pickupId) reactionsByPickupId[gm.pickupId] = per;
+            });
+          });
+
+          const allPoints = [];
+          let maxAbsMoment = 0;
+          const udlMomentAtX = (x) => {
+            let m = 0;
+            spanSegments.forEach((s) => {
+              const q = Math.max(0, Number(s.wpm || 0));
+              if (!(q > 0)) return;
+              const a = s.lo;
+              const b = Math.min(s.hi, x);
+              if (b <= a) return;
+              const len = b - a;
+              m += q * ((x * len) - (((b * b) - (a * a)) / 2));
+            });
+            return m;
+          };
+          const samples = Math.max(140, Math.round(sampleCount || 220));
+          for (let i = 0; i <= samples; i += 1) {
+            const x = minX + ((i / samples) * width);
+            let m = 0;
+            supports.forEach((s) => {
+              if (s.x <= x) m += Number(s.reaction || 0) * (x - s.x);
+            });
+            pointLoads.forEach((l) => {
+              if (l.x <= x) m -= Number(l.p || 0) * (x - l.x);
+            });
+            m -= udlMomentAtX(x);
+            const intensity = Math.abs(m);
+            if (intensity > maxAbsMoment) maxAbsMoment = intensity;
+            allPoints.push({ x, intensity, moment: m });
+          }
+
+          if (!allPoints.length) return null;
+          const leftOverhangM = Math.max(0, Number(supports[0]?.x || 0) - Number(minX || 0));
+          const rightOverhangM = Math.max(0, Number(maxX || 0) - Number(supports[supports.length - 1]?.x || 0));
+          return {
+            kind: "moment",
+            unit: "kg.m",
+            minX,
+            maxX,
+            points: allPoints.sort((a, b) => a.x - b.x),
+            maxIntensity: Math.max(0.001, maxAbsMoment),
+            supportXs,
+            leftOverhangM,
+            rightOverhangM,
+            hasCantilever: leftOverhangM > 0.02 || rightOverhangM > 0.02,
+            supportModel,
+            reactionsByMotorId,
+            reactionsByPickupId
+          };
+        }
+        function getRiggingCalculationMethodHTML(ctx) {
+          const supportModel = ctx.supportCount >= 1
+            ? `Real motor supports only (${ctx.supportCount})`
+            : "No motor supports detected (fallback load profile)";
+          const graphModel = ctx.usesStructural
+            ? "Support-aware bending moment profile"
+            : "Load distribution profile";
+          const graphScale = ctx.graphScaleMode === "fixed"
+            ? `Fixed scale (max ${Number.isFinite(Number(ctx.graphFixedMax)) ? Number(ctx.graphFixedMax).toFixed(1) : "n/a"})`
+            : (ctx.graphScaleMode === "relative" ? "Relative scale (%)" : "Auto scale");
+          return `
+            <div class="grid grid-2" style="margin-top:0.45rem;">
+              <div class="kpi"><div class="muted">Support Model</div><b>${supportModel}</b></div>
+              <div class="kpi"><div class="muted">Graph Model</div><b>${graphModel}</b></div>
+              <div class="kpi"><div class="muted">Graph Scale</div><b>${graphScale}</b></div>
+              <div class="kpi"><div class="muted">Safety Factor</div><b>${Number(ctx.safetyFactor || 1).toFixed(2)}</b></div>
+            </div>
+            <div class="table-wrap" style="margin-top:0.55rem;">
+              <table>
+                <thead><tr><th>Step</th><th>Formula / Rule</th></tr></thead>
+                <tbody>
+                  <tr><td>Span Reactions</td><td><code>Rr = (wL*(L/2) + Σ(Pi*xi)) / L</code>, <code>Rl = (wL + ΣPi) - Rr</code></td></tr>
+                  <tr><td>Load Inputs</td><td>Truss self-weight uses <code>weight_per_m_kg</code>; fixtures/additionals use <code>(weight + clamp) * qty</code>; accessories add direct point load.</td></tr>
+                  <tr><td>Support Allocation</td><td>Supports come from motor positions in group space; reactions are distributed per motor at each support location.</td></tr>
+                  <tr><td>Cantilever</td><td>Overhangs before first support and after last support are solved as cantilever segments and included in moment risk.</td></tr>
+                  <tr><td>Prolyte Check</td><td>Each span is checked against Prolyte allowable load rows using conservative span interpolation and equivalent-demand formulas from max bending moment.</td></tr>
+                  <tr><td>Compliance</td><td>Roof check uses <code>(payload + motor self + chain) * SafetyFactor</code>; motor check uses <code>payload * SafetyFactor</code>; utilization = <code>Factored / WLL * 100</code>.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="muted" style="margin-top:0.4rem;">Source functions: <code>calculateReactionsForSpan</code>, <code>buildRiggingStructuralProfile</code>, <code>runRiggingCalculation</code>.</div>
+          `;
+        }
+        function addRiggingFixturePlacement(input) {
+          const qty = Math.max(1, Math.round(Number(input.quantity || 1)));
+          riggingState.fixturePlacements.push({
+            id: `FP_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`,
+            fixtureKey: input.fixtureKey || "",
+            fixtureName: input.fixtureName || "Fixture",
+            sourceInstanceId: input.sourceInstanceId || null,
+            weightKg: Number.isFinite(Number(input.weightKg)) ? Number(input.weightKg) : null,
+            clampWeightKg: Number.isFinite(Number(input.clampWeightKg)) ? Number(input.clampWeightKg) : 0.5,
+            spanId: input.spanId || null,
+            nodeId: input.nodeId || null,
+            positionM: Number.isFinite(Number(input.positionM)) ? Number(input.positionM) : 0,
+            quantity: qty
+          });
+        }
+
+        if (logo && fallback) {
+          logo.addEventListener("error", () => {
+            logo.style.display = "none";
+            fallback.style.display = "grid";
+          });
+        }
+
+        function renderPlaceholder(title, note) {
+          if (!main) return;
+          main.innerHTML = `
+            <div class="card">
+              <h2>${title}</h2>
+              <div class="muted">${note}</div>
+            </div>
+          `;
+        }
+
+        function calcLedWall(panel, wallW, wallH) {
+          const panelsW = Math.max(0, Math.ceil(wallW / panel.panelW));
+          const pixelsW = panelsW * panel.pxW;
+          let panelsH = Math.max(0, Math.ceil(wallH / panel.panelH));
+          let panelCount = panelsW * panelsH;
+          let pixelsH = panelsH * panel.pxH;
+          let builtH = panelsH * panel.panelH;
+          let rowInfo = `${panelsH} rows (${panel.panelH.toFixed(1)}m)`;
+          let rowHeightsM = Array.from({ length: panelsH }, () => panel.panelH);
+
+          if (panel.panelH === 1 && panel.halfPairId) {
+            const halfPanel = LED_PANELS.find((p) => p.id === panel.halfPairId);
+            if (halfPanel) {
+              const fullRows = Math.floor(wallH / panel.panelH);
+              const remainder = Math.max(0, wallH - (fullRows * panel.panelH));
+              let halfRows = 0;
+              let useFullRows = fullRows;
+              if (remainder > 0 && remainder <= 0.5) {
+                halfRows = 1;
+              } else if (remainder > 0.5) {
+                useFullRows += 1;
+              }
+              panelsH = useFullRows + halfRows;
+              panelCount = (panelsW * useFullRows) + (panelsW * halfRows);
+              pixelsH = (useFullRows * panel.pxH) + (halfRows * halfPanel.pxH);
+              builtH = (useFullRows * panel.panelH) + (halfRows * halfPanel.panelH);
+              rowInfo = `${useFullRows} x 1.0m rows + ${halfRows} x 0.5m rows`;
+              rowHeightsM = [
+                ...Array.from({ length: useFullRows }, () => panel.panelH),
+                ...Array.from({ length: halfRows }, () => halfPanel.panelH)
+              ];
+            }
+          }
+          return {
+            panelsW,
+            panelsH,
+            panelCount,
+            pixelsW,
+            pixelsH,
+            pixelsTotal: pixelsW * pixelsH,
+            builtW: panelsW * panel.panelW,
+            builtH,
+            rowInfo,
+            rowHeightsM
+          };
+        }
+        function buildLedPowerPlan(walls, supplyType) {
+          const safeWalls = Array.isArray(walls) ? walls : [];
+          const rows = [];
+          const phaseTotals = { L1: { avgA: 0, maxA: 0 }, L2: { avgA: 0, maxA: 0 }, L3: { avgA: 0, maxA: 0 } };
+          const phases = ["L1", "L2", "L3"];
+          const phaseLineCounts = { L1: 0, L2: 0, L3: 0 };
+          const socaHeadsByPhase = {
+            L1: [1, 4],
+            L2: [2, 5],
+            L3: [3, 6]
+          };
+          const pendingLines = [];
+          let totalPanels = 0;
+          let totalFeeds = 0;
+          let totalAvgA = 0;
+          let totalMaxA = 0;
+
+          const chooseBestPhase = (line) => {
+            const scored = phases.map((phase) => {
+              const next = {
+                L1: Number(phaseTotals.L1.maxA || 0),
+                L2: Number(phaseTotals.L2.maxA || 0),
+                L3: Number(phaseTotals.L3.maxA || 0)
+              };
+              next[phase] += Number(line.maxA || 0);
+              const vals = [next.L1, next.L2, next.L3];
+              const spread = Math.max(...vals) - Math.min(...vals);
+              const sum = vals.reduce((a, b) => a + b, 0);
+              const mean = sum / 3;
+              const variance = vals.reduce((acc, v) => acc + ((v - mean) ** 2), 0) / 3;
+              const count = Number(phaseLineCounts[phase] || 0);
+              return {
+                phase,
+                spread,
+                variance,
+                projected: next[phase],
+                count
+              };
+            });
+            scored.sort((a, b) => {
+              if (Math.abs(a.spread - b.spread) > 1e-9) return a.spread - b.spread;
+              if (Math.abs(a.variance - b.variance) > 1e-9) return a.variance - b.variance;
+              if (Math.abs(a.projected - b.projected) > 1e-9) return a.projected - b.projected;
+              if (a.count !== b.count) return a.count - b.count;
+              return phases.indexOf(a.phase) - phases.indexOf(b.phase);
+            });
+            return scored[0].phase;
+          };
+
+          safeWalls.forEach((w) => {
+            const panel = LED_PANELS.find((p) => p.id === w.panelType) || LED_PANELS[0];
+            const calc = calcLedWall(panel, Number(w.width || 0), Number(w.height || 0));
+            const panelCount = Math.max(0, Number(calc.panelCount || 0));
+            if (!panelCount) return;
+            const ppl = Math.max(1, Math.floor(Number(panel.maxPanelsPerPowerLine || 16)));
+            const lineCount = Math.ceil(panelCount / ppl);
+            totalPanels += panelCount;
+            totalFeeds += lineCount;
+            for (let i = 0; i < lineCount; i += 1) {
+              const isLast = i === lineCount - 1;
+              const panelsOnLine = isLast ? (panelCount - (ppl * (lineCount - 1))) : ppl;
+              const avgA = Number(panel.avgA || 0) * panelsOnLine;
+              const maxA = Number(panel.maxA || 0) * panelsOnLine;
+              pendingLines.push({
+                wallName: String(w.name || "Wall"),
+                panelName: panel.name,
+                panelsOnLine,
+                panelsPerLine: ppl,
+                avgA,
+                maxA,
+                lineOrder: i + 1
+              });
+            }
+          });
+
+          pendingLines.sort((a, b) => {
+            if (Math.abs(Number(b.maxA || 0) - Number(a.maxA || 0)) > 1e-9) return Number(b.maxA || 0) - Number(a.maxA || 0);
+            if (Math.abs(Number(b.avgA || 0) - Number(a.avgA || 0)) > 1e-9) return Number(b.avgA || 0) - Number(a.avgA || 0);
+            return String(a.wallName).localeCompare(String(b.wallName));
+          });
+
+          pendingLines.forEach((line) => {
+            const phase = chooseBestPhase(line);
+            phaseLineCounts[phase] += 1;
+            const limitA = supplyType === "socapex" ? 16 : 32;
+            let connector = "";
+            if (supplyType === "socapex") {
+              const phaseCount = phaseLineCounts[phase] - 1;
+              const headPair = socaHeadsByPhase[phase] || [1, 4];
+              const head = headPair[phaseCount % 2];
+              const loom = Math.floor(phaseCount / 2) + 1;
+              connector = `SOCA ${loom} / H${head}`;
+            } else {
+              connector = `${phase} 32A Cct ${phaseLineCounts[phase]}`;
+            }
+            const warnA = limitA * 0.8;
+            const status = line.maxA > limitA ? "FAIL" : (line.maxA > warnA ? "WARN" : "PASS");
+            phaseTotals[phase].avgA += Number(line.avgA || 0);
+            phaseTotals[phase].maxA += Number(line.maxA || 0);
+            totalAvgA += Number(line.avgA || 0);
+            totalMaxA += Number(line.maxA || 0);
+            rows.push({
+              wallName: line.wallName,
+              panelName: line.panelName,
+              connector,
+              phase,
+              panelsOnLine: line.panelsOnLine,
+              panelsPerLine: line.panelsPerLine,
+              avgA: Number(line.avgA || 0),
+              maxA: Number(line.maxA || 0),
+              limitA,
+              status
+            });
+          });
+
+          return {
+            supplyType,
+            totals: { totalPanels, totalFeeds, totalAvgA, totalMaxA },
+            phaseTotals,
+            rows
+          };
+        }
+        function ensureLedWallMapping(wall) {
+          if (!wall) return;
+          if (!wall.mapping || typeof wall.mapping !== "object") wall.mapping = {};
+          wall.mapping.startCorner = wall.mapping.startCorner || "top-left";
+          wall.mapping.primaryAxis = wall.mapping.primaryAxis || "rows";
+          wall.mapping.pattern = wall.mapping.pattern || "serpentine";
+          if (!Array.isArray(wall.mapping.disabledCabinets)) wall.mapping.disabledCabinets = [];
+        }
+        function ensureLedWallRouting(wall) {
+          if (!wall) return;
+          if (!wall.routing || typeof wall.routing !== "object") wall.routing = {};
+          if (!Array.isArray(wall.routing.controllers) || !wall.routing.controllers.length) {
+            const legacyId = String(wall.routing.controllerId || "novastar_4k");
+            wall.routing.controllers = [{ id: legacyId, qty: 1 }];
+          }
+          wall.routing.controllers = wall.routing.controllers
+            .map((c) => ({
+              id: String(c?.id || "novastar_4k"),
+              qty: Math.max(1, Math.floor(Number(c?.qty || 1)))
+            }))
+            .filter((c) => LED_CONTROLLERS.some((x) => x.id === c.id));
+          if (!wall.routing.controllers.length) {
+            wall.routing.controllers = [{ id: "novastar_4k", qty: 1 }];
+          }
+          if (!wall.routing.assignments || typeof wall.routing.assignments !== "object") wall.routing.assignments = {};
+          if (!wall.routing.portPaths || typeof wall.routing.portPaths !== "object") wall.routing.portPaths = {};
+          wall.routing.viewMode = ["panels", "signal", "power"].includes(String(wall.routing.viewMode || ""))
+            ? String(wall.routing.viewMode)
+            : "signal";
+          const totalPorts = wall.routing.controllers.reduce((sum, entry) => {
+            const c = LED_CONTROLLERS.find((x) => x.id === entry.id);
+            return sum + ((c?.ports || 0) * Math.max(1, Number(entry.qty || 1)));
+          }, 0);
+          if (!Number.isInteger(Number(wall.routing.selectedPort))) wall.routing.selectedPort = 0;
+          if (Number(wall.routing.selectedPort) >= Math.max(1, totalPorts)) wall.routing.selectedPort = 0;
+          wall.routing.cursorKey = typeof wall.routing.cursorKey === "string" ? wall.routing.cursorKey : "";
+        }
+        function buildCabinetMapOrder(cols, rows, mapping) {
+          const cfg = mapping || {};
+          const startCorner = cfg.startCorner || "top-left";
+          const primaryAxis = cfg.primaryAxis || "rows";
+          const pattern = cfg.pattern || "serpentine";
+          const startFromTop = startCorner.startsWith("top");
+          const startFromLeft = startCorner.endsWith("left");
+          const rowBase = Array.from({ length: rows }, (_, i) => i);
+          const colBase = Array.from({ length: cols }, (_, i) => i);
+          const rowSeq = startFromTop ? rowBase : [...rowBase].reverse();
+          const colSeq = startFromLeft ? colBase : [...colBase].reverse();
+          const order = [];
+          let n = 1;
+          if (primaryAxis === "rows") {
+            rowSeq.forEach((r, ri) => {
+              const flip = pattern === "serpentine" && (ri % 2 === 1);
+              const colsForRow = flip ? [...colSeq].reverse() : colSeq;
+              colsForRow.forEach((c) => {
+                order.push({ x: c, y: r, order: n });
+                n += 1;
+              });
+            });
+          } else {
+            colSeq.forEach((c, ci) => {
+              const flip = pattern === "serpentine" && (ci % 2 === 1);
+              const rowsForCol = flip ? [...rowSeq].reverse() : rowSeq;
+              rowsForCol.forEach((r) => {
+                order.push({ x: c, y: r, order: n });
+                n += 1;
+              });
+            });
+          }
+          return order;
+        }
+        function assignLedPortFromStart(wall, orderedKeys, portIndex, startKey, panelCap) {
+          ensureLedWallRouting(wall);
+          const idx = orderedKeys.indexOf(startKey);
+          if (idx < 0) return;
+          const cap = Math.max(1, Number(panelCap || 1));
+          const take = orderedKeys.slice(idx, idx + cap);
+          const next = { ...(wall.routing.assignments || {}) };
+          Object.keys(next).forEach((k) => {
+            if (Number(next[k]) === Number(portIndex)) delete next[k];
+          });
+          take.forEach((k) => { next[k] = Number(portIndex); });
+          wall.routing.assignments = next;
+        }
+
+        function renderVideoLED() {
+          if (!ledState.walls.length) {
+            const first = newLedWall(1);
+            ledState.walls.push(first);
+            ledState.activeWallId = first.id;
+          }
+          if (!main) return;
+          main.innerHTML = `
+            <div class="card">
+              <h2>Video - LED Panel Selector</h2>
+              <div class="tabs" style="margin-top:0.65rem;">
+                <button id="ledModeSingle" class="${ledState.mode === "single" ? "active" : ""}">Single Wall</button>
+                <button id="ledModeMulti" class="${ledState.mode === "multi" ? "active" : ""}">Multi Wall</button>
+              </div>
+              <div class="grid grid-3" style="margin-top:0.7rem;">
+                <div>
+                  <label>Panel Type</label>
+                  <select id="ledPanelType"></select>
+                </div>
+                <div>
+                  <label>Wall Width (m)</label>
+                  <input id="ledWallWidth" type="number" min="0" step="0.1" value="8" />
+                </div>
+                <div>
+                  <label>Wall Height (m)</label>
+                  <input id="ledWallHeight" type="number" min="0" step="0.1" value="4.5" />
+                </div>
+              </div>
+              <div id="ledMultiTools" class="${ledState.mode === "multi" ? "" : "detail-only"}" style="${ledState.mode === "multi" ? "" : "display:none;"}margin-top:0.7rem;">
+                <div class="card">
+                  <div class="toolbar">
+                    <h3>Wall Grouping</h3>
+                    <button id="ledAddWallBtn">Add Wall</button>
+                  </div>
+                  <div id="ledWallRows" class="grid"></div>
+                </div>
+                <div class="card" style="margin-top:0.65rem;">
+                  <h3>Per-Wall Outputs</h3>
+                  <div id="ledMultiOutputs" class="grid" style="margin-top:0.5rem;"></div>
+                </div>
+              </div>
+              <div class="grid grid-2" style="margin-top:0.8rem;">
+                <div class="card">
+                  <h3>Outputs</h3>
+                  <div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0.5rem;">
+                    <div class="kpi"><div class="muted">Panel Count</div><b id="ledOutPanelCount">0</b></div>
+                    <div class="kpi"><div class="muted">Total Pixels</div><b id="ledOutPixelsTotal">0</b></div>
+                    <div class="kpi"><div class="muted">Width Pixels</div><b id="ledOutPixelsW">0</b></div>
+                    <div class="kpi"><div class="muted">Height Pixels</div><b id="ledOutPixelsH">0</b></div>
+                  </div>
+                </div>
+                <div class="card">
+                  <h3>Panel Fit</h3>
+                  <div class="muted" id="ledFitInfo">-</div>
+                  <div class="muted" id="ledModeInfo" style="margin-top:0.45rem;"></div>
+                </div>
+              </div>
+              <div class="card" style="margin-top:0.8rem;">
+                <div class="toolbar">
+                  <h3>Controller Port Wiring</h3>
+                  <div style="min-width:320px;">
+                    <label>Add LED Controller</label>
+                    <div style="display:grid;grid-template-columns:1fr 90px auto;gap:0.35rem;">
+                      <select id="ledControllerTypeAdd">
+                        ${LED_CONTROLLERS.map((c) => `<option value="${c.id}">${c.name} (${c.ports} ports)</option>`).join("")}
+                      </select>
+                      <input id="ledControllerQtyAdd" type="number" min="1" step="1" value="1" />
+                      <button id="ledControllerAddBtn">Add</button>
+                    </div>
+                  </div>
+                </div>
+                <div id="ledControllerList" style="margin-top:0.55rem;"></div>
+                <div class="toolbar" style="margin-top:0.55rem;">
+                  <h3 style="margin:0;">Port Capacity</h3>
+                  <div style="min-width:220px;">
+                    <label>Selected Port</label>
+                    <select id="ledControllerSel">
+                      ${LED_CONTROLLERS.map((c) => `<option value="${c.id}">${c.name} (${c.ports} ports)</option>`).join("")}
+                    </select>
+                  </div>
+                </div>
+                <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:0.55rem;">
+                  <div class="kpi"><div class="muted">Total Ports</div><b id="ledPortTotal">0</b></div>
+                  <div class="kpi"><div class="muted">Used Ports</div><b id="ledPortUsed">0</b></div>
+                  <div class="kpi"><div class="muted">Unassigned Cabinets</div><b id="ledPortUnassigned">0</b></div>
+                  <div class="kpi"><div class="muted">Panels / Port Cap</div><b id="ledPortPanelCap">0</b></div>
+                </div>
+                <div id="ledPortCapacityWrap" style="margin-top:0.6rem;"></div>
+                <div id="ledWiringSvgWrap" style="margin-top:0.6rem;"></div>
+              </div>
+              <div class="card" style="margin-top:0.8rem;">
+                <div class="toolbar">
+                  <h3>Power Line Distribution (Auto Phase)</h3>
+                  <div style="min-width:220px;">
+                    <label>Supply Type</label>
+                    <select id="ledPowerSupplyType">
+                      <option value="32a" ${ledState.powerSupplyType === "32a" ? "selected" : ""}>32A</option>
+                      <option value="socapex" ${ledState.powerSupplyType === "socapex" ? "selected" : ""}>Socapex (6-way)</option>
+                    </select>
+                  </div>
+                </div>
+                <div id="ledPowerDistSummary" style="margin-top:0.5rem;"></div>
+                <div id="ledPowerDistSvgWrap" style="margin-top:0.6rem;"></div>
+                <div class="table-wrap" style="margin-top:0.6rem;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Line</th>
+                        <th>Phase</th>
+                        <th>Panels</th>
+                        <th>Avg A</th>
+                        <th>Max A</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ledPowerDistTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          `;
+
+          const modeSingleBtn = document.getElementById("ledModeSingle");
+          const modeMultiBtn = document.getElementById("ledModeMulti");
+          const panelSel = document.getElementById("ledPanelType");
+          const widthEl = document.getElementById("ledWallWidth");
+          const heightEl = document.getElementById("ledWallHeight");
+          const modeInfo = document.getElementById("ledModeInfo");
+          const wallRows = document.getElementById("ledWallRows");
+          const multiOutputs = document.getElementById("ledMultiOutputs");
+          const powerSupplySel = document.getElementById("ledPowerSupplyType");
+
+          const activeWall = () => {
+            if (ledState.mode === "single") return ledState.single;
+            return ledState.walls.find((w) => w.id === ledState.activeWallId) || ledState.walls[0];
+          };
+
+          function renderWallRows() {
+            if (!wallRows) return;
+            wallRows.innerHTML = "";
+            ledState.walls.forEach((w) => {
+              const row = document.createElement("div");
+              row.className = "card";
+              row.dataset.wallSelectRow = w.id;
+              row.style.borderColor = w.id === ledState.activeWallId ? "var(--theme-accent)" : "var(--theme-line-soft)";
+              row.style.cursor = "pointer";
+              row.innerHTML = `
+                <div style="display:grid;grid-template-columns:1fr 90px auto;gap:0.4rem;align-items:center;">
+                  <input data-wall-name="${w.id}" value="${w.name}" />
+                  <label class="color-picker-wrap">
+                    <input class="color-input" type="color" data-wall-color="${w.id}" value="${w.color}" />
+                  </label>
+                  <button data-wall-remove="${w.id}" ${ledState.walls.length === 1 ? "disabled" : ""}>Remove</button>
+                </div>
+              `;
+              wallRows.appendChild(row);
+            });
+            wallRows.querySelectorAll("div[data-wall-select-row]").forEach((el) => {
+              el.addEventListener("click", (ev) => {
+                if (ev.target.closest("input, label, button")) return;
+                ledState.activeWallId = el.dataset.wallSelectRow;
+                renderVideoLED();
+              });
+            });
+            wallRows.querySelectorAll("input[data-wall-name]").forEach((el) => {
+              el.addEventListener("click", (ev) => ev.stopPropagation());
+              el.addEventListener("input", () => {
+                const w = ledState.walls.find((x) => x.id === el.dataset.wallName);
+                if (w) {
+                  w.name = el.value;
+                  if (ledState.mode === "multi") renderMultiOutputs();
+                }
+              });
+            });
+            wallRows.querySelectorAll("input[data-wall-color]").forEach((el) => {
+              el.addEventListener("click", (ev) => ev.stopPropagation());
+              el.addEventListener("input", () => {
+                const w = ledState.walls.find((x) => x.id === el.dataset.wallColor);
+                if (w) {
+                  w.color = el.value;
+                  if (ledState.mode === "multi") renderMultiOutputs();
+                }
+              });
+            });
+            wallRows.querySelectorAll("button[data-wall-remove]").forEach((el) => {
+              el.addEventListener("click", (ev) => {
+                ev.stopPropagation();
+                ledState.walls = ledState.walls.filter((x) => x.id !== el.dataset.wallRemove);
+                ledState.activeWallId = ledState.walls[0]?.id || null;
+                renderVideoLED();
+              });
+            });
+          }
+
+          function renderMultiOutputs() {
+            if (!multiOutputs) return;
+            multiOutputs.innerHTML = "";
+            ledState.walls.forEach((w) => {
+              const p = LED_PANELS.find((x) => x.id === w.panelType) || LED_PANELS[0];
+              const c = calcLedWall(p, Number(w.width || 0), Number(w.height || 0));
+              const item = document.createElement("div");
+              item.className = "card";
+              item.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+                  <h3 style="margin:0;">${w.name}</h3>
+                  <span class="color-tag"><span class="color-dot" style="background:${w.color};"></span></span>
+                </div>
+                <div class="muted" style="margin-top:0.35rem;">${p.name}</div>
+                <div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0.5rem;">
+                  <div class="kpi"><div class="muted">Panel Count</div><b>${c.panelCount.toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Total Pixels</div><b>${c.pixelsTotal.toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Width Pixels</div><b>${c.pixelsW.toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Height Pixels</div><b>${c.pixelsH.toLocaleString()}</b></div>
+                </div>
+                <div class="muted" style="margin-top:0.45rem;">Layout ${c.panelsW} columns. Height build: ${c.rowInfo}. Built size ${c.builtW.toFixed(2)}m x ${c.builtH.toFixed(2)}m.</div>
+              `;
+              multiOutputs.appendChild(item);
+            });
+          }
+          function renderLedPower() {
+            const walls = ledState.mode === "multi" ? ledState.walls : [ledState.single];
+            const plan = buildLedPowerPlan(walls, ledState.powerSupplyType || "32a");
+            const phaseOrder = ["L1", "L2", "L3"];
+            const phaseMax = Math.max(1, ...phaseOrder.map((p) => Number(plan.phaseTotals[p]?.maxA || 0)));
+            const graph = document.getElementById("ledPwrPhaseGraph");
+            const body = document.getElementById("ledPwrRunSheetBody");
+            const feedsEl = document.getElementById("ledPwrFeeds");
+            const avgEl = document.getElementById("ledPwrAvgA");
+            const maxEl = document.getElementById("ledPwrMaxA");
+            const pplEl = document.getElementById("ledPwrPanelsPerLine");
+            if (feedsEl) feedsEl.textContent = String(plan.totals.totalFeeds || 0);
+            if (avgEl) avgEl.textContent = Number(plan.totals.totalAvgA || 0).toFixed(1);
+            if (maxEl) maxEl.textContent = Number(plan.totals.totalMaxA || 0).toFixed(1);
+            if (pplEl) {
+              const ppls = Array.from(new Set(plan.rows.map((r) => Number(r.panelsPerLine || 0)).filter((x) => x > 0)));
+              pplEl.textContent = ppls.length ? ppls.join(", ") : "-";
+            }
+            if (graph) {
+              const bars = phaseOrder.map((phase, i) => {
+                const maxA = Number(plan.phaseTotals[phase]?.maxA || 0);
+                const avgA = Number(plan.phaseTotals[phase]?.avgA || 0);
+                const barH = Math.max(2, (maxA / phaseMax) * 120);
+                const x = 40 + (i * 110);
+                const y = 148 - barH;
+                return `
+                  <rect x="${x}" y="${y.toFixed(2)}" width="64" height="${barH.toFixed(2)}" fill="#5cc6f488" stroke="#7cd8ff" stroke-width="1"/>
+                  <text x="${x + 32}" y="${y - 6}" text-anchor="middle" fill="#d9f4ff" font-size="9">${maxA.toFixed(1)}A</text>
+                  <text x="${x + 32}" y="164" text-anchor="middle" fill="#c6ccdb" font-size="9">${phase}</text>
+                  <text x="${x + 32}" y="176" text-anchor="middle" fill="#95b6c5" font-size="8">avg ${avgA.toFixed(1)}A</text>
+                `;
+              }).join("");
+              graph.innerHTML = `
+                <div class="muted" style="margin-bottom:0.25rem;">Per-Phase Balance (Max Amps)</div>
+                <svg viewBox="0 0 380 186" style="width:100%;max-width:420px;border:1px solid var(--theme-line-soft);border-radius:10px;background:#151b25;">
+                  <line x1="24" y1="148" x2="360" y2="148" stroke="var(--theme-line-soft)" stroke-width="1"/>
+                  <line x1="24" y1="24" x2="24" y2="148" stroke="var(--theme-line-soft)" stroke-width="1"/>
+                  <text x="6" y="28" fill="#c6ccdb" font-size="8">${phaseMax.toFixed(1)}A</text>
+                  <text x="8" y="151" fill="#c6ccdb" font-size="8">0</text>
+                  ${bars}
+                </svg>
+              `;
+            }
+            if (body) {
+              body.innerHTML = plan.rows.map((r) => `
+                <tr>
+                  <td>${r.wallName}</td>
+                  <td>${r.panelName}</td>
+                  <td>${r.connector}</td>
+                  <td>${r.phase}</td>
+                  <td>${r.panelsOnLine} / ${r.panelsPerLine}</td>
+                  <td>${r.avgA.toFixed(2)}</td>
+                  <td>${r.maxA.toFixed(2)}</td>
+                  <td>${r.status}</td>
+                </tr>
+              `).join("") || '<tr><td colspan="8" class="muted">No LED power lines yet.</td></tr>';
+            }
+          }
+          function renderLedCabinetMapper(calc, wall) {
+            ensureLedWallMapping(wall);
+            const startCornerSel = document.getElementById("ledMapStartCorner");
+            const primaryAxisSel = document.getElementById("ledMapPrimaryAxis");
+            const patternSel = document.getElementById("ledMapPattern");
+            const svgWrap = document.getElementById("ledCabinetMapSvgWrap");
+            const tableBody = document.getElementById("ledCabinetMapTableBody");
+            if (!startCornerSel || !primaryAxisSel || !patternSel || !svgWrap || !tableBody) return;
+            startCornerSel.value = wall.mapping.startCorner || "top-left";
+            primaryAxisSel.value = wall.mapping.primaryAxis || "rows";
+            patternSel.value = wall.mapping.pattern || "serpentine";
+            const cols = Math.max(1, Number(calc.panelsW || 1));
+            const rows = Math.max(1, Number(calc.panelsH || 1));
+            const disabledSet = new Set((wall.mapping.disabledCabinets || []).map((k) => String(k)));
+            const order = buildCabinetMapOrder(cols, rows, wall.mapping);
+            const filtered = order.filter((c) => !disabledSet.has(`${c.x},${c.y}`));
+            const panel = LED_PANELS.find((p) => p.id === wall.panelType) || LED_PANELS[0];
+            const rowHeightsM = (Array.isArray(calc.rowHeightsM) && calc.rowHeightsM.length === rows)
+              ? calc.rowHeightsM.map((h) => Math.max(0.05, Number(h || panel.panelH)))
+              : Array.from({ length: rows }, () => Math.max(0.05, Number(panel.panelH || 0.5)));
+            const colWidthsM = Array.from({ length: cols }, () => Math.max(0.05, Number(panel.panelW || 0.5)));
+            const totalWm = colWidthsM.reduce((a, b) => a + b, 0);
+            const totalHm = rowHeightsM.reduce((a, b) => a + b, 0);
+            const targetPxPerM = 64;
+            const viewW = Math.max(320, Math.round(totalWm * targetPxPerM) + 40);
+            const viewH = Math.max(220, Math.round(totalHm * targetPxPerM) + 40);
+            const pad = 18;
+            const scale = Math.max(0.1, Math.min((viewW - (pad * 2)) / Math.max(0.1, totalWm), (viewH - (pad * 2)) / Math.max(0.1, totalHm)));
+            const gridW = totalWm * scale;
+            const gridH = totalHm * scale;
+            const offsetX = (viewW - gridW) / 2;
+            const offsetY = (viewH - gridH) / 2;
+            const colX = [];
+            let runX = offsetX;
+            for (let c = 0; c < cols; c += 1) {
+              colX[c] = runX;
+              runX += colWidthsM[c] * scale;
+            }
+            const rowY = [];
+            let runY = offsetY;
+            for (let r = 0; r < rows; r += 1) {
+              rowY[r] = runY;
+              runY += rowHeightsM[r] * scale;
+            }
+            const idxByKey = new Map(filtered.map((x, i) => [`${x.x},${x.y}`, i + 1]));
+            const cells = [];
+            for (let y = 0; y < rows; y += 1) {
+              for (let x = 0; x < cols; x += 1) {
+                const key = `${x},${y}`;
+                const disabled = disabledSet.has(key);
+                const orderNum = idxByKey.get(key) || "-";
+                const px = colX[x];
+                const py = rowY[y];
+                const cw = Math.max(12, (colWidthsM[x] * scale) - 3);
+                const ch = Math.max(12, (rowHeightsM[y] * scale) - 3);
+                cells.push(`
+                  <g data-led-map-cell="${key}" style="cursor:pointer;">
+                    <rect x="${px.toFixed(2)}" y="${py.toFixed(2)}" width="${cw.toFixed(2)}" height="${ch.toFixed(2)}"
+                      rx="4" fill="${disabled ? "#4a2d35" : "#23344b"}" stroke="${disabled ? "#d66878" : "#65b9ff"}" stroke-width="1"/>
+                    <text x="${(px + (cw / 2)).toFixed(2)}" y="${(py + (ch / 2) + 3).toFixed(2)}" text-anchor="middle" fill="${disabled ? "#ffc8d1" : "#dff4ff"}" font-size="9">${orderNum}</text>
+                  </g>
+                `);
+              }
+            }
+            svgWrap.innerHTML = `
+              <div class="muted" style="margin-bottom:0.25rem;">Click cabinets to toggle disabled/enabled mapping.</div>
+              <div style="overflow:auto;max-height:460px;border:1px solid var(--theme-line-soft);border-radius:10px;background:#151b25;">
+                <svg viewBox="0 0 ${viewW} ${viewH}" style="display:block;width:${viewW}px;height:${viewH}px;">
+                  ${cells.join("")}
+                </svg>
+              </div>
+            `;
+            svgWrap.querySelectorAll("[data-led-map-cell]").forEach((el) => {
+              el.addEventListener("click", () => {
+                const key = String(el.getAttribute("data-led-map-cell") || "");
+                if (!key) return;
+                ensureLedWallMapping(wall);
+                const current = new Set((wall.mapping.disabledCabinets || []).map((k) => String(k)));
+                if (current.has(key)) current.delete(key);
+                else current.add(key);
+                wall.mapping.disabledCabinets = Array.from(current.values());
+                renderVideoLED();
+              });
+            });
+            tableBody.innerHTML = order.map((c) => {
+              const key = `${c.x},${c.y}`;
+              const disabled = disabledSet.has(key);
+              const mappedOrder = disabled ? "-" : (idxByKey.get(key) || "-");
+              return `
+                <tr>
+                  <td>${key}</td>
+                  <td>${mappedOrder}</td>
+                  <td>${c.x + 1}</td>
+                  <td>${c.y + 1}</td>
+                  <td>${disabled ? "Disabled" : "Mapped"}</td>
+                </tr>
+              `;
+            }).join("");
+          }
+          function renderLedPortWiring(calc, wall) {
+            ensureLedWallMapping(wall);
+            ensureLedWallRouting(wall);
+            const controllerSel = document.getElementById("ledControllerSel");
+            const controllerTypeAdd = document.getElementById("ledControllerTypeAdd");
+            const controllerQtyAdd = document.getElementById("ledControllerQtyAdd");
+            const controllerAddBtn = document.getElementById("ledControllerAddBtn");
+            const controllerList = document.getElementById("ledControllerList");
+            const totalEl = document.getElementById("ledPortTotal");
+            const usedEl = document.getElementById("ledPortUsed");
+            const unassignedEl = document.getElementById("ledPortUnassigned");
+            const capEl = document.getElementById("ledPortPanelCap");
+            const capWrap = document.getElementById("ledPortCapacityWrap");
+            const svgWrap = document.getElementById("ledWiringSvgWrap");
+            if (!controllerSel || !totalEl || !usedEl || !unassignedEl || !capEl || !capWrap || !svgWrap || !controllerTypeAdd || !controllerQtyAdd || !controllerAddBtn || !controllerList) return;
+            const controllerEntries = Array.isArray(wall.routing.controllers) ? wall.routing.controllers : [];
+            const portMeta = [];
+            controllerEntries.forEach((entry, entryIdx) => {
+              const ctrl = LED_CONTROLLERS.find((c) => c.id === entry.id);
+              if (!ctrl) return;
+              const qty = Math.max(1, Math.floor(Number(entry.qty || 1)));
+              for (let unit = 0; unit < qty; unit += 1) {
+                for (let p = 0; p < ctrl.ports; p += 1) {
+                  portMeta.push({
+                    globalPort: portMeta.length,
+                    entryIdx,
+                    unitIdx: unit,
+                    controllerId: ctrl.id,
+                    controllerName: ctrl.name,
+                    localPort: p
+                  });
+                }
+              }
+            });
+            const totalPorts = Math.max(1, portMeta.length);
+            const selected = Number(wall.routing.selectedPort || 0);
+            wall.routing.selectedPort = Number.isInteger(selected) && selected >= 0 && selected < totalPorts ? selected : 0;
+            controllerSel.innerHTML = portMeta.map((m) => (
+              `<option value="${m.globalPort}">${m.controllerName} #${m.unitIdx + 1} - Port ${m.localPort + 1}</option>`
+            )).join("") || '<option value="0">Port 1</option>';
+            controllerSel.value = String(wall.routing.selectedPort);
+            controllerList.innerHTML = `
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Controller</th><th>Qty</th><th>Total Ports</th><th></th></tr></thead>
+                  <tbody>
+                    ${controllerEntries.map((entry, i) => {
+                      const ctrl = LED_CONTROLLERS.find((c) => c.id === entry.id) || LED_CONTROLLERS[0];
+                      const qty = Math.max(1, Math.floor(Number(entry.qty || 1)));
+                      const ports = qty * Number(ctrl.ports || 0);
+                      return `
+                        <tr>
+                          <td>${ctrl.name}</td>
+                          <td><input type="number" min="1" step="1" value="${qty}" data-led-ctrl-qty="${i}" style="max-width:84px;" /></td>
+                          <td>${ports}</td>
+                          <td><button data-led-ctrl-remove="${i}" ${controllerEntries.length <= 1 ? "disabled" : ""}>×</button></td>
+                        </tr>
+                      `;
+                    }).join("")}
+                  </tbody>
+                </table>
+              </div>
+            `;
+            const panel = LED_PANELS.find((p) => p.id === wall.panelType) || LED_PANELS[0];
+            const panelCap = Math.max(1, Number(panel.maxPanelsPerPort || 16));
+            const viewMode = "signal";
+            const cols = Math.max(1, Number(calc.panelsW || 1));
+            const rows = Math.max(1, Number(calc.panelsH || 1));
+            const disabledSet = new Set((wall.mapping.disabledCabinets || []).map((k) => String(k)));
+            const order = buildCabinetMapOrder(cols, rows, wall.mapping).filter((c) => !disabledSet.has(`${c.x},${c.y}`));
+            const orderedKeys = order.map((c) => `${c.x},${c.y}`);
+            const orderedKeySet = new Set(orderedKeys);
+            const parseKey = (key) => {
+              const m = String(key || "").match(/^(-?\d+),(-?\d+)$/);
+              if (!m) return null;
+              return { x: Number(m[1]), y: Number(m[2]) };
+            };
+            const clampSelectedPort = () => {
+              const p = Number(wall.routing.selectedPort || 0);
+              if (!Number.isInteger(p) || p < 0 || p >= totalPorts) wall.routing.selectedPort = 0;
+              else wall.routing.selectedPort = p;
+            };
+            const buildPortPathsFromAssignments = () => {
+              const out = {};
+              const legacy = { ...(wall.routing.assignments || {}) };
+              Object.keys(legacy).forEach((k) => {
+                const p = Number(legacy[k]);
+                if (!orderedKeySet.has(k) || !Number.isInteger(p) || p < 0 || p >= totalPorts) return;
+                const idx = Number(orderedKeys.indexOf(k));
+                if (idx < 0) return;
+                if (!Array.isArray(out[p])) out[p] = [];
+                out[p].push({ key: k, idx });
+              });
+              Object.keys(out).forEach((p) => {
+                out[p] = out[p].sort((a, b) => a.idx - b.idx).map((x) => x.key);
+              });
+              return out;
+            };
+            const normalizePortPaths = () => {
+              let paths = wall.routing.portPaths && typeof wall.routing.portPaths === "object" ? wall.routing.portPaths : {};
+              if (!Object.keys(paths).length && Object.keys(wall.routing.assignments || {}).length) {
+                paths = buildPortPathsFromAssignments();
+              }
+              const cleaned = {};
+              for (let p = 0; p < totalPorts; p += 1) {
+                const source = Array.isArray(paths[p]) ? paths[p] : (Array.isArray(paths[String(p)]) ? paths[String(p)] : []);
+                const seen = new Set();
+                const list = [];
+                source.forEach((k) => {
+                  const key = String(k);
+                  if (!orderedKeySet.has(key) || seen.has(key)) return;
+                  seen.add(key);
+                  list.push(key);
+                });
+                cleaned[p] = list.slice(0, panelCap);
+              }
+              const owner = new Map();
+              orderedKeys.forEach((key) => {
+                for (let p = 0; p < totalPorts; p += 1) {
+                  const idx = cleaned[p].indexOf(key);
+                  if (idx >= 0) owner.set(key, { port: p, idx });
+                }
+              });
+              for (let p = 0; p < totalPorts; p += 1) {
+                cleaned[p] = cleaned[p].filter((k, i) => {
+                  const o = owner.get(k);
+                  return o && o.port === p && o.idx === i;
+                });
+              }
+              wall.routing.portPaths = cleaned;
+            };
+            const syncAssignmentsFromPaths = () => {
+              const next = {};
+              for (let p = 0; p < totalPorts; p += 1) {
+                const keys = Array.isArray(wall.routing.portPaths?.[p]) ? wall.routing.portPaths[p] : [];
+                keys.forEach((k) => { next[k] = p; });
+              }
+              wall.routing.assignments = next;
+            };
+            const removeKeyFromAllPorts = (key) => {
+              for (let p = 0; p < totalPorts; p += 1) {
+                const curr = Array.isArray(wall.routing.portPaths?.[p]) ? wall.routing.portPaths[p] : [];
+                wall.routing.portPaths[p] = curr.filter((k) => k !== key);
+              }
+            };
+            const setSelectedPortStartKey = (port, key) => {
+              removeKeyFromAllPorts(key);
+              wall.routing.portPaths[port] = [key];
+              wall.routing.selectedPort = port;
+              wall.routing.cursorKey = key;
+              syncAssignmentsFromPaths();
+            };
+            const appendKeyToSelectedPort = (key) => {
+              const port = Number(wall.routing.selectedPort || 0);
+              if (!Number.isInteger(port) || port < 0 || port >= totalPorts) return false;
+              removeKeyFromAllPorts(key);
+              const curr = Array.isArray(wall.routing.portPaths?.[port]) ? wall.routing.portPaths[port] : [];
+              if (curr.length >= panelCap) return false;
+              wall.routing.portPaths[port] = [...curr, key];
+              wall.routing.cursorKey = key;
+              syncAssignmentsFromPaths();
+              return true;
+            };
+            const undoSelectedPortStep = () => {
+              const port = Number(wall.routing.selectedPort || 0);
+              if (!Number.isInteger(port) || port < 0 || port >= totalPorts) return false;
+              const curr = Array.isArray(wall.routing.portPaths?.[port]) ? [...wall.routing.portPaths[port]] : [];
+              if (!curr.length) return false;
+              curr.pop();
+              wall.routing.portPaths[port] = curr;
+              wall.routing.cursorKey = curr[curr.length - 1] || "";
+              syncAssignmentsFromPaths();
+              return true;
+            };
+
+            clampSelectedPort();
+            normalizePortPaths();
+            syncAssignmentsFromPaths();
+            if (!orderedKeySet.has(String(wall.routing.cursorKey || ""))) wall.routing.cursorKey = "";
+
+            const assignments = wall.routing.assignments || {};
+            const perPort = Array.from({ length: totalPorts }, (_, i) => ({
+              port: i,
+              keys: Array.isArray(wall.routing.portPaths?.[i]) ? wall.routing.portPaths[i] : []
+            }));
+            const chainMetaByKey = {};
+            perPort.forEach((p) => {
+              p.keys.forEach((k, idx) => {
+                chainMetaByKey[k] = { port: p.port, chain: idx + 1 };
+              });
+            });
+            const usedPorts = perPort.filter((p) => p.keys.length > 0).length;
+            const unassigned = orderedKeys.filter((k) => assignments[k] === undefined).length;
+            totalEl.textContent = String(totalPorts);
+            usedEl.textContent = String(usedPorts);
+            unassignedEl.textContent = String(unassigned);
+            capEl.textContent = String(panelCap);
+            const portPalette = ["#62d3ff", "#ff7d9f", "#8fff9c", "#ffd27b", "#a7b3ff", "#ff9d62", "#6de2a8", "#d28dff", "#ff6b6b", "#66e0ff", "#b1ff66", "#ffb366", "#9f86ff", "#53f3c2", "#ff8ad8", "#7dc3ff"];
+            const getPortColor = (port) => {
+              if (port < portPalette.length) return portPalette[port];
+              const hue = (port * 47) % 360;
+              return `hsl(${hue}deg 85% 68%)`;
+            };
+            capWrap.innerHTML = `
+              <div class="grid" style="grid-template-columns:repeat(4,minmax(0,1fr));">
+                ${perPort.map((p) => {
+                  const used = p.keys.length;
+                  const pct = Math.max(0, Math.min(200, (used / panelCap) * 100));
+                  const barColor = pct > 100 ? "#ef5353" : (pct > 80 ? "#f2b84b" : getPortColor(p.port));
+                  const selected = p.port === Number(wall.routing.selectedPort || 0);
+                  return `
+                    <div class="card" data-led-wire-port-card="${p.port}" style="padding:0.45rem;cursor:pointer;border-color:${selected ? "var(--theme-accent)" : "var(--theme-line-soft)"};">
+                      <div class="muted">Port ${p.port + 1}</div>
+                      <div><b>${used}/${panelCap}</b> <span class="muted">(${pct.toFixed(0)}%)</span></div>
+                      <div style="height:7px;border:1px solid var(--theme-line-soft);border-radius:999px;overflow:hidden;margin-top:0.25rem;">
+                        <div style="height:100%;width:${Math.min(100, pct)}%;background:${barColor};"></div>
+                      </div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            `;
+            const rowHeightsM = (Array.isArray(calc.rowHeightsM) && calc.rowHeightsM.length === rows)
+              ? calc.rowHeightsM.map((h) => Math.max(0.05, Number(h || panel.panelH)))
+              : Array.from({ length: rows }, () => Math.max(0.05, Number(panel.panelH || 0.5)));
+            const colWidthsM = Array.from({ length: cols }, () => Math.max(0.05, Number(panel.panelW || 0.5)));
+            const totalWm = colWidthsM.reduce((a, b) => a + b, 0);
+            const totalHm = rowHeightsM.reduce((a, b) => a + b, 0);
+            const targetPxPerM = 64;
+            const portGridCols = 4;
+            const portGridCellX = 30;
+            const portGridCellY = 24;
+            const portGridStartX = 24;
+            const portGridStartY = 22;
+            const getPortAnchor = (port) => {
+              const col = port % portGridCols;
+              const row = Math.floor(port / portGridCols);
+              return {
+                x: portGridStartX + (col * portGridCellX),
+                y: portGridStartY + (row * portGridCellY)
+              };
+            };
+            const portRows = Math.ceil(totalPorts / portGridCols);
+            const viewW = Math.max(760, Math.round(totalWm * targetPxPerM) + 180);
+            const viewH = Math.max(280, Math.round(totalHm * targetPxPerM) + 56, portGridStartY + (portRows * portGridCellY) + 20);
+            const gridMaxW = viewW - 128;
+            const gridMaxH = viewH - 28;
+            const scale = Math.max(0.1, Math.min(gridMaxW / Math.max(0.1, totalWm), gridMaxH / Math.max(0.1, totalHm)));
+            const gridW = totalWm * scale;
+            const gridH = totalHm * scale;
+            const offsetX = 112 + ((gridMaxW - gridW) / 2);
+            const offsetY = (viewH - gridH) / 2;
+            const colX = [];
+            let runX = offsetX;
+            for (let c = 0; c < cols; c += 1) {
+              colX[c] = runX;
+              runX += colWidthsM[c] * scale;
+            }
+            const rowY = [];
+            let runY = offsetY;
+            for (let r = 0; r < rows; r += 1) {
+              rowY[r] = runY;
+              runY += rowHeightsM[r] * scale;
+            }
+            const keyCenter = {};
+            const powerOverlay = viewMode === "power" ? buildLedPowerLines(calc, wall, panel) : null;
+            const powerAssignment = {};
+            if (powerOverlay) {
+              powerOverlay.lines.forEach((line) => line.keys.forEach((k) => { powerAssignment[k] = line; }));
+            }
+            const cabinets = [];
+            for (let y = 0; y < rows; y += 1) {
+              for (let x = 0; x < cols; x += 1) {
+                const key = `${x},${y}`;
+                if (!orderedKeySet.has(key)) continue;
+                const cw = Math.max(12, (colWidthsM[x] * scale) - 3);
+                const ch = Math.max(12, (rowHeightsM[y] * scale) - 3);
+                const px = colX[x];
+                const py = rowY[y];
+                const cx = px + (cw / 2);
+                const cy = py + (ch / 2);
+                keyCenter[key] = { x: cx, y: cy };
+                const portIdx = assignments[key];
+                const chainMeta = chainMetaByKey[key];
+                const powerLine = powerAssignment[key];
+                const isCursor = key === wall.routing.cursorKey;
+                const color = viewMode === "power"
+                  ? (powerOverlay?.phaseColors?.[powerLine?.phase || ""] || "#5f6a84")
+                  : (Number.isInteger(portIdx) ? getPortColor(portIdx) : "#5f6a84");
+                const panelTag = `${x + 1},${y + 1}`;
+                cabinets.push(`
+                  <g data-led-wire-cab="${key}" style="cursor:pointer;">
+                    <rect x="${px.toFixed(2)}" y="${py.toFixed(2)}" width="${cw.toFixed(2)}" height="${ch.toFixed(2)}" rx="4" fill="#202737" stroke="${isCursor ? "#ffffff" : color}" stroke-width="${isCursor ? "1.8" : "1.2"}"/>
+                    ${viewMode === "signal" && chainMeta ? `
+                      <circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="6.1" fill="#1e2432" stroke="${color}" stroke-width="1.2"/>
+                      <text x="${cx.toFixed(2)}" y="${(cy - 0.8).toFixed(2)}" text-anchor="middle" fill="#f0f6ff" font-size="5.4" font-weight="700">P${chainMeta.port + 1}</text>
+                      <text x="${cx.toFixed(2)}" y="${(cy + 5.2).toFixed(2)}" text-anchor="middle" fill="#d4def3" font-size="4.8">#${chainMeta.chain}</text>
+                    ` : viewMode === "power" && powerLine ? `
+                      <text x="${cx.toFixed(2)}" y="${(cy - 0.6).toFixed(2)}" text-anchor="middle" fill="#f0f6ff" font-size="6.6" font-weight="700">${powerLine.id}</text>
+                      <text x="${cx.toFixed(2)}" y="${(cy + 6.4).toFixed(2)}" text-anchor="middle" fill="${color}" font-size="6.2">${powerLine.phase}</text>
+                    ` : `<text x="${cx.toFixed(2)}" y="${(cy + 2.8).toFixed(2)}" text-anchor="middle" fill="#c8d3ea" font-size="6.2">${panelTag}</text>`}
+                  </g>
+                `);
+              }
+            }
+            const portNodes = perPort.map((p, i) => {
+              const pt = getPortAnchor(p.port);
+              const selected = p.port === Number(wall.routing.selectedPort || 0);
+              return `<g data-led-wire-port="${p.port}" style="cursor:pointer;">
+                <rect x="${(pt.x - 7.2).toFixed(2)}" y="${(pt.y - 7.2).toFixed(2)}" width="14.4" height="14.4" rx="2.1" fill="#2d3444" stroke="${getPortColor(p.port)}" stroke-width="${selected ? "2.2" : "1.6"}"/>
+                <text x="${pt.x.toFixed(2)}" y="${(pt.y + 2.6).toFixed(2)}" text-anchor="middle" fill="#eaf1ff" font-size="6.6" font-weight="700">${p.port + 1}</text>
+              </g>`;
+            }).join("");
+            const buildSignalPathMarkup = (pts, color) => {
+              if (!Array.isArray(pts) || pts.length < 2) return "";
+              const poly = `<polyline points="${pts.map((pt) => `${pt.x.toFixed(2)},${pt.y.toFixed(2)}`).join(" ")}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>`;
+              const directed = pts.slice(1).map((pt, i) => {
+                const prev = pts[i];
+                return `<line x1="${prev.x.toFixed(2)}" y1="${prev.y.toFixed(2)}" x2="${pt.x.toFixed(2)}" y2="${pt.y.toFixed(2)}" stroke="#eff5ff99" stroke-width="0.8" marker-end="url(#ledWireArrowHead)"/>`;
+              }).join("");
+              return `${poly}${directed}`;
+            };
+            const wireLines = perPort.map((p) => {
+              if (viewMode !== "signal") return "";
+              if (!p.keys.length) return "";
+              const pts = p.keys.map((k) => keyCenter[k]).filter(Boolean);
+              return buildSignalPathMarkup(pts, getPortColor(p.port));
+            }).join("");
+            const powerLines = (powerOverlay?.lines || []).map((line) => {
+              if (viewMode !== "power") return "";
+              if (!line.keys.length) return "";
+              const pts = line.keys.map((k) => keyCenter[k]).filter(Boolean);
+              return buildSignalPathMarkup(pts, powerOverlay.phaseColors[line.phase] || "#7aa3ff");
+            }).join("");
+            const mapHint = viewMode === "signal"
+              ? "Select a port, click a start cabinet, then use arrow keys or drag across adjacent cabinets to route panel-by-panel. Backspace undoes the last panel."
+              : (viewMode === "power"
+                ? "Auto power overlay: shows line IDs and L1/L2/L3 phase assignment per panel."
+                : "Panel overlay: shows individual panel positions only.");
+            svgWrap.innerHTML = `
+              <div class="muted" style="margin-bottom:0.25rem;">${mapHint}</div>
+              <div style="overflow:auto;max-height:500px;border:1px solid var(--theme-line-soft);border-radius:10px;background:#151b25;">
+                <svg id="ledWiringSvg" viewBox="0 0 ${viewW} ${viewH}" style="display:block;width:${viewW}px;height:${viewH}px;">
+                  <defs>
+                    <marker id="ledWireArrowHead" markerWidth="5" markerHeight="5" refX="4.3" refY="2.5" orient="auto" markerUnits="strokeWidth">
+                      <path d="M0,0 L5,2.5 L0,5 z" fill="#eff5ff99"></path>
+                    </marker>
+                  </defs>
+                  ${cabinets.join("")}
+                  <g id="ledWireLinesLayer" style="pointer-events:none;">${viewMode === "power" ? powerLines : wireLines}</g>
+                  ${viewMode === "signal" ? portNodes : ""}
+                </svg>
+              </div>
+            `;
+
+            document.querySelectorAll("[data-led-wire-port-card]").forEach((el) => {
+              el.addEventListener("click", () => {
+                if (viewMode !== "signal") return;
+                wall.routing.selectedPort = Number(el.getAttribute("data-led-wire-port-card") || 0);
+                renderVideoLED();
+              });
+            });
+            const svg = document.getElementById("ledWiringSvg");
+            if (!svg) return;
+            const wireLinesLayer = document.getElementById("ledWireLinesLayer");
+            const pxColWidths = colWidthsM.map((w) => Math.max(8, (w * scale) - 4));
+            const pxRowHeights = rowHeightsM.map((h) => Math.max(8, (h * scale) - 4));
+            const toSvgPoint = (ev) => {
+              const rect = svg.getBoundingClientRect();
+              const vb = (svg.getAttribute("viewBox") || "0 0 800 300").split(/\s+/).map(Number);
+              const vbW = vb[2] || 800;
+              const vbH = vb[3] || 300;
+              return {
+                x: ((ev.clientX - rect.left) / Math.max(1, rect.width)) * vbW,
+                y: ((ev.clientY - rect.top) / Math.max(1, rect.height)) * vbH
+              };
+            };
+            const cabKeyAtPoint = (pt) => {
+              for (let y = 0; y < rows; y += 1) {
+                const py = rowY[y];
+                const ph = pxRowHeights[y];
+                if (pt.y < py || pt.y > py + ph) continue;
+                for (let x = 0; x < cols; x += 1) {
+                  const px = colX[x];
+                  const pw = pxColWidths[x];
+                  if (pt.x >= px && pt.x <= px + pw) {
+                    const key = `${x},${y}`;
+                    return orderedKeySet.has(key) ? key : "";
+                  }
+                }
+              }
+              return "";
+            };
+            const isAdjacent = (a, b) => {
+              const pa = parseKey(a);
+              const pb = parseKey(b);
+              if (!pa || !pb) return false;
+              return (Math.abs(pa.x - pb.x) + Math.abs(pa.y - pb.y)) === 1;
+            };
+            const drawWireLayer = () => {
+              if (!wireLinesLayer) return;
+              const lines = Array.from({ length: totalPorts }, (_, port) => {
+                const keys = Array.isArray(wall.routing.portPaths?.[port]) ? wall.routing.portPaths[port] : [];
+                if (!keys.length) return "";
+                const pts = keys.map((k) => keyCenter[k]).filter(Boolean);
+                return buildSignalPathMarkup(pts, getPortColor(port));
+              }).join("");
+              wireLinesLayer.innerHTML = lines;
+            };
+            let dragActive = false;
+            let dragMoved = false;
+            let dragLastKey = "";
+            if (viewMode === "signal") {
+              svg.querySelectorAll("[data-led-wire-port]").forEach((el) => {
+                el.addEventListener("click", () => {
+                  const p = Number(el.getAttribute("data-led-wire-port"));
+                  if (!Number.isInteger(p)) return;
+                  wall.routing.selectedPort = p;
+                  renderVideoLED();
+                });
+              });
+              svg.querySelectorAll("[data-led-wire-cab]").forEach((el) => {
+                el.addEventListener("mousedown", (ev) => {
+                  if (ev.button !== 0) return;
+                  const key = String(el.getAttribute("data-led-wire-cab") || "");
+                  const selectedPort = Number(wall.routing.selectedPort || 0);
+                  if (!orderedKeySet.has(key) || !Number.isInteger(selectedPort)) return;
+                  setSelectedPortStartKey(selectedPort, key);
+                  dragActive = true;
+                  dragMoved = false;
+                  dragLastKey = key;
+                  drawWireLayer();
+                  ev.preventDefault();
+                });
+                el.addEventListener("click", () => {
+                  if (dragMoved) return;
+                  const key = String(el.getAttribute("data-led-wire-cab") || "");
+                  const selectedPort = Number(wall.routing.selectedPort || 0);
+                  if (!orderedKeySet.has(key) || !Number.isInteger(selectedPort)) return;
+                  setSelectedPortStartKey(selectedPort, key);
+                  renderVideoLED();
+                });
+              });
+              svg.addEventListener("mousemove", (ev) => {
+                if (!dragActive || !(ev.buttons & 1)) return;
+                const pt = toSvgPoint(ev);
+                const key = cabKeyAtPoint(pt);
+                if (!key || key === dragLastKey) return;
+                if (!isAdjacent(wall.routing.cursorKey, key)) return;
+                const appended = appendKeyToSelectedPort(key);
+                if (!appended) return;
+                dragMoved = true;
+                dragLastKey = key;
+                drawWireLayer();
+              });
+              const endDrag = () => {
+                if (!dragActive) return;
+                dragActive = false;
+                dragLastKey = "";
+                renderVideoLED();
+              };
+              svg.addEventListener("mouseup", endDrag);
+              svg.addEventListener("mouseleave", (ev) => {
+                if (!dragActive) return;
+                if (!(ev.buttons & 1)) endDrag();
+              });
+              window.addEventListener("mouseup", endDrag, { once: true });
+            }
+
+            if (typeof ledWiringKeyHandler === "function") {
+              window.removeEventListener("keydown", ledWiringKeyHandler);
+              ledWiringKeyHandler = null;
+            }
+            if (viewMode === "signal") {
+              ledWiringKeyHandler = (ev) => {
+                if (ev.key === "Backspace") {
+                  const active = document.activeElement;
+                  const tag = String(active?.tagName || "").toUpperCase();
+                  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+                  if (undoSelectedPortStep()) {
+                    ev.preventDefault();
+                    renderVideoLED();
+                  }
+                  return;
+                }
+                const dirMap = {
+                  ArrowLeft: { dx: -1, dy: 0 },
+                  ArrowRight: { dx: 1, dy: 0 },
+                  ArrowUp: { dx: 0, dy: -1 },
+                  ArrowDown: { dx: 0, dy: 1 }
+                };
+                const dir = dirMap[ev.key];
+                if (!dir) return;
+                const active = document.activeElement;
+                const tag = String(active?.tagName || "").toUpperCase();
+                if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+                const cursor = parseKey(wall.routing.cursorKey);
+                if (!cursor) return;
+                const nextKey = `${cursor.x + dir.dx},${cursor.y + dir.dy}`;
+                if (!orderedKeySet.has(nextKey)) return;
+                ev.preventDefault();
+                const appended = appendKeyToSelectedPort(nextKey);
+                if (!appended) return;
+                renderVideoLED();
+              };
+              window.addEventListener("keydown", ledWiringKeyHandler);
+            }
+
+            controllerSel.onchange = () => {
+              wall.routing.selectedPort = Math.max(0, Number(controllerSel.value || 0));
+              renderVideoLED();
+            };
+            controllerAddBtn.onclick = () => {
+              const id = String(controllerTypeAdd.value || "novastar_4k");
+              const qty = Math.max(1, Math.floor(Number(controllerQtyAdd.value || 1)));
+              wall.routing.controllers.push({ id, qty });
+              wall.routing.selectedPort = 0;
+              wall.routing.cursorKey = "";
+              renderVideoLED();
+            };
+            controllerList.querySelectorAll("input[data-led-ctrl-qty]").forEach((el) => {
+              el.addEventListener("input", () => {
+                const idx = Number(el.getAttribute("data-led-ctrl-qty") || -1);
+                if (!Number.isInteger(idx) || idx < 0 || idx >= wall.routing.controllers.length) return;
+                wall.routing.controllers[idx].qty = Math.max(1, Math.floor(Number(el.value || 1)));
+                wall.routing.selectedPort = 0;
+                wall.routing.cursorKey = "";
+                renderVideoLED();
+              });
+            });
+            controllerList.querySelectorAll("button[data-led-ctrl-remove]").forEach((el) => {
+              el.addEventListener("click", () => {
+                const idx = Number(el.getAttribute("data-led-ctrl-remove") || -1);
+                if (!Number.isInteger(idx) || idx < 0 || idx >= wall.routing.controllers.length) return;
+                if (wall.routing.controllers.length <= 1) return;
+                wall.routing.controllers.splice(idx, 1);
+                wall.routing.selectedPort = 0;
+                wall.routing.cursorKey = "";
+                renderVideoLED();
+              });
+            });
+          }
+          function buildLedPowerLines(calc, wall, panelOverride = null) {
+            ensureLedWallMapping(wall);
+            const panel = panelOverride || LED_PANELS.find((p) => p.id === wall.panelType) || LED_PANELS[0];
+            const cols = Math.max(1, Number(calc.panelsW || 1));
+            const rows = Math.max(1, Number(calc.panelsH || 1));
+            const disabledSet = new Set((wall.mapping.disabledCabinets || []).map((k) => String(k)));
+            const orderedKeys = buildCabinetMapOrder(cols, rows, wall.mapping)
+              .map((c) => `${c.x},${c.y}`)
+              .filter((k) => !disabledSet.has(k));
+            const panelsPerLine = Math.max(1, Math.floor(Number(panel.maxPanelsPerPowerLine || 16)));
+            const lines = [];
+            const phaseOrder = ["L1", "L2", "L3"];
+            const phaseTotals = {
+              L1: { avgA: 0, maxA: 0, lines: 0 },
+              L2: { avgA: 0, maxA: 0, lines: 0 },
+              L3: { avgA: 0, maxA: 0, lines: 0 }
+            };
+            const totalPanels = orderedKeys.length;
+            const baseTarget = Math.floor(totalPanels / 3);
+            const extra = totalPanels % 3;
+            const phaseTargetPanels = { L1: baseTarget, L2: baseTarget, L3: baseTarget };
+            for (let i = 0; i < extra; i += 1) phaseTargetPanels[phaseOrder[i]] += 1;
+            const phaseAssignedPanels = { L1: 0, L2: 0, L3: 0 };
+            const pickBestPhase = () => {
+              let best = "L1";
+              let bestRemain = -1;
+              let bestLoad = Number.POSITIVE_INFINITY;
+              phaseOrder.forEach((phase) => {
+                const remain = Math.max(0, phaseTargetPanels[phase] - phaseAssignedPanels[phase]);
+                const load = phaseTotals[phase].maxA;
+                if (remain > bestRemain || (remain === bestRemain && load < bestLoad)) {
+                  best = phase;
+                  bestRemain = remain;
+                  bestLoad = load;
+                }
+              });
+              return best;
+            };
+            let lineCounter = 1;
+            let cursor = 0;
+            while (cursor < orderedKeys.length) {
+              const phase = pickBestPhase();
+              const remainForPhase = Math.max(0, phaseTargetPanels[phase] - phaseAssignedPanels[phase]);
+              const remainTotal = orderedKeys.length - cursor;
+              const desiredLen = Math.max(1, remainForPhase);
+              const lineLen = Math.max(1, Math.min(panelsPerLine, remainTotal, desiredLen));
+              const lineKeys = orderedKeys.slice(cursor, cursor + lineLen);
+              cursor += lineKeys.length;
+              const line = {
+                id: `L${lineCounter}`,
+                keys: lineKeys,
+                panels: lineKeys.length,
+                panelsPerLine,
+                avgA: Number(panel.avgA || 0) * lineKeys.length,
+                maxA: Number(panel.maxA || 0) * lineKeys.length,
+                phase,
+                phaseIndex: phaseTotals[phase].lines + 1
+              };
+              lines.push(line);
+              lineCounter += 1;
+              phaseTotals[phase].avgA += line.avgA;
+              phaseTotals[phase].maxA += line.maxA;
+              phaseTotals[phase].lines += 1;
+              phaseAssignedPanels[phase] += lineKeys.length;
+            }
+            const assignment = {};
+            lines.forEach((line) => {
+              line.keys.forEach((k) => { assignment[k] = line; });
+            });
+            const phaseColors = { L1: "#55c7ff", L2: "#f8cc4f", L3: "#86e28f" };
+            const supplyType = (ledState.powerSupplyType || "32a");
+            const perLineLimit = supplyType === "socapex" ? 16 : 32;
+            const warnLimit = perLineLimit * 0.8;
+            const socaLooms = Math.max(
+              Math.ceil((phaseTotals.L1.lines || 0) / 2),
+              Math.ceil((phaseTotals.L2.lines || 0) / 2),
+              Math.ceil((phaseTotals.L3.lines || 0) / 2)
+            );
+            const distroText = supplyType === "socapex"
+              ? `${socaLooms} x Socapex 6-way`
+              : `${lines.length} x 32A (L1 ${phaseTotals.L1.lines} / L2 ${phaseTotals.L2.lines} / L3 ${phaseTotals.L3.lines})`;
+            return { panel, orderedKeys, lines, phaseTotals, phaseColors, perLineLimit, warnLimit, distroText };
+          }
+          function renderLedPowerDistribution(calc, wall) {
+            ensureLedWallMapping(wall);
+            const summaryEl = document.getElementById("ledPowerDistSummary");
+            const svgWrap = document.getElementById("ledPowerDistSvgWrap");
+            const tableBody = document.getElementById("ledPowerDistTableBody");
+            if (!summaryEl || !svgWrap || !tableBody) return;
+            const cols = Math.max(1, Number(calc.panelsW || 1));
+            const rows = Math.max(1, Number(calc.panelsH || 1));
+            const { panel, orderedKeys, lines, phaseTotals, phaseColors, perLineLimit, warnLimit, distroText } = buildLedPowerLines(calc, wall);
+            const assignment = {};
+            lines.forEach((line) => line.keys.forEach((k) => { assignment[k] = line; }));
+            summaryEl.innerHTML = `
+              <div class="kpis" style="grid-template-columns:repeat(5,minmax(0,1fr));">
+                <div class="kpi"><div class="muted">Power Lines</div><b>${lines.length}</b></div>
+                <div class="kpi"><div class="muted">L1 Max A</div><b>${phaseTotals.L1.maxA.toFixed(2)}</b></div>
+                <div class="kpi"><div class="muted">L2 Max A</div><b>${phaseTotals.L2.maxA.toFixed(2)}</b></div>
+                <div class="kpi"><div class="muted">L3 Max A</div><b>${phaseTotals.L3.maxA.toFixed(2)}</b></div>
+                <div class="kpi"><div class="muted">Recommended Distro</div><b>${distroText}</b></div>
+              </div>
+            `;
+
+            const rowHeightsM = (Array.isArray(calc.rowHeightsM) && calc.rowHeightsM.length === rows)
+              ? calc.rowHeightsM.map((h) => Math.max(0.05, Number(h || panel.panelH)))
+              : Array.from({ length: rows }, () => Math.max(0.05, Number(panel.panelH || 0.5)));
+            const colWidthsM = Array.from({ length: cols }, () => Math.max(0.05, Number(panel.panelW || 0.5)));
+            const totalWm = colWidthsM.reduce((a, b) => a + b, 0);
+            const totalHm = rowHeightsM.reduce((a, b) => a + b, 0);
+            const targetPxPerM = 64;
+            const viewW = Math.max(760, Math.round(totalWm * targetPxPerM) + 80);
+            const viewH = Math.max(280, Math.round(totalHm * targetPxPerM) + 56);
+            const gridMaxW = viewW - 32;
+            const gridMaxH = viewH - 28;
+            const scale = Math.max(0.1, Math.min(gridMaxW / Math.max(0.1, totalWm), gridMaxH / Math.max(0.1, totalHm)));
+            const gridW = totalWm * scale;
+            const gridH = totalHm * scale;
+            const offsetX = (viewW - gridW) / 2;
+            const offsetY = (viewH - gridH) / 2;
+            const colX = [];
+            let runX = offsetX;
+            for (let c = 0; c < cols; c += 1) {
+              colX[c] = runX;
+              runX += colWidthsM[c] * scale;
+            }
+            const rowY = [];
+            let runY = offsetY;
+            for (let r = 0; r < rows; r += 1) {
+              rowY[r] = runY;
+              runY += rowHeightsM[r] * scale;
+            }
+            const keyCenter = {};
+            const cabinets = [];
+            for (let y = 0; y < rows; y += 1) {
+              for (let x = 0; x < cols; x += 1) {
+                const key = `${x},${y}`;
+                if (!orderedKeys.includes(key)) continue;
+                const line = assignment[key];
+                const cw = Math.max(12, (colWidthsM[x] * scale) - 3);
+                const ch = Math.max(12, (rowHeightsM[y] * scale) - 3);
+                const px = colX[x];
+                const py = rowY[y];
+                const cx = px + (cw / 2);
+                const cy = py + (ch / 2);
+                keyCenter[key] = { x: cx, y: cy };
+                const stroke = phaseColors[line?.phase || "L1"];
+                cabinets.push(`
+                  <g>
+                    <rect x="${px.toFixed(2)}" y="${py.toFixed(2)}" width="${cw.toFixed(2)}" height="${ch.toFixed(2)}" rx="4" fill="#202737" stroke="${stroke}" stroke-width="1.2"/>
+                    <text x="${cx.toFixed(2)}" y="${(cy - 1).toFixed(2)}" text-anchor="middle" fill="#e8efff" font-size="8">${line?.id || "-"}</text>
+                    <text x="${cx.toFixed(2)}" y="${(cy + 8).toFixed(2)}" text-anchor="middle" fill="${stroke}" font-size="7">${line?.phase || "-"}</text>
+                  </g>
+                `);
+              }
+            }
+            const wireLines = lines.map((line, i) => {
+              if (!line.keys.length) return "";
+              const pts = line.keys.map((k) => keyCenter[k]).filter(Boolean);
+              if (pts.length < 2) return "";
+              const points = pts;
+              return `<polyline points="${points.map((pt) => `${pt.x.toFixed(2)},${pt.y.toFixed(2)}`).join(" ")}" fill="none" stroke="${phaseColors[line.phase]}" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>`;
+            }).join("");
+            svgWrap.innerHTML = `
+              <div class="muted" style="margin-bottom:0.25rem;">Auto-assigned power lines balanced across L1/L2/L3. Each cabinet shows line id + phase.</div>
+              <div style="overflow:auto;max-height:500px;border:1px solid var(--theme-line-soft);border-radius:10px;background:#151b25;">
+                <svg viewBox="0 0 ${viewW} ${viewH}" style="display:block;width:${viewW}px;height:${viewH}px;">
+                  ${wireLines}
+                  ${cabinets.join("")}
+                </svg>
+              </div>
+            `;
+
+            tableBody.innerHTML = lines.map((line) => {
+              const status = line.maxA > perLineLimit ? "FAIL" : (line.maxA > warnLimit ? "WARN" : "PASS");
+              return `
+                <tr>
+                  <td>${line.id}</td>
+                  <td><span style="color:${phaseColors[line.phase]};font-weight:600;">${line.phase}</span></td>
+                  <td>${line.panels}/${line.panelsPerLine}</td>
+                  <td>${line.avgA.toFixed(2)}</td>
+                  <td>${line.maxA.toFixed(2)}</td>
+                  <td>${status}</td>
+                </tr>
+              `;
+            }).join("") || '<tr><td colspan="6" class="muted">No mapped cabinets.</td></tr>';
+          }
+
+          LED_PANELS.forEach((p) => {
+            const opt = document.createElement("option");
+            opt.value = p.id;
+            opt.textContent = p.name;
+            panelSel.appendChild(opt);
+          });
+
+          function recalc() {
+            const wall = activeWall();
+            if (!wall) return;
+            ensureLedWallMapping(wall);
+            wall.panelType = panelSel.value;
+            wall.width = Number(widthEl.value || 0);
+            wall.height = Number(heightEl.value || 0);
+
+            const panel = LED_PANELS.find((p) => p.id === wall.panelType) || LED_PANELS[0];
+            const calc = calcLedWall(panel, wall.width, wall.height);
+
+            document.getElementById("ledOutPanelCount").textContent = calc.panelCount.toLocaleString();
+            document.getElementById("ledOutPixelsW").textContent = calc.pixelsW.toLocaleString();
+            document.getElementById("ledOutPixelsH").textContent = calc.pixelsH.toLocaleString();
+            document.getElementById("ledOutPixelsTotal").textContent = calc.pixelsTotal.toLocaleString();
+            document.getElementById("ledFitInfo").textContent =
+              `Layout ${calc.panelsW} columns. Height build: ${calc.rowInfo}. Built size ${calc.builtW.toFixed(2)}m x ${calc.builtH.toFixed(2)}m.`;
+            if (ledState.mode === "multi") {
+              const totals = ledState.walls.reduce((acc, w) => {
+                const p = LED_PANELS.find((x) => x.id === w.panelType) || LED_PANELS[0];
+                const c = calcLedWall(p, Number(w.width || 0), Number(w.height || 0));
+                acc.panels += c.panelCount;
+                acc.pixels += c.pixelsTotal;
+                return acc;
+              }, { panels: 0, pixels: 0 });
+              modeInfo.textContent = `Active wall: ${wall.name}. Multi-wall totals: ${totals.panels.toLocaleString()} panels, ${totals.pixels.toLocaleString()} total pixels.`;
+              renderMultiOutputs();
+            } else {
+              modeInfo.textContent = `Single wall mode.`;
+            }
+            const validKeys = new Set(Array.from({ length: calc.panelsH }, (_, y) => y).flatMap((y) => (
+              Array.from({ length: calc.panelsW }, (_, x) => `${x},${y}`)
+            )));
+            wall.mapping.disabledCabinets = (wall.mapping.disabledCabinets || []).filter((k) => validKeys.has(String(k)));
+            ensureLedWallRouting(wall);
+            const validRoutingKeys = new Set(Array.from(validKeys).filter((k) => !(wall.mapping.disabledCabinets || []).includes(k)));
+            Object.keys(wall.routing.assignments || {}).forEach((k) => {
+              if (!validRoutingKeys.has(String(k))) delete wall.routing.assignments[k];
+            });
+            Object.keys(wall.routing.portPaths || {}).forEach((p) => {
+              const path = Array.isArray(wall.routing.portPaths[p]) ? wall.routing.portPaths[p] : [];
+              const seen = new Set();
+              wall.routing.portPaths[p] = path.filter((k) => {
+                const key = String(k);
+                if (!validRoutingKeys.has(key) || seen.has(key)) return false;
+                seen.add(key);
+                return true;
+              });
+            });
+            if (!validRoutingKeys.has(String(wall.routing.cursorKey || ""))) wall.routing.cursorKey = "";
+            renderLedPortWiring(calc, wall);
+            renderLedPowerDistribution(calc, wall);
+          }
+
+          const w = activeWall();
+          panelSel.value = w?.panelType || LED_PANELS[0].id;
+          widthEl.value = String(w?.width ?? 8);
+          heightEl.value = String(w?.height ?? 4.5);
+
+          modeSingleBtn?.addEventListener("click", () => {
+            ledState.mode = "single";
+            renderVideoLED();
+          });
+          modeMultiBtn?.addEventListener("click", () => {
+            ledState.mode = "multi";
+            if (!ledState.activeWallId) ledState.activeWallId = ledState.walls[0]?.id || null;
+            renderVideoLED();
+          });
+          document.getElementById("ledAddWallBtn")?.addEventListener("click", () => {
+            const wall = newLedWall(ledState.walls.length + 1);
+            ledState.walls.push(wall);
+            ledState.activeWallId = wall.id;
+            renderVideoLED();
+          });
+
+          if (ledState.mode === "multi") {
+            renderWallRows();
+            renderMultiOutputs();
+          }
+          panelSel.addEventListener("input", recalc);
+          widthEl.addEventListener("input", recalc);
+          heightEl.addEventListener("input", recalc);
+          powerSupplySel?.addEventListener("change", () => {
+            ledState.powerSupplyType = powerSupplySel.value || "32a";
+            recalc();
+          });
+          recalc();
+        }
+
+        function renderVideoSubTab(name) {
+          if (name === "LED") {
+            renderVideoLED();
+            return;
+          }
+          if (typeof ledWiringKeyHandler === "function") {
+            window.removeEventListener("keydown", ledWiringKeyHandler);
+            ledWiringKeyHandler = null;
+          }
+          renderPlaceholder(`Video - ${name}`, `${name} planning UI comes next.`);
+        }
+
+        function makePowerLoadId() {
+          return `pwr_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+        }
+        function getVideoPowerLoads() {
+          const walls = ledState.mode === "multi" ? ledState.walls : [ledState.single];
+          return (walls || []).map((w) => {
+            const panel = LED_PANELS.find((p) => p.id === w.panelType) || LED_PANELS[0];
+            const calc = calcLedWall(panel, Number(w.width || 0), Number(w.height || 0));
+            if (!(calc.panelCount > 0)) return null;
+            return {
+              id: `auto_video_${w.id || "single"}`,
+              name: `LED Wall - ${w.name || "Wall"} (${panel.name})`,
+              department: "Video",
+              quantity: calc.panelCount,
+              watts_avg: Number.isFinite(Number(panel.avgW)) ? Number(panel.avgW) : null,
+              watts_max: Number.isFinite(Number(panel.maxW)) ? Number(panel.maxW) : null,
+              amps_avg: Number.isFinite(Number(panel.avgA)) ? Number(panel.avgA) : null,
+              amps_max: Number.isFinite(Number(panel.maxA)) ? Number(panel.maxA) : null,
+              preferred_connection: "single_phase",
+              source: "video_led"
+            };
+          }).filter(Boolean);
+        }
+        function getLightingPowerLoads() {
+          return (lightingState.fixtures || []).map((line) => {
+            const fixture = getLightingFixtureByKey(line.fixtureKey);
+            const avgW = Number.isFinite(Number(fixture?.power?.avg_w)) ? Number(fixture.power.avg_w) : null;
+            const maxW = Number.isFinite(Number(fixture?.power?.max_w)) ? Number(fixture.power.max_w) : null;
+            return {
+              id: `auto_lx_${line.id}`,
+              name: `${fixture.manufacturer} ${fixture.model} (${line.modeName})`,
+              department: "Lighting",
+              quantity: Math.max(1, Math.round(Number(line.quantity || 1))),
+              watts_avg: avgW,
+              watts_max: maxW === null ? avgW : maxW,
+              preferred_connection: "single_phase",
+              grouping_key: line.groupId || "",
+              source: "lighting"
+            };
+          });
+        }
+        function getSettingsEquipmentPowerLoads() {
+          const settings = getSettingsState();
+          if (!settings?.departments) return [];
+          const rows = [];
+          Object.entries(settings.departments).forEach(([department, block]) => {
+            if (!block || !Array.isArray(block.equipment)) return;
+            block.equipment.forEach((eq) => {
+              if (!eq || eq.enabled === false) return;
+              const watts = Number(eq?.power_use?.watts);
+              const amps = Number(eq?.power_use?.amps);
+              const hasWatts = Number.isFinite(watts) && watts > 0;
+              const hasAmps = Number.isFinite(amps) && amps > 0;
+              if (!hasWatts && !hasAmps) return;
+              const mappedDepartment = (["Lighting", "Audio", "Video"].includes(department) ? department : "Other");
+              rows.push({
+                id: `settings_${department}_${eq.id}`,
+                name: `[Settings] ${eq.manufacturer || ""} ${eq.name || "Equipment"}`.trim(),
+                department: mappedDepartment,
+                quantity: 1,
+                watts_avg: hasWatts ? watts : null,
+                watts_max: hasWatts ? watts : null,
+                amps_avg: hasAmps ? amps : null,
+                amps_max: hasAmps ? amps : null,
+                preferred_connection: "single_phase",
+                source: "settings_equipment"
+              });
+            });
+          });
+          return rows;
+        }
+        function getManualPowerLoads() {
+          return (powerState.manualLoads || []).map((x) => ({ ...x }));
+        }
+        function getCombinedPowerLoads() {
+          return [
+            ...getVideoPowerLoads(),
+            ...getLightingPowerLoads(),
+            ...getSettingsEquipmentPowerLoads(),
+            ...getManualPowerLoads()
+          ];
+        }
+        function buildPowerPlan() {
+          if (!PowerCalculator || typeof PowerCalculator.computePowerPlan !== "function") {
+            return null;
+          }
+          return PowerCalculator.computePowerPlan(getCombinedPowerLoads(), powerState.settings);
+        }
+        function formatPwr(v, digits = 1) {
+          const n = Number(v || 0);
+          if (!Number.isFinite(n)) return "0";
+          return n.toFixed(digits);
+        }
+        function renderPowerStatus(status) {
+          if (status === "FAIL") return '<span class="bad"><b>FAIL</b></span>';
+          if (status === "WARN") return '<span class="warn-t"><b>WARN</b></span>';
+          return '<span class="ok"><b>PASS</b></span>';
+        }
+        function renderPower() {
+          if (!main) return;
+          const plan = buildPowerPlan();
+          const totals = plan?.totals || { avg: { W: 0, VA: 0, A: 0 }, max: { W: 0, VA: 0, A: 0 }, byDepartment: {} };
+          const phase = plan?.phase_totals || { L1: { A_max: 0, VA_max: 0, W_max: 0 }, L2: { A_max: 0, VA_max: 0, W_max: 0 }, L3: { A_max: 0, VA_max: 0, W_max: 0 } };
+          const compliance = plan?.compliance || { overall: "PASS", checks: [] };
+          const diagnostics = plan?.diagnostics || [];
+          const gen = plan?.generator || { recommended_kva_rounded: 0, estimated_utilisation_pct: 0, headroom_factor: 1.25 };
+
+          main.innerHTML = `
+            <div class="card">
+              <h2>Power - South Africa 3-Phase Calculator</h2>
+              <div class="muted" style="margin-top:0.25rem;">50Hz | 230V L-N | 400V L-L | Incomer: 250A Powerlock 3-phase | Continuous planning at 80%.</div>
+              <div class="kpis" style="margin-top:0.55rem;">
+                <div class="kpi"><div class="muted">Total Avg (W / VA / A)</div><b>${Math.round(totals.avg.W).toLocaleString()} / ${Math.round(totals.avg.VA).toLocaleString()} / ${formatPwr(totals.avg.A, 1)}</b></div>
+                <div class="kpi"><div class="muted">Total Max (W / VA / A)</div><b>${Math.round(totals.max.W).toLocaleString()} / ${Math.round(totals.max.VA).toLocaleString()} / ${formatPwr(totals.max.A, 1)}</b></div>
+                <div class="kpi"><div class="muted">Compliance</div><b>${renderPowerStatus(compliance.overall)}</b></div>
+                <div class="kpi"><div class="muted">Generator</div><b>${gen.recommended_kva_rounded} kVA (${formatPwr(gen.estimated_utilisation_pct, 1)}%)</b></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:0.7rem;">
+              <h3>Add Manual Load</h3>
+              <div class="grid grid-4" style="margin-top:0.5rem;">
+                <div><label>Name</label><input id="pwrName" value="${String(powerState.draft.name || "").replace(/"/g, "&quot;")}" /></div>
+                <div><label>Department</label><select id="pwrDept"><option value="Lighting" ${powerState.draft.department === "Lighting" ? "selected" : ""}>Lighting</option><option value="Audio" ${powerState.draft.department === "Audio" ? "selected" : ""}>Audio</option><option value="Video" ${powerState.draft.department === "Video" ? "selected" : ""}>Video</option><option value="Other" ${powerState.draft.department === "Other" ? "selected" : ""}>Other</option></select></div>
+                <div><label>Qty</label><input id="pwrQty" type="number" min="1" step="1" value="${Math.max(1, Number(powerState.draft.quantity || 1))}" /></div>
+                <div><label>Connection</label><select id="pwrConn"><option value="single_phase" ${powerState.draft.preferred_connection === "single_phase" ? "selected" : ""}>single_phase</option><option value="three_phase_balanced" ${powerState.draft.preferred_connection === "three_phase_balanced" ? "selected" : ""}>three_phase_balanced</option><option value="socapex_head" ${powerState.draft.preferred_connection === "socapex_head" ? "selected" : ""}>socapex_head</option></select></div>
+                <div><label>Watts Avg</label><input id="pwrWAvg" type="number" step="0.1" value="${powerState.draft.watts_avg}" /></div>
+                <div><label>Watts Max</label><input id="pwrWMax" type="number" step="0.1" value="${powerState.draft.watts_max}" /></div>
+                <div><label>Amps Avg</label><input id="pwrAAvg" type="number" step="0.01" value="${powerState.draft.amps_avg}" /></div>
+                <div><label>Amps Max</label><input id="pwrAMax" type="number" step="0.01" value="${powerState.draft.amps_max}" /></div>
+                <div><label>PF (optional)</label><input id="pwrPf" type="number" min="0.1" max="1" step="0.01" value="${powerState.draft.pf}" /></div>
+                <div><label>Inrush Mult.</label><input id="pwrInrush" type="number" min="1" step="0.05" value="${powerState.draft.inrush_multiplier}" /></div>
+                <div><label>Grouping Key</label><input id="pwrGroupKey" value="${String(powerState.draft.grouping_key || "").replace(/"/g, "&quot;")}" /></div>
+                <div><label>Soca Loom / Head</label><div style="display:grid;grid-template-columns:1fr 80px;gap:0.35rem;"><input id="pwrSocaLoom" value="${String(powerState.draft.soca_loom_id || "SOCA-1").replace(/"/g, "&quot;")}" /><input id="pwrSocaHead" type="number" min="1" max="6" step="1" value="${powerState.draft.soca_head}" /></div></div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;margin-top:0.55rem;"><button id="pwrAddLoadBtn" class="primary">Add Load</button></div>
+            </div>
+
+            <div class="grid grid-2" style="margin-top:0.7rem;">
+              <div class="card">
+                <div class="toolbar"><h3>Load Inputs</h3><span class="badge">${getCombinedPowerLoads().length} items</span></div>
+                <div class="table-wrap">
+                  <table>
+                    <thead><tr><th>Name</th><th>Dept</th><th>Qty</th><th>W max</th><th>A max</th><th>Source</th><th></th></tr></thead>
+                    <tbody>
+                      ${getCombinedPowerLoads().map((l) => `
+                        <tr>
+                          <td>${l.name}</td>
+                          <td>${l.department}</td>
+                          <td>${Math.max(1, Number(l.quantity || 1))}</td>
+                          <td>${Number.isFinite(Number(l.watts_max)) ? Number(l.watts_max).toFixed(1) : "-"}</td>
+                          <td>${Number.isFinite(Number(l.amps_max)) ? Number(l.amps_max).toFixed(2) : "-"}</td>
+                          <td>${l.source || "manual"}</td>
+                          <td>${l.source ? "" : `<button data-pwr-remove="${l.id}">x</button>`}</td>
+                        </tr>
+                      `).join("")}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="card">
+                <h3>Department Totals (Max)</h3>
+                <div class="table-wrap" style="margin-top:0.45rem;">
+                  <table>
+                    <thead><tr><th>Department</th><th>W</th><th>VA</th><th>A</th></tr></thead>
+                    <tbody>
+                      ${["Lighting", "Audio", "Video", "Other"].map((d) => {
+                        const t = totals.byDepartment?.[d]?.max || { W: 0, VA: 0, A: 0 };
+                        return `<tr><td>${d}</td><td>${Math.round(t.W || 0).toLocaleString()}</td><td>${Math.round(t.VA || 0).toLocaleString()}</td><td>${formatPwr(t.A || 0, 1)}</td></tr>`;
+                      }).join("")}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-2" style="margin-top:0.7rem;">
+              <div class="card">
+                <h3>Per-Phase Totals (Max)</h3>
+                <div class="table-wrap" style="margin-top:0.45rem;">
+                  <table>
+                    <thead><tr><th>Phase</th><th>W</th><th>VA</th><th>A</th></tr></thead>
+                    <tbody>
+                      ${["L1", "L2", "L3"].map((p) => `<tr><td>${p}</td><td>${Math.round(phase[p].W_max || 0).toLocaleString()}</td><td>${Math.round(phase[p].VA_max || 0).toLocaleString()}</td><td>${formatPwr(phase[p].A_max || 0, 1)}</td></tr>`).join("")}
+                    </tbody>
+                  </table>
+                </div>
+                <div class="muted" style="margin-top:0.4rem;">Imbalance threshold: ${(Number(powerState.settings.imbalance_warn_ratio || 0.2) * 100).toFixed(0)}%</div>
+              </div>
+              <div class="card">
+                <h3>Circuit Plan (Best Fit)</h3>
+                <div class="table-wrap" style="margin-top:0.45rem;">
+                  <table>
+                    <thead><tr><th>Phase</th><th>Best Fit</th><th>Per Circuit A</th><th>Status</th></tr></thead>
+                    <tbody>
+                      ${["L1", "L2", "L3"].map((p) => {
+                        const best = plan?.circuit_plan?.per_phase?.[p]?.best_fit;
+                        if (!best) return `<tr><td>${p}</td><td>-</td><td>-</td><td>${renderPowerStatus("PASS")}</td></tr>`;
+                        return `<tr><td>${p}</td><td>${best.circuits_needed} x ${best.breaker_a}A</td><td>${formatPwr(best.planned_a_per_circuit, 2)}A</td><td>${renderPowerStatus(best.status)}</td></tr>`;
+                      }).join("")}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-2" style="margin-top:0.7rem;">
+              <div class="card">
+                <h3>Socapex Report</h3>
+                <div class="table-wrap" style="margin-top:0.45rem;">
+                  <table>
+                    <thead><tr><th>Loom</th><th>Head</th><th>Phase</th><th>A</th><th>Status</th></tr></thead>
+                    <tbody>
+                      ${(plan?.socapex?.looms || []).flatMap((loom) => loom.heads.map((h) => `<tr><td>${loom.loom_id}</td><td>${h.head}</td><td>${h.phase}</td><td>${formatPwr(h.A_max, 2)}</td><td>${renderPowerStatus(h.status)}</td></tr>`)).join("") || '<tr><td colspan="5" class="muted">No Socapex-assigned loads.</td></tr>'}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="card">
+                <h3>Compliance Checks</h3>
+                <div class="table-wrap" style="margin-top:0.45rem;">
+                  <table>
+                    <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                    <tbody>
+                      ${(compliance.checks || []).map((c) => `<tr><td>${c.id}</td><td>${renderPowerStatus(c.status)}</td><td>${c.detail}</td></tr>`).join("")}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:0.7rem;">
+              <h3>Diagnostics</h3>
+              <ul style="margin:0.5rem 0 0 1.1rem;">
+                ${(diagnostics.length ? diagnostics : ["No warnings."]).map((d) => `<li>${d}</li>`).join("")}
+              </ul>
+              <div class="muted" style="margin-top:0.5rem;">Generator recommendation: ${gen.recommended_kva_rounded} kVA (headroom x${formatPwr(gen.headroom_factor, 2)}, running ${formatPwr(gen.running_kva, 2)} kVA).</div>
+            </div>
+          `;
+
+          const bindDraft = (id, key) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener("input", () => { powerState.draft[key] = el.value; });
+            el.addEventListener("change", () => { powerState.draft[key] = el.value; });
+          };
+          bindDraft("pwrName", "name");
+          bindDraft("pwrDept", "department");
+          bindDraft("pwrQty", "quantity");
+          bindDraft("pwrConn", "preferred_connection");
+          bindDraft("pwrWAvg", "watts_avg");
+          bindDraft("pwrWMax", "watts_max");
+          bindDraft("pwrAAvg", "amps_avg");
+          bindDraft("pwrAMax", "amps_max");
+          bindDraft("pwrPf", "pf");
+          bindDraft("pwrInrush", "inrush_multiplier");
+          bindDraft("pwrGroupKey", "grouping_key");
+          bindDraft("pwrSocaLoom", "soca_loom_id");
+          bindDraft("pwrSocaHead", "soca_head");
+
+          document.getElementById("pwrAddLoadBtn")?.addEventListener("click", () => {
+            const d = powerState.draft;
+            const row = {
+              id: makePowerLoadId(),
+              name: String(d.name || "").trim() || `Manual Load ${powerState.manualLoads.length + 1}`,
+              department: d.department || "Other",
+              quantity: Math.max(1, Math.round(Number(d.quantity || 1))),
+              watts_avg: d.watts_avg === "" ? null : Number(d.watts_avg),
+              watts_max: d.watts_max === "" ? null : Number(d.watts_max),
+              amps_avg: d.amps_avg === "" ? null : Number(d.amps_avg),
+              amps_max: d.amps_max === "" ? null : Number(d.amps_max),
+              pf: d.pf === "" ? null : Number(d.pf),
+              inrush_multiplier: d.inrush_multiplier === "" ? 1 : Math.max(1, Number(d.inrush_multiplier)),
+              preferred_connection: d.preferred_connection || "single_phase",
+              grouping_key: String(d.grouping_key || "").trim(),
+              socapex: {
+                loom_id: String(d.soca_loom_id || "SOCA-1"),
+                head: d.soca_head === "" ? null : Number(d.soca_head)
+              }
+            };
+            if (row.preferred_connection !== "socapex_head") delete row.socapex;
+            powerState.manualLoads.push(row);
+            powerState.draft.name = "";
+            powerState.draft.watts_avg = "";
+            powerState.draft.watts_max = "";
+            powerState.draft.amps_avg = "";
+            powerState.draft.amps_max = "";
+            powerState.draft.pf = "";
+            renderPower();
+          });
+
+          document.querySelectorAll("button[data-pwr-remove]").forEach((el) => {
+            el.addEventListener("click", () => {
+              const id = el.dataset.pwrRemove;
+              powerState.manualLoads = powerState.manualLoads.filter((x) => x.id !== id);
+              renderPower();
+            });
+          });
+        }
+
+        function ensureAudioDefaults() {
+          if (!audioState.laPlanner || typeof audioState.laPlanner !== "object") {
+            audioState.laPlanner = {
+              selectedSpeakerId: LA_SPEAKER_LIBRARY[0]?.id || "",
+              selectedZone: "Main Left",
+              selectedControllerModelId: "la12x",
+              zones: [],
+              speakers: [],
+              racks: [],
+              switches: [],
+              networkLinks: [],
+              consoleRouting: []
+            };
+          }
+          if (!audioState.speakerPlanner || typeof audioState.speakerPlanner !== "object") {
+            audioState.speakerPlanner = {
+              search: "",
+              selectedManufacturer: "",
+              selectedSpeakerId: LA_SPEAKER_LIBRARY[0]?.id || "",
+              selectedLaAmp: "LA12X",
+              selectedAmpQty: 1,
+              quantity: 2,
+              activeGroupId: "",
+              groups: [newAudioSpeakerGroup(1)],
+              amps: [],
+              lines: []
+            };
+          }
+          const speakerPlanner = audioState.speakerPlanner;
+          if (!speakerPlanner.selectedLaAmp) speakerPlanner.selectedLaAmp = "LA12X";
+          if (!Array.isArray(speakerPlanner.amps)) speakerPlanner.amps = [];
+          speakerPlanner.selectedAmpQty = Math.max(1, Math.round(Number(speakerPlanner.selectedAmpQty || 1)));
+          if (!Array.isArray(speakerPlanner.groups) || !speakerPlanner.groups.length) {
+            speakerPlanner.groups = [newAudioSpeakerGroup(1)];
+          }
+          if (!speakerPlanner.activeGroupId || !speakerPlanner.groups.some((g) => g.id === speakerPlanner.activeGroupId)) {
+            speakerPlanner.activeGroupId = speakerPlanner.groups[0].id;
+          }
+          if (!Array.isArray(speakerPlanner.lines)) speakerPlanner.lines = [];
+          speakerPlanner.quantity = Math.max(1, Math.round(Number(speakerPlanner.quantity || 1)));
+          if (!Array.isArray(audioState.console.inputs) || !audioState.console.inputs.length) {
+            const preset = getAudioConsolePresetByName(audioState.console.consoleModel) || AUDIO_CONSOLE_PRESETS[0];
+            applyAudioConsolePreset(audioState.console, preset);
+          }
+          if (!Array.isArray(audioState.console.outputs) || !audioState.console.outputs.length) {
+            const preset = getAudioConsolePresetByName(audioState.console.consoleModel) || AUDIO_CONSOLE_PRESETS[0];
+            applyAudioConsolePreset(audioState.console, preset);
+          }
+          audioState.console.inputs = (audioState.console.inputs || []).map((row, idx) => ({
+            ...row,
+            patchChannel: Number.isFinite(Number(row.patchChannel)) && Number(row.patchChannel) > 0 ? Number(row.patchChannel) : idx + 1,
+            stageLocation: row.stageLocation === "desk" ? "desk" : "stagebox"
+          }));
+          audioState.console.outputs = (audioState.console.outputs || []).map((row, idx) => ({
+            ...row,
+            name: String(row.name || ""),
+            sourceType: row.sourceType === "wireless" || row.sourceType === "playback" ? row.sourceType : "wired",
+            patchChannel: Number.isFinite(Number(row.patchChannel)) && Number(row.patchChannel) > 0 ? Number(row.patchChannel) : idx + 1,
+            stageLocation: row.stageLocation === "desk" ? "desk" : "stagebox"
+          }));
+          if (!Array.isArray(audioState.rf.channels) || !audioState.rf.channels.length) {
+            audioState.rf.channels = [
+              { id: "rf_1", device: "Handheld", talent: "MC", band: "A", freq: "", group: "G1", battery: "AA" },
+              { id: "rf_2", device: "Lapel", talent: "Presenter", band: "A", freq: "", group: "G1", battery: "AA" }
+            ];
+          }
+          if (!Array.isArray(audioState.cabling.runs) || !audioState.cabling.runs.length) {
+            const foh = Math.max(0, Number(audioState.cabling.fohToStageM || 0));
+            const lr = Math.max(0, Number(audioState.cabling.stageLeftToRightM || 0));
+            const delay = Math.max(0, Number(audioState.cabling.delayRunM || 0));
+            audioState.cabling.runs = [
+              { id: "cab_1", type: "CAT", lengthM: foh, qty: 2, endpoints: "FOH <> Stage Rack", spare: 1 },
+              { id: "cab_2", type: "XLR", lengthM: lr, qty: 6, endpoints: "SL <> SR", spare: 2 },
+              { id: "cab_3", type: "NL4", lengthM: delay, qty: 2, endpoints: "Mains <> Delay Zone", spare: 1 }
+            ];
+          }
+        }
+
+        function renderSound() {
+          ensureAudioDefaults();
+          if (!main) return;
+          const show = audioState.showInfo;
+          const venue = audioState.venue;
+          const system = audioState.system;
+          const delays = audioState.delays;
+          const consoleCfg = audioState.console;
+          const rf = audioState.rf;
+          const comms = audioState.comms;
+          const power = audioState.power;
+          const cabling = audioState.cabling;
+          const consolePreset = getAudioConsolePresetByName(consoleCfg.consoleModel);
+          const consoleOptions = AUDIO_CONSOLE_PRESETS.map((p) => `<option value="${p.console}" ${String(consoleCfg.consoleModel || "") === p.console ? "selected" : ""}>${p.console}</option>`).join("");
+          const basicTabs = [
+            { id: "system_design", label: "System" },
+            { id: "console_io", label: "Inputs" },
+            { id: "outputs", label: "Outputs" }
+          ];
+          const basicTabIds = new Set(basicTabs.map((t) => t.id));
+          if (!basicTabIds.has(String(audioState.activeTab || ""))) {
+            audioState.activeTab = "system_design";
+          }
+          const basicActiveTab = String(audioState.activeTab || "system_design");
+          const totalPowerWBasic = (power.loads || []).reduce((a, l) => a + Math.max(0, Number(l.watts || 0)), 0);
+          const usedInputCountBasic = (consoleCfg.inputs || []).filter((ch) => String(ch.name || "").trim().length > 0).length;
+          const usedOutputCountBasic = (consoleCfg.outputs || []).filter((ch) => String(ch.name || "").trim().length > 0).length;
+          const outputCountBasic = (consoleCfg.outputs || []).length;
+          const stageboxInputsBasic = (consoleCfg.stageboxes || []).reduce((a, s) => a + Math.max(0, Number(s.inputs || 0)), 0);
+          const stageboxOutputsBasic = (consoleCfg.stageboxes || []).reduce((a, s) => a + Math.max(0, Number(s.outputs || 0)), 0);
+          const systemInputChannelsBasic = Math.max(1, Number(consoleCfg.systemInputChannels || (consolePreset ? consolePreset.systemInputChannels : 0) || (consoleCfg.inputs || []).length || 1));
+          const systemOutputChannelsBasic = Math.max(1, Number(consoleCfg.systemOutputChannels || (consolePreset ? consolePreset.systemOutputChannels : 0) || (consoleCfg.outputs || []).length || 1));
+          const maxPatchedChannelBasic = (consoleCfg.inputs || []).reduce((m, ch, idx) => Math.max(m, Math.max(1, Number(ch.patchChannel || idx + 1))), 1);
+          const totalAvailableInputsBasic = Math.max((consoleCfg.inputs || []).length, systemInputChannelsBasic, maxPatchedChannelBasic, 1);
+          const channelOptionsBasic = Array.from({ length: totalAvailableInputsBasic }, (_, i) => i + 1).map((n) => `<option value="${n}">${n}</option>`).join("");
+          const roomLenBasic = Math.max(1, Number(venue.roomL || 1));
+          const throwBasic = Math.max(1, Number(system.throwDistanceM || 1));
+          const speakerPlanner = audioState.speakerPlanner || {};
+          const audioSpeakerLibrary = LA_SPEAKER_LIBRARY
+            .map((s) => ({
+              ...s,
+              manufacturer: String(s.manufacturer || "Unknown"),
+              name: s.model
+            }))
+            .sort((a, b) => `${a.manufacturer} ${a.model}`.localeCompare(`${b.manufacturer} ${b.model}`));
+          const speakerById = new Map(audioSpeakerLibrary.map((s) => [s.id, s]));
+          const speakerManufacturers = Array.from(new Set(audioSpeakerLibrary.map((s) => s.manufacturer))).sort((a, b) => a.localeCompare(b));
+          if (speakerPlanner.selectedManufacturer && !speakerManufacturers.includes(speakerPlanner.selectedManufacturer)) {
+            speakerPlanner.selectedManufacturer = "";
+          }
+          const filteredAudioSpeakers = audioSpeakerLibrary.filter((s) => {
+            if (speakerPlanner.selectedManufacturer && s.manufacturer !== speakerPlanner.selectedManufacturer) return false;
+            const t = String(speakerPlanner.search || "").trim().toLowerCase();
+            if (!t) return true;
+            return `${s.manufacturer} ${s.model} ${s.category}`.toLowerCase().includes(t);
+          });
+          const selectedAudioSpeaker = filteredAudioSpeakers.find((s) => s.id === speakerPlanner.selectedSpeakerId) || filteredAudioSpeakers[0] || audioSpeakerLibrary[0];
+          if (selectedAudioSpeaker) speakerPlanner.selectedSpeakerId = selectedAudioSpeaker.id;
+          const audioGroups = Array.isArray(speakerPlanner.groups) ? speakerPlanner.groups : [];
+          const audioLines = Array.isArray(speakerPlanner.lines) ? speakerPlanner.lines : [];
+          const audioAmps = Array.isArray(speakerPlanner.amps) ? speakerPlanner.amps : [];
+          const audioGroupOptions = audioGroups.map((g) => `<option value="${g.id}">${g.name}</option>`).join("");
+          const audioLineRowsHtml = audioLines.map((line) => {
+            const spk = speakerById.get(line.speakerId) || selectedAudioSpeaker;
+            if (!spk) return "";
+            const groupOptions = audioGroups
+              .map((g) => `<option value="${g.id}" ${g.id === line.groupId ? "selected" : ""}>${g.name}</option>`)
+              .join("");
+            return `
+              <div class="card">
+                <div style="display:grid;grid-template-columns:1.5fr 1fr 80px 1fr auto;gap:0.45rem;align-items:center;">
+                  <div>
+                    <div><b>${spk.manufacturer} ${spk.model}</b></div>
+                    <div class="muted">${spk.category}</div>
+                  </div>
+                  <div class="muted">${Number(spk.weightKg || 0).toFixed(1)}kg | ${Math.round(Number(spk.powerW || 0))}W</div>
+                  <input data-aud-spk-line-qty="${line.id}" type="number" min="1" step="1" value="${Math.max(1, Number(line.quantity || 1))}" />
+                  <select data-aud-spk-line-group="${line.id}">${groupOptions}</select>
+                  <button data-aud-spk-line-remove="${line.id}">Remove</button>
+                </div>
+              </div>
+            `;
+          }).join("");
+          const audioGroupRowsHtml = audioGroups.map((g) => `
+            <div class="card" data-aud-spk-group-select="${g.id}" style="cursor:pointer;border-color:${g.id === speakerPlanner.activeGroupId ? "var(--theme-accent)" : "var(--theme-line-soft)"};">
+              <div style="display:grid;grid-template-columns:1fr 90px auto;gap:0.4rem;align-items:center;">
+                <input data-aud-spk-group-name="${g.id}" value="${String(g.name || "").replace(/"/g, "&quot;")}" />
+                <label class="color-picker-wrap">
+                  <input class="color-input" type="color" data-aud-spk-group-color="${g.id}" value="${g.color || "#4f82ff"}" />
+                </label>
+                <button data-aud-spk-group-remove="${g.id}" ${audioGroups.length === 1 ? "disabled" : ""}>Remove</button>
+              </div>
+            </div>
+          `).join("");
+          const audioGroupOutputsHtml = audioGroups.map((g) => {
+            const rows = audioLines.filter((line) => line.groupId === g.id);
+            const totals = rows.reduce((acc, line) => {
+              const spk = speakerById.get(line.speakerId);
+              const qty = Math.max(1, Math.round(Number(line.quantity || 1)));
+              acc.count += qty;
+              acc.weightKg += (Number(spk?.weightKg || 0) * qty);
+              acc.powerW += (Number(spk?.powerW || 0) * qty);
+              acc.maxSplDb = Math.max(acc.maxSplDb, Number(spk?.maxSplDb || 0));
+              return acc;
+            }, { count: 0, weightKg: 0, powerW: 0, maxSplDb: 0 });
+            return `
+              <div class="card">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+                  <h3 style="margin:0;">${g.name}</h3>
+                  <span class="color-tag"><span class="color-dot" style="background:${g.color || "#4f82ff"};"></span></span>
+                </div>
+                <div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0.45rem;">
+                  <div class="kpi"><div class="muted">Speaker Count</div><b>${totals.count.toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Total Weight</div><b>${totals.weightKg.toFixed(1)} kg</b></div>
+                  <div class="kpi"><div class="muted">Total Power</div><b>${Math.round(totals.powerW).toLocaleString()} W</b></div>
+                  <div class="kpi"><div class="muted">Max SPL (peak item)</div><b>${totals.maxSplDb > 0 ? `${totals.maxSplDb} dB` : "-"}</b></div>
+                </div>
+              </div>
+            `;
+          }).join("");
+          const audioAmpRowsHtml = audioAmps.map((amp) => `
+            <div class="card">
+              <div style="display:grid;grid-template-columns:1fr 90px auto;gap:0.45rem;align-items:center;">
+                <div><b>${String(amp.model || "LA12X")}</b></div>
+                <div class="muted">Qty ${Math.max(1, Number(amp.qty || 1))}</div>
+                <button data-aud-amp-remove="${amp.id}">Remove</button>
+              </div>
+            </div>
+          `).join("");
+          const basicSectionHtml = (() => {
+            if (basicActiveTab === "show_info") {
+              return `
+                <div class="grid grid-4">
+                  <div><label>Event Name</label><input id="audEventName" value="${String(show.eventName || "").replace(/"/g, "&quot;")}" /></div>
+                  <div><label>Date</label><input id="audEventDate" type="date" value="${String(show.eventDate || "")}" /></div>
+                  <div><label>Venue</label><input id="audVenueName" value="${String(show.venue || "").replace(/"/g, "&quot;")}" /></div>
+                  <div><label>Program Type</label><select id="audProgramType"><option value="corporate_speech" ${show.programType === "corporate_speech" ? "selected" : ""}>Corporate Speech</option><option value="panel" ${show.programType === "panel" ? "selected" : ""}>Panel</option><option value="awards" ${show.programType === "awards" ? "selected" : ""}>Awards</option><option value="band" ${show.programType === "band" ? "selected" : ""}>Band</option><option value="dj" ${show.programType === "dj" ? "selected" : ""}>DJ</option><option value="hybrid" ${show.programType === "hybrid" ? "selected" : ""}>Hybrid</option></select></div>
+                  <div><label>Audience Size</label><input id="audAudienceSize" type="number" min="0" step="1" value="${Number(show.audienceSize || 0)}" /></div>
+                  <div><label>Room Length (m)</label><input id="audRoomL" type="number" min="1" step="0.1" value="${Number(venue.roomL || 0)}" /></div>
+                  <div><label>Room Width (m)</label><input id="audRoomW" type="number" min="1" step="0.1" value="${Number(venue.roomW || 0)}" /></div>
+                  <div><label>FOH Distance (m)</label><input id="audFohDist" type="number" min="0" step="0.1" value="${Number(show.fohDistanceM || 0)}" /></div>
+                </div>
+                <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-top:0.6rem;">
+                  <div class="kpi"><div class="muted">Target Profile</div><b>${(AUDIO_PROGRAM_PROFILES[String(show.programType || "corporate_speech")] || AUDIO_PROGRAM_PROFILES.corporate_speech).name}</b></div>
+                  <div class="kpi"><div class="muted">Room Length</div><b>${roomLenBasic.toFixed(1)}m</b></div>
+                  <div class="kpi"><div class="muted">Throw</div><b>${throwBasic.toFixed(1)}m</b></div>
+                </div>
+              `;
+            }
+            if (basicActiveTab === "system_design") {
+              return `
+                <div class="card" style="margin-top:0.7rem;">
+                  <h3 style="margin:0;">Speaker System Planner</h3>
+                  <div class="muted" style="margin-top:0.25rem;">Add speakers into groups with live totals.</div>
+                  <div class="grid grid-4" style="margin-top:0.55rem;">
+                    <div>
+                      <label>Search Speaker</label>
+                      <input id="audSpkSearch" type="text" placeholder="Search manufacturer or model..." value="${String(speakerPlanner.search || "").replace(/"/g, "&quot;")}" />
+                    </div>
+                    <div>
+                      <label>Manufacturer</label>
+                      <select id="audSpkManufacturer">
+                        <option value="">All Manufacturers</option>
+                        ${speakerManufacturers.map((m) => `<option value="${m}" ${speakerPlanner.selectedManufacturer === m ? "selected" : ""}>${m}</option>`).join("")}
+                      </select>
+                    </div>
+                    <div>
+                      <label>Select Speaker</label>
+                      <select id="audSpkSelect">
+                        ${filteredAudioSpeakers.map((s) => `<option value="${s.id}" ${speakerPlanner.selectedSpeakerId === s.id ? "selected" : ""}>${s.manufacturer} - ${s.model}</option>`).join("")}
+                      </select>
+                    </div>
+                    <div>
+                      <label>Quantity</label>
+                      <input id="audSpkQty" type="number" min="1" step="1" value="${Math.max(1, Number(speakerPlanner.quantity || 1))}" />
+                    </div>
+                    <div style="display:flex;align-items:flex-end;">
+                      <button id="audSpkAddBtn" class="primary" style="width:100%;">Add Speakers</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="card" style="margin-top:0.75rem;">
+                  <h3 style="margin:0;">Add Amp</h3>
+                  <div class="grid grid-4" style="margin-top:0.55rem;">
+                    <div>
+                      <label>Amp Model</label>
+                      <select id="audAmpSelect">
+                        <option value="LA12X" ${String(speakerPlanner.selectedLaAmp || "LA12X") === "LA12X" ? "selected" : ""}>LA12X</option>
+                        <option value="LA4X" ${String(speakerPlanner.selectedLaAmp || "LA12X") === "LA4X" ? "selected" : ""}>LA4X</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label>Quantity</label>
+                      <input id="audAmpQty" type="number" min="1" step="1" value="${Math.max(1, Number(speakerPlanner.selectedAmpQty || 1))}" />
+                    </div>
+                    <div style="display:flex;align-items:flex-end;">
+                      <button id="audAmpAddBtn" class="primary" style="width:100%;">Add Amp</button>
+                    </div>
+                  </div>
+                  <div class="grid" style="margin-top:0.6rem;">${audioAmpRowsHtml || '<div class="muted">No amps added yet.</div>'}</div>
+                </div>
+                <div class="grid grid-2" style="margin-top:0.75rem;">
+                  <div class="card">
+                    <div class="toolbar">
+                      <h3>Added Speakers</h3>
+                      <span class="badge">${audioLines.length} lines</span>
+                    </div>
+                    <div id="audSpkRows" class="grid">${audioLineRowsHtml || '<div class="muted">No speakers added yet.</div>'}</div>
+                  </div>
+                  <div class="card">
+                    <div class="toolbar">
+                      <h3>Groups</h3>
+                      <button id="audSpkAddGroupBtn">Add Group</button>
+                    </div>
+                    <div id="audSpkGroupRows" class="grid">${audioGroupRowsHtml}</div>
+                  </div>
+                </div>
+                <div class="card" style="margin-top:0.75rem;">
+                  <h3>Group Outputs</h3>
+                  <div id="audSpkGroupOutputs" class="grid" style="margin-top:0.5rem;">${audioGroupOutputsHtml}</div>
+                </div>
+              `;
+            }
+            if (basicActiveTab === "console_io") {
+              return `
+                <div class="grid grid-4">
+                  <div><label>Console Model</label><select id="audConsoleModel">${consoleOptions}</select></div>
+                  <div><label>Stagebox Model</label><input id="audStageboxModel" value="${String(consoleCfg.stageboxModel || "").replace(/"/g, "&quot;")}" disabled /></div>
+                  <div><label>Transport</label><input id="audTransport" value="${String(consoleCfg.transport || "").replace(/"/g, "&quot;")}" /></div>
+                  <div style="display:flex;align-items:flex-end;"><button id="audAddInputBtn">Reset Channel Sheet</button></div>
+                </div>
+                <div class="muted" style="margin-top:0.35rem;">Preset loaded.${consolePreset ? ` System ${consolePreset.systemInputChannels}ch | Stagebox ${consolePreset.stageboxInputs}x${consolePreset.stageboxOutputs} | Desk preamps ${consolePreset.deskPreamps}` : ""}</div>
+                <div class="table-wrap" style="margin-top:0.55rem;max-height:none;overflow:visible;">
+                  <table><thead><tr><th>Ch</th><th>Name</th><th>Type</th><th>Location</th><th></th></tr></thead><tbody>
+                    ${(consoleCfg.inputs || []).map((ch, idx) => `<tr><td><select data-aud-in-ch="${ch.id}">${channelOptionsBasic.replace(`value="${Math.max(1, Number(ch.patchChannel || idx + 1))}"`, `value="${Math.max(1, Number(ch.patchChannel || idx + 1))}" selected`)}</select></td><td><input data-aud-in-name="${ch.id}" value="${String(ch.name || "").replace(/"/g, "&quot;")}" /></td><td><select data-aud-in-type="${ch.id}"><option value="wired" ${ch.sourceType === "wired" ? "selected" : ""}>Wired</option><option value="wireless" ${ch.sourceType === "wireless" ? "selected" : ""}>Wireless</option><option value="playback" ${ch.sourceType === "playback" ? "selected" : ""}>Playback</option></select></td><td><select data-aud-in-loc="${ch.id}"><option value="stagebox" ${ch.stageLocation !== "desk" ? "selected" : ""}>Stage Box</option><option value="desk" ${ch.stageLocation === "desk" ? "selected" : ""}>Desk</option></select></td><td><button data-aud-in-remove="${ch.id}">Remove</button></td></tr>`).join("")}
+                  </tbody></table>
+                </div>
+                <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:0.6rem;">
+                  <div class="kpi"><div class="muted">Used Inputs</div><b>${usedInputCountBasic}</b></div>
+                  <div class="kpi"><div class="muted">Outputs</div><b>${outputCountBasic}</b></div>
+                  <div class="kpi"><div class="muted">System Input Channels</div><b>${systemInputChannelsBasic}</b></div>
+                  <div class="kpi"><div class="muted">Spare Stagebox Inputs</div><b>${Math.max(0, stageboxInputsBasic - (consoleCfg.inputs || []).filter((ch) => ch.stageLocation !== "desk" && String(ch.name || "").trim().length > 0).length)}</b></div>
+                </div>
+              `;
+            }
+            return `
+              <div class="grid grid-4">
+                <div><label>Console Model</label><select id="audConsoleModel">${consoleOptions}</select></div>
+                <div><label>Stagebox Model</label><input id="audStageboxModel" value="${String(consoleCfg.stageboxModel || "").replace(/"/g, "&quot;")}" disabled /></div>
+                <div><label>Transport</label><input id="audTransport" value="${String(consoleCfg.transport || "").replace(/"/g, "&quot;")}" /></div>
+                <div style="display:flex;align-items:flex-end;"><button id="audResetOutputSheetBtn">Reset Output Sheet</button></div>
+              </div>
+              <div class="muted" style="margin-top:0.35rem;">Preset loaded.${consolePreset ? ` System outputs ${consolePreset.systemOutputChannels}ch | Stagebox outputs ${consolePreset.stageboxOutputs}` : ""}</div>
+              <div class="table-wrap" style="margin-top:0.55rem;max-height:none;overflow:visible;">
+                <table><thead><tr><th>Ch</th><th>Name</th><th>Type</th><th>Location</th></tr></thead><tbody>
+                  ${(consoleCfg.outputs || []).map((out, idx) => `<tr><td>${Math.max(1, Number(out.patchChannel || idx + 1))}</td><td><input data-aud-out-name="${out.id}" value="${String(out.name || "").replace(/"/g, "&quot;")}" /></td><td><select data-aud-out-type="${out.id}"><option value="wired" ${out.sourceType === "wired" ? "selected" : ""}>Wired</option><option value="wireless" ${out.sourceType === "wireless" ? "selected" : ""}>Wireless</option><option value="playback" ${out.sourceType === "playback" ? "selected" : ""}>Playback</option></select></td><td><select data-aud-out-loc="${out.id}"><option value="stagebox" ${out.stageLocation !== "desk" ? "selected" : ""}>Stage Box</option><option value="desk" ${out.stageLocation === "desk" ? "selected" : ""}>Desk</option></select></td></tr>`).join("")}
+                </tbody></table>
+              </div>
+              <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:0.6rem;">
+                <div class="kpi"><div class="muted">Used Outputs</div><b>${usedOutputCountBasic}</b></div>
+                <div class="kpi"><div class="muted">Available Outputs</div><b>${systemOutputChannelsBasic}</b></div>
+                <div class="kpi"><div class="muted">Stagebox Outputs</div><b>${stageboxOutputsBasic}</b></div>
+                <div class="kpi"><div class="muted">Spare Stagebox Outputs</div><b>${Math.max(0, stageboxOutputsBasic - (consoleCfg.outputs || []).filter((ch) => ch.stageLocation !== "desk" && String(ch.name || "").trim().length > 0).length)}</b></div>
+              </div>
+            `;
+          })();
+          main.innerHTML = `
+            <div class="card">
+              <h2>Sound - Basic Planner</h2>
+              <div class="muted" style="margin-top:0.2rem;">Simplified workflow with core planning only.</div>
+              <div class="tabs" style="margin-top:0.7rem;">
+                ${basicTabs.map((tab) => `<button data-aud-basic-tab="${tab.id}" class="${basicActiveTab === tab.id ? "active" : ""}">${tab.label}</button>`).join("")}
+              </div>
+            </div>
+            <div class="card" style="margin-top:0.7rem;">${basicSectionHtml}</div>
+          `;
+          document.querySelectorAll("button[data-aud-basic-tab]").forEach((btn) => btn.addEventListener("click", () => {
+            audioState.activeTab = String(btn.getAttribute("data-aud-basic-tab") || "system_design");
+            renderSound();
+          }));
+          const bindBasicInput = (id, setter, type = "text") => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener("change", () => {
+              const raw = type === "number" ? Number(el.value || 0) : el.value;
+              setter(raw);
+              renderSound();
+            });
+          };
+          bindBasicInput("audEventName", (v) => { show.eventName = String(v || ""); });
+          bindBasicInput("audEventDate", (v) => { show.eventDate = String(v || ""); });
+          bindBasicInput("audVenueName", (v) => { show.venue = String(v || ""); });
+          bindBasicInput("audProgramType", (v) => { show.programType = String(v || "corporate_speech"); });
+          bindBasicInput("audAudienceSize", (v) => { show.audienceSize = Math.max(0, Number(v || 0)); }, "number");
+          bindBasicInput("audRoomL", (v) => { venue.roomL = Math.max(1, Number(v || 1)); }, "number");
+          bindBasicInput("audRoomW", (v) => { venue.roomW = Math.max(1, Number(v || 1)); }, "number");
+          bindBasicInput("audFohDist", (v) => { show.fohDistanceM = Math.max(0, Number(v || 0)); }, "number");
+          bindBasicInput("audTopology", (v) => { system.topology = String(v || "stereo"); });
+          bindBasicInput("audMainType", (v) => { system.mainType = String(v || "line_array"); });
+          bindBasicInput("audThrowDist", (v) => { system.throwDistanceM = Math.max(1, Number(v || 1)); }, "number");
+          bindBasicInput("audSubCfg", (v) => { system.subConfig = String(v || "ground"); });
+          bindBasicInput("audConsoleModel", (v) => {
+            const selectedConsole = String(v || "");
+            const preset = getAudioConsolePresetByName(selectedConsole);
+            if (preset) {
+              applyAudioConsolePreset(consoleCfg, preset);
+            } else {
+              consoleCfg.consoleModel = selectedConsole;
+            }
+          });
+          bindBasicInput("audStageboxModel", (v) => { consoleCfg.stageboxModel = String(v || ""); });
+          bindBasicInput("audTransport", (v) => { consoleCfg.transport = String(v || ""); });
+          bindBasicInput("audPowerMains", (v) => { power.mainsType = String(v || "3P_63A"); });
+          document.getElementById("audAddInputBtn")?.addEventListener("click", () => {
+            const preset = getAudioConsolePresetByName(consoleCfg.consoleModel) || AUDIO_CONSOLE_PRESETS[0];
+            applyAudioConsolePreset(consoleCfg, preset);
+            renderSound();
+          });
+          document.getElementById("audResetOutputSheetBtn")?.addEventListener("click", () => {
+            const preset = getAudioConsolePresetByName(consoleCfg.consoleModel) || AUDIO_CONSOLE_PRESETS[0];
+            applyAudioConsolePreset(consoleCfg, preset);
+            renderSound();
+          });
+          document.querySelectorAll("[data-aud-in-ch]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-ch")); if (row) row.patchChannel = Math.max(1, Number(el.value || 1)); renderSound(); }));
+          document.querySelectorAll("[data-aud-in-name]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-name")); if (row) row.name = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-in-type]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-type")); if (row) row.sourceType = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-in-loc]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-loc")); if (row) row.stageLocation = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-in-remove]").forEach((el) => el.addEventListener("click", () => { consoleCfg.inputs = consoleCfg.inputs.filter((x) => x.id !== el.getAttribute("data-aud-in-remove")); renderSound(); }));
+          document.querySelectorAll("[data-aud-out-name]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.outputs.find((x) => x.id === el.getAttribute("data-aud-out-name")); if (row) row.name = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-out-type]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.outputs.find((x) => x.id === el.getAttribute("data-aud-out-type")); if (row) row.sourceType = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-out-loc]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.outputs.find((x) => x.id === el.getAttribute("data-aud-out-loc")); if (row) row.stageLocation = el.value; renderSound(); }));
+          document.getElementById("audAddPowerLoadBtn")?.addEventListener("click", () => {
+            power.loads.push({ id: `p_${Date.now()}`, name: "New Load", watts: 100, phase: "L1" });
+            renderSound();
+          });
+          document.querySelectorAll("[data-aud-pwr-name]").forEach((el) => el.addEventListener("change", () => { const row = power.loads.find((x) => x.id === el.getAttribute("data-aud-pwr-name")); if (row) row.name = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-pwr-w]").forEach((el) => el.addEventListener("change", () => { const row = power.loads.find((x) => x.id === el.getAttribute("data-aud-pwr-w")); if (row) row.watts = Math.max(0, Number(el.value || 0)); renderSound(); }));
+          document.querySelectorAll("[data-aud-pwr-ph]").forEach((el) => el.addEventListener("change", () => { const row = power.loads.find((x) => x.id === el.getAttribute("data-aud-pwr-ph")); if (row) row.phase = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-pwr-remove]").forEach((el) => el.addEventListener("click", () => { power.loads = power.loads.filter((x) => x.id !== el.getAttribute("data-aud-pwr-remove")); renderSound(); }));
+          if (basicActiveTab === "system_design") {
+            const sp = audioState.speakerPlanner;
+            document.getElementById("audSpkSearch")?.addEventListener("input", (ev) => {
+              const t = ev.target;
+              if (!(t instanceof HTMLInputElement)) return;
+              sp.search = t.value;
+              renderSound();
+            });
+            document.getElementById("audSpkManufacturer")?.addEventListener("change", (ev) => {
+              const t = ev.target;
+              if (!(t instanceof HTMLSelectElement)) return;
+              sp.selectedManufacturer = t.value;
+              sp.selectedSpeakerId = "";
+              renderSound();
+            });
+            document.getElementById("audSpkSelect")?.addEventListener("change", (ev) => {
+              const t = ev.target;
+              if (!(t instanceof HTMLSelectElement)) return;
+              sp.selectedSpeakerId = t.value;
+            });
+            document.getElementById("audSpkQty")?.addEventListener("change", (ev) => {
+              const t = ev.target;
+              if (!(t instanceof HTMLInputElement)) return;
+              sp.quantity = Math.max(1, Math.round(Number(t.value || 1)));
+            });
+            document.getElementById("audAmpSelect")?.addEventListener("change", (ev) => {
+              const t = ev.target;
+              if (!(t instanceof HTMLSelectElement)) return;
+              sp.selectedLaAmp = t.value === "LA4X" ? "LA4X" : "LA12X";
+            });
+            document.getElementById("audAmpQty")?.addEventListener("change", (ev) => {
+              const t = ev.target;
+              if (!(t instanceof HTMLInputElement)) return;
+              sp.selectedAmpQty = Math.max(1, Math.round(Number(t.value || 1)));
+            });
+            document.getElementById("audAmpAddBtn")?.addEventListener("click", () => {
+              sp.amps = Array.isArray(sp.amps) ? sp.amps : [];
+              const model = String(sp.selectedLaAmp || "LA12X");
+              const qty = Math.max(1, Math.round(Number(sp.selectedAmpQty || 1)));
+              const existing = sp.amps.find((a) => String(a.model || "") === model);
+              if (existing) {
+                existing.qty = Math.max(1, Number(existing.qty || 1) + qty);
+              } else {
+                sp.amps.push({
+                  id: `aud_amp_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+                  model,
+                  qty
+                });
+              }
+              renderSound();
+            });
+            document.querySelectorAll("button[data-aud-amp-remove]").forEach((el) => {
+              el.addEventListener("click", () => {
+                const id = String(el.getAttribute("data-aud-amp-remove") || "");
+                sp.amps = (sp.amps || []).filter((a) => a.id !== id);
+                renderSound();
+              });
+            });
+            document.getElementById("audSpkAddBtn")?.addEventListener("click", () => {
+              const speakerId = String(sp.selectedSpeakerId || "");
+              if (!speakerId) return;
+              sp.lines.push({
+                id: `aud_spk_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+                speakerId,
+                quantity: Math.max(1, Math.round(Number(sp.quantity || 1))),
+                groupId: sp.activeGroupId || sp.groups[0]?.id || ""
+              });
+              renderSound();
+            });
+            document.getElementById("audSpkAddGroupBtn")?.addEventListener("click", () => {
+              const g = newAudioSpeakerGroup((sp.groups || []).length + 1);
+              sp.groups.push(g);
+              sp.activeGroupId = g.id;
+              renderSound();
+            });
+            document.querySelectorAll("div[data-aud-spk-group-select]").forEach((el) => {
+              el.addEventListener("click", (ev) => {
+                if (ev.target.closest("input, label, button, select")) return;
+                sp.activeGroupId = String(el.getAttribute("data-aud-spk-group-select") || "");
+                renderSound();
+              });
+            });
+            document.querySelectorAll("input[data-aud-spk-group-name]").forEach((el) => {
+              el.addEventListener("click", (ev) => ev.stopPropagation());
+              el.addEventListener("change", () => {
+                const id = el.getAttribute("data-aud-spk-group-name");
+                const g = (sp.groups || []).find((x) => x.id === id);
+                if (!g) return;
+                g.name = el.value;
+                renderSound();
+              });
+            });
+            document.querySelectorAll("input[data-aud-spk-group-color]").forEach((el) => {
+              el.addEventListener("click", (ev) => ev.stopPropagation());
+              el.addEventListener("input", () => {
+                const id = el.getAttribute("data-aud-spk-group-color");
+                const g = (sp.groups || []).find((x) => x.id === id);
+                if (!g) return;
+                g.color = el.value;
+                renderSound();
+              });
+            });
+            document.querySelectorAll("button[data-aud-spk-group-remove]").forEach((el) => {
+              el.addEventListener("click", (ev) => {
+                ev.stopPropagation();
+                const removedId = String(el.getAttribute("data-aud-spk-group-remove") || "");
+                sp.groups = (sp.groups || []).filter((x) => x.id !== removedId);
+                if (!sp.groups.length) sp.groups = [newAudioSpeakerGroup(1)];
+                sp.activeGroupId = sp.groups[0].id;
+                sp.lines = (sp.lines || []).map((line) => ({
+                  ...line,
+                  groupId: line.groupId === removedId ? sp.activeGroupId : line.groupId
+                }));
+                renderSound();
+              });
+            });
+            document.querySelectorAll("input[data-aud-spk-line-qty]").forEach((el) => {
+              el.addEventListener("change", () => {
+                const id = el.getAttribute("data-aud-spk-line-qty");
+                const row = (sp.lines || []).find((x) => x.id === id);
+                if (!row) return;
+                row.quantity = Math.max(1, Math.round(Number(el.value || 1)));
+                renderSound();
+              });
+            });
+            document.querySelectorAll("select[data-aud-spk-line-group]").forEach((el) => {
+              el.addEventListener("change", () => {
+                const id = el.getAttribute("data-aud-spk-line-group");
+                const row = (sp.lines || []).find((x) => x.id === id);
+                if (!row) return;
+                row.groupId = el.value;
+                renderSound();
+              });
+            });
+            document.querySelectorAll("button[data-aud-spk-line-remove]").forEach((el) => {
+              el.addEventListener("click", () => {
+                const id = el.getAttribute("data-aud-spk-line-remove");
+                sp.lines = (sp.lines || []).filter((x) => x.id !== id);
+                renderSound();
+              });
+            });
+          }
+          return;
+          const la = audioState.laPlanner || {};
+          const laZones = Array.isArray(la.zones) ? la.zones : [];
+          const laSpeakers = Array.isArray(la.speakers) ? la.speakers : [];
+          const laRacks = Array.isArray(la.racks) ? la.racks : [];
+          const laSwitches = Array.isArray(la.switches) ? la.switches : [];
+          const laNetwork = Array.isArray(la.networkLinks) ? la.networkLinks : [];
+          const laRouting = Array.isArray(la.consoleRouting) ? la.consoleRouting : [];
+          const getLaSpeaker = (id) => LA_SPEAKER_LIBRARY.find((s) => s.id === id) || null;
+          const getLaZone = (id) => laZones.find((z) => z.id === id) || null;
+          const getLaRack = (id) => laRacks.find((r) => r.id === id) || null;
+          const profile = AUDIO_PROGRAM_PROFILES[String(show.programType || "corporate_speech")] || AUDIO_PROGRAM_PROFILES.corporate_speech;
+          const rt60Map = { low: 0.9, med: 1.5, high: 2.3 };
+          const matAdd = { hard_reflective: 0.5, mixed: 0.2, treated: -0.25 };
+          const audAdd = { none: 0.25, partial: 0, full: -0.25 };
+          const rt60Est = Number.isFinite(Number(venue.rt60)) && Number(venue.rt60) > 0
+            ? Number(venue.rt60)
+            : Math.max(0.4, (rt60Map[venue.rt60Mode] || 1.5) + (matAdd[venue.materials] || 0) + (audAdd[venue.audienceAbsorption] || 0));
+          const ambient = Math.max(35, Number(venue.ambientDbA || 55));
+          const speechMode = ["corporate_speech", "panel"].includes(String(show.programType || ""));
+          const targetMid = (profile.splAvgDbA[0] + profile.splAvgDbA[1]) / 2;
+          const targetFurthest = Math.max(profile.splAvgDbA[0], speechMode ? ambient + 10 : ambient + 6);
+          const throwDistance = Math.max(1, Number(system.throwDistanceM || 1));
+          const roomLength = Math.max(1, Number(venue.roomL || 1));
+          const suggestDelayCount = Math.max(0, Math.ceil(Math.max(0, roomLength - 22) / 14));
+          const intelligibilityFlags = [
+            rt60Est > 2 ? "Likely reverb-limited" : "",
+            (throwDistance > 28 || rt60Est > 1.9) ? "Delay towers recommended" : "",
+            Number(show.stageW || 0) >= 8 ? "Front fill required" : "",
+            Boolean(venue.balcony) ? "Under-balcony fill required" : ""
+          ].filter(Boolean);
+          const delayRows = (delays.zones || []).map((z, idx) => ({ ...z, idx, delayMs: Math.max(0, Number(z.distanceM || 0)) / 0.343 }));
+          const zoneWarnings = [];
+          if (delayRows.some((z) => Number(z.distanceM || 0) > 40)) zoneWarnings.push("Delay gap too large");
+          const outputCount = (consoleCfg.outputs || []).length;
+          if (delayRows.length > Math.max(4, outputCount)) zoneWarnings.push("Too many zones for available outputs");
+          const inputCount = (consoleCfg.inputs || []).length;
+          const stageboxInputs = (consoleCfg.stageboxes || []).reduce((a, s) => a + Math.max(0, Number(s.inputs || 0)), 0);
+          const playbackUnsafe = (consoleCfg.inputs || []).some((x) => String(x.connector || "").includes("3.5"));
+          const rfWarnings = [];
+          const rfTotalChannels = (rf.channels || []).length;
+          const rfCapacity = Number(rf.inventory.handhelds || 0) + Number(rf.inventory.beltpacks || 0) + Number(rf.inventory.iemPacks || 0);
+          if (rfTotalChannels > Math.max(1, rfCapacity)) rfWarnings.push("Too many channels for available spectrum/inventory");
+          if ((rf.antennaRuns || []).some((r) => Number(r.lengthM || 0) > 30)) rfWarnings.push("Antenna run too long without active amplification");
+          const mainsMap = {
+            "1P_15A": { a: 15, phases: 1 },
+            "1P_16A": { a: 16, phases: 1 },
+            "1P_32A": { a: 32, phases: 1 },
+            "3P_32A": { a: 32, phases: 3 },
+            "3P_63A": { a: 63, phases: 3 }
+          };
+          const mains = mainsMap[String(power.mainsType || "3P_63A")] || mainsMap["3P_63A"];
+          const loadRows = (power.loads || []).map((l) => ({ ...l, watts: Math.max(0, Number(l.watts || 0)) }));
+          const totalW = loadRows.reduce((a, l) => a + l.watts, 0);
+          const totalA1P = totalW / 230;
+          const perPhase = { L1: 0, L2: 0, L3: 0 };
+          loadRows.forEach((l) => { if (perPhase[String(l.phase || "L1")] !== undefined) perPhase[String(l.phase || "L1")] += (l.watts / 230); });
+          const contLimit = mains.a * 0.8;
+          const powerWarnings = [];
+          if (mains.phases === 1 && totalA1P > contLimit) powerWarnings.push("Likely to trip a single-phase circuit");
+          if (mains.phases === 3) ["L1", "L2", "L3"].forEach((ph) => { if (perPhase[ph] > contLimit) powerWarnings.push(`${ph} above continuous planning limit`); });
+          if (Math.max(Number(cabling.fohToStageM || 0), Number(cabling.delayRunM || 0)) > 50) powerWarnings.push("Long extension run: consider voltage drop");
+          const cableRuns = (cabling.runs || []).map((r) => ({ ...r, lengthM: Math.max(0, Number(r.lengthM || 0)), qty: Math.max(1, Math.round(Number(r.qty || 1))), spare: Math.max(0, Math.round(Number(r.spare || 0))) }));
+          const tabValidation = {};
+          const putTabValidation = (id, missing = [], warns = []) => {
+            const m = missing.filter(Boolean);
+            const w = warns.filter(Boolean);
+            tabValidation[id] = { missing: m, warnings: w, ready: m.length === 0 };
+          };
+          putTabValidation("show_info", [!show.eventName && "Event name missing", !show.venue && "Venue missing"], []);
+          putTabValidation("venue_acoustics", [!(venue.roomL > 0) && "Room length missing", !(venue.roomW > 0) && "Room width missing"], intelligibilityFlags);
+          putTabValidation("system_design", [!(system.throwDistanceM > 0) && "Throw distance missing"], []);
+          const laZoneRows = laZones.map((z) => {
+            const delay = Math.max(0, Number(z.distanceM || 0)) / 0.343;
+            return { ...z, delayMs: delay };
+          });
+          const laOutputRows = [];
+          laRacks.forEach((rack) => {
+            (rack.outputs || []).forEach((o) => {
+              const zone = getLaZone(o.zoneId);
+              laOutputRows.push({
+                zone: zone?.name || o.zoneId || "-",
+                speaker: getLaSpeaker(o.speakerId)?.model || o.speakerId || "-",
+                controller: rack.name,
+                channel: `Ch${o.ch}`,
+                delayMs: zone ? (Math.max(0, Number(zone.distanceM || 0)) / 0.343) : 0,
+                matrix: zone?.matrixSource || "-"
+              });
+            });
+          });
+          const laControllerPowerRows = laRacks.map((rack) => {
+            const ctrl = LA_CONTROLLER_MODELS.find((c) => c.id === rack.controllerModelId) || LA_CONTROLLER_MODELS[0];
+            const count = Math.max(1, Number(rack.controllerCount || 1));
+            const watts = Number(ctrl.powerW || 0) * count;
+            return { rack: rack.name, controllers: `${count}x ${ctrl.model}`, watts, amps: watts / 230, circuit: watts > 3000 ? "32A recommended" : "16A recommended" };
+          });
+          const laTotalPowerW = laControllerPowerRows.reduce((a, r) => a + r.watts, 0);
+          const laCableRows = [];
+          laRacks.forEach((rack) => {
+            (rack.outputs || []).forEach((o) => {
+              const zone = getLaZone(o.zoneId);
+              const d = Math.max(8, Number(zone?.distanceM || 12));
+              laCableRows.push({ type: "NL4", lengthM: d, from: `${rack.name} ${`Ch${o.ch}`}`, to: zone?.name || o.zoneId || "-", qty: Math.max(1, Number(o.quantity || 1)) });
+            });
+          });
+          laNetwork.forEach((n) => {
+            const rack = getLaRack(n.rackId);
+            const sw = laSwitches.find((s) => s.id === n.switchId);
+            laCableRows.push({ type: "CAT", lengthM: Math.max(3, Number((sw?.location || "") === "FOH" ? 25 : 12)), from: sw?.name || n.switchId, to: rack?.name || n.rackId, qty: 1 });
+          });
+          laRouting.forEach((r) => {
+            const rack = getLaRack(r.rackId);
+            const zone = getLaZone(r.zoneId);
+            laCableRows.push({ type: "XLR", lengthM: Math.max(5, Number(zone?.distanceM || 15)), from: r.consoleOut, to: `${rack?.name || r.rackId} ${r.input}`, qty: 1 });
+          });
+          const laWarnings = [];
+          const laErrors = [];
+          if (!laSpeakers.length) laErrors.push("Unassigned speakers");
+          if (!laRacks.length) laErrors.push("No controller racks defined");
+          if (!laNetwork.length) laWarnings.push("Missing network connections");
+          laRacks.forEach((rack) => {
+            const ctrl = LA_CONTROLLER_MODELS.find((c) => c.id === rack.controllerModelId) || LA_CONTROLLER_MODELS[0];
+            const outputCount = Array.isArray(rack.outputs) ? rack.outputs.length : 0;
+            if (outputCount > 4) laErrors.push(`${rack.name}: controller output overload (>4 channels assigned)`);
+            (rack.outputs || []).forEach((o) => {
+              const spk = getLaSpeaker(o.speakerId);
+              if (spk && Number(o.quantity || 0) > Number(spk.maxElementsPerOutput || 1)) {
+                laWarnings.push(`${rack.name} Ch${o.ch}: too many ${spk.model} on one output`);
+              }
+              if (!o.zoneId) laErrors.push(`${rack.name} Ch${o.ch}: missing zone assignment`);
+              if (!o.preset) laWarnings.push(`${rack.name} Ch${o.ch}: missing preset profile`);
+            });
+            if (!rack.powerSource) laWarnings.push(`${rack.name}: missing power assignment`);
+            if (!ctrl) laErrors.push(`${rack.name}: invalid controller model`);
+          });
+          laZoneRows.forEach((z) => {
+            if (Number(z.distanceM || 0) > 0 && Number(z.delayMs || 0) <= 0) laWarnings.push(`${z.name}: missing delay alignment`);
+          });
+          const laStatus = laErrors.length ? "ERROR" : (laWarnings.length ? "WARNING" : "READY");
+          putTabValidation("l_acoustics", [laErrors.length ? `${laErrors.length} critical issue(s)` : ""], [...laWarnings, ...laErrors]);
+          putTabValidation("delays_fills", [!delayRows.length && "No delay/fill zones"], zoneWarnings);
+          putTabValidation("console_io", [!inputCount && "No input channels"], [playbackUnsafe && "3.5mm connector in use"]);
+          putTabValidation("wireless_rf", [!rfTotalChannels && "No RF channels"], rfWarnings);
+          putTabValidation("comms_talkback", [!(comms.roles || []).length && "No comms roles"], []);
+          putTabValidation("power_distribution", [!loadRows.length && "No audio power loads"], powerWarnings);
+          putTabValidation("cabling_looms", [!cableRuns.length && "No cable runs"], []);
+          putTabValidation("crew_workflow", [], []);
+          const overallMissing = Object.values(tabValidation).flatMap((x) => x.missing);
+          putTabValidation("outputs", overallMissing.length ? ["Resolve missing info in upstream tabs"] : [], []);
+          const activeTab = AUDIO_TAB_ORDER.some((t) => t.id === audioState.activeTab) ? audioState.activeTab : "system_design";
+          audioState.activeTab = activeTab;
+          const getStatusBadge = (id) => {
+            const v = tabValidation[id] || { missing: [], warnings: [] };
+            if (v.missing.length) return `<span class="badge bad" style="margin-left:0.35rem;">Missing ${v.missing.length}</span>`;
+            if (v.warnings.length) return `<span class="badge warn-t" style="margin-left:0.35rem;">Warn ${v.warnings.length}</span>`;
+            return `<span class="badge ok" style="margin-left:0.35rem;">Ready</span>`;
+          };
+          const renderIssues = (tabId) => {
+            const v = tabValidation[tabId] || { missing: [], warnings: [] };
+            const miss = v.missing.map((m) => `<li class="bad">${m}</li>`).join("");
+            const warn = v.warnings.map((w) => `<li class="warn-t">${w}</li>`).join("");
+            if (!miss && !warn) return `<div class="badge ok">Ready to export</div>`;
+            return `<ul style="margin:0.25rem 0 0.1rem 1rem;padding:0;">${miss}${warn}</ul>`;
+          };
+          const matrixPlan = [
+            { bus: "M1", use: "L", process: "HPF 35-45Hz, limiter, polarity check" },
+            { bus: "M2", use: "R", process: "HPF 35-45Hz, limiter, polarity check" },
+            { bus: "M3", use: "Subs", process: "LPF 80-110Hz, polarity, delay align" },
+            { bus: "M4", use: "Front Fills", process: "HPF 90-120Hz, level trim, delay align" },
+            { bus: "M5+", use: "Delays / Zones", process: "Delay time, EQ voicing, limiter" }
+          ];
+
+          const sectionHtml = (() => {
+            if (activeTab === "show_info") return `
+              <div class="grid grid-4">
+                <div><label>Event Name</label><input id="audEventName" value="${String(show.eventName || "").replace(/"/g, "&quot;")}" /></div>
+                <div><label>Date</label><input id="audEventDate" type="date" value="${String(show.eventDate || "")}" /></div>
+                <div><label>Venue</label><input id="audVenueName" value="${String(show.venue || "").replace(/"/g, "&quot;")}" /></div>
+                <div><label>City</label><input id="audCity" value="${String(show.city || "").replace(/"/g, "&quot;")}" /></div>
+                <div><label>Room Name</label><input id="audRoomName" value="${String(show.roomName || "").replace(/"/g, "&quot;")}" /></div>
+                <div><label>Audience Size</label><input id="audAudienceSize" type="number" min="0" step="1" value="${Number(show.audienceSize || 0)}" /></div>
+                <div><label>Audience Mode</label><select id="audAudienceMode"><option value="seated" ${show.audienceMode === "seated" ? "selected" : ""}>Seated</option><option value="standing" ${show.audienceMode === "standing" ? "selected" : ""}>Standing</option></select></div>
+                <div><label>Room Type</label><select id="audRoomType"><option value="ballroom" ${show.roomType === "ballroom" ? "selected" : ""}>Ballroom</option><option value="theatre" ${show.roomType === "theatre" ? "selected" : ""}>Theatre</option><option value="arena" ${show.roomType === "arena" ? "selected" : ""}>Arena</option><option value="outdoor" ${show.roomType === "outdoor" ? "selected" : ""}>Outdoor</option></select></div>
+                <div><label>Stage W (m)</label><input id="audStageW" type="number" min="0" step="0.1" value="${Number(show.stageW || 0)}" /></div>
+                <div><label>Stage D (m)</label><input id="audStageD" type="number" min="0" step="0.1" value="${Number(show.stageD || 0)}" /></div>
+                <div><label>Stage H (m)</label><input id="audStageH" type="number" min="0" step="0.1" value="${Number(show.stageH || 0)}" /></div>
+                <div><label>Trim H (m)</label><input id="audTrimH" type="number" min="0" step="0.1" value="${Number(show.trimH || 0)}" /></div>
+                <div><label>FOH Distance (m)</label><input id="audFohDist" type="number" min="0" step="0.1" value="${Number(show.fohDistanceM || 0)}" /></div>
+                <div><label>Program Type</label><select id="audProgramType"><option value="corporate_speech" ${show.programType === "corporate_speech" ? "selected" : ""}>Corporate Speech</option><option value="panel" ${show.programType === "panel" ? "selected" : ""}>Panel</option><option value="awards" ${show.programType === "awards" ? "selected" : ""}>Awards</option><option value="band" ${show.programType === "band" ? "selected" : ""}>Band</option><option value="dj" ${show.programType === "dj" ? "selected" : ""}>DJ</option><option value="hybrid" ${show.programType === "hybrid" ? "selected" : ""}>Hybrid</option></select></div>
+                <div style="grid-column:span 2;"><label>Constraints</label><input id="audConstraints" value="${String(show.constraints || "").replace(/"/g, "&quot;")}" placeholder="Noise restrictions, curfew, rigging limits, client must-haves" /></div>
+              </div>
+              <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:0.6rem;">
+                <div class="kpi"><div class="muted">Profile</div><b>${profile.name}</b></div>
+                <div class="kpi"><div class="muted">Priority</div><b>${profile.target}</b></div>
+                <div class="kpi"><div class="muted">Target SPL (avg)</div><b>${profile.splAvgDbA[0]}-${profile.splAvgDbA[1]} dBA</b></div>
+                <div class="kpi"><div class="muted">Headroom</div><b>${profile.headroomDb} dB</b></div>
+              </div>
+              <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Validation</h3>${renderIssues("show_info")}</div>
+            `;
+            if (activeTab === "venue_acoustics") return `
+              <div class="grid grid-4">
+                <div><label>Room Length (m)</label><input id="audRoomL" type="number" min="1" step="0.1" value="${Number(venue.roomL || 0)}" /></div>
+                <div><label>Room Width (m)</label><input id="audRoomW" type="number" min="1" step="0.1" value="${Number(venue.roomW || 0)}" /></div>
+                <div><label>Room Height (m)</label><input id="audRoomH" type="number" min="1" step="0.1" value="${Number(venue.roomH || 0)}" /></div>
+                <div><label>Materials</label><select id="audMaterials"><option value="hard_reflective" ${venue.materials === "hard_reflective" ? "selected" : ""}>Hard Reflective</option><option value="mixed" ${venue.materials === "mixed" ? "selected" : ""}>Mixed</option><option value="treated" ${venue.materials === "treated" ? "selected" : ""}>Treated</option></select></div>
+                <div><label>RT60 Mode</label><select id="audRt60Mode"><option value="low" ${venue.rt60Mode === "low" ? "selected" : ""}>Low</option><option value="med" ${venue.rt60Mode === "med" ? "selected" : ""}>Medium</option><option value="high" ${venue.rt60Mode === "high" ? "selected" : ""}>High</option></select></div>
+                <div><label>RT60 Override (s)</label><input id="audRt60" type="number" min="0.1" step="0.1" value="${venue.rt60 === "" ? "" : Number(venue.rt60)}" placeholder="optional" /></div>
+                <div><label>Ambient Noise (dBA)</label><input id="audAmbient" type="number" min="30" step="1" value="${Number(venue.ambientDbA || 0)}" /></div>
+                <div><label>Audience Absorption</label><select id="audAudienceAbs"><option value="none" ${venue.audienceAbsorption === "none" ? "selected" : ""}>None</option><option value="partial" ${venue.audienceAbsorption === "partial" ? "selected" : ""}>Partial</option><option value="full" ${venue.audienceAbsorption === "full" ? "selected" : ""}>Full</option></select></div>
+              </div>
+              <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:0.7rem;">
+                <div class="kpi"><div class="muted">Planning RT60</div><b>${rt60Est.toFixed(2)}s</b></div>
+                <div class="kpi"><div class="muted">Target SPL @ Mix</div><b>${targetMid.toFixed(1)} dBA</b></div>
+                <div class="kpi"><div class="muted">Target @ Furthest</div><b>${targetFurthest.toFixed(1)} dBA</b></div>
+                <div class="kpi"><div class="muted">Headroom over Ambient</div><b>${speechMode ? 10 : 6} dB</b></div>
+              </div>
+              <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Validation</h3>${renderIssues("venue_acoustics")}</div>
+            `;
+            if (activeTab === "system_design") return `
+              <div class="grid grid-4">
+                <div><label>Topology</label><select id="audTopology"><option value="stereo" ${system.topology === "stereo" ? "selected" : ""}>Stereo</option><option value="lcr" ${system.topology === "lcr" ? "selected" : ""}>LCR</option><option value="mono" ${system.topology === "mono" ? "selected" : ""}>Mono</option><option value="distributed" ${system.topology === "distributed" ? "selected" : ""}>Distributed</option></select></div>
+                <div><label>Main Type</label><select id="audMainType"><option value="line_array" ${system.mainType === "line_array" ? "selected" : ""}>Line Array</option><option value="point_source" ${system.mainType === "point_source" ? "selected" : ""}>Point Source</option><option value="column" ${system.mainType === "column" ? "selected" : ""}>Column</option></select></div>
+                <div><label>Deploy</label><select id="audDeployType"><option value="flown" ${system.deployType === "flown" ? "selected" : ""}>Flown</option><option value="stacked" ${system.deployType === "stacked" ? "selected" : ""}>Ground Stack</option></select></div>
+                <div><label>Throw Distance (m)</label><input id="audThrowDist" type="number" min="1" step="0.1" value="${Number(system.throwDistanceM || 0)}" /></div>
+                <div><label>Horizontal Coverage (deg)</label><input id="audHorizCov" type="number" min="60" max="160" step="1" value="${Number(system.horizCoverageDeg || 0)}" /></div>
+                <div><label>Sub Configuration</label><select id="audSubCfg"><option value="ground" ${system.subConfig === "ground" ? "selected" : ""}>Ground</option><option value="flown" ${system.subConfig === "flown" ? "selected" : ""}>Flown</option><option value="end_fired" ${system.subConfig === "end_fired" ? "selected" : ""}>End-fired</option><option value="cardioid" ${system.subConfig === "cardioid" ? "selected" : ""}>Cardioid</option></select></div>
+                <div><label>DSP / Amp Model</label><input id="audDspModel" value="${String(system.dspModel || "").replace(/"/g, "&quot;")}" /></div>
+                <div><label>Rigging / Wind Notes</label><input id="audRiggingNote" value="${String(system.riggingSafetyNote || "").replace(/"/g, "&quot;")}" /></div>
+              </div>
+              <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:0.7rem;">
+                <div class="kpi"><div class="muted">Suggested Topology</div><b>L/R mains + subs + front fills + ${suggestDelayCount} delay zone(s)</b></div>
+                <div class="kpi"><div class="muted">Mains / Side</div><b>${Math.max(2, Math.ceil(throwDistance / 12))}</b></div>
+                <div class="kpi"><div class="muted">Subs / Side</div><b>${Math.max(2, Math.ceil(Number(show.audienceSize || 0) / 180))}</b></div>
+                <div class="kpi"><div class="muted">Front Fills</div><b>${Math.max(2, Math.ceil(Number(show.stageW || 8) / 3))}</b></div>
+              </div>
+              <div class="table-wrap" style="margin-top:0.6rem;"><table><thead><tr><th>Matrix</th><th>Use</th><th>Processing Checklist</th></tr></thead><tbody>${matrixPlan.map((m) => `<tr><td>${m.bus}</td><td>${m.use}</td><td>${m.process}</td></tr>`).join("")}</tbody></table></div>
+              <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Validation</h3>${renderIssues("system_design")}</div>
+            `;
+            if (activeTab === "l_acoustics") return `
+              <div class="toolbar">
+                <h3 style="margin:0;">L-Acoustics System Planner</h3>
+                <span class="badge ${laStatus === "READY" ? "ok" : (laStatus === "WARNING" ? "warn-t" : "bad")}">System Status: ${laStatus}</span>
+              </div>
+              <div class="grid grid-4" style="margin-top:0.55rem;">
+                <div>
+                  <label>Speaker Type</label>
+                  <select id="audLaSpeakerSel">${LA_SPEAKER_LIBRARY.map((s) => `<option value="${s.id}" ${String(la.selectedSpeakerId || LA_SPEAKER_LIBRARY[0]?.id || "") === s.id ? "selected" : ""}>${s.category} - ${s.model}</option>`).join("")}</select>
+                </div>
+                <div>
+                  <label>Zone</label>
+                  <select id="audLaZoneSel">${laZones.map((z) => `<option value="${z.id}" ${String(la.selectedZoneId || "") === z.id ? "selected" : ""}>${z.name}</option>`).join("")}</select>
+                </div>
+                <div>
+                  <label>Controller Model</label>
+                  <select id="audLaControllerSel">${LA_CONTROLLER_MODELS.map((c) => `<option value="${c.id}" ${String(la.selectedControllerModelId || "la12x") === c.id ? "selected" : ""}>${c.model}</option>`).join("")}</select>
+                </div>
+                <div style="display:flex;align-items:flex-end;"><button id="audLaAddSpeakerBtn">Add Speaker Allocation</button></div>
+              </div>
+              <div class="table-wrap" style="margin-top:0.6rem;">
+                <table>
+                  <thead><tr><th>Zone</th><th>Speakers</th><th>Controller</th><th>Output</th><th>Delay</th><th>Matrix Source</th></tr></thead>
+                  <tbody>${laOutputRows.map((r) => `<tr><td>${r.zone}</td><td>${r.speaker}</td><td>${r.controller}</td><td>${r.channel}</td><td>${r.delayMs.toFixed(1)} ms</td><td>${r.matrix}</td></tr>`).join("") || '<tr><td colspan="6" class="muted">No controller output assignments yet.</td></tr>'}</tbody>
+                </table>
+              </div>
+              <div class="card" style="margin-top:0.65rem;">
+                <h3 style="margin:0;">Soundvision-Style Physical Planner (Top-down)</h3>
+                <div class="table-wrap" style="margin-top:0.45rem;">
+                  <table>
+                    <thead><tr><th>Object</th><th>Zone</th><th>Pos (X,Y,Z)</th><th>Height</th><th>Aim</th><th>Throw</th></tr></thead>
+                    <tbody>${laSpeakers.map((s) => {
+                      const spk = getLaSpeaker(s.speakerId);
+                      const zone = getLaZone(s.zoneId);
+                      const throwM = Math.hypot(Number(s.x || 0), Math.max(0, Number(zone?.distanceM || 0) - Number(s.z || 0)));
+                      return `<tr><td>${spk?.model || s.speakerId} x${Number(s.quantity || 1)}</td><td>${zone?.name || s.zoneId}</td><td>${Number(s.x || 0).toFixed(1)}, ${Number(s.y || 0).toFixed(1)}, ${Number(s.z || 0).toFixed(1)}</td><td>${Number(s.heightM || 0).toFixed(1)}m</td><td>${Number(s.aimDeg || 0).toFixed(0)}°</td><td>${throwM.toFixed(1)}m</td></tr>`;
+                    }).join("") || '<tr><td colspan="6" class="muted">No placed arrays/stacks/fills yet.</td></tr>'}</tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="grid grid-2" style="margin-top:0.65rem;">
+                <div class="card">
+                  <h3 style="margin:0;">LA-Network Manager Topology</h3>
+                  <div class="table-wrap" style="margin-top:0.45rem;">
+                    <table>
+                      <thead><tr><th>Controller</th><th>Switch</th><th>Port</th><th>Primary IP</th><th>Secondary IP</th><th>Zone</th></tr></thead>
+                      <tbody>${laNetwork.map((n) => {
+                        const rack = getLaRack(n.rackId);
+                        const sw = laSwitches.find((s) => s.id === n.switchId);
+                        const firstZone = (rack?.outputs || [])[0]?.zoneId;
+                        return `<tr><td>${rack?.name || n.rackId}</td><td>${sw?.name || n.switchId}</td><td>${n.port}</td><td>${n.ip || "-"}</td><td>${n.secondaryIp || "-"}</td><td>${getLaZone(firstZone)?.name || "-"}</td></tr>`;
+                      }).join("") || '<tr><td colspan="6" class="muted">No network links assigned.</td></tr>'}</tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card">
+                  <h3 style="margin:0;">Console -> Controller Routing</h3>
+                  <div class="table-wrap" style="margin-top:0.45rem;">
+                    <table>
+                      <thead><tr><th>Console Output</th><th>Controller</th><th>Input</th><th>Zone</th></tr></thead>
+                      <tbody>${laRouting.map((r) => `<tr><td>${r.consoleOut}</td><td>${getLaRack(r.rackId)?.name || r.rackId}</td><td>${r.input}</td><td>${getLaZone(r.zoneId)?.name || r.zoneId}</td></tr>`).join("") || '<tr><td colspan="4" class="muted">No console routing assigned.</td></tr>'}</tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="grid grid-2" style="margin-top:0.65rem;">
+                <div class="card">
+                  <h3 style="margin:0;">Power by Rack</h3>
+                  <div class="table-wrap" style="margin-top:0.45rem;">
+                    <table><thead><tr><th>Rack</th><th>Controllers</th><th>Power</th><th>Circuit</th></tr></thead><tbody>${laControllerPowerRows.map((r) => `<tr><td>${r.rack}</td><td>${r.controllers}</td><td>${Math.round(r.watts)}W (${r.amps.toFixed(1)}A)</td><td>${r.circuit}</td></tr>`).join("") || '<tr><td colspan="4" class="muted">No racks defined.</td></tr>'}</tbody></table>
+                  </div>
+                  <div class="muted" style="margin-top:0.35rem;">Total Controller Power: <b>${Math.round(laTotalPowerW)}W</b> (planning estimate)</div>
+                </div>
+                <div class="card">
+                  <h3 style="margin:0;">Cable Schedule</h3>
+                  <div class="table-wrap" style="margin-top:0.45rem;">
+                    <table><thead><tr><th>Type</th><th>Length</th><th>From</th><th>To</th><th>Qty</th></tr></thead><tbody>${laCableRows.map((c) => `<tr><td>${c.type}</td><td>${Number(c.lengthM || 0).toFixed(1)}m</td><td>${c.from}</td><td>${c.to}</td><td>${c.qty}</td></tr>`).join("") || '<tr><td colspan="5" class="muted">No cables generated yet.</td></tr>'}</tbody></table>
+                  </div>
+                </div>
+              </div>
+              <div class="card" style="margin-top:0.65rem;">
+                <h3 style="margin:0;">System Diagram</h3>
+                <div class="muted" style="margin-top:0.3rem;">Console -> Matrix Outputs -> L-Acoustics Controllers -> Speakers -> Zones</div>
+                <div class="table-wrap" style="margin-top:0.45rem;">
+                  <table><thead><tr><th>Console</th><th>Controller</th><th>Speaker</th><th>Zone</th></tr></thead><tbody>${laRouting.map((r) => {
+                    const rack = getLaRack(r.rackId);
+                    const out = (rack?.outputs || []).find((o) => o.zoneId === r.zoneId);
+                    const spk = getLaSpeaker(out?.speakerId || "");
+                    return `<tr><td>${r.consoleOut}</td><td>${rack?.name || r.rackId}</td><td>${spk?.model || "-"}</td><td>${getLaZone(r.zoneId)?.name || r.zoneId}</td></tr>`;
+                  }).join("") || '<tr><td colspan="4" class="muted">No signal chain assigned.</td></tr>'}</tbody></table>
+                </div>
+              </div>
+              <div class="card" style="margin-top:0.65rem;">
+                <h3 style="margin:0;">Validation + Future Hooks</h3>
+                ${renderIssues("l_acoustics")}
+                <div class="muted" style="margin-top:0.4rem;">Prepared hooks: Soundvision project import, LA Network Manager export format, Dante routing integration, prediction overlay data channel.</div>
+              </div>
+            `;
+            if (activeTab === "delays_fills") return `
+              <div class="toolbar"><h3 style="margin:0;">Zones</h3><button id="audAddDelayZoneBtn">Add Zone</button></div>
+              <div class="table-wrap" style="margin-top:0.55rem;"><table><thead><tr><th>Zone</th><th>Distance (m)</th><th>Delay (ms)</th><th>Output</th><th>Speaker Type</th><th></th></tr></thead><tbody>${delayRows.map((z) => `<tr><td><input data-aud-delay-name="${z.id}" value="${String(z.name || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-delay-dist="${z.id}" type="number" min="0" step="0.1" value="${Number(z.distanceM || 0)}" /></td><td>${z.delayMs.toFixed(1)}</td><td><input data-aud-delay-out="${z.id}" value="${String(z.output || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-delay-type="${z.id}" value="${String(z.speakerType || "").replace(/"/g, "&quot;")}" /></td><td><button data-aud-delay-remove="${z.id}">Remove</button></td></tr>`).join("")}</tbody></table></div>
+              <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Validation</h3>${renderIssues("delays_fills")}</div>
+            `;
+            if (activeTab === "console_io") return `
+              <div class="grid grid-4">
+                <div><label>Console Model</label><select id="audConsoleModel">${consoleOptions}</select></div>
+                <div><label>Stagebox Model</label><input id="audStageboxModel" value="${String(consoleCfg.stageboxModel || "").replace(/"/g, "&quot;")}" disabled /></div>
+                <div><label>Transport</label><input id="audTransport" value="${String(consoleCfg.transport || "").replace(/"/g, "&quot;")}" /></div>
+                <div style="display:flex;align-items:flex-end;"><button id="audAddInputBtn">Add Input Channel</button></div>
+              </div>
+              <div class="muted" style="margin-top:0.35rem;">Preset stagebox mapping loaded for selected console.${consolePreset ? ` (${consolePreset.stageboxInputs}x${consolePreset.stageboxOutputs})` : ""}</div>
+              <div class="table-wrap" style="margin-top:0.55rem;"><table><thead><tr><th>Ch</th><th>Name</th><th>Source</th><th>Location</th><th>Connector</th><th>48V</th><th>Priority</th><th></th></tr></thead><tbody>${(consoleCfg.inputs || []).map((ch, idx) => `<tr><td>${idx + 1}</td><td><input data-aud-in-name="${ch.id}" value="${String(ch.name || "").replace(/"/g, "&quot;")}" /></td><td><select data-aud-in-type="${ch.id}"><option value="wired" ${ch.sourceType === "wired" ? "selected" : ""}>Wired</option><option value="wireless" ${ch.sourceType === "wireless" ? "selected" : ""}>Wireless</option><option value="playback" ${ch.sourceType === "playback" ? "selected" : ""}>Playback</option></select></td><td><input data-aud-in-loc="${ch.id}" value="${String(ch.stageLocation || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-in-con="${ch.id}" value="${String(ch.connector || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-in-pha="${ch.id}" type="checkbox" ${ch.phantom ? "checked" : ""} /></td><td><select data-aud-in-pri="${ch.id}"><option value="critical" ${ch.priority === "critical" ? "selected" : ""}>Critical</option><option value="important" ${ch.priority === "important" ? "selected" : ""}>Important</option><option value="nice_to_have" ${ch.priority === "nice_to_have" ? "selected" : ""}>Nice-to-have</option></select></td><td><button data-aud-in-remove="${ch.id}">Remove</button></td></tr>`).join("")}</tbody></table></div>
+              <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-top:0.7rem;"><div class="kpi"><div class="muted">Inputs</div><b>${inputCount}</b></div><div class="kpi"><div class="muted">Stagebox Inputs</div><b>${stageboxInputs}</b></div><div class="kpi"><div class="muted">Spare Inputs</div><b>${Math.max(0, stageboxInputs - inputCount)}</b></div></div>
+              <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Validation</h3>${renderIssues("console_io")}</div>
+            `;
+            if (activeTab === "wireless_rf") return `
+              <div class="grid grid-4"><div><label>Region</label><select id="audRfRegion"><option value="ZA" ${rf.region === "ZA" ? "selected" : ""}>South Africa</option><option value="Custom" ${rf.region === "Custom" ? "selected" : ""}>Custom</option></select></div><div><label>Handhelds</label><input id="audRfHandhelds" type="number" min="0" step="1" value="${Number(rf.inventory.handhelds || 0)}" /></div><div><label>Beltpacks</label><input id="audRfBelts" type="number" min="0" step="1" value="${Number(rf.inventory.beltpacks || 0)}" /></div><div><label>IEM Packs</label><input id="audRfIems" type="number" min="0" step="1" value="${Number(rf.inventory.iemPacks || 0)}" /></div></div>
+              <div class="toolbar" style="margin-top:0.7rem;"><h3 style="margin:0;">RF Channel Plan</h3><button id="audAddRfChannelBtn">Add RF Channel</button></div>
+              <div class="table-wrap" style="margin-top:0.45rem;"><table><thead><tr><th>Device</th><th>Talent</th><th>Band</th><th>Freq</th><th>Group</th><th>Battery</th><th></th></tr></thead><tbody>${(rf.channels || []).map((ch) => `<tr><td><input data-aud-rf-device="${ch.id}" value="${String(ch.device || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-rf-talent="${ch.id}" value="${String(ch.talent || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-rf-band="${ch.id}" value="${String(ch.band || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-rf-freq="${ch.id}" value="${String(ch.freq || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-rf-group="${ch.id}" value="${String(ch.group || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-rf-batt="${ch.id}" value="${String(ch.battery || "").replace(/"/g, "&quot;")}" /></td><td><button data-aud-rf-remove="${ch.id}">Remove</button></td></tr>`).join("")}</tbody></table></div>
+              <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Validation</h3>${renderIssues("wireless_rf")}</div>
+            `;
+            if (activeTab === "comms_talkback") return `
+              <div class="grid grid-3"><div><label>Comms Type</label><select id="audCommsType"><option value="wired_partyline" ${comms.type === "wired_partyline" ? "selected" : ""}>Wired Partyline</option><option value="wireless_comms" ${comms.type === "wireless_comms" ? "selected" : ""}>Wireless Comms</option></select></div><div style="grid-column:span 2;"><label>Roles (comma separated)</label><input id="audCommsRoles" value="${String((comms.roles || []).join(", ")).replace(/"/g, "&quot;")}" /></div></div>
+              <div class="table-wrap" style="margin-top:0.55rem;"><table><thead><tr><th>Path</th><th>Route</th></tr></thead><tbody><tr><td>Console -> Comms</td><td>TB Mic -> Comms Input</td></tr><tr><td>Comms -> Console</td><td>SM/Director Return -> Console TB Return</td></tr><tr><td>Roles</td><td>${(comms.roles || []).join(" | ") || "-"}</td></tr></tbody></table></div>
+              <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Validation</h3>${renderIssues("comms_talkback")}</div>
+            `;
+            if (activeTab === "power_distribution") return `
+              <div class="grid grid-4"><div><label>Mains Available</label><select id="audPowerMains"><option value="1P_15A" ${power.mainsType === "1P_15A" ? "selected" : ""}>1P 15A</option><option value="1P_16A" ${power.mainsType === "1P_16A" ? "selected" : ""}>1P 16A</option><option value="1P_32A" ${power.mainsType === "1P_32A" ? "selected" : ""}>1P 32A</option><option value="3P_32A" ${power.mainsType === "3P_32A" ? "selected" : ""}>3P 32A</option><option value="3P_63A" ${power.mainsType === "3P_63A" ? "selected" : ""}>3P 63A</option></select></div><div><label>Clean/Dirty Split</label><select id="audPowerSplit"><option value="yes" ${power.cleanDirtySplit ? "selected" : ""}>Enabled</option><option value="no" ${!power.cleanDirtySplit ? "selected" : ""}>Disabled</option></select></div><div style="display:flex;align-items:flex-end;"><button id="audAddPowerLoadBtn">Add Load</button></div></div>
+              <div class="table-wrap" style="margin-top:0.55rem;"><table><thead><tr><th>Load</th><th>W</th><th>Phase</th><th>A @ 230V</th><th></th></tr></thead><tbody>${loadRows.map((l) => `<tr><td><input data-aud-pwr-name="${l.id}" value="${String(l.name || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-pwr-w="${l.id}" type="number" min="0" step="1" value="${Number(l.watts || 0)}" /></td><td><select data-aud-pwr-ph="${l.id}"><option value="L1" ${l.phase === "L1" ? "selected" : ""}>L1</option><option value="L2" ${l.phase === "L2" ? "selected" : ""}>L2</option><option value="L3" ${l.phase === "L3" ? "selected" : ""}>L3</option></select></td><td>${(Number(l.watts || 0) / 230).toFixed(2)}</td><td><button data-aud-pwr-remove="${l.id}">Remove</button></td></tr>`).join("")}</tbody></table></div>
+              <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:0.7rem;"><div class="kpi"><div class="muted">Total Load (W)</div><b>${Math.round(totalW).toLocaleString()}</b></div><div class="kpi"><div class="muted">Total Current (A)</div><b>${totalA1P.toFixed(1)}</b></div><div class="kpi"><div class="muted">L1/L2/L3 (A)</div><b>${perPhase.L1.toFixed(1)} / ${perPhase.L2.toFixed(1)} / ${perPhase.L3.toFixed(1)}</b></div><div class="kpi"><div class="muted">Continuous Limit</div><b>${contLimit.toFixed(1)} A</b></div></div>
+              <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Validation</h3>${renderIssues("power_distribution")}</div>
+            `;
+            if (activeTab === "cabling_looms") return `
+              <div class="grid grid-3"><div><label>FOH <> Stage (m)</label><input id="audCabFohStage" type="number" min="0" step="0.1" value="${Number(cabling.fohToStageM || 0)}" /></div><div><label>Stage Left <> Right (m)</label><input id="audCabSlSr" type="number" min="0" step="0.1" value="${Number(cabling.stageLeftToRightM || 0)}" /></div><div><label>Delay Run (m)</label><input id="audCabDelay" type="number" min="0" step="0.1" value="${Number(cabling.delayRunM || 0)}" /></div></div>
+              <div class="table-wrap" style="margin-top:0.55rem;"><table><thead><tr><th>Type</th><th>Length</th><th>Qty</th><th>Endpoints</th><th>Spare</th><th>Label Prefix</th></tr></thead><tbody>${cableRuns.map((r, idx) => `<tr><td>${r.type}</td><td>${r.lengthM.toFixed(1)}m</td><td>${r.qty}</td><td>${r.endpoints}</td><td>${r.spare}</td><td>AUD-${r.type}-${String(idx + 1).padStart(2, "0")}</td></tr>`).join("")}</tbody></table></div>
+              <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Validation</h3>${renderIssues("cabling_looms")}</div>
+            `;
+            if (activeTab === "crew_workflow") return `
+              <div class="card"><h3 style="margin:0;">Setup Checklist</h3><ul style="margin:0.5rem 0 0 1rem;padding:0;"><li>RF scan + channel lock</li><li>Gain structure pass</li><li>Pink noise verify</li><li>Polarity check</li><li>Delay alignment walk test</li><li>Speech intelligibility pass</li></ul></div>
+              <div class="table-wrap" style="margin-top:0.55rem;"><table><thead><tr><th>Issue</th><th>First checks</th></tr></thead><tbody><tr><td>No signal</td><td>Source -> Patch -> Gain -> Bus -> Output -> Amp/speaker</td></tr><tr><td>Hum/Buzz</td><td>Power split, grounding, DI isolation, cable integrity</td></tr><tr><td>RF dropouts</td><td>Antenna LOS, cable loss, battery, frequency conflict</td></tr><tr><td>Delay out of time</td><td>Distance remeasure, ms recalc, route confirmation</td></tr></tbody></table></div>
+              <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Validation</h3>${renderIssues("crew_workflow")}</div>
+            `;
+            return `
+              <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));"><div class="kpi"><div class="muted">System Overview</div><b>${show.eventName || "Untitled"} / ${show.venue || "-"}</b></div><div class="kpi"><div class="muted">Input / Output</div><b>${inputCount} / ${outputCount}</b></div><div class="kpi"><div class="muted">RF Channels</div><b>${rfTotalChannels}</b></div><div class="kpi"><div class="muted">Power Total</div><b>${Math.round(totalW)} W</b></div></div>
+              <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Export Pack</h3><ul style="margin:0.45rem 0 0 1rem;padding:0;"><li>System Overview Page</li><li>Input List + Output List</li><li>RF Sheet</li><li>Power Sheet</li><li>Cable + Packlist</li><li>Stage Plot (audio layer)</li><li>Formats: PDF / Spreadsheet / JSON</li></ul></div>
+              <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Validation</h3>${renderIssues("outputs")}</div>
+            `;
+          })();
+
+          main.innerHTML = `
+            <div class="card">
+              <h2>Sound - Show Audio Planner</h2>
+              <div class="muted" style="margin-top:0.2rem;">Planning-grade estimates for coverage, intelligibility, PA topology, patching, RF, power, and workflow.</div>
+              <div class="tabs" style="margin-top:0.7rem;max-height:220px;overflow:auto;">
+                ${AUDIO_TAB_ORDER.map((tab) => `<button data-aud-tab="${tab.id}" class="${activeTab === tab.id ? "active" : ""}">${tab.label}${getStatusBadge(tab.id)}</button>`).join("")}
+              </div>
+            </div>
+            <div class="card" style="margin-top:0.7rem;">${sectionHtml}</div>
+          `;
+
+          document.querySelectorAll("button[data-aud-tab]").forEach((btn) => btn.addEventListener("click", () => {
+            audioState.activeTab = String(btn.getAttribute("data-aud-tab") || "system_design");
+            renderSound();
+          }));
+
+          const bindInput = (id, setter, type = "text") => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener("change", () => {
+              const raw = type === "number" ? Number(el.value || 0) : el.value;
+              setter(raw);
+              renderSound();
+            });
+          };
+          bindInput("audEventName", (v) => { show.eventName = String(v || ""); });
+          bindInput("audEventDate", (v) => { show.eventDate = String(v || ""); });
+          bindInput("audVenueName", (v) => { show.venue = String(v || ""); });
+          bindInput("audCity", (v) => { show.city = String(v || ""); });
+          bindInput("audRoomName", (v) => { show.roomName = String(v || ""); });
+          bindInput("audAudienceSize", (v) => { show.audienceSize = Math.max(0, Number(v || 0)); }, "number");
+          bindInput("audAudienceMode", (v) => { show.audienceMode = String(v || "seated"); });
+          bindInput("audRoomType", (v) => { show.roomType = String(v || "theatre"); });
+          bindInput("audStageW", (v) => { show.stageW = Math.max(0, Number(v || 0)); }, "number");
+          bindInput("audStageD", (v) => { show.stageD = Math.max(0, Number(v || 0)); }, "number");
+          bindInput("audStageH", (v) => { show.stageH = Math.max(0, Number(v || 0)); }, "number");
+          bindInput("audTrimH", (v) => { show.trimH = Math.max(0, Number(v || 0)); }, "number");
+          bindInput("audFohDist", (v) => { show.fohDistanceM = Math.max(0, Number(v || 0)); }, "number");
+          bindInput("audProgramType", (v) => { show.programType = String(v || "corporate_speech"); audioState.console.inputs = []; ensureAudioDefaults(); });
+          bindInput("audConstraints", (v) => { show.constraints = String(v || ""); });
+          bindInput("audRoomL", (v) => { venue.roomL = Math.max(1, Number(v || 1)); }, "number");
+          bindInput("audRoomW", (v) => { venue.roomW = Math.max(1, Number(v || 1)); }, "number");
+          bindInput("audRoomH", (v) => { venue.roomH = Math.max(1, Number(v || 1)); }, "number");
+          bindInput("audMaterials", (v) => { venue.materials = String(v || "mixed"); });
+          bindInput("audRt60Mode", (v) => { venue.rt60Mode = String(v || "med"); });
+          bindInput("audRt60", (v) => { venue.rt60 = v === "" ? "" : Number(v || ""); });
+          bindInput("audAmbient", (v) => { venue.ambientDbA = Math.max(30, Number(v || 30)); }, "number");
+          bindInput("audAudienceAbs", (v) => { venue.audienceAbsorption = String(v || "partial"); });
+          bindInput("audTopology", (v) => { system.topology = String(v || "stereo"); });
+          bindInput("audMainType", (v) => { system.mainType = String(v || "line_array"); });
+          bindInput("audDeployType", (v) => { system.deployType = String(v || "flown"); });
+          bindInput("audThrowDist", (v) => { system.throwDistanceM = Math.max(1, Number(v || 1)); }, "number");
+          bindInput("audHorizCov", (v) => { system.horizCoverageDeg = Math.max(60, Math.min(160, Number(v || 100))); }, "number");
+          bindInput("audSubCfg", (v) => { system.subConfig = String(v || "ground"); });
+          bindInput("audDspModel", (v) => { system.dspModel = String(v || ""); });
+          bindInput("audRiggingNote", (v) => { system.riggingSafetyNote = String(v || ""); });
+          bindInput("audConsoleModel", (v) => {
+            const selectedConsole = String(v || "");
+            const preset = getAudioConsolePresetByName(selectedConsole);
+            if (preset) {
+              applyAudioConsolePreset(consoleCfg, preset);
+            } else {
+              consoleCfg.consoleModel = selectedConsole;
+            }
+          });
+          bindInput("audStageboxModel", (v) => { consoleCfg.stageboxModel = String(v || ""); });
+          bindInput("audTransport", (v) => { consoleCfg.transport = String(v || ""); });
+          bindInput("audRfRegion", (v) => { rf.region = String(v || "ZA"); });
+          bindInput("audRfHandhelds", (v) => { rf.inventory.handhelds = Math.max(0, Number(v || 0)); }, "number");
+          bindInput("audRfBelts", (v) => { rf.inventory.beltpacks = Math.max(0, Number(v || 0)); }, "number");
+          bindInput("audRfIems", (v) => { rf.inventory.iemPacks = Math.max(0, Number(v || 0)); }, "number");
+          bindInput("audCommsType", (v) => { comms.type = String(v || "wired_partyline"); });
+          bindInput("audCommsRoles", (v) => { comms.roles = String(v || "").split(",").map((x) => x.trim()).filter(Boolean); });
+          bindInput("audPowerMains", (v) => { power.mainsType = String(v || "3P_63A"); });
+          bindInput("audPowerSplit", (v) => { power.cleanDirtySplit = String(v) === "yes"; });
+          bindInput("audCabFohStage", (v) => { cabling.fohToStageM = Math.max(0, Number(v || 0)); }, "number");
+          bindInput("audCabSlSr", (v) => { cabling.stageLeftToRightM = Math.max(0, Number(v || 0)); }, "number");
+          bindInput("audCabDelay", (v) => { cabling.delayRunM = Math.max(0, Number(v || 0)); }, "number");
+          bindInput("audLaSpeakerSel", (v) => { audioState.laPlanner.selectedSpeakerId = String(v || LA_SPEAKER_LIBRARY[0]?.id || ""); });
+          bindInput("audLaZoneSel", (v) => { audioState.laPlanner.selectedZoneId = String(v || ""); });
+          bindInput("audLaControllerSel", (v) => { audioState.laPlanner.selectedControllerModelId = String(v || "la12x"); });
+          document.getElementById("audLaAddSpeakerBtn")?.addEventListener("click", () => {
+            const laState = audioState.laPlanner;
+            const speakerId = String(laState.selectedSpeakerId || LA_SPEAKER_LIBRARY[0]?.id || "");
+            const zoneId = String(laState.selectedZoneId || laState.zones?.[0]?.id || "");
+            if (!zoneId) return;
+            const spk = LA_SPEAKER_LIBRARY.find((s) => s.id === speakerId) || LA_SPEAKER_LIBRARY[0];
+            laState.speakers = Array.isArray(laState.speakers) ? laState.speakers : [];
+            laState.speakers.push({
+              id: `la_spk_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`,
+              speakerId: spk.id,
+              zoneId,
+              quantity: 2,
+              rigging: spk.rigging.includes("flown") ? "flown" : "stacked",
+              x: 0,
+              y: 0,
+              z: 8,
+              heightM: spk.rigging.includes("flown") ? 7 : 1,
+              aimDeg: 0
+            });
+            let rack = (laState.racks || [])[0];
+            if (!rack) {
+              rack = {
+                id: `rack_${Date.now()}`,
+                name: "LA Rack Auto",
+                location: "Amp World",
+                powerSource: "3P-63A",
+                networkSwitchId: (laState.switches || [])[0]?.id || "",
+                controllerModelId: String(laState.selectedControllerModelId || "la12x"),
+                controllerCount: 1,
+                outputs: []
+              };
+              laState.racks = [rack];
+            }
+            rack.outputs = Array.isArray(rack.outputs) ? rack.outputs : [];
+            if (rack.outputs.length < 4) {
+              const ch = rack.outputs.length + 1;
+              rack.outputs.push({
+                ch,
+                zoneId,
+                speakerId: spk.id,
+                quantity: 2,
+                preset: `${spk.model.toUpperCase().replace(/\s+/g, "_")}_STD`,
+                destination: getLaZone(zoneId)?.name || zoneId
+              });
+            }
+            renderSound();
+          });
+
+          document.getElementById("audAddDelayZoneBtn")?.addEventListener("click", () => { delays.zones.push({ id: `zone_${Date.now()}`, name: `Zone ${delays.zones.length + 1}`, distanceM: 10, output: `M${5 + delays.zones.length}`, speakerType: "Delay" }); renderSound(); });
+          document.querySelectorAll("[data-aud-delay-name]").forEach((el) => el.addEventListener("change", () => { const row = delays.zones.find((x) => x.id === el.getAttribute("data-aud-delay-name")); if (row) row.name = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-delay-dist]").forEach((el) => el.addEventListener("change", () => { const row = delays.zones.find((x) => x.id === el.getAttribute("data-aud-delay-dist")); if (row) row.distanceM = Math.max(0, Number(el.value || 0)); renderSound(); }));
+          document.querySelectorAll("[data-aud-delay-out]").forEach((el) => el.addEventListener("change", () => { const row = delays.zones.find((x) => x.id === el.getAttribute("data-aud-delay-out")); if (row) row.output = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-delay-type]").forEach((el) => el.addEventListener("change", () => { const row = delays.zones.find((x) => x.id === el.getAttribute("data-aud-delay-type")); if (row) row.speakerType = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-delay-remove]").forEach((el) => el.addEventListener("click", () => { delays.zones = delays.zones.filter((x) => x.id !== el.getAttribute("data-aud-delay-remove")); renderSound(); }));
+          document.getElementById("audAddInputBtn")?.addEventListener("click", () => { consoleCfg.inputs.push({ id: `aud_in_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`, name: "New Channel", sourceType: "wired", connector: "XLR", phantom: false, stageLocation: "DS", priority: "important", notes: "" }); renderSound(); });
+          document.querySelectorAll("[data-aud-in-name]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-name")); if (row) row.name = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-in-type]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-type")); if (row) row.sourceType = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-in-loc]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-loc")); if (row) row.stageLocation = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-in-con]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-con")); if (row) row.connector = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-in-pha]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-pha")); if (row) row.phantom = !!el.checked; renderSound(); }));
+          document.querySelectorAll("[data-aud-in-pri]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-pri")); if (row) row.priority = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-in-remove]").forEach((el) => el.addEventListener("click", () => { consoleCfg.inputs = consoleCfg.inputs.filter((x) => x.id !== el.getAttribute("data-aud-in-remove")); renderSound(); }));
+          document.getElementById("audAddRfChannelBtn")?.addEventListener("click", () => { rf.channels.push({ id: `rf_${Date.now()}`, device: "Handheld", talent: "Talent", band: "A", freq: "", group: "G1", battery: "AA" }); renderSound(); });
+          document.querySelectorAll("[data-aud-rf-device]").forEach((el) => el.addEventListener("change", () => { const row = rf.channels.find((x) => x.id === el.getAttribute("data-aud-rf-device")); if (row) row.device = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-rf-talent]").forEach((el) => el.addEventListener("change", () => { const row = rf.channels.find((x) => x.id === el.getAttribute("data-aud-rf-talent")); if (row) row.talent = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-rf-band]").forEach((el) => el.addEventListener("change", () => { const row = rf.channels.find((x) => x.id === el.getAttribute("data-aud-rf-band")); if (row) row.band = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-rf-freq]").forEach((el) => el.addEventListener("change", () => { const row = rf.channels.find((x) => x.id === el.getAttribute("data-aud-rf-freq")); if (row) row.freq = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-rf-group]").forEach((el) => el.addEventListener("change", () => { const row = rf.channels.find((x) => x.id === el.getAttribute("data-aud-rf-group")); if (row) row.group = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-rf-batt]").forEach((el) => el.addEventListener("change", () => { const row = rf.channels.find((x) => x.id === el.getAttribute("data-aud-rf-batt")); if (row) row.battery = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-rf-remove]").forEach((el) => el.addEventListener("click", () => { rf.channels = rf.channels.filter((x) => x.id !== el.getAttribute("data-aud-rf-remove")); renderSound(); }));
+          document.getElementById("audAddPowerLoadBtn")?.addEventListener("click", () => { power.loads.push({ id: `p_${Date.now()}`, name: "New Load", watts: 100, phase: "L1" }); renderSound(); });
+          document.querySelectorAll("[data-aud-pwr-name]").forEach((el) => el.addEventListener("change", () => { const row = power.loads.find((x) => x.id === el.getAttribute("data-aud-pwr-name")); if (row) row.name = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-pwr-w]").forEach((el) => el.addEventListener("change", () => { const row = power.loads.find((x) => x.id === el.getAttribute("data-aud-pwr-w")); if (row) row.watts = Math.max(0, Number(el.value || 0)); renderSound(); }));
+          document.querySelectorAll("[data-aud-pwr-ph]").forEach((el) => el.addEventListener("change", () => { const row = power.loads.find((x) => x.id === el.getAttribute("data-aud-pwr-ph")); if (row) row.phase = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-pwr-remove]").forEach((el) => el.addEventListener("click", () => { power.loads = power.loads.filter((x) => x.id !== el.getAttribute("data-aud-pwr-remove")); renderSound(); }));
+        }
+
+        function ensureLightingDefaults() {
+          if (!lightingState.groups.length) {
+            const first = newLightingGroup(1);
+            lightingState.groups.push(first);
+            lightingState.activeGroupId = first.id;
+          }
+          if (!lightingState.activeGroupId && lightingState.groups[0]) {
+            lightingState.activeGroupId = lightingState.groups[0].id;
+          }
+        }
+        function syncRiggingFixturesWithLighting() {
+          const validSourceIds = new Set();
+          (lightingState.fixtures || []).forEach((line) => {
+            const qty = Math.max(1, Math.round(Number(line.quantity || 1)));
+            for (let i = 1; i <= qty; i += 1) validSourceIds.add(`${line.id}__${i}`);
+          });
+          const prevFp = (riggingState.fixturePlacements || []).length;
+          const prevGf = (riggingState.groupFixtures || []).length;
+          riggingState.fixturePlacements = (riggingState.fixturePlacements || []).filter((fp) => {
+            const sid = String(fp?.sourceInstanceId || "");
+            if (!sid) return true;
+            return validSourceIds.has(sid);
+          });
+          riggingState.groupFixtures = (riggingState.groupFixtures || []).filter((gf) => {
+            const sid = String(gf?.sourceInstanceId || "");
+            if (!sid) return true;
+            return validSourceIds.has(sid);
+          });
+          if ((riggingState.fixturePlacements || []).length !== prevFp || (riggingState.groupFixtures || []).length !== prevGf) {
+            riggingState.lastCalc = null;
+          }
+        }
+
+        function renderLighting() {
+          ensureLightingDefaults();
+          if (!main) return;
+          const subSection = String(lightingState.subSection || "planner") === "colors" ? "colors" : "planner";
+          lightingState.subSection = subSection;
+          const selectedClient = LIGHTING_CLIENT_CI_PRESETS.find((c) => c.id === lightingState.selectedClientCiId) || LIGHTING_CLIENT_CI_PRESETS[0];
+          lightingState.selectedClientCiId = selectedClient.id;
+          const hexToRgb = (hex) => {
+            const h = String(hex || "").replace("#", "").trim();
+            if (!/^[0-9a-fA-F]{6}$/.test(h)) return null;
+            const r = parseInt(h.slice(0, 2), 16);
+            const g = parseInt(h.slice(2, 4), 16);
+            const b = parseInt(h.slice(4, 6), 16);
+            return { r, g, b };
+          };
+          const ciRows = (selectedClient.colors || []).map((ci) => {
+            const rgb = hexToRgb(ci.hex) || { r: 0, g: 0, b: 0 };
+            const rp = Math.round((rgb.r / 255) * 100);
+            const gp = Math.round((rgb.g / 255) * 100);
+            const bp = Math.round((rgb.b / 255) * 100);
+            return `
+              <tr>
+                <td><span style="display:inline-block;width:28px;height:18px;border-radius:6px;border:1px solid var(--theme-line-soft);background:${ci.hex};vertical-align:middle;"></span></td>
+                <td>${ci.name}</td>
+                <td><code>${ci.hex}</code></td>
+                <td>${rgb.r}, ${rgb.g}, ${rgb.b}</td>
+                <td>R ${rgb.r} | G ${rgb.g} | B ${rgb.b}</td>
+                <td>${rp}% / ${gp}% / ${bp}%</td>
+              </tr>
+            `;
+          }).join("");
+          main.innerHTML = `
+            <div class="card">
+              <h2>Lighting - Fixture Planner</h2>
+              <div class="muted" style="margin-top:0.25rem;">Search fixtures, choose mode, set quantity, then organize in groups.</div>
+              <div class="tabs" style="margin-top:0.7rem;">
+                <button data-lx-subtab="planner" class="${subSection === "planner" ? "active" : ""}">Planner</button>
+                <button data-lx-subtab="colors" class="${subSection === "colors" ? "active" : ""}">Colors</button>
+              </div>
+              <div id="lxPlannerSection" style="${subSection === "planner" ? "" : "display:none;"}">
+              <div class="grid grid-3" style="margin-top:0.75rem;">
+                <div>
+                  <label>Search Fixture</label>
+                  <input id="lxSearch" type="text" placeholder="Search manufacturer or model..." value="${lightingState.search.replace(/"/g, "&quot;")}" />
+                </div>
+                <div>
+                  <label>Manufacturer</label>
+                  <select id="lxManufacturer"></select>
+                </div>
+                <div>
+                  <label>Select Fixture</label>
+                  <select id="lxFixture"></select>
+                </div>
+                <div>
+                  <label>Mode</label>
+                  <select id="lxMode"></select>
+                </div>
+                <div>
+                  <label>Quantity</label>
+                  <input id="lxQty" type="number" min="1" step="1" value="${Math.max(1, Number(lightingState.quantity || 1))}" />
+                </div>
+                <div style="display:flex;align-items:flex-end;">
+                  <button id="lxAddFixtureBtn" class="primary" style="width:100%;">Add Fixtures</button>
+                </div>
+              </div>
+              </div>
+              <div id="lxColorsSection" style="${subSection === "colors" ? "" : "display:none;"}">
+                <div class="grid grid-3" style="margin-top:0.75rem;align-items:end;">
+                  <div>
+                    <label>Client</label>
+                    <select id="lxCiClientSel">
+                      ${LIGHTING_CLIENT_CI_PRESETS.map((c) => `<option value="${c.id}" ${c.id === selectedClient.id ? "selected" : ""}>${c.name}</option>`).join("")}
+                    </select>
+                  </div>
+                  <div class="kpi" style="margin:0;">
+                    <div class="muted">CI Colors</div>
+                    <b>${(selectedClient.colors || []).length}</b>
+                  </div>
+                  <div class="kpi" style="margin:0;">
+                    <div class="muted">Output Format</div>
+                    <b>RGB (0-255)</b>
+                  </div>
+                </div>
+                <div class="table-wrap" style="margin-top:0.65rem;">
+                  <table>
+                    <thead><tr><th>Swatch</th><th>Color Name</th><th>Hex</th><th>RGB</th><th>Fixture RGB Target</th><th>Intensity %</th></tr></thead>
+                    <tbody>${ciRows || '<tr><td colspan="6" class="muted">Select a client to view CI color targets.</td></tr>'}</tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div id="lxPlannerBody" style="${subSection === "planner" ? "" : "display:none;"}">
+            <div class="grid grid-2" style="margin-top:0.8rem;">
+              <div class="card">
+                <div class="toolbar">
+                  <h3>Added Fixtures</h3>
+                  <span class="badge">${lightingState.fixtures.length} lines</span>
+                </div>
+                <div id="lxFixtureRows" class="grid"></div>
+              </div>
+              <div class="card">
+                <div class="toolbar">
+                  <h3>Group Section</h3>
+                  <button id="lxAddGroupBtn">Add Group</button>
+                </div>
+                <div id="lxGroupRows" class="grid"></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:0.75rem;">
+              <h3>Group Outputs</h3>
+              <div id="lxGroupOutputs" class="grid" style="margin-top:0.5rem;"></div>
+            </div>
+            </div>
+          `;
+
+          const searchEl = document.getElementById("lxSearch");
+          const manufacturerEl = document.getElementById("lxManufacturer");
+          const fixtureEl = document.getElementById("lxFixture");
+          const modeEl = document.getElementById("lxMode");
+          const qtyEl = document.getElementById("lxQty");
+          const fixtureRows = document.getElementById("lxFixtureRows");
+          const groupRows = document.getElementById("lxGroupRows");
+          const groupOutputs = document.getElementById("lxGroupOutputs");
+          document.querySelectorAll("button[data-lx-subtab]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const next = String(btn.getAttribute("data-lx-subtab") || "planner");
+              lightingState.subSection = next === "colors" ? "colors" : "planner";
+              renderLighting();
+            });
+          });
+          document.getElementById("lxCiClientSel")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLSelectElement)) return;
+            lightingState.selectedClientCiId = target.value;
+            renderLighting();
+          });
+          if (subSection !== "planner") return;
+
+          const manufacturers = Array.from(new Set(lightingFixtureLibrary.map((f) => f.manufacturer))).sort((a, b) => a.localeCompare(b));
+          if (lightingState.selectedManufacturer && !manufacturers.includes(lightingState.selectedManufacturer)) {
+            lightingState.selectedManufacturer = "";
+          }
+          manufacturerEl.innerHTML = `<option value="">All Manufacturers</option>${manufacturers.map((m) => `<option value="${m}">${m}</option>`).join("")}`;
+          manufacturerEl.value = lightingState.selectedManufacturer;
+
+          const filteredFixtures = lightingFixtureLibrary.filter((f) => {
+            if (lightingState.selectedManufacturer && f.manufacturer !== lightingState.selectedManufacturer) return false;
+            const t = lightingState.search.trim().toLowerCase();
+            if (!t) return true;
+            return `${f.manufacturer} ${f.model} ${f.category}`.toLowerCase().includes(t);
+          });
+          const selectedFixture = filteredFixtures.find((f) => fixtureKey(f) === lightingState.selectedFixtureKey) || filteredFixtures[0] || lightingFixtureLibrary[0];
+          lightingState.selectedFixtureKey = selectedFixture ? fixtureKey(selectedFixture) : "";
+          if (!lightingState.selectedModeName) {
+            lightingState.selectedModeName = selectedFixture?.modes?.[0]?.name || "";
+          }
+
+          filteredFixtures.forEach((f) => {
+            const opt = document.createElement("option");
+            opt.value = fixtureKey(f);
+            opt.textContent = `${f.manufacturer} - ${f.model}`;
+            fixtureEl.appendChild(opt);
+          });
+          if (!filteredFixtures.length) {
+            const opt = document.createElement("option");
+            opt.value = "";
+            opt.textContent = "No fixtures match search";
+            fixtureEl.appendChild(opt);
+            fixtureEl.value = "";
+          } else {
+            fixtureEl.value = lightingState.selectedFixtureKey;
+          }
+
+          function repopulateModeSelect() {
+            const fixture = getLightingFixtureByKey(fixtureEl.value);
+            modeEl.innerHTML = "";
+            fixture.modes.forEach((m) => {
+              const opt = document.createElement("option");
+              opt.value = m.name;
+              opt.textContent = `${m.name} (${m.channels}ch)`;
+              modeEl.appendChild(opt);
+            });
+            if (!fixture.modes.find((m) => m.name === lightingState.selectedModeName)) {
+              lightingState.selectedModeName = fixture.modes[0]?.name || "";
+            }
+            modeEl.value = lightingState.selectedModeName;
+          }
+          repopulateModeSelect();
+
+          function renderFixtureRows() {
+            if (!fixtureRows) return;
+            fixtureRows.innerHTML = "";
+            if (!lightingState.fixtures.length) {
+              fixtureRows.innerHTML = `<div class="muted">No fixtures added yet.</div>`;
+              return;
+            }
+            lightingState.fixtures.forEach((line) => {
+              const row = document.createElement("div");
+              row.className = "card";
+              const fixture = getLightingFixtureByKey(line.fixtureKey);
+              const preview = fixturePreviewByKey(line.fixtureKey);
+              const previewPath = String(preview?.path || "");
+              const groupOptions = lightingState.groups
+                .map((g) => `<option value="${g.id}" ${g.id === line.groupId ? "selected" : ""}>${g.name}</option>`)
+                .join("");
+              row.innerHTML = `
+                <div style="display:grid;grid-template-columns:56px 1.5fr 1fr 80px 1fr auto;gap:0.45rem;align-items:center;">
+                  <div style="width:48px;height:48px;border:1px solid var(--theme-line-soft);border-radius:8px;overflow:hidden;background:#121722;display:grid;place-items:center;">
+                    ${previewPath
+                      ? `<img src="${previewPath}" alt="${fixture.manufacturer} ${fixture.model}" style="width:100%;height:100%;object-fit:contain;display:block;" />`
+                      : `<span style="font-size:0.68rem;color:var(--muted);">N/A</span>`}
+                  </div>
+                  <div>
+                    <div><b>${fixture.manufacturer} ${fixture.model}</b></div>
+                    <div class="muted">${fixture.category}</div>
+                  </div>
+                  <div class="muted">${line.modeName} (${line.channels}ch)</div>
+                  <input data-lx-line-qty="${line.id}" type="number" min="1" step="1" value="${line.quantity}" />
+                  <select data-lx-line-group="${line.id}">${groupOptions}</select>
+                  <button data-lx-line-remove="${line.id}">Remove</button>
+                </div>
+              `;
+              fixtureRows.appendChild(row);
+            });
+
+            fixtureRows.querySelectorAll("input[data-lx-line-qty]").forEach((el) => {
+              el.addEventListener("change", () => {
+                const line = lightingState.fixtures.find((x) => x.id === el.dataset.lxLineQty);
+                if (line) line.quantity = Math.max(1, Math.round(Number(el.value || 1)));
+                syncRiggingFixturesWithLighting();
+                renderGroupOutputs();
+              });
+            });
+            fixtureRows.querySelectorAll("select[data-lx-line-group]").forEach((el) => {
+              el.addEventListener("change", () => {
+                const line = lightingState.fixtures.find((x) => x.id === el.dataset.lxLineGroup);
+                if (line) line.groupId = el.value;
+                renderGroupOutputs();
+              });
+            });
+            fixtureRows.querySelectorAll("button[data-lx-line-remove]").forEach((el) => {
+              el.addEventListener("click", () => {
+                lightingState.fixtures = lightingState.fixtures.filter((x) => x.id !== el.dataset.lxLineRemove);
+                syncRiggingFixturesWithLighting();
+                renderLighting();
+              });
+            });
+          }
+
+          function renderGroupRows() {
+            if (!groupRows) return;
+            groupRows.innerHTML = "";
+            lightingState.groups.forEach((g) => {
+              const row = document.createElement("div");
+              row.className = "card";
+              row.dataset.lxGroupSelect = g.id;
+              row.style.borderColor = g.id === lightingState.activeGroupId ? "var(--theme-accent)" : "var(--theme-line-soft)";
+              row.style.cursor = "pointer";
+              row.innerHTML = `
+                <div style="display:grid;grid-template-columns:1fr 90px auto;gap:0.4rem;align-items:center;">
+                  <input data-lx-group-name="${g.id}" value="${g.name}" />
+                  <label class="color-picker-wrap">
+                    <input class="color-input" type="color" data-lx-group-color="${g.id}" value="${g.color}" />
+                  </label>
+                  <button data-lx-group-remove="${g.id}" ${lightingState.groups.length === 1 ? "disabled" : ""}>Remove</button>
+                </div>
+              `;
+              groupRows.appendChild(row);
+            });
+
+            groupRows.querySelectorAll("div[data-lx-group-select]").forEach((el) => {
+              el.addEventListener("click", (ev) => {
+                if (ev.target.closest("input, label, button, select")) return;
+                lightingState.activeGroupId = el.dataset.lxGroupSelect;
+                renderLighting();
+              });
+            });
+            groupRows.querySelectorAll("input[data-lx-group-name]").forEach((el) => {
+              el.addEventListener("click", (ev) => ev.stopPropagation());
+              el.addEventListener("change", () => {
+                const g = lightingState.groups.find((x) => x.id === el.dataset.lxGroupName);
+                if (g) g.name = el.value;
+                renderLighting();
+              });
+            });
+            groupRows.querySelectorAll("input[data-lx-group-color]").forEach((el) => {
+              el.addEventListener("click", (ev) => ev.stopPropagation());
+              el.addEventListener("input", () => {
+                const g = lightingState.groups.find((x) => x.id === el.dataset.lxGroupColor);
+                if (g) g.color = el.value;
+                renderGroupOutputs();
+              });
+            });
+            groupRows.querySelectorAll("button[data-lx-group-remove]").forEach((el) => {
+              el.addEventListener("click", (ev) => {
+                ev.stopPropagation();
+                const removedId = el.dataset.lxGroupRemove;
+                lightingState.groups = lightingState.groups.filter((x) => x.id !== removedId);
+                if (!lightingState.groups.length) {
+                  const first = newLightingGroup(1);
+                  lightingState.groups = [first];
+                }
+                lightingState.activeGroupId = lightingState.groups[0].id;
+                lightingState.fixtures = lightingState.fixtures.map((line) => ({
+                  ...line,
+                  groupId: line.groupId === removedId ? lightingState.activeGroupId : line.groupId
+                }));
+                renderLighting();
+              });
+            });
+          }
+
+          function renderGroupOutputs() {
+            if (!groupOutputs) return;
+            groupOutputs.innerHTML = "";
+            lightingState.groups.forEach((g) => {
+              const rows = lightingState.fixtures.filter((f) => f.groupId === g.id);
+              const fixtureCount = rows.reduce((a, r) => a + r.quantity, 0);
+              const channels = rows.reduce((a, r) => a + (r.channels * r.quantity), 0);
+              const power = rows.reduce((acc, r) => {
+                const fx = getLightingFixtureByKey(r.fixtureKey);
+                const avg = Number.isFinite(Number(fx?.power?.avg_w)) ? Number(fx.power.avg_w) : 0;
+                const max = Number.isFinite(Number(fx?.power?.max_w)) ? Number(fx.power.max_w) : 0;
+                const weight = Number.isFinite(Number(fx?.weight_kg)) ? Number(fx.weight_kg) : 0;
+                acc.avgW += (avg * r.quantity);
+                acc.maxW += (max * r.quantity);
+                acc.weightKg += (weight * r.quantity);
+                return acc;
+              }, { avgW: 0, maxW: 0, weightKg: 0 });
+              const output = document.createElement("div");
+              output.className = "card";
+              output.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
+                  <h3 style="margin:0;">${g.name}</h3>
+                  <span class="color-tag"><span class="color-dot" style="background:${g.color};"></span></span>
+                </div>
+                <div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0.45rem;">
+                  <div class="kpi"><div class="muted">Fixture Count</div><b>${fixtureCount.toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">DMX Channels</div><b>${channels.toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Power Avg (W)</div><b>${Math.round(power.avgW).toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Power Max (W)</div><b>${Math.round(power.maxW).toLocaleString()}</b></div>
+                  <div class="kpi"><div class="muted">Weight (kg)</div><b>${power.weightKg.toFixed(1)}</b></div>
+                </div>
+              `;
+              groupOutputs.appendChild(output);
+            });
+          }
+
+          searchEl?.addEventListener("input", () => {
+            const cursor = searchEl.selectionStart ?? searchEl.value.length;
+            lightingState.search = searchEl.value;
+            renderLighting();
+            requestAnimationFrame(() => {
+              const next = document.getElementById("lxSearch");
+              if (!next) return;
+              next.focus();
+              const pos = Math.min(cursor, next.value.length);
+              next.setSelectionRange(pos, pos);
+            });
+          });
+          manufacturerEl?.addEventListener("change", () => {
+            lightingState.selectedManufacturer = manufacturerEl.value;
+            lightingState.selectedFixtureKey = "";
+            lightingState.selectedModeName = "";
+            renderLighting();
+          });
+          fixtureEl?.addEventListener("change", () => {
+            lightingState.selectedFixtureKey = fixtureEl.value;
+            lightingState.selectedModeName = "";
+            renderLighting();
+          });
+          modeEl?.addEventListener("change", () => {
+            lightingState.selectedModeName = modeEl.value;
+          });
+          qtyEl?.addEventListener("change", () => {
+            lightingState.quantity = Math.max(1, Math.round(Number(qtyEl.value || 1)));
+          });
+          document.getElementById("lxAddFixtureBtn")?.addEventListener("click", () => {
+            if (!fixtureEl.value) return;
+            const fixture = getLightingFixtureByKey(fixtureEl.value);
+            if (!fixture) return;
+            const mode = fixture.modes.find((m) => m.name === modeEl.value) || fixture.modes[0];
+            lightingState.fixtures.push({
+              id: `lx_line_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+              fixtureKey: fixtureKey(fixture),
+              modeName: mode.name,
+              channels: mode.channels,
+              quantity: Math.max(1, Math.round(Number(qtyEl.value || 1))),
+              groupId: lightingState.activeGroupId || lightingState.groups[0]?.id
+            });
+            renderLighting();
+          });
+          document.getElementById("lxAddGroupBtn")?.addEventListener("click", () => {
+            const g = newLightingGroup(lightingState.groups.length + 1);
+            lightingState.groups.push(g);
+            lightingState.activeGroupId = g.id;
+            renderLighting();
+          });
+
+          renderFixtureRows();
+          renderGroupRows();
+          renderGroupOutputs();
+        }
+        function renderRigging() {
+          if (!main) return;
+          ensureRiggingWorkspaces();
+          normalizeRiggingSpanItems();
+          const activeBuildType = String(riggingState.activeBuildType || "linear");
+          const trussCatalogForBuildType = getTrussCatalogForBuildType(activeBuildType);
+          const defaultTrussId = getPreferredTrussTypeForBuildType(activeBuildType) || getPreferredDefaultTrussId();
+          if (riggingState.selectedTrussType && !trussCatalogForBuildType.some((t) => t.id === riggingState.selectedTrussType)) {
+            riggingState.selectedTrussType = "";
+          }
+          if (!riggingState.selectedTrussType && defaultTrussId) {
+            riggingState.selectedTrussType = defaultTrussId;
+          }
+          const rigGroups = getRiggingGroups();
+          const trussTypeSetForBuild = new Set(trussCatalogForBuildType.map((t) => t.id));
+          riggingState.spans = (riggingState.spans || []).map((s) => ({
+            ...s,
+            trussTypeId: trussTypeSetForBuild.has(s.trussTypeId) ? s.trussTypeId : (riggingState.selectedTrussType || defaultTrussId || ""),
+            lengthM: getNearestTrussLength(Number(s.lengthM || 0), trussTypeSetForBuild.has(s.trussTypeId) ? s.trussTypeId : (riggingState.selectedTrussType || defaultTrussId || "")),
+            groupId: s.groupId || rigGroups[0]?.id || ""
+          }));
+          relayoutAllRiggingGroupsByBuildType();
+          if (riggingState.selectedTrussGroupId && !rigGroups.some((g) => g.id === riggingState.selectedTrussGroupId)) {
+            riggingState.selectedTrussGroupId = "";
+          }
+          if (!riggingState.selectedTrussGroupId && rigGroups[0]) {
+            riggingState.selectedTrussGroupId = rigGroups[0].id;
+          }
+          if (riggingState.selectedPlanGroupId && !rigGroups.some((g) => g.id === riggingState.selectedPlanGroupId)) {
+            riggingState.selectedPlanGroupId = "";
+          }
+          if (!riggingState.selectedPlanGroupId && riggingState.selectedTrussGroupId) {
+            riggingState.selectedPlanGroupId = riggingState.selectedTrussGroupId;
+          }
+          if (!riggingState.selectedPlanGroupId && rigGroups[0]) {
+            riggingState.selectedPlanGroupId = rigGroups[0].id;
+          }
+          const selectedRigGroupId = riggingState.selectedTrussGroupId || rigGroups[0]?.id || "";
+          const selectedRigGroupTotalSpanM = getRiggingGroupTotalSpan(selectedRigGroupId);
+          const groupById = Object.fromEntries((lightingState.groups || []).map((g) => [g.id, g]));
+          const assignedInstanceIds = new Set(
+            (riggingState.fixturePlacements || [])
+              .map((fp) => fp.sourceInstanceId)
+              .filter(Boolean)
+          );
+          const lightingGroupPool = (lightingState.fixtures || []).flatMap((line) => {
+            const fx = getLightingFixtureByKey(line.fixtureKey);
+            const group = groupById[line.groupId] || null;
+            const qty = Math.max(1, Math.round(Number(line.quantity || 1)));
+            const pad = String(qty).length > 1 ? String(qty).length : 2;
+            const baseName = `${fx.model} (${line.modeName || "Mode"})`;
+            const out = [];
+            for (let i = 1; i <= qty; i += 1) {
+              const unitId = `${line.id}__${i}`;
+              out.push({
+                sourceFixtureId: unitId,
+                fixtureKey: line.fixtureKey,
+                fixtureName: `${fx.manufacturer} ${fx.model}`,
+                displayName: qty > 1 ? `${baseName} ${String(i).padStart(pad, "0")}` : baseName,
+                weightKg: Number.isFinite(Number(fx?.weight_kg)) ? Number(fx.weight_kg) : null,
+                groupName: group?.name || "Ungrouped",
+                groupColor: group?.color || "#6b5ba0",
+                modeName: line.modeName || "Mode",
+                isAssigned: assignedInstanceIds.has(unitId)
+              });
+            }
+            return out;
+          });
+          const groupOptionsRig = (lightingState.groups || []).map((g) => ({ id: g.id, name: g.name, color: g.color }));
+          if (riggingState.selectedGroupId && !groupOptionsRig.some((g) => g.id === riggingState.selectedGroupId)) {
+            riggingState.selectedGroupId = "";
+          }
+          if (!riggingState.selectedGroupId && groupOptionsRig[0]) {
+            riggingState.selectedGroupId = groupOptionsRig[0].id;
+          }
+          const visibleInstances = lightingGroupPool.filter((x) => !riggingState.selectedGroupId || x.groupName === (groupById[riggingState.selectedGroupId]?.name || ""));
+          const availableInstances = visibleInstances.filter((x) => !x.isAssigned);
+          if (riggingState.selectedAdditionalId && !riggingAdditionalCatalog.some((x) => x.id === riggingState.selectedAdditionalId)) {
+            riggingState.selectedAdditionalId = "";
+          }
+          if (!riggingState.selectedAdditionalId && riggingAdditionalCatalog[0]) {
+            riggingState.selectedAdditionalId = riggingAdditionalCatalog[0].id;
+          }
+          const selectedAdditional = riggingAdditionalCatalog.find((x) => x.id === riggingState.selectedAdditionalId) || riggingAdditionalCatalog[0];
+          const fixtureOptions = lightingFixtureLibrary
+            .filter((f) => {
+              const t = riggingState.fixtureSearch.trim().toLowerCase();
+              if (!t) return true;
+              return `${f.manufacturer} ${f.model}`.toLowerCase().includes(t);
+            })
+            .slice(0, 200);
+          const fixtureSelectValue = riggingState.selectedFixtureKey && fixtureOptions.some((x) => fixtureKey(x) === riggingState.selectedFixtureKey)
+            ? riggingState.selectedFixtureKey
+            : (fixtureOptions[0] ? fixtureKey(fixtureOptions[0]) : "");
+          riggingState.selectedFixtureKey = fixtureSelectValue;
+          const spanOptions = riggingState.spans.map((s) => `<option value="${s.id}" ${s.id === riggingState.selectedSpanId ? "selected" : ""}>${s.id} (${s.nodeA}-${s.nodeB})</option>`).join("");
+          const nodeOptions = riggingState.nodes.map((n) => `<option value="${n.id}">${n.label} (${n.id})</option>`).join("");
+          const selectedTrussLengthOptions = getTrussLengthOptions(riggingState.selectedTrussType);
+          const trussOptions = trussCatalogForBuildType.map((t) => `<option value="${t.id}" ${t.id === riggingState.selectedTrussType ? "selected" : ""}>${t.series} ${t.connection} ${t.verified ? "" : "[UNVERIFIED]"}</option>`).join("");
+          const motorOptions = motorCatalog.map((m) => `<option value="${m.id}" ${m.id === riggingState.selectedMotorId ? "selected" : ""}>${m.brand} ${m.model} (${m.wll_kg ?? "?"}kg)</option>`).join("");
+          const calc = riggingState.lastCalc || runRiggingCalculation();
+          const exportLocked = Boolean(calc?.compliance?.exportLocked);
+          const methodPlanGroupId = riggingState.selectedPlanGroupId || selectedRigGroupId;
+          const methodStructural = buildRiggingStructuralProfile(methodPlanGroupId, 120);
+          const methodHtml = getRiggingCalculationMethodHTML({
+            supportCount: Array.isArray(methodStructural?.supportXs) ? methodStructural.supportXs.length : 0,
+            usesStructural: Boolean(methodStructural && methodStructural.points && methodStructural.points.length > 1),
+            graphScaleMode: riggingState.graphScaleMode || "auto",
+            graphFixedMax: riggingState.graphFixedMax,
+            safetyFactor: riggingState.safetyFactor
+          });
+          const splitSpanAtPosition = (spanId, posM) => {
+            const span = getSpan(spanId);
+            if (!span) return null;
+            const L = Number(span.lengthM || 0);
+            const p = Number(posM || 0);
+            if (!(L > 0) || p <= 0.001 || p >= (L - 0.001)) return null;
+            const nodeA = getNode(span.nodeA);
+            const nodeB = getNode(span.nodeB);
+            if (!nodeA || !nodeB) return null;
+            const t = p / L;
+            const newNodeIdx = riggingState.nodes.length + 1;
+            const newNodeId = `N${newNodeIdx}`;
+            riggingState.nodes.push({
+              id: newNodeId,
+              label: `P${newNodeIdx}`,
+              x: Number(nodeA.x || 0) + ((Number(nodeB.x || 0) - Number(nodeA.x || 0)) * t),
+              y: Number(nodeA.y || 0) + ((Number(nodeB.y || 0) - Number(nodeA.y || 0)) * t)
+            });
+            const s1 = {
+              id: `${span.id}A${Math.random().toString(36).slice(2, 4)}`,
+              nodeA: span.nodeA,
+              nodeB: newNodeId,
+              trussTypeId: span.trussTypeId,
+              groupId: span.groupId || selectedRigGroupId,
+              lengthM: Number(p.toFixed(3))
+            };
+            const s2 = {
+              id: `${span.id}B${Math.random().toString(36).slice(2, 4)}`,
+              nodeA: newNodeId,
+              nodeB: span.nodeB,
+              trussTypeId: span.trussTypeId,
+              groupId: span.groupId || selectedRigGroupId,
+              lengthM: Number((L - p).toFixed(3))
+            };
+            riggingState.spans = riggingState.spans.filter((x) => x.id !== span.id).concat([s1, s2]);
+            (riggingState.fixturePlacements || []).forEach((fp) => {
+              if (fp.spanId !== span.id) return;
+              const fxPos = Number(fp.positionM || 0);
+              if (fxPos <= p) {
+                fp.spanId = s1.id;
+                fp.positionM = Number(Math.max(0, fxPos).toFixed(3));
+              } else {
+                fp.spanId = s2.id;
+                fp.positionM = Number(Math.max(0, fxPos - p).toFixed(3));
+              }
+            });
+            (riggingState.accessories || []).forEach((a) => {
+              if (a.spanId !== span.id) return;
+              const accPos = Number(a.positionM || 0);
+              if (accPos <= p) {
+                a.spanId = s1.id;
+                a.positionM = Number(Math.max(0, accPos).toFixed(3));
+              } else {
+                a.spanId = s2.id;
+                a.positionM = Number(Math.max(0, accPos - p).toFixed(3));
+              }
+            });
+            return { newNodeId, leftSpanId: s1.id, rightSpanId: s2.id };
+          };
+          const resolveMotorNodeAtGroupPos = (groupId, posM) => {
+            const mapped = mapGroupPositionToSpan(groupId, posM);
+            if (!mapped) return null;
+            const span = getSpan(mapped.spanId);
+            if (!span) return null;
+            const spanLength = Math.max(0.001, Number(span.lengthM || 0.001));
+            const t = Number(mapped.positionM || 0) / spanLength;
+            return t <= 0.5 ? span.nodeA : span.nodeB;
+          };
+
+          const rigBuildTabs = RIGGING_BUILD_TYPES.map((bt) => {
+            const active = bt.id === String(riggingState.activeBuildType || "linear");
+            return `<button data-rig-build-tab="${bt.id}" class="${active ? "active" : ""}" style="${active ? "border-color:var(--theme-accent);color:var(--theme-accent-ink);" : ""}">${bt.label}</button>`;
+          }).join("");
+          main.innerHTML = `
+            <div class="card">
+              <div class="toolbar">
+                <h2>Rigging - Event Rigging Calculator</h2>
+                <div style="display:flex;gap:0.45rem;">
+                  <div style="position:relative;">
+                    <button
+                      id="rigExportMenuBtn"
+                      title="${exportLocked ? "Resolve FAIL checks in Compliance panel before export." : "Export options available."}"
+                      style="${exportLocked
+                        ? "background:#6a1f2a;border-color:#b84a5b;color:#ffd8df;"
+                        : "background:#1f5135;border-color:#4fb982;color:#d6ffe8;"}"
+                    >
+                      Export (${exportLocked ? "LOCKED" : "UNLOCKED"})
+                    </button>
+                    <div id="rigExportMenu" class="card" style="display:none;position:absolute;right:0;top:calc(100% + 6px);z-index:15;min-width:220px;padding:0.4rem;">
+                      <button id="rigExportCsvOpt" style="width:100%;text-align:left;margin-bottom:0.35rem;" ${exportLocked ? "disabled" : ""}>Export Point Loads CSV</button>
+                      <button id="rigExportHtmlOpt" style="width:100%;text-align:left;" ${exportLocked ? "disabled" : ""}>Export Report HTML</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.55rem;">
+                ${rigBuildTabs}
+              </div>
+              <div class="muted" style="margin-top:0.45rem;">Raw and factored loads are displayed separately. Final calc blocks on missing mass data.</div>
+            </div>
+
+            <div class="grid" style="margin-top:0.75rem;align-items:start;">
+              <div class="card">
+                <div class="toolbar">
+                  <h3>Truss Groups</h3>
+                </div>
+                <div class="grid grid-4" style="margin-bottom:0.55rem;">
+                  <div><label>Truss Type</label><select id="rigTrussTypeSel">${trussOptions}</select></div>
+                  <div><label>Truss Group</label><select id="rigTrussGroupSel">${rigGroups.map((g) => `<option value="${g.id}" ${g.id === riggingState.selectedTrussGroupId ? "selected" : ""}>${g.name}</option>`).join("")}</select></div>
+                  <div style="display:flex;align-items:flex-end;"><button id="rigAddTrussGroupBtn">Add Truss Group</button></div>
+                </div>
+                <div class="table-wrap" style="margin-bottom:0.55rem;">
+                  <table>
+                    <thead><tr><th>Group</th><th>Color</th><th>Spans</th><th style="width:64px;text-align:center;">Action</th></tr></thead>
+                    <tbody>
+                      ${rigGroups.map((g) => {
+                        const groupSpans = riggingState.spans.filter((s) => s.groupId === g.id);
+                        const spanCount = groupSpans.length;
+                        const groupSegLen = getNearestTrussLength(
+                          Number(riggingState.groupSegmentLengthMById?.[g.id] || selectedTrussLengthOptions[0] || 1),
+                          riggingState.selectedTrussType
+                        );
+                        const expanded = riggingState.groupExpandedById?.[g.id] !== false;
+                        const rowTint = colorWithAlpha(g.color || "#f08a3c", 0.09);
+                        const expandedTint = colorWithAlpha(g.color || "#f08a3c", 0.14);
+                        return `
+                          <tr>
+                            <td style="background:${rowTint};">
+                              <div style="display:flex;align-items:center;gap:0.35rem;">
+                                <button data-rig-group-toggle="${g.id}" title="${expanded ? "Collapse" : "Expand"}" style="min-width:26px;padding:0.15rem 0.35rem;">${expanded ? "▾" : "▸"}</button>
+                                <input data-rig-group-name="${g.id}" value="${g.name}" />
+                              </div>
+                            </td>
+                            <td style="background:${rowTint};"><input data-rig-group-color="${g.id}" type="color" value="${g.color || "#f08a3c"}" title="Group color" style="width:42px;height:30px;padding:0;border:1px solid var(--theme-line-soft);border-radius:8px;background:transparent;cursor:pointer;" /></td>
+                            <td style="background:${rowTint};">${spanCount}</td>
+                            <td style="background:${rowTint};width:64px;text-align:center;"><button data-rig-group-remove="${g.id}" ${rigGroups.length <= 1 ? "disabled" : ""} title="Remove group" style="width:28px;height:28px;min-width:28px;padding:0;line-height:1;">×</button></td>
+                          </tr>
+                          ${expanded ? `
+                            <tr>
+                              <td colspan="4" style="background:${expandedTint};">
+                                <div style="display:flex;gap:0.35rem;align-items:center;margin-bottom:0.45rem;">
+                                  <button data-rig-group-add-seg="${g.id}">Add Segment</button>
+                                  <select data-rig-group-seg-l="${g.id}" style="max-width:190px;padding:0.18rem 0.32rem;">
+                                    ${selectedTrussLengthOptions.map((len) => `<option value="${len}" ${Math.abs(Number(len) - Number(groupSegLen)) < 0.001 ? "selected" : ""}>${formatLengthWeightOption(len, riggingState.selectedTrussType)}</option>`).join("")}
+                                  </select>
+                                  <label style="margin:0;">Length</label>
+                                </div>
+                                <div class="table-wrap">
+                                  <table>
+                                    <thead>
+                                      <tr>
+                                        <th style="background:${colorWithAlpha(g.color || "#f08a3c", 0.22)};">ID</th>
+                                        <th style="background:${colorWithAlpha(g.color || "#f08a3c", 0.22)};">Length</th>
+                                        <th style="background:${colorWithAlpha(g.color || "#f08a3c", 0.22)};">Type</th>
+                                        <th style="background:${colorWithAlpha(g.color || "#f08a3c", 0.22)};">Weight (kg)</th>
+                                        <th style="background:${colorWithAlpha(g.color || "#f08a3c", 0.22)};width:64px;text-align:center;">Action</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      ${groupSpans.length
+                                        ? groupSpans.map((s) => {
+                                          const sType = getTrussType(s.trussTypeId);
+                                          const sLenOptions = getTrussLengthOptions(s.trussTypeId);
+                                          const sLen = getNearestTrussLength(Number(s.lengthM || 0), s.trussTypeId);
+                                          const sWeight = Number.isFinite(Number(sType?.weight_per_m_kg))
+                                            ? Number(sType.weight_per_m_kg) * Number(sLen || 0)
+                                            : null;
+                                          return `
+                                          <tr>
+                                            <td>${s.id}</td>
+                                            <td><select data-rig-span-l="${s.id}" style="max-width:170px;">${sLenOptions.map((len) => `<option value="${len}" ${Math.abs(Number(len) - Number(sLen)) < 0.001 ? "selected" : ""}>${formatLengthWeightOption(len, s.trussTypeId)}</option>`).join("")}</select></td>
+                                            <td><select data-rig-span-type="${s.id}">${trussCatalogForBuildType.map((x) => `<option value="${x.id}" ${x.id === s.trussTypeId ? "selected" : ""}>${x.series}${x.verified ? "" : " [UNVERIFIED]"}</option>`).join("")}</select></td>
+                                            <td>${sWeight === null ? "n/a" : sWeight.toFixed(1)}</td>
+                                            <td style="width:64px;text-align:center;"><button data-rig-span-remove="${s.id}" ${riggingState.spans.length <= 1 ? "disabled" : ""} title="Remove segment" style="width:28px;height:28px;min-width:28px;padding:0;line-height:1;">×</button></td>
+                                          </tr>
+                                        `;
+                                        }).join("")
+                                        : `<tr><td colspan="5" class="muted">No segments in this group.</td></tr>`}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </td>
+                            </tr>
+                          ` : ""}
+                        `;
+                      }).join("")}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:0.75rem;">
+                <div class="grid grid-2" style="margin-top:0.15rem;align-items:start;">
+                  <div class="card" style="margin:0;">
+                    <h3>Add Fixtrues</h3>
+                    <div style="margin-top:0.55rem;">
+                      <div>
+                        <label>Lighting Group</label>
+                        <select id="rigGroupSel">
+                          ${groupOptionsRig.map((g) => `<option value="${g.id}" ${g.id === riggingState.selectedGroupId ? "selected" : ""}>${g.name}</option>`).join("")}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="dropzone" style="margin-top:0.45rem;">
+                      ${availableInstances.length
+                        ? availableInstances.map((fixture) => `<span class="chip" draggable="true"
+                            data-rig-drag-key="${fixture.fixtureKey}"
+                            data-rig-drag-name="${fixture.fixtureName}"
+                            data-rig-drag-instance="${fixture.sourceFixtureId}"
+                            data-rig-drag-weight="${fixture.weightKg ?? ""}"
+                            data-rig-drag-mode="${fixture.modeName}"
+                            data-rig-drag-qty="1"
+                            style="border-color:${fixture.groupColor};cursor:grab;margin-right:0.35rem;margin-bottom:0.35rem;"
+                            title="Drag onto a span line on the 2D plan or onto a node pickup target."
+                          >${fixture.displayName}</span>`).join("")
+                        : `<span class="muted">No available fixtures in this group.</span>`}
+                    </div>
+                  </div>
+                  <div class="card" style="margin:0;">
+                    <h3>Add Aditionals</h3>
+                    <div class="grid grid-2" style="margin-top:0.55rem;">
+                      <div>
+                        <label>Item</label>
+                        <select id="rigAdditionalSel">
+                          ${riggingAdditionalCatalog.map((a) => `<option value="${a.id}" ${a.id === riggingState.selectedAdditionalId ? "selected" : ""}>${a.name} (${a.weightKg} kg)</option>`).join("")}
+                        </select>
+                      </div>
+                      <div style="display:flex;align-items:flex-end;">
+                        <button id="rigAddAdditionalBtn">Add Additional</button>
+                      </div>
+                    </div>
+                    <div class="dropzone" style="margin-top:0.45rem;">
+                      ${selectedAdditional
+                        ? `<span class="chip" draggable="true"
+                            data-rig-drag-key="__additional__${selectedAdditional.id}"
+                            data-rig-drag-name="${selectedAdditional.name}"
+                            data-rig-drag-instance=""
+                            data-rig-drag-weight="${selectedAdditional.weightKg}"
+                            data-rig-drag-mode="Additional"
+                            data-rig-drag-qty="1"
+                            style="cursor:grab;"
+                          >Drag: ${selectedAdditional.name} (${selectedAdditional.weightKg} kg)</span>`
+                        : `<span class="muted">No additional item selected.</span>`}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            <div class="card" style="margin-top:0.75rem;">
+                <h3>Add Motor</h3>
+                <div class="grid grid-4" style="margin-top:0.55rem;">
+                  <div><label>Truss Group</label><select id="rigGroupMotorGroupSel">${rigGroups.map((g) => `<option value="${g.id}" ${g.id === selectedRigGroupId ? "selected" : ""}>${g.name}</option>`).join("")}</select></div>
+                  <div><label>Motor Position (m)</label><input id="rigGroupMotorPosM" type="number" min="0" max="${Math.max(0, selectedRigGroupTotalSpanM).toFixed(2)}" step="0.1" value="${Math.max(0, Math.min(selectedRigGroupTotalSpanM, Number(riggingState.groupMotorPositionM || 0))).toFixed(1)}" /></div>
+                  <div><label>Roof Point Weight (kg)</label><input id="rigGroupMotorWllKg" type="number" min="0" step="1" value="${Number.isFinite(Number(riggingState.groupMotorRoofWllKg)) ? Number(riggingState.groupMotorRoofWllKg) : ""}" /></div>
+                  <div style="display:flex;align-items:flex-end;gap:0.4rem;"><button id="rigGroupAddMotorBtn" ${selectedRigGroupTotalSpanM > 0 ? "" : "disabled"}>Add Motor On Span</button></div>
+                </div>
+                <div class="table-wrap" style="margin-top:0.55rem;">
+                  <table>
+                    <thead><tr><th>Motor</th><th>Position (m)</th><th>WLL</th><th></th></tr></thead>
+                    <tbody>
+                      ${(riggingState.groupMotors || []).filter((gm) => gm.groupId === selectedRigGroupId).map((gm) => `
+                        <tr>
+                          <td>${getMotor(gm.motorId)?.brand || ""} ${getMotor(gm.motorId)?.model || ""}</td>
+                          <td>
+                            <input
+                              data-rig-gm-pos="${gm.id}"
+                              type="number"
+                              min="0"
+                              max="${Math.max(0, getRiggingGroupTotalSpan(gm.groupId || selectedRigGroupId)).toFixed(2)}"
+                              step="0.1"
+                              value="${Number(gm.positionM || 0).toFixed(2)}"
+                              style="max-width:120px;"
+                            />
+                          </td>
+                          <td>${Number.isFinite(Number(gm.roofPointWllKg)) ? `${Number(gm.roofPointWllKg).toFixed(0)} kg` : "n/a"}</td>
+                          <td><button data-rig-gm-remove="${gm.id}">Remove</button></td>
+                        </tr>
+                      `).join("") || '<tr><td colspan="4" class="muted">No group motors yet.</td></tr>'}
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:0.75rem;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:0.75rem;flex-wrap:wrap;">
+                <h3 style="margin:0;">2D Plan</h3>
+                <div style="min-width:200px;">
+                  <label>Group</label>
+                  <select id="rigPlanGroupSel">
+                    ${rigGroups.map((g) => `<option value="${g.id}" ${g.id === riggingState.selectedPlanGroupId ? "selected" : ""}>${g.name}</option>`).join("")}
+                  </select>
+                </div>
+                <div style="min-width:200px;">
+                  <label>Graph Scale</label>
+                  <select id="rigGraphScaleModeSel">
+                    <option value="auto" ${riggingState.graphScaleMode === "auto" ? "selected" : ""}>Auto</option>
+                    <option value="fixed" ${riggingState.graphScaleMode === "fixed" ? "selected" : ""}>Fixed</option>
+                    <option value="relative" ${riggingState.graphScaleMode === "relative" ? "selected" : ""}>Relative (%)</option>
+                  </select>
+                </div>
+                <div style="min-width:180px;">
+                  <label>Fixed Max</label>
+                  <input id="rigGraphFixedMaxInp" type="number" min="0.1" step="0.1" value="${Number.isFinite(Number(riggingState.graphFixedMax)) ? Number(riggingState.graphFixedMax) : ""}" ${riggingState.graphScaleMode === "fixed" ? "" : "disabled"} />
+                </div>
+              </div>
+              <div class="muted">Node and span layout with 0.5m grid, 1m top labels, and live beam load profile.</div>
+              <svg id="rigPlanSvg" viewBox="0 0 900 380" style="width:100%;margin-top:0.55rem;border:1px solid var(--theme-line-soft);border-radius:10px;background:var(--theme-input);"></svg>
+            </div>
+
+            <div class="card" style="margin-top:0.75rem;">
+              <h3>Calculation Output</h3>
+              <div class="muted" style="margin-top:0.15rem;">Build Type: <b>${calc.buildTypeLabel || "Linear Truss"}</b></div>
+              ${calc.blocked ? `<div class="bad">Calculation blocked. Resolve blockers below.</div>` : `<div class="ok">Calculation valid.</div>`}
+              <div class="kpis" style="margin-top:0.55rem;">
+                <div class="kpi"><div class="muted">Total Weight (kg)</div><b>${Number(calc.totalWeightKg || 0).toFixed(1)}</b></div>
+                <div class="kpi"><div class="muted">Spans</div><b>${calc.spanResults.length}</b></div>
+                <div class="kpi"><div class="muted">Pickups</div><b>${calc.pickupResults.length}</b></div>
+                <div class="kpi"><div class="muted">Safety Factor</div><b>${Number(calc.safetyFactor || 1).toFixed(2)}</b></div>
+              </div>
+              <div class="grid grid-2" style="margin-top:0.7rem;">
+                <div class="card">
+                  <h3 style="font-size:0.96rem;">Per Pickup Loads</h3>
+                  <div class="table-wrap" style="max-height:260px;">
+                    <table>
+                      <thead><tr><th>Pickup</th><th>Node</th><th>Roof Raw (kg)</th><th>Motor Payload Raw (kg)</th><th>Factored Roof (kg)</th><th>Roof Util</th><th>Motor Util</th></tr></thead>
+                      <tbody>
+                        ${calc.pickupResults.map((p) => `
+                          <tr>
+                            <td>${p.pickupId}</td>
+                            <td>${p.nodeLabel}</td>
+                            <td>${p.rawLoadKg.toFixed(1)}</td>
+                            <td>${Number(p.payloadRawKg || 0).toFixed(1)}</td>
+                            <td>${p.factoredLoadKg.toFixed(1)}</td>
+                            <td>${p.roofUtilPct === null ? "n/a" : `${p.roofUtilPct.toFixed(1)}%`}</td>
+                            <td>${p.motorUtilPct === null ? "n/a" : `${p.motorUtilPct.toFixed(1)}%`}</td>
+                          </tr>
+                        `).join("")}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card">
+                  <h3 style="font-size:0.96rem;">Warnings / Blockers</h3>
+                  <div class="table-wrap" style="max-height:260px;">
+                    <table>
+                      <thead><tr><th>Type</th><th>Message</th></tr></thead>
+                      <tbody>
+                        ${(calc.blockers || []).map((w) => `<tr><td class="bad">BLOCKER</td><td>${w}</td></tr>`).join("")}
+                        ${(calc.warnings || []).map((w) => `<tr><td class="warn-t">WARN</td><td>${w}</td></tr>`).join("")}
+                        ${(!calc.blockers.length && !calc.warnings.length) ? `<tr><td class="ok">OK</td><td>No warnings.</td></tr>` : ""}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:0.75rem;">
+              <h3>Build-Type Checks (${calc.buildTypeLabel || "Linear Truss"})</h3>
+              <div class="table-wrap" style="margin-top:0.45rem;">
+                <table>
+                  <thead><tr><th>Group</th><th>Rule</th><th>Value</th><th>Status</th></tr></thead>
+                  <tbody>
+                    ${(calc.buildTypeRows || []).map((r) => `
+                      <tr>
+                        <td>${r.group}</td>
+                        <td>${r.rule}</td>
+                        <td>${r.value}</td>
+                        <td class="${r.status === "PASS" ? "ok" : (r.status === "FAIL" ? "bad" : "warn-t")}">${r.status}</td>
+                      </tr>
+                    `).join("") || '<tr><td colspan="4" class="muted">No active truss groups to evaluate.</td></tr>'}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:0.75rem;">
+              <h3>Compliance Check</h3>
+              <div class="muted">FAIL checks lock exports. WARN checks are advisory (85%+ utilization).</div>
+              <div class="kpis" style="margin-top:0.55rem;">
+                <div class="kpi"><div class="muted">PASS</div><b>${(calc.compliance?.checks || []).filter((c) => c.status === "PASS").length}</b></div>
+                <div class="kpi"><div class="muted">WARN</div><b class="warn-t">${calc.compliance?.warnCount || 0}</b></div>
+                <div class="kpi"><div class="muted">FAIL</div><b class="bad">${calc.compliance?.failCount || 0}</b></div>
+                <div class="kpi"><div class="muted">Export Lock</div><b class="${exportLocked ? "bad" : "ok"}">${exportLocked ? "LOCKED" : "UNLOCKED"}</b></div>
+              </div>
+              <div class="table-wrap" style="margin-top:0.6rem;max-height:240px;">
+                <table>
+                  <thead><tr><th>Check</th><th>Status</th><th>Detail</th></tr></thead>
+                  <tbody>
+                    ${(calc.compliance?.checks || []).map((c) => `
+                      <tr>
+                        <td>${c.title}</td>
+                        <td class="${c.status === "FAIL" ? "bad" : (c.status === "WARN" ? "warn-t" : "ok")}">${c.status}</td>
+                        <td>${c.detail}</td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:0.75rem;">
+              <h3>Calculation Method</h3>
+              <div class="muted">Live method sheet generated from the active solver path and formulas used in this page.</div>
+              ${methodHtml}
+            </div>
+
+            <div class="card" style="margin-top:0.75rem;">
+              <div class="muted" style="margin-top:0.1rem;">Drop onto 2D span line to auto-calculate position from Node A.</div>
+              <div class="table-wrap" style="margin-top:0.55rem;">
+                <table>
+                  <thead><tr><th>Fixture</th><th>Truss Group</th><th>Span</th><th>Pos (m)</th><th>Qty</th><th>Weight (kg)</th><th></th></tr></thead>
+                  <tbody>
+                    ${riggingState.fixturePlacements.map((fp) => {
+                      const span = fp.spanId ? getSpan(fp.spanId) : null;
+                      const group = span ? rigGroups.find((g) => g.id === span.groupId) : null;
+                      return `
+                      <tr>
+                        <td>${fp.fixtureName}</td>
+                        <td>${group ? `<span class="chip" style="border-color:${group.color};">${group.name}</span>` : "-"}</td>
+                        <td>${fp.spanId || (fp.nodeId ? `Node ${getNode(fp.nodeId)?.label || fp.nodeId}` : "-")}</td>
+                        <td>${Number(fp.positionM || 0).toFixed(2)}</td>
+                        <td>${fp.quantity}</td>
+                        <td>${Number(((fp.weightKg || 0) + (fp.clampWeightKg || 0)) * (fp.quantity || 1)).toFixed(1)}</td>
+                        <td><button data-rig-fp-remove="${fp.id}">Remove</button></td>
+                      </tr>
+                    `;
+                    }).join("")}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+
+          document.getElementById("rigTrussTypeSel")?.addEventListener("change", (e) => {
+            riggingState.selectedTrussType = e.target.value;
+            if (riggingState.selectedTrussGroupId) {
+              const currentLen = Number(riggingState.groupSegmentLengthMById?.[riggingState.selectedTrussGroupId] || 0);
+              riggingState.groupSegmentLengthMById[riggingState.selectedTrussGroupId] = getNearestTrussLength(currentLen || getTrussLengthOptions(riggingState.selectedTrussType)[0], riggingState.selectedTrussType);
+            }
+            renderRigging();
+          });
+          document.querySelectorAll("[data-rig-build-tab]").forEach((el) => el.addEventListener("click", () => {
+            const next = String(el.dataset.rigBuildTab || "linear");
+            if (next === String(riggingState.activeBuildType || "linear")) return;
+            switchRiggingBuildType(next);
+            renderRigging();
+          }));
+          document.getElementById("rigTrussGroupSel")?.addEventListener("change", (e) => { riggingState.selectedTrussGroupId = e.target.value; });
+          document.getElementById("rigMotorSel")?.addEventListener("change", (e) => { riggingState.selectedMotorId = e.target.value; });
+          document.getElementById("rigAddTrussGroupBtn")?.addEventListener("click", () => {
+            const g = newRiggingGroup((riggingState.groups || []).length + 1);
+            riggingState.groups = [...getRiggingGroups(), g];
+            riggingState.selectedTrussGroupId = g.id;
+            renderRigging();
+          });
+          document.querySelectorAll("[data-rig-group-name]").forEach((el) => {
+            el.addEventListener("change", () => {
+              const g = getRiggingGroups().find((x) => x.id === el.dataset.rigGroupName);
+              if (!g) return;
+              g.name = (el.value || "").trim() || g.name;
+              renderRigging();
+            });
+          });
+          document.querySelectorAll("[data-rig-group-color]").forEach((el) => {
+            const updateGroupColor = () => {
+              const g = getRiggingGroups().find((x) => x.id === el.dataset.rigGroupColor);
+              if (!g) return;
+              g.color = el.value || g.color;
+            };
+            // Avoid full rerender while picker is open; this prevents picker glitches.
+            el.addEventListener("input", () => updateGroupColor());
+            el.addEventListener("change", () => {
+              updateGroupColor();
+              renderRigging();
+            });
+          });
+          document.querySelectorAll("[data-rig-group-toggle]").forEach((el) => {
+            el.addEventListener("click", () => {
+              const id = el.dataset.rigGroupToggle;
+              if (!id) return;
+              const current = riggingState.groupExpandedById?.[id] !== false;
+              riggingState.groupExpandedById[id] = !current;
+              renderRigging();
+            });
+          });
+          document.querySelectorAll("[data-rig-group-seg-l]").forEach((el) => {
+            el.addEventListener("change", () => {
+              const id = el.dataset.rigGroupSegL;
+              if (!id) return;
+              const len = getNearestTrussLength(Number(el.value || 0), riggingState.selectedTrussType);
+              riggingState.groupSegmentLengthMById[id] = len;
+            });
+          });
+          document.querySelectorAll("[data-rig-group-add-seg]").forEach((el) => {
+            el.addEventListener("click", () => {
+              const groupId = el.dataset.rigGroupAddSeg;
+              if (!groupId || riggingState.nodes.length < 1) return;
+              const nextId = (() => {
+                let i = riggingState.spans.length + 1;
+                while (riggingState.spans.some((s) => s.id === `S${i}`)) i += 1;
+                return `S${i}`;
+              })();
+              const lengthM = getNearestTrussLength(
+                Number(riggingState.groupSegmentLengthMById?.[groupId] || getTrussLengthOptions(riggingState.selectedTrussType)[0] || 1),
+                riggingState.selectedTrussType
+              );
+              const groupSpans = (riggingState.spans || []).filter((s) => (s.groupId || rigGroups[0]?.id || "") === groupId);
+              const nodeIdForNext = (() => {
+                if (!groupSpans.length) return riggingState.nodes[0]?.id || null;
+                const degree = {};
+                groupSpans.forEach((s) => {
+                  degree[s.nodeA] = (degree[s.nodeA] || 0) + 1;
+                  degree[s.nodeB] = (degree[s.nodeB] || 0) + 1;
+                });
+                const spanMap = buildRiggingSpanCoordinateMap();
+                const endpoints = Object.keys(degree).filter((id) => degree[id] === 1);
+                const candidates = endpoints.length ? endpoints : Object.keys(degree);
+                if (!candidates.length) return riggingState.nodes[0]?.id || null;
+                return candidates.reduce((best, id) => {
+                  const bx = Number(spanMap.nodeXById?.[best] ?? getNode(best)?.x ?? 0);
+                  const ix = Number(spanMap.nodeXById?.[id] ?? getNode(id)?.x ?? 0);
+                  return ix >= bx ? id : best;
+                }, candidates[0]);
+              })();
+              const startNode = nodeIdForNext ? getNode(nodeIdForNext) : null;
+              if (!startNode) return;
+              const nextNodeId = (() => {
+                let i = riggingState.nodes.length + 1;
+                while (riggingState.nodes.some((n) => n.id === `N${i}`)) i += 1;
+                return `N${i}`;
+              })();
+              const nextNodeLabel = (() => {
+                let i = riggingState.nodes.length + 1;
+                while (riggingState.nodes.some((n) => n.label === `P${i}`)) i += 1;
+                return `P${i}`;
+              })();
+              const nextNode = {
+                id: nextNodeId,
+                label: nextNodeLabel,
+                x: Number(startNode.x || 0) + lengthM,
+                y: Number(startNode.y || 0)
+              };
+              riggingState.nodes.push(nextNode);
+              riggingState.spans.push({
+                id: nextId,
+                nodeA: startNode.id,
+                nodeB: nextNode.id,
+                trussTypeId: riggingState.selectedTrussType || trussCatalog[0]?.id,
+                groupId,
+                lengthM
+              });
+              riggingState.selectedTrussGroupId = groupId;
+              renderRigging();
+            });
+          });
+          document.querySelectorAll("[data-rig-group-remove]").forEach((el) => {
+            el.addEventListener("click", () => {
+              const id = el.dataset.rigGroupRemove;
+              const groups = getRiggingGroups();
+              if (!id || groups.length <= 1) return;
+              const fallback = groups.find((x) => x.id !== id);
+              riggingState.groups = groups.filter((x) => x.id !== id);
+              riggingState.spans.forEach((s) => {
+                if (s.groupId === id) s.groupId = fallback?.id || "";
+              });
+              riggingState.groupFixtures = (riggingState.groupFixtures || []).filter((x) => x.groupId !== id);
+              riggingState.groupMotors = (riggingState.groupMotors || []).filter((x) => x.groupId !== id);
+              if (riggingState.selectedTrussGroupId === id) riggingState.selectedTrussGroupId = fallback?.id || "";
+              renderRigging();
+            });
+          });
+
+          document.querySelectorAll("[data-rig-span-remove]").forEach((el) => el.addEventListener("click", () => {
+            riggingState.spans = riggingState.spans.filter((s) => s.id !== el.dataset.rigSpanRemove);
+            normalizeRiggingSpanItems();
+            renderRigging();
+          }));
+          document.querySelectorAll("[data-rig-span-l]").forEach((el) => el.addEventListener("change", () => {
+            const s = getSpan(el.dataset.rigSpanL);
+            if (s) {
+              s.lengthM = getNearestTrussLength(Number(el.value || 0), s.trussTypeId);
+              const maxLen = Math.max(0, Number(s.lengthM || 0));
+              riggingState.fixturePlacements.forEach((fp) => {
+                if (fp.spanId === s.id) fp.positionM = Math.max(0, Math.min(maxLen, Number(fp.positionM || 0)));
+              });
+              riggingState.accessories.forEach((a) => {
+                if (a.spanId === s.id) a.positionM = Math.max(0, Math.min(maxLen, Number(a.positionM || 0)));
+              });
+            }
+            renderRigging();
+          }));
+          document.querySelectorAll("[data-rig-span-type]").forEach((el) => el.addEventListener("change", () => {
+            const s = getSpan(el.dataset.rigSpanType);
+            if (s) {
+              s.trussTypeId = el.value;
+              s.lengthM = getNearestTrussLength(Number(s.lengthM || 0), s.trussTypeId);
+            }
+            renderRigging();
+          }));
+          document.querySelectorAll("[data-rig-span-group]").forEach((el) => el.addEventListener("change", () => { const s = getSpan(el.dataset.rigSpanGroup); if (s) s.groupId = el.value; renderRigging(); }));
+
+          document.getElementById("rigAddPickupBtn")?.addEventListener("click", () => {
+            const idx = riggingState.pickups.length + 1;
+            riggingState.pickups.push({
+              id: `PU${idx}`,
+              nodeId: riggingState.nodes[0]?.id || "N1",
+              pickupType: "motor",
+              motorId: riggingState.selectedMotorId || motorCatalog[0]?.id,
+              roofPointWllKg: null,
+              chainDropM: 8,
+              notes: ""
+            });
+            renderRigging();
+          });
+          document.querySelectorAll("[data-rig-pickup-remove]").forEach((el) => el.addEventListener("click", () => { riggingState.pickups = riggingState.pickups.filter((p) => p.id !== el.dataset.rigPickupRemove); renderRigging(); }));
+          document.querySelectorAll("[data-rig-pickup-motor]").forEach((el) => el.addEventListener("change", () => { const p = riggingState.pickups.find((x) => x.id === el.dataset.rigPickupMotor); if (p) p.motorId = el.value; }));
+          document.querySelectorAll("[data-rig-pickup-wll]").forEach((el) => el.addEventListener("change", () => { const p = riggingState.pickups.find((x) => x.id === el.dataset.rigPickupWll); if (p) p.roofPointWllKg = el.value === "" ? null : Number(el.value); }));
+          document.querySelectorAll("[data-rig-pickup-drop]").forEach((el) => el.addEventListener("change", () => { const p = riggingState.pickups.find((x) => x.id === el.dataset.rigPickupDrop); if (p) p.chainDropM = Number(el.value || 0); }));
+
+          const rigGroupSel = document.getElementById("rigGroupSel");
+          rigGroupSel?.addEventListener("change", () => {
+            riggingState.selectedGroupId = rigGroupSel.value;
+            riggingState.selectedGroupFixtureId = "";
+            renderRigging();
+          });
+          document.getElementById("rigAdditionalSel")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLSelectElement)) return;
+            riggingState.selectedAdditionalId = target.value;
+            renderRigging();
+          });
+          document.getElementById("rigAddAdditionalBtn")?.addEventListener("click", () => {
+            const add = riggingAdditionalCatalog.find((x) => x.id === riggingState.selectedAdditionalId) || riggingAdditionalCatalog[0];
+            if (!add) return;
+            const targetGroupId = riggingState.selectedPlanGroupId || riggingState.selectedTrussGroupId || rigGroups[0]?.id || "";
+            const targetSpan = (riggingState.spans || []).find((s) => (s.groupId || rigGroups[0]?.id || "") === targetGroupId) || riggingState.spans[0];
+            if (!targetSpan) return;
+            addRiggingFixturePlacement({
+              fixtureKey: `__additional__${add.id}`,
+              fixtureName: add.name,
+              sourceInstanceId: null,
+              weightKg: add.weightKg,
+              clampWeightKg: 0,
+              spanId: targetSpan.id,
+              positionM: 0,
+              quantity: 1
+            });
+            renderRigging();
+          });
+          document.getElementById("rigGroupMotorGroupSel")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLSelectElement)) return;
+            riggingState.selectedTrussGroupId = target.value;
+            renderRigging();
+          });
+          document.getElementById("rigPlanGroupSel")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLSelectElement)) return;
+            riggingState.selectedPlanGroupId = target.value;
+            renderRigging();
+          });
+          document.getElementById("rigGraphScaleModeSel")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLSelectElement)) return;
+            riggingState.graphScaleMode = target.value || "auto";
+            renderRigging();
+          });
+          document.getElementById("rigGraphFixedMaxInp")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            const v = Number(target.value);
+            riggingState.graphFixedMax = Number.isFinite(v) && v > 0 ? v : null;
+            renderRigging();
+          });
+          document.getElementById("rigGroupMotorPosM")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            riggingState.groupMotorPositionM = Math.max(0, Number(target.value || 0));
+          });
+          document.getElementById("rigGroupMotorWllKg")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            riggingState.groupMotorRoofWllKg = target.value === "" ? null : Math.max(0, Number(target.value || 0));
+          });
+          document.getElementById("rigGroupAddMotorBtn")?.addEventListener("click", () => {
+            if (!selectedRigGroupId) return;
+            const total = getRiggingGroupTotalSpan(selectedRigGroupId);
+            if (!(total > 0)) return;
+            const pos = Math.max(0, Math.min(total, Number(riggingState.groupMotorPositionM || 0)));
+            const targetNodeId = resolveMotorNodeAtGroupPos(selectedRigGroupId, pos);
+            if (!targetNodeId) return;
+            const nextPickupIdx = riggingState.pickups.length + 1;
+            const pickup = {
+              id: `PU${nextPickupIdx}`,
+              nodeId: targetNodeId,
+              pickupType: "motor",
+              motorId: riggingState.selectedMotorId || motorCatalog[0]?.id,
+              roofPointWllKg: Number.isFinite(Number(riggingState.groupMotorRoofWllKg)) ? Number(riggingState.groupMotorRoofWllKg) : null,
+              chainDropM: Number(riggingState.groupMotorChainDropM || 8),
+              notes: "Added from group span planner"
+            };
+            riggingState.pickups.push(pickup);
+            riggingState.groupMotors.push({
+              id: `rgm_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+              groupId: selectedRigGroupId,
+              motorId: pickup.motorId,
+              roofPointWllKg: pickup.roofPointWllKg,
+              chainDropM: pickup.chainDropM,
+              positionM: pos,
+              pickupId: pickup.id
+            });
+            renderRigging();
+          });
+          document.querySelectorAll("[data-rig-gf-remove]").forEach((el) => el.addEventListener("click", () => {
+            const id = el.dataset.rigGfRemove;
+            const gf = (riggingState.groupFixtures || []).find((x) => x.id === id);
+            riggingState.groupFixtures = (riggingState.groupFixtures || []).filter((x) => x.id !== id);
+            if (gf?.sourceInstanceId) {
+              riggingState.fixturePlacements = (riggingState.fixturePlacements || []).filter((x) => x.sourceInstanceId !== gf.sourceInstanceId);
+            }
+            renderRigging();
+          }));
+          document.querySelectorAll("[data-rig-gm-remove]").forEach((el) => el.addEventListener("click", () => {
+            const id = el.dataset.rigGmRemove;
+            const gm = (riggingState.groupMotors || []).find((x) => x.id === id);
+            riggingState.groupMotors = (riggingState.groupMotors || []).filter((x) => x.id !== id);
+            if (gm?.pickupId) {
+              riggingState.pickups = (riggingState.pickups || []).filter((x) => x.id !== gm.pickupId);
+            }
+            renderRigging();
+          }));
+          document.querySelectorAll("[data-rig-gm-pos]").forEach((el) => el.addEventListener("change", () => {
+            const id = el.dataset.rigGmPos;
+            const gm = (riggingState.groupMotors || []).find((x) => x.id === id);
+            if (!gm) return;
+            const target = el;
+            if (!(target instanceof HTMLInputElement)) return;
+            const total = Math.max(0, getRiggingGroupTotalSpan(gm.groupId || selectedRigGroupId));
+            const nextPos = Math.max(0, Math.min(total, Number(target.value || 0)));
+            gm.positionM = Number(nextPos.toFixed(3));
+            const targetNodeId = resolveMotorNodeAtGroupPos(gm.groupId, gm.positionM);
+            if (targetNodeId) {
+              const pickup = (riggingState.pickups || []).find((x) => x.id === gm.pickupId);
+              if (pickup) pickup.nodeId = targetNodeId;
+            }
+            renderRigging();
+          }));
+          document.querySelectorAll("[data-rig-fp-remove]").forEach((el) => el.addEventListener("click", () => {
+            const removeId = String(el.dataset.rigFpRemove || "");
+            riggingState.fixturePlacements = riggingState.fixturePlacements.filter((x) => x.id !== removeId);
+            if (String(riggingState.selectedPlanFixtureId || "") === removeId) {
+              riggingState.selectedPlanFixtureId = "";
+            }
+            renderRigging();
+          }));
+          document.querySelectorAll("[data-rig-drag-key]").forEach((el) => {
+            el.addEventListener("dragstart", (ev) => {
+              if (el.getAttribute("draggable") !== "true") {
+                ev.preventDefault();
+                return;
+              }
+              riggingDragPayload = {
+                fixtureKey: el.dataset.rigDragKey || "",
+                fixtureName: el.dataset.rigDragName || "Fixture",
+                sourceInstanceId: el.dataset.rigDragInstance || "",
+                weightKg: el.dataset.rigDragWeight === "" ? null : Number(el.dataset.rigDragWeight),
+                quantity: 1,
+                modeName: el.dataset.rigDragMode || ""
+              };
+              try {
+                ev.dataTransfer?.setData("text/plain", JSON.stringify(riggingDragPayload));
+              } catch (_) {}
+              ev.dataTransfer.effectAllowed = "copy";
+            });
+            el.addEventListener("dragend", () => { riggingDragPayload = null; });
+          });
+          function bindDropzone(el, onDropPayload) {
+            if (!el) return;
+            el.addEventListener("dragover", (ev) => {
+              ev.preventDefault();
+              el.style.borderColor = "var(--theme-accent)";
+            });
+            el.addEventListener("dragleave", () => { el.style.borderColor = ""; });
+            el.addEventListener("drop", (ev) => {
+              ev.preventDefault();
+              el.style.borderColor = "";
+              let payload = riggingDragPayload;
+              if (!payload) {
+                try {
+                  payload = JSON.parse(ev.dataTransfer?.getData("text/plain") || "{}");
+                } catch (_) {}
+              }
+              if (!payload || !payload.fixtureName) return;
+              onDropPayload(payload);
+            });
+          }
+          document.querySelectorAll("[data-rig-drop-span]").forEach((el) => {
+            bindDropzone(el, (payload) => {
+              if (payload.sourceInstanceId && riggingState.fixturePlacements.some((fp) => fp.sourceInstanceId === payload.sourceInstanceId)) return;
+              const spanId = el.dataset.rigDropSpan;
+              addRiggingFixturePlacement({
+                fixtureKey: payload.fixtureKey,
+                fixtureName: payload.fixtureName,
+                sourceInstanceId: payload.sourceInstanceId || null,
+                weightKg: Number.isFinite(Number(payload.weightKg)) ? Number(payload.weightKg) : null,
+                clampWeightKg: 0.5,
+                spanId,
+                positionM: 0,
+                quantity: 1
+              });
+              renderRigging();
+            });
+          });
+          document.querySelectorAll("[data-rig-drop-node]").forEach((el) => {
+            bindDropzone(el, (payload) => {
+              if (payload.sourceInstanceId && riggingState.fixturePlacements.some((fp) => fp.sourceInstanceId === payload.sourceInstanceId)) return;
+              const nodeId = el.dataset.rigDropNode;
+              addRiggingFixturePlacement({
+                fixtureKey: payload.fixtureKey,
+                fixtureName: payload.fixtureName,
+                sourceInstanceId: payload.sourceInstanceId || null,
+                weightKg: Number.isFinite(Number(payload.weightKg)) ? Number(payload.weightKg) : null,
+                clampWeightKg: 0.5,
+                nodeId,
+                positionM: 0,
+                quantity: 1
+              });
+              renderRigging();
+            });
+          });
+
+          const exportCsv = () => {
+            const r = runRiggingCalculation();
+            if (r.compliance?.exportLocked) {
+              alert("Export locked. Resolve FAIL checks in Compliance panel first.");
+              return;
+            }
+            const lines = ["pickup_id,node_id,node_label,roof_raw_load_kg,motor_payload_raw_kg,factored_roof_load_kg,factored_motor_payload_kg,roof_wll_kg,motor_wll_kg,roof_util_pct,motor_util_pct"];
+            r.pickupResults.forEach((p) => lines.push([p.pickupId, p.nodeId, p.nodeLabel, p.rawLoadKg.toFixed(3), Number(p.payloadRawKg || 0).toFixed(3), p.factoredLoadKg.toFixed(3), Number(p.payloadFactoredKg || 0).toFixed(3), p.roofWllKg ?? "", p.motorWllKg ?? "", p.roofUtilPct?.toFixed(2) ?? "", p.motorUtilPct?.toFixed(2) ?? ""].join(",")));
+            const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = `${riggingState.projectName.replace(/\s+/g, "_")}_point_loads.csv`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+          };
+          const exportHtml = () => {
+            const r = runRiggingCalculation();
+            if (r.compliance?.exportLocked) {
+              alert("Export locked. Resolve FAIL checks in Compliance panel first.");
+              return;
+            }
+            const html = `
+              <!doctype html><html><head><meta charset="utf-8"/><title>Rigging Report</title>
+              <style>body{font-family:Arial,sans-serif;padding:18px;}table{border-collapse:collapse;width:100%;font-size:13px;}th,td{border:1px solid #ccc;padding:6px;}th{text-align:left;background:#eee;}h1,h2{margin:0 0 8px;} .warn{color:#ad2f2f;}</style></head>
+              <body>
+                <h1>${riggingState.projectName} - Rigging Report</h1>
+                <div>Safety Factor: ${r.safetyFactor.toFixed(2)}</div>
+                <div>Total Weight (kg): ${r.totalWeightKg.toFixed(2)}</div>
+                <h2>Pickup Loads</h2>
+                <table><thead><tr><th>Pickup</th><th>Node</th><th>Roof Raw</th><th>Motor Payload Raw</th><th>Factored Roof</th><th>Roof Util</th><th>Motor Util</th></tr></thead>
+                <tbody>${r.pickupResults.map((p) => `<tr><td>${p.pickupId}</td><td>${p.nodeLabel}</td><td>${p.rawLoadKg.toFixed(2)}</td><td>${Number(p.payloadRawKg || 0).toFixed(2)}</td><td>${p.factoredLoadKg.toFixed(2)}</td><td>${p.roofUtilPct?.toFixed(1) ?? "n/a"}%</td><td>${p.motorUtilPct?.toFixed(1) ?? "n/a"}%</td></tr>`).join("")}</tbody></table>
+                <h2>Warnings</h2>
+                <ul>${[...r.blockers.map((x) => `<li class='warn'>BLOCKER: ${x}</li>`), ...r.warnings.map((x) => `<li>${x}</li>`)].join("") || "<li>None</li>"}</ul>
+              </body></html>
+            `;
+            const win = window.open("", "_blank");
+            if (!win) return;
+            win.document.write(html);
+            win.document.close();
+          };
+          const exportBtn = document.getElementById("rigExportMenuBtn");
+          const exportMenu = document.getElementById("rigExportMenu");
+          exportBtn?.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            if (!exportMenu) return;
+            exportMenu.style.display = exportMenu.style.display === "none" ? "block" : "none";
+          });
+          document.getElementById("rigExportCsvOpt")?.addEventListener("click", () => {
+            exportCsv();
+            if (exportMenu) exportMenu.style.display = "none";
+          });
+          document.getElementById("rigExportHtmlOpt")?.addEventListener("click", () => {
+            exportHtml();
+            if (exportMenu) exportMenu.style.display = "none";
+          });
+          document.addEventListener("click", (ev) => {
+            if (!exportMenu || !exportBtn) return;
+            if (exportMenu.style.display === "none") return;
+            const t = ev.target;
+            if (!(t instanceof Element)) return;
+            if (t.closest("#rigExportMenu") || t.closest("#rigExportMenuBtn")) return;
+            exportMenu.style.display = "none";
+          });
+
+          const svg = document.getElementById("rigPlanSvg");
+          if (svg) {
+            const spanMap = buildRiggingSpanCoordinateMap();
+            const planGroupId = riggingState.selectedPlanGroupId || rigGroups[0]?.id || "";
+            const spansForPlan = (riggingState.spans || []).filter((s) => (s.groupId || rigGroups[0]?.id || "") === planGroupId);
+            const spanIdsForPlan = new Set(spansForPlan.map((s) => s.id));
+            const nodeIdsForPlan = new Set();
+            spansForPlan.forEach((s) => {
+              if (s.nodeA) nodeIdsForPlan.add(s.nodeA);
+              if (s.nodeB) nodeIdsForPlan.add(s.nodeB);
+            });
+            const nodesForPlan = (riggingState.nodes || []).filter((n) => nodeIdsForPlan.has(n.id));
+            const xs = nodesForPlan.map((n) => Number(spanMap.nodeXById[n.id] ?? 0));
+            const ys = nodesForPlan.map((n) => n.y);
+            const rawMinX = xs.length ? Math.min(...xs) : 0;
+            const rawMaxX = xs.length ? Math.max(...xs) : 1;
+            const minX = Number.isFinite(rawMinX) ? rawMinX : 0;
+            const maxX = Number.isFinite(rawMaxX) && rawMaxX > minX ? rawMaxX : (minX + 1);
+            const minY = ys.length ? Math.min(...ys, -1) : -1;
+            const maxY = ys.length ? Math.max(...ys, 1) : 1;
+            const pad = 50;
+            const width = 900;
+            const height = 380;
+            const planTop = 34;
+            const planBottom = 158;
+            const graphTop = 182;
+            const graphBottom = 258;
+            const graph2Top = 286;
+            const graph2Bottom = 348;
+            const toPx = (x, y) => {
+              const sx = (x - minX) / Math.max(0.1, maxX - minX);
+              const sy = (y - minY) / Math.max(0.1, maxY - minY);
+              return { x: pad + sx * (width - pad * 2), y: planTop + sy * (planBottom - planTop) };
+            };
+            const children = [];
+            children.push(`
+              <defs>
+                <linearGradient id="rigLoadRiskGrad" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0%" stop-color="#3fd487"/>
+                  <stop offset="55%" stop-color="#f2b84b"/>
+                  <stop offset="100%" stop-color="#ef5353"/>
+                </linearGradient>
+                <linearGradient id="rigLoadAreaGrad" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0%" stop-color="#3fd48755"/>
+                  <stop offset="55%" stop-color="#f2b84b66"/>
+                  <stop offset="100%" stop-color="#ef535388"/>
+                </linearGradient>
+              </defs>
+            `);
+            const startGX = Math.floor(minX / 0.5) * 0.5;
+            const endGX = Math.ceil(maxX / 0.5) * 0.5;
+            const startGY = Math.floor(minY / 0.5) * 0.5;
+            const endGY = Math.ceil(maxY / 0.5) * 0.5;
+            for (let gx = startGX; gx <= endGX + 1e-9; gx += 0.5) {
+              const pTop = toPx(gx, minY);
+              const pBot = toPx(gx, maxY);
+              const major = Math.abs((gx * 10) % 10) < 1e-9;
+              children.push(`<line x1="${pTop.x}" y1="${pTop.y}" x2="${pBot.x}" y2="${pBot.y}" stroke="${major ? "#4f5566" : "#373d4b"}" stroke-width="${major ? "1.1" : "0.7"}"/>`);
+            }
+            for (let gy = startGY; gy <= endGY + 1e-9; gy += 0.5) {
+              const pL = toPx(minX, gy);
+              const pR = toPx(maxX, gy);
+              const major = Math.abs((gy * 10) % 10) < 1e-9;
+              children.push(`<line x1="${pL.x}" y1="${pL.y}" x2="${pR.x}" y2="${pR.y}" stroke="${major ? "#4f5566" : "#373d4b"}" stroke-width="${major ? "1.1" : "0.7"}"/>`);
+            }
+            const meterStart = Math.ceil(minX);
+            const meterEnd = Math.floor(maxX);
+            const halfStart = Math.ceil(minX * 2) / 2;
+            const halfEnd = Math.floor(maxX * 2) / 2;
+            for (let h = halfStart; h <= halfEnd + 1e-9; h += 0.5) {
+              const p = toPx(h, minY);
+              const isMeter = Math.abs(h - Math.round(h)) < 1e-9;
+              if (isMeter) continue;
+              children.push(`<line x1="${p.x}" y1="22" x2="${p.x}" y2="${planTop}" stroke="#cfd6e7" stroke-opacity="0.95" stroke-width="1.2"/>`);
+              children.push(`<text x="${p.x}" y="17" text-anchor="middle" fill="#bfc8dc" font-size="8.5">${Number(h).toFixed(1)}m</text>`);
+            }
+            for (let m = meterStart; m <= meterEnd; m += 1) {
+              const p = toPx(m, minY);
+              children.push(`<line x1="${p.x}" y1="20" x2="${p.x}" y2="${planTop - 2}" stroke="var(--theme-line-soft)" stroke-width="1"/>`);
+              children.push(`<text x="${p.x}" y="14" text-anchor="middle" fill="#d4d8e2" font-size="10">${m}m</text>`);
+            }
+            spansForPlan.forEach((s) => {
+              const a = getNode(s.nodeA);
+              const b = getNode(s.nodeB);
+              if (!a || !b) return;
+              const ax = Number(spanMap.nodeXById[a.id] ?? 0);
+              const bx = Number(spanMap.nodeXById[b.id] ?? 0);
+              const p1 = toPx(ax, a.y);
+              const p2 = toPx(bx, b.y);
+              children.push(`<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="var(--theme-accent)" stroke-width="3"/>`);
+              children.push(`<line data-rig-plan-drop-span="${s.id}" data-rig-ax="${p1.x}" data-rig-ay="${p1.y}" data-rig-bx="${p2.x}" data-rig-by="${p2.y}" x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#ffffff00" stroke-width="20"/>`);
+              children.push(`<text x="${(p1.x + p2.x) / 2}" y="${((p1.y + p2.y) / 2) - 8}" text-anchor="middle" fill="#cdd3e1" font-size="11">${s.id} (${Number(s.lengthM || 0).toFixed(1)}m)</text>`);
+            });
+            const spanByNode = {};
+            spansForPlan.forEach((s) => {
+              if (!spanByNode[s.nodeA]) spanByNode[s.nodeA] = [];
+              if (!spanByNode[s.nodeB]) spanByNode[s.nodeB] = [];
+              spanByNode[s.nodeA].push(s);
+              spanByNode[s.nodeB].push(s);
+            });
+            Object.keys(spanByNode).forEach((nodeId) => {
+              const attached = spanByNode[nodeId] || [];
+              if (attached.length < 2) return;
+              const n = getNode(nodeId);
+              if (!n) return;
+              const pNode = toPx(Number(spanMap.nodeXById[n.id] ?? 0), n.y);
+              const ref = attached[0];
+              const refA = getNode(ref.nodeA);
+              const refB = getNode(ref.nodeB);
+              if (!refA || !refB) return;
+              const pA = toPx(Number(spanMap.nodeXById[refA.id] ?? 0), refA.y);
+              const pB = toPx(Number(spanMap.nodeXById[refB.id] ?? 0), refB.y);
+              const dx = pB.x - pA.x;
+              const dy = pB.y - pA.y;
+              const mag = Math.hypot(dx, dy) || 1;
+              const nx = -dy / mag;
+              const ny = dx / mag;
+              const half = 6;
+              const x1 = pNode.x - (nx * half);
+              const y1 = pNode.y - (ny * half);
+              const x2 = pNode.x + (nx * half);
+              const y2 = pNode.y + (ny * half);
+              children.push(`<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="#efe9ff" stroke-width="1.8" stroke-linecap="round" />`);
+            });
+            // Hide node markers to keep the 2D plan focused on spans, fixtures, and motors.
+            riggingState.fixturePlacements.filter((fp) => spanIdsForPlan.has(fp.spanId)).forEach((fp) => {
+              const s = getSpan(fp.spanId);
+              if (!s) return;
+              const a = getNode(s.nodeA);
+              const b = getNode(s.nodeB);
+              if (!a || !b) return;
+              const spanLen = Math.max(0.1, Number(s.lengthM || 0));
+              const t = Math.max(0, Math.min(1, Number(fp.positionM || 0) / spanLen));
+              const ax = Number(spanMap.nodeXById[a.id] ?? 0);
+              const bx = Number(spanMap.nodeXById[b.id] ?? 0);
+              const x = ax + (bx - ax) * t;
+              const y = a.y + (b.y - a.y) * t;
+              const p = toPx(x, y);
+              const pxPerM = (width - (pad * 2)) / Math.max(0.1, maxX - minX);
+              const totalWeight = Number((((fp.weightKg || 0) + (fp.clampWeightKg || 0)) * (fp.quantity || 1)).toFixed(2));
+              const isAdditional = String(fp.fixtureKey || "").startsWith("__additional__");
+              const previewMeta = !isAdditional ? fixturePreviewByKey(fp.fixtureKey) : { path: "", dimensions_m: { length_m: null, width_m: null, height_m: null } };
+              const previewPath = String(previewMeta.path || "");
+              const libDims = fixtureDimensionsMByKey(fp.fixtureKey);
+              const dimH = Number(previewMeta.dimensions_m?.height_m || libDims.height_m || 0.55);
+              const dimW = Number(previewMeta.dimensions_m?.length_m || previewMeta.dimensions_m?.width_m || libDims.length_m || libDims.width_m || (dimH * 0.65));
+              const imgH = Math.max(20, Math.min(140, dimH * pxPerM));
+              const imgW = Math.max(14, Math.min(120, dimW * pxPerM));
+              const imgX = -imgW / 2;
+              const imgY = -5.6;
+              const imgPivotY = imgY + (imgH / 2);
+              const headFill = isAdditional ? "#9fb56a" : "#7e8fb0";
+              const headStroke = isAdditional ? "#d9e8b5" : "#d7e1f5";
+              const isSelectedPlanFixture = String(riggingState.selectedPlanFixtureId || "") === String(fp.id || "");
+              const selectedVisualStyle = isSelectedPlanFixture
+                ? "filter:saturate(1.45) hue-rotate(-18deg) brightness(1.12) drop-shadow(0 0 5px #ffad4d);"
+                : "";
+              const fallbackBodyW = Math.max(10, imgW * 0.52);
+              const fallbackBodyH = Math.max(8, imgH * 0.34);
+              const fallbackBodyX = -fallbackBodyW / 2;
+              const fallbackBodyY = Math.max(1.2, imgH * 0.08);
+              const fallbackClampW = Math.max(8.5, imgW * 0.34);
+              const fallbackClampX = -fallbackClampW / 2;
+              const fallbackYokeTop = -Math.max(8, imgH * 0.32);
+              const tt = `${fp.fixtureName} | ${totalWeight} kg | ${s.id} @ ${Number(fp.positionM || 0).toFixed(2)}m`;
+              children.push(`
+                <g
+                  data-rig-plan-fixture="${fp.id}"
+                  data-rig-group-id="${s.groupId || ""}"
+                  data-rig-span-id="${s.id}"
+                  data-rig-ax="${toPx(ax, a.y).x}"
+                  data-rig-ay="${toPx(ax, a.y).y}"
+                  data-rig-bx="${toPx(bx, b.y).x}"
+                  data-rig-by="${toPx(bx, b.y).y}"
+                  data-rig-span-len="${spanLen}"
+                  style="cursor:grab;"
+                >
+                  ${previewPath ? `<g data-rig-item-visual="1" transform="translate(${p.x.toFixed(2)} ${(p.y + 12).toFixed(2)}) rotate(180 0 ${imgPivotY.toFixed(2)})" style="pointer-events:none;${selectedVisualStyle}">
+                    <line x1="0" y1="-13.2" x2="0" y2="-8.0" stroke="#dfe5f2" stroke-width="0.95"/>
+                    <rect x="-4.6" y="-8.0" width="9.2" height="2.4" rx="0.8" fill="#222938" stroke="#8e9aba" stroke-width="0.68"/>
+                    <path d="M -3.4 -5.6 Q 0 -2.4 3.4 -5.6" fill="none" stroke="#aebddb" stroke-width="0.85"/>
+                    <image data-rig-item-image="1" href="${previewPath}" x="${imgX.toFixed(2)}" y="${imgY.toFixed(2)}" width="${imgW.toFixed(2)}" height="${imgH.toFixed(2)}" preserveAspectRatio="xMidYMid meet"/>
+                  </g>` : `<g data-rig-item-visual="1" transform="translate(${p.x.toFixed(2)} ${(p.y + 12).toFixed(2)}) rotate(180 0 ${imgPivotY.toFixed(2)})" style="pointer-events:none;${selectedVisualStyle}">
+                    <line x1="0" y1="${fallbackYokeTop.toFixed(2)}" x2="0" y2="-8.4" stroke="#dfe5f2" stroke-width="0.95"/>
+                    <rect x="${fallbackClampX.toFixed(2)}" y="-8.4" width="${fallbackClampW.toFixed(2)}" height="2.6" rx="0.9" fill="#222938" stroke="#8e9aba" stroke-width="0.7"/>
+                    <path d="M ${(-fallbackClampW * 0.32).toFixed(2)} -5.8 Q 0 -2.6 ${(fallbackClampW * 0.32).toFixed(2)} -5.8" fill="none" stroke="#aebddb" stroke-width="0.88"/>
+                    <line x1="${(-fallbackBodyW * 0.3).toFixed(2)}" y1="-2.2" x2="${(-fallbackBodyW * 0.3).toFixed(2)}" y2="${(fallbackBodyY + fallbackBodyH * 0.36).toFixed(2)}" stroke="#bac8e4" stroke-width="0.95"/>
+                    <line x1="${(fallbackBodyW * 0.3).toFixed(2)}" y1="-2.2" x2="${(fallbackBodyW * 0.3).toFixed(2)}" y2="${(fallbackBodyY + fallbackBodyH * 0.36).toFixed(2)}" stroke="#bac8e4" stroke-width="0.95"/>
+                    <rect x="${fallbackBodyX.toFixed(2)}" y="${fallbackBodyY.toFixed(2)}" width="${fallbackBodyW.toFixed(2)}" height="${fallbackBodyH.toFixed(2)}" rx="1.35" fill="${headFill}" stroke="${headStroke}" stroke-width="0.95"/>
+                    <circle cx="0" cy="${(fallbackBodyY + fallbackBodyH * 0.52).toFixed(2)}" r="${Math.max(1.45, fallbackBodyH * 0.18).toFixed(2)}" fill="#1c2638" stroke="#96b6ff" stroke-width="0.55"/>
+                    <line x1="${(-fallbackBodyW * 0.28).toFixed(2)}" y1="${(fallbackBodyY + fallbackBodyH * 0.2).toFixed(2)}" x2="${(fallbackBodyW * 0.28).toFixed(2)}" y2="${(fallbackBodyY + fallbackBodyH * 0.2).toFixed(2)}" stroke="#223149" stroke-opacity="0.45" stroke-width="0.7"/>
+                  </g>`}
+                  <circle data-rig-item-dot="1" cx="${p.x}" cy="${p.y + 12}" r="6.5" fill="#00000000" stroke="#00000000" stroke-width="0"/>
+                  <circle data-rig-item-hit="1" cx="${p.x}" cy="${p.y + 12}" r="12" fill="#00000000" />
+                  <text data-rig-item-weight="1" x="${p.x}" y="${p.y + 52}" text-anchor="middle" fill="#d8ffe9" font-size="7.2">${totalWeight.toFixed(1)}kg</text>
+                  <title>${tt}</title>
+                </g>
+              `);
+            });
+            const worldXFromSvgX = (sx) => {
+              const clamped = Math.max(pad, Math.min(width - pad, Number(sx || 0)));
+              const t = (clamped - pad) / Math.max(0.001, width - (pad * 2));
+              return minX + (t * (maxX - minX));
+            };
+            const groupPositionFromWorldX = (groupId, worldX) => {
+              const spans = getRiggingGroupSpans(groupId);
+              if (!spans.length) return 0;
+              const minStart = Math.min(...spans.map((s) => Number(s.startX || 0)));
+              const maxEnd = Math.max(...spans.map((s) => Number(s.endX || 0)));
+              const clamped = Math.max(minStart, Math.min(maxEnd, Number(worldX || 0)));
+              return Math.max(0, clamped - minStart);
+            };
+            const pointerToGroupPos = (ev, groupId) => {
+              const p = toSvgPoint(ev);
+              const worldX = worldXFromSvgX(p.x);
+              const total = getRiggingGroupTotalSpan(groupId);
+              const pos = groupPositionFromWorldX(groupId, worldX);
+              return Math.max(0, Math.min(Math.max(0, total), Number(pos || 0)));
+            };
+            const projectPointerToCurrentPlan = (ev, groupId = "") => {
+              const liveSvg = document.getElementById("rigPlanSvg");
+              if (!liveSvg) return null;
+              const lines = Array.from(liveSvg.querySelectorAll("[data-rig-plan-drop-span]"));
+              const segments = lines
+                .map((line) => {
+                  const spanId = line.getAttribute("data-rig-plan-drop-span") || "";
+                  if (!spanId) return null;
+                  const span = getSpan(spanId);
+                  if (!span) return null;
+                  if (groupId && (span.groupId || "") !== groupId) return null;
+                  const len = Math.max(0, Number(span.lengthM || 0));
+                  if (len <= 0.0001) return null;
+                  return {
+                    spanId,
+                    len,
+                    ax: Number(line.getAttribute("data-rig-ax") || 0),
+                    ay: Number(line.getAttribute("data-rig-ay") || 0),
+                    bx: Number(line.getAttribute("data-rig-bx") || 0),
+                    by: Number(line.getAttribute("data-rig-by") || 0)
+                  };
+                })
+                .filter(Boolean);
+              if (!segments.length) return null;
+              const p = toSvgPoint(ev);
+              let best = null;
+              segments.forEach((seg) => {
+                const vx = seg.bx - seg.ax;
+                const vy = seg.by - seg.ay;
+                const len2 = (vx * vx) + (vy * vy);
+                if (len2 <= 0.0001) return;
+                let t = (((p.x - seg.ax) * vx) + ((p.y - seg.ay) * vy)) / len2;
+                if (t < 0) t = 0;
+                if (t > 1) t = 1;
+                const px = seg.ax + (t * vx);
+                const py = seg.ay + (t * vy);
+                const d2 = ((p.x - px) * (p.x - px)) + ((p.y - py) * (p.y - py));
+                if (!best || d2 < best.d2) {
+                  best = {
+                    d2,
+                    x: px,
+                    y: py,
+                    spanId: seg.spanId,
+                    posInSpanM: t * seg.len
+                  };
+                }
+              });
+              return best;
+            };
+            const getGroupPositionFromSpanLocal = (groupId, spanId, localPosM) => {
+              const spans = getRiggingGroupSpans(groupId);
+              if (!spans.length) return null;
+              let offset = 0;
+              for (let i = 0; i < spans.length; i += 1) {
+                const item = spans[i];
+                const len = Math.max(0, Number(item.lengthM || 0));
+                if (item.span.id === spanId) {
+                  const local = Math.max(0, Math.min(len, Number(localPosM || 0)));
+                  return offset + local;
+                }
+                offset += len;
+              }
+              return null;
+            };
+            const motorSvgPointForGroupPos = (groupId, groupPosM) => {
+              const mapped = mapGroupPositionToSpan(groupId, groupPosM);
+              if (!mapped) return null;
+              const s = getSpan(mapped.spanId);
+              if (!s || !spanIdsForPlan.has(s.id)) return null;
+              const a = getNode(s.nodeA);
+              const b = getNode(s.nodeB);
+              if (!a || !b) return null;
+              const spanLen = Math.max(0.001, Number(s.lengthM || 0));
+              const t = Math.max(0, Math.min(1, Number(mapped.positionM || 0) / spanLen));
+              const ax = Number(spanMap.nodeXById[a.id] ?? 0);
+              const bx = Number(spanMap.nodeXById[b.id] ?? 0);
+              const x = ax + ((bx - ax) * t);
+              const y = a.y + ((b.y - a.y) * t);
+              const p = toPx(x, y);
+              return { x: p.x, y: p.y, spanId: s.id, spanLen, positionM: Number(mapped.positionM || 0) };
+            };
+            const structuralProfile = buildRiggingStructuralProfile(planGroupId, 220);
+            (riggingState.groupMotors || [])
+              .filter((gm) => gm.groupId === planGroupId)
+              .forEach((gm) => {
+                const motorPoint = motorSvgPointForGroupPos(gm.groupId, Number(gm.positionM || 0));
+                if (!motorPoint) return;
+                const motor = getMotor(gm.motorId);
+                const wllKg = Number.isFinite(Number(motor?.wll_kg)) ? Number(motor.wll_kg) : null;
+                const resolveMotorPayloadKg = (groupMotor) => {
+                  const byPickup = Number(
+                    calc?.pickupResults?.find((p) => p.pickupId === groupMotor.pickupId)?.payloadRawKg
+                  );
+                  if (Number.isFinite(byPickup)) return byPickup;
+                  const byMotor = Number(structuralProfile?.reactionsByMotorId?.[groupMotor.id]);
+                  if (Number.isFinite(byMotor)) return byMotor;
+                  return 0;
+                };
+                const reactionKg = resolveMotorPayloadKg(gm);
+                const carriedKg = Math.max(0, Number(reactionKg || 0));
+                const upliftKg = Math.max(0, -Number(reactionKg || 0));
+                const groupMotors = (riggingState.groupMotors || []).filter((x) => x.groupId === gm.groupId);
+                const totalGroupPayloadKg = groupMotors.reduce((sum, x) => {
+                  return sum + Math.max(0, Number(resolveMotorPayloadKg(x) || 0));
+                }, 0);
+                const sharePct = totalGroupPayloadKg > 0.0001 ? (carriedKg / totalGroupPayloadKg) * 100 : 0;
+                children.push(`
+                  <g data-rig-plan-motor="${gm.id}" data-rig-group-id="${gm.groupId}" style="cursor:grab;">
+                    <text data-rig-motor-share="1" x="${motorPoint.x.toFixed(2)}" y="${(motorPoint.y - 39.0).toFixed(2)}" text-anchor="middle" fill="${upliftKg > 0.001 ? "#ffc5c5" : "#e5edff"}" font-size="6.9">${upliftKg > 0.001 ? "Uplift" : `${sharePct.toFixed(1)}%`}</text>
+                    <text data-rig-motor-load="1" x="${motorPoint.x.toFixed(2)}" y="${(motorPoint.y - 30.0).toFixed(2)}" text-anchor="middle" fill="${upliftKg > 0.001 ? "#ffc5c5" : "#d8ffe9"}" font-size="7.1">${upliftKg > 0.001 ? `Uplift ${upliftKg.toFixed(1)}kg` : `Load ${carriedKg.toFixed(1)}kg`}</text>
+                    ${wllKg !== null ? `<text data-rig-motor-label="1" x="${motorPoint.x.toFixed(2)}" y="${(motorPoint.y - 21.2).toFixed(2)}" text-anchor="middle" fill="#fff3c3" font-size="7.4" font-weight="600">WLL ${wllKg.toFixed(0)}kg</text>` : ""}
+                    <circle data-rig-motor-dot="1" cx="${motorPoint.x.toFixed(2)}" cy="${(motorPoint.y - 12).toFixed(2)}" r="7.2" fill="#ffd766" stroke="#fff7d6" stroke-width="1.2"/>
+                    <text data-rig-motor-glyph="1" x="${motorPoint.x.toFixed(2)}" y="${(motorPoint.y - 9.2).toFixed(2)}" text-anchor="middle" fill="#3a2a00" font-size="8.3" font-weight="700">M</text>
+                    <circle data-rig-motor-hit="1" cx="${motorPoint.x.toFixed(2)}" cy="${(motorPoint.y - 12).toFixed(2)}" r="13" fill="#00000000" />
+                  </g>
+                `);
+              });
+            const profile = structuralProfile && structuralProfile.points && structuralProfile.points.length > 1
+              ? structuralProfile
+              : buildBeamLoadProfile(220, spanIdsForPlan);
+            const supportMarkers = (() => {
+              if (!structuralProfile || !structuralProfile.reactionsByMotorId) return [];
+              return (riggingState.groupMotors || [])
+                .filter((gm) => gm.groupId === planGroupId)
+                .map((gm) => {
+                  const mapped = mapGroupPositionToSpan(gm.groupId, Number(gm.positionM || 0));
+                  if (!mapped) return null;
+                  const s = getSpan(mapped.spanId);
+                  if (!s || !spanIdsForPlan.has(s.id)) return null;
+                  const a = getNode(s.nodeA);
+                  const b = getNode(s.nodeB);
+                  if (!a || !b) return null;
+                  const spanLen = Math.max(0.001, Number(s.lengthM || 0));
+                  const t = Math.max(0, Math.min(1, Number(mapped.positionM || 0) / spanLen));
+                  const ax = Number(spanMap.nodeXById[a.id] ?? 0);
+                  const bx = Number(spanMap.nodeXById[b.id] ?? 0);
+                  const wx = ax + ((bx - ax) * t);
+                  if (!Number.isFinite(wx)) return null;
+                  const reactionKg = Number(structuralProfile.reactionsByMotorId[gm.id] || 0);
+                  const loadKg = Math.max(0, reactionKg);
+                  const upliftKg = Math.max(0, -reactionKg);
+                  const motor = getMotor(gm.motorId);
+                  const wllKg = Number.isFinite(Number(motor?.wll_kg)) ? Number(motor.wll_kg) : null;
+                  const util = wllKg ? ((loadKg / wllKg) * 100) : null;
+                  return { id: gm.id, xWorld: wx, loadKg, upliftKg, wllKg, utilPct: util };
+                })
+                .filter(Boolean)
+                .sort((a, b) => a.xWorld - b.xWorld);
+            })();
+            const pMinX = profile.minX;
+            const pMaxX = profile.maxX;
+            const pW = Math.max(0.001, pMaxX - pMinX);
+            const rawMaxInt = Math.max(0.001, profile.maxIntensity);
+            const scaleMode = riggingState.graphScaleMode || "auto";
+            const toDisplay = (v) => {
+              if (scaleMode === "relative") return (Math.max(0, v) / rawMaxInt) * 100;
+              return Math.max(0, v);
+            };
+            const maxInt = scaleMode === "relative"
+              ? 100
+              : (scaleMode === "fixed" && Number.isFinite(Number(riggingState.graphFixedMax)) && Number(riggingState.graphFixedMax) > 0
+                ? Number(riggingState.graphFixedMax)
+                : rawMaxInt);
+            const unitLabel = scaleMode === "relative" ? "%" : String(profile.unit || "kg");
+            const niceStep = (v) => {
+              if (!Number.isFinite(v) || v <= 0) return 1;
+              const mag = 10 ** Math.floor(Math.log10(v));
+              const n = v / mag;
+              if (n <= 1) return 1 * mag;
+              if (n <= 2) return 2 * mag;
+              if (n <= 5) return 5 * mag;
+              return 10 * mag;
+            };
+            const yTickStep = niceStep(maxInt / 4);
+            const yTickMax = Math.ceil(maxInt / yTickStep) * yTickStep;
+            const yAxisMax = Math.max(0.001, yTickMax);
+            const reactionMax = Math.max(0.001, ...supportMarkers.map((m) => Number(m.loadKg || 0)));
+            const graphPts = profile.points.map((pt) => {
+              const sx = (pt.x - pMinX) / pW;
+              const x = pad + sx * (width - pad * 2);
+              const y = graphBottom - (toDisplay(pt.intensity) / yAxisMax) * (graphBottom - graphTop);
+              return { x, y };
+            });
+            if (graphPts.length > 1) {
+              const poly = graphPts.map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(" ");
+              const area = `${pad},${graphBottom} ${poly} ${width - pad},${graphBottom}`;
+              const bandPct = [0.6, 0.85, 1];
+              const bandColors = ["#3fd48714", "#f2b84b14", "#ef535314"];
+              for (let i = 0; i < bandPct.length; i += 1) {
+                const hi = graphBottom - (bandPct[i] * (graphBottom - graphTop));
+                const lo = i === 0 ? graphBottom : graphBottom - (bandPct[i - 1] * (graphBottom - graphTop));
+                children.push(`<rect x="${pad}" y="${hi.toFixed(2)}" width="${width - pad * 2}" height="${Math.max(0, lo - hi).toFixed(2)}" fill="${bandColors[i]}" />`);
+              }
+              for (let yv = 0; yv <= yTickMax + 1e-9; yv += yTickStep) {
+                const gy = graphBottom - (yv / yTickMax) * (graphBottom - graphTop);
+                children.push(`<line x1="${pad}" y1="${gy.toFixed(2)}" x2="${width - pad}" y2="${gy.toFixed(2)}" stroke="var(--theme-line-soft)" stroke-width="0.8" />`);
+                children.push(`<text x="${pad - 6}" y="${(gy + 3).toFixed(2)}" text-anchor="end" fill="#b6bece" font-size="9">${yv.toFixed(0)}</text>`);
+              }
+              children.push(`<line x1="${pad}" y1="${graphBottom}" x2="${width - pad}" y2="${graphBottom}" stroke="var(--theme-line-soft)" stroke-width="1.2"/>`);
+              children.push(`<line x1="${pad}" y1="${graphTop}" x2="${width - pad}" y2="${graphTop}" stroke="var(--theme-line)" stroke-width="1"/>`);
+              if (Array.isArray(profile.supportXs) && profile.supportXs.length) {
+                profile.supportXs.forEach((sxWorld) => {
+                  const t = (sxWorld - pMinX) / Math.max(0.001, pW);
+                  const sx = pad + (t * (width - pad * 2));
+                  children.push(`<line x1="${sx.toFixed(2)}" y1="${graphTop}" x2="${sx.toFixed(2)}" y2="${graphBottom}" stroke="var(--theme-accent)" stroke-width="1" stroke-dasharray="3 3"/>`);
+                });
+              }
+              supportMarkers.forEach((m) => {
+                const tx = (m.xWorld - pMinX) / Math.max(0.001, pW);
+                const x = pad + (tx * (width - pad * 2));
+                const y = graphBottom - ((Math.max(0, Number(m.loadKg || 0)) / reactionMax) * (graphBottom - graphTop));
+                const color = m.utilPct !== null && m.utilPct > 100 ? "#ef5353" : (m.utilPct !== null && m.utilPct > 85 ? "#f2b84b" : "#3fd487");
+                children.push(`<line x1="${x.toFixed(2)}" y1="${graphBottom}" x2="${x.toFixed(2)}" y2="${y.toFixed(2)}" stroke="${color}" stroke-width="1.4" />`);
+                children.push(`<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="3.2" fill="${color}" stroke="#f5f7ffcc" stroke-width="0.8" />`);
+              });
+              children.push(`<text x="${pad}" y="${graphTop - 7}" fill="#c6ccdb" font-size="10">${profile.kind === "moment" ? "Combined Safety Profile (Bending Risk + Motor Reaction)" : "Combined Safety Profile"}</text>`);
+              children.push(`<text x="${pad - 6}" y="${graphTop - 7}" text-anchor="end" fill="#c6ccdb" font-size="10">${unitLabel}</text>`);
+              if (supportMarkers.length) {
+                children.push(`<text x="${width - pad}" y="${graphBottom + 12}" text-anchor="end" fill="#9fdcc2" font-size="9">Motor reaction overlays (kg)</text>`);
+              }
+              children.push(`<polygon points="${area}" fill="url(#rigLoadAreaGrad)" stroke="none"/>`);
+              children.push(`<polyline points="${poly}" fill="none" stroke="url(#rigLoadRiskGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`);
+              children.push(`<text x="${width - pad}" y="${graphTop - 7}" text-anchor="end" fill="#d6dbe8" font-size="10">max ${maxInt.toFixed(1)}</text>`);
+              children.push(`<rect data-rig-graph-hover-area x="${pad}" y="${graphTop}" width="${width - (pad * 2)}" height="${graphBottom - graphTop}" fill="#00000000" />`);
+              children.push(`
+                <g id="rigGraphHover" style="display:none;pointer-events:none;">
+                  <line id="rigGraphHoverLine" x1="${pad}" y1="${graphTop}" x2="${pad}" y2="${graphBottom}" stroke="#d7dbe4" stroke-width="1" stroke-dasharray="3 3"/>
+                  <circle id="rigGraphHoverDot" cx="${pad}" cy="${graphBottom}" r="4" fill="#ffffff" stroke="var(--theme-line-soft)" stroke-width="1.2"/>
+                  <rect id="rigGraphHoverBox" x="${pad + 8}" y="${graphTop + 6}" width="260" height="30" rx="4" fill="#171c25cc" stroke="var(--theme-line-soft)" stroke-width="0.8"/>
+                  <text id="rigGraphHoverText" x="${pad + 14}" y="${graphTop + 19}" fill="#e8ecf4" font-size="10"></text>
+                  <text id="rigGraphHoverSubText" x="${pad + 14}" y="${graphTop + 30}" fill="#d6dbe8" font-size="9"></text>
+                </g>
+              `);
+              children.push(`<rect x="${pad}" y="${graph2Top}" width="${width - (pad * 2)}" height="${graph2Bottom - graph2Top}" fill="#121722aa" stroke="var(--theme-line-soft)" stroke-width="0.9" />`);
+              children.push(`<text x="${pad}" y="${graph2Top - 8}" fill="#c6ccdb" font-size="10">Motor Load Profile (Weight + Utilization)</text>`);
+              if (supportMarkers.length) {
+                const kgMax = Math.max(1, ...supportMarkers.map((m) => Math.max(0, Number(m.loadKg || 0))));
+                const utilMaxRaw = Math.max(0, ...supportMarkers.map((m) => Math.max(0, Number(m.utilPct || 0))));
+                const utilMax = Math.max(100, Math.ceil(utilMaxRaw / 10) * 10);
+                const kgStep = niceStep(kgMax / 4);
+                const kgTickMax = Math.max(kgStep, Math.ceil(kgMax / kgStep) * kgStep);
+                for (let yv = 0; yv <= kgTickMax + 1e-9; yv += kgStep) {
+                  const gy = graph2Bottom - (yv / kgTickMax) * (graph2Bottom - graph2Top);
+                  children.push(`<line x1="${pad}" y1="${gy.toFixed(2)}" x2="${width - pad}" y2="${gy.toFixed(2)}" stroke="var(--theme-line-soft)" stroke-width="0.6" />`);
+                  children.push(`<text x="${pad - 6}" y="${(gy + 3).toFixed(2)}" text-anchor="end" fill="#b6bece" font-size="8.6">${yv.toFixed(0)}kg</text>`);
+                }
+                const utilTicks = 5;
+                for (let i = 0; i <= utilTicks; i += 1) {
+                  const val = (i / utilTicks) * utilMax;
+                  const gy = graph2Bottom - (val / utilMax) * (graph2Bottom - graph2Top);
+                  children.push(`<text x="${width - pad + 6}" y="${(gy + 3).toFixed(2)}" text-anchor="start" fill="#d4c7a5" font-size="8.6">${val.toFixed(0)}%</text>`);
+                }
+                const motorPoints = supportMarkers
+                  .map((m) => {
+                    const tx = (m.xWorld - pMinX) / Math.max(0.001, pW);
+                    const x = pad + (tx * (width - pad * 2));
+                    const yKg = graph2Bottom - ((Math.max(0, Number(m.loadKg || 0)) / kgTickMax) * (graph2Bottom - graph2Top));
+                    const yPct = graph2Bottom - ((Math.max(0, Number(m.utilPct || 0)) / utilMax) * (graph2Bottom - graph2Top));
+                    return { ...m, x, yKg, yPct };
+                  })
+                  .sort((a, b) => a.x - b.x);
+                const kgPolyline = motorPoints.map((p) => `${p.x.toFixed(2)},${p.yKg.toFixed(2)}`).join(" ");
+                const pctPolyline = motorPoints.map((p) => `${p.x.toFixed(2)},${p.yPct.toFixed(2)}`).join(" ");
+                children.push(`<polyline points="${kgPolyline}" fill="none" stroke="#6de2a8" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" />`);
+                children.push(`<polyline points="${pctPolyline}" fill="none" stroke="#f2b84b" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 2" />`);
+                motorPoints.forEach((p) => {
+                  children.push(`<circle cx="${p.x.toFixed(2)}" cy="${p.yKg.toFixed(2)}" r="3.1" fill="#6de2a8" stroke="#e7fff4" stroke-width="0.8"/>`);
+                  children.push(`<circle cx="${p.x.toFixed(2)}" cy="${p.yPct.toFixed(2)}" r="2.8" fill="#f2b84b" stroke="#fff3d8" stroke-width="0.8"/>`);
+                  children.push(`<text x="${p.x.toFixed(2)}" y="${(p.yKg - 6).toFixed(2)}" text-anchor="middle" fill="#d8ffe9" font-size="7">${Number(p.loadKg || 0).toFixed(0)}kg</text>`);
+                });
+                children.push(`<text x="${pad}" y="${graph2Bottom + 12}" fill="#9fdcc2" font-size="9">Green: Weight (kg)</text>`);
+                children.push(`<text x="${pad + 112}" y="${graph2Bottom + 12}" fill="#f2d29d" font-size="9">Orange: Load % of motor WLL</text>`);
+                children.push(`<rect data-rig-motor-hover-area x="${pad}" y="${graph2Top}" width="${width - (pad * 2)}" height="${graph2Bottom - graph2Top}" fill="#00000000" />`);
+                children.push(`
+                  <g id="rigMotorHover" style="display:none;pointer-events:none;">
+                    <line id="rigMotorHoverLine" x1="${pad}" y1="${graph2Top}" x2="${pad}" y2="${graph2Bottom}" stroke="#d7dbe4" stroke-width="1" stroke-dasharray="3 3"/>
+                    <rect id="rigMotorHoverBox" x="${pad + 8}" y="${graph2Top + 6}" width="240" height="26" rx="4" fill="#171c25cc" stroke="var(--theme-line-soft)" stroke-width="0.8"/>
+                    <text id="rigMotorHoverText" x="${pad + 14}" y="${graph2Top + 22}" fill="#e8ecf4" font-size="9.5"></text>
+                  </g>
+                `);
+              } else {
+                children.push(`<text x="${pad + 8}" y="${graph2Top + 18}" fill="#8d96aa" font-size="9">Add motors to show weight and load percentage profile.</text>`);
+              }
+            }
+            svg.innerHTML = children.join("");
+            const toSvgPoint = (ev) => {
+              const liveSvg = document.getElementById("rigPlanSvg");
+              if (!liveSvg) return { x: 0, y: 0 };
+              const viewBox = (liveSvg.getAttribute("viewBox") || "0 0 900 220").split(/\s+/).map(Number);
+              const vbW = viewBox[2] || 900;
+              const vbH = viewBox[3] || 220;
+              const rect = liveSvg.getBoundingClientRect();
+              const rw = rect.width || 1;
+              const rh = rect.height || 1;
+              return {
+                x: ((ev.clientX - rect.left) / rw) * vbW,
+                y: ((ev.clientY - rect.top) / rh) * vbH
+              };
+            };
+            svg.querySelectorAll("[data-rig-plan-drop-span]").forEach((line) => {
+              line.addEventListener("dragover", (ev) => {
+                ev.preventDefault();
+                line.setAttribute("stroke", "var(--theme-accent)");
+              });
+              line.addEventListener("dragleave", () => {
+                line.setAttribute("stroke", "#ffffff00");
+              });
+              line.addEventListener("drop", (ev) => {
+                ev.preventDefault();
+                line.setAttribute("stroke", "#ffffff00");
+                let payload = riggingDragPayload;
+                if (!payload) {
+                  try {
+                    payload = JSON.parse(ev.dataTransfer?.getData("text/plain") || "{}");
+                  } catch (_) {}
+                }
+                if (!payload || !payload.fixtureName) return;
+                if (payload.sourceInstanceId && riggingState.fixturePlacements.some((fp) => fp.sourceInstanceId === payload.sourceInstanceId)) return;
+
+                const spanId = line.dataset.rigPlanDropSpan;
+                const span = getSpan(spanId);
+                if (!span) return;
+                const ax = Number(line.dataset.rigAx || 0);
+                const ay = Number(line.dataset.rigAy || 0);
+                const bx = Number(line.dataset.rigBx || 0);
+                const by = Number(line.dataset.rigBy || 0);
+                const p = toSvgPoint(ev);
+                const vx = bx - ax;
+                const vy = by - ay;
+                const len2 = (vx * vx) + (vy * vy);
+                if (len2 <= 0.0001) return;
+                let t = (((p.x - ax) * vx) + ((p.y - ay) * vy)) / len2;
+                if (t < 0) t = 0;
+                if (t > 1) t = 1;
+                const posM = t * Number(span.lengthM || 0);
+
+                addRiggingFixturePlacement({
+                  fixtureKey: payload.fixtureKey,
+                  fixtureName: payload.fixtureName,
+                  sourceInstanceId: payload.sourceInstanceId || null,
+                  weightKg: Number.isFinite(Number(payload.weightKg)) ? Number(payload.weightKg) : null,
+                  clampWeightKg: 0.5,
+                  spanId,
+                  positionM: posM,
+                  quantity: 1
+                });
+                renderRigging();
+              });
+            });
+
+            const graphHoverArea = svg.querySelector("[data-rig-graph-hover-area]");
+            if (graphHoverArea && profile.points.length > 1) {
+              const hoverGroup = svg.querySelector("#rigGraphHover");
+              const hoverLine = svg.querySelector("#rigGraphHoverLine");
+              const hoverDot = svg.querySelector("#rigGraphHoverDot");
+              const hoverText = svg.querySelector("#rigGraphHoverText");
+              const hoverSubText = svg.querySelector("#rigGraphHoverSubText");
+              const hoverBox = svg.querySelector("#rigGraphHoverBox");
+              const intensityAtX = (worldX) => {
+                const pts = profile.points;
+                if (!pts.length) return 0;
+                if (worldX <= pts[0].x) return pts[0].intensity;
+                if (worldX >= pts[pts.length - 1].x) return pts[pts.length - 1].intensity;
+                const rel = (worldX - pMinX) / pW;
+                const idxF = rel * (pts.length - 1);
+                const i0 = Math.max(0, Math.floor(idxF));
+                const i1 = Math.min(pts.length - 1, i0 + 1);
+                const t = idxF - i0;
+                return (pts[i0].intensity * (1 - t)) + (pts[i1].intensity * t);
+              };
+              const updateHover = (ev) => {
+                const p = toSvgPoint(ev);
+                const x = Math.max(pad, Math.min(width - pad, p.x));
+                const tx = (x - pad) / Math.max(0.001, width - (pad * 2));
+                const worldX = pMinX + (tx * pW);
+                const intensityRaw = Math.max(0, intensityAtX(worldX));
+                const intensity = toDisplay(intensityRaw);
+                const y = graphBottom - (intensity / yAxisMax) * (graphBottom - graphTop);
+                const nearestSupport = supportMarkers.length
+                  ? supportMarkers.reduce((best, s) => {
+                    const d = Math.abs(Number(s.xWorld || 0) - worldX);
+                    return (!best || d < best.d) ? { d, s } : best;
+                  }, null)?.s || null
+                  : null;
+                if (hoverGroup) hoverGroup.style.display = "";
+                if (hoverLine) {
+                  hoverLine.setAttribute("x1", x.toFixed(2));
+                  hoverLine.setAttribute("x2", x.toFixed(2));
+                }
+                if (hoverDot) {
+                  hoverDot.setAttribute("cx", x.toFixed(2));
+                  hoverDot.setAttribute("cy", y.toFixed(2));
+                }
+                const label = `${worldX.toFixed(2)}m | Risk ${intensity.toFixed(1)} ${unitLabel}`;
+                const subLabel = nearestSupport
+                  ? `Nearest Motor: ${nearestSupport.loadKg.toFixed(1)}kg${nearestSupport.utilPct !== null ? ` (${nearestSupport.utilPct.toFixed(1)}% WLL)` : ""}`
+                  : "Nearest Motor: n/a";
+                if (hoverText) hoverText.textContent = label;
+                if (hoverSubText) hoverSubText.textContent = subLabel;
+                if (hoverBox && hoverText) {
+                  const boxW = Math.max(220, Math.min(320, Math.max(label.length, subLabel.length) * 6.3));
+                  const left = x > (width - pad - boxW - 8) ? x - boxW - 8 : x + 8;
+                  hoverBox.setAttribute("x", left.toFixed(2));
+                  hoverBox.setAttribute("width", boxW.toFixed(2));
+                  hoverText.setAttribute("x", (left + 6).toFixed(2));
+                  if (hoverSubText) hoverSubText.setAttribute("x", (left + 6).toFixed(2));
+                }
+              };
+              graphHoverArea.addEventListener("mouseenter", (ev) => updateHover(ev));
+              graphHoverArea.addEventListener("mousemove", (ev) => updateHover(ev));
+              graphHoverArea.addEventListener("mouseleave", () => {
+                if (hoverGroup) hoverGroup.style.display = "none";
+              });
+            }
+            const motorHoverArea = svg.querySelector("[data-rig-motor-hover-area]");
+            if (motorHoverArea && supportMarkers.length) {
+              const hoverGroup = svg.querySelector("#rigMotorHover");
+              const hoverLine = svg.querySelector("#rigMotorHoverLine");
+              const hoverText = svg.querySelector("#rigMotorHoverText");
+              const hoverBox = svg.querySelector("#rigMotorHoverBox");
+              const updateMotorHover = (ev) => {
+                const p = toSvgPoint(ev);
+                const x = Math.max(pad, Math.min(width - pad, p.x));
+                const tx = (x - pad) / Math.max(0.001, width - (pad * 2));
+                const worldX = pMinX + (tx * pW);
+                const nearest = supportMarkers.reduce((best, m) => {
+                  const d = Math.abs(Number(m.xWorld || 0) - worldX);
+                  return (!best || d < best.d) ? { d, m } : best;
+                }, null)?.m || null;
+                if (!nearest) return;
+                if (hoverGroup) hoverGroup.style.display = "";
+                if (hoverLine) {
+                  hoverLine.setAttribute("x1", x.toFixed(2));
+                  hoverLine.setAttribute("x2", x.toFixed(2));
+                }
+                const label = nearest.upliftKg > 0.001
+                  ? `${nearest.id}: Uplift ${Number(nearest.upliftKg || 0).toFixed(1)}kg`
+                  : `${nearest.id}: ${Number(nearest.loadKg || 0).toFixed(1)}kg | ${nearest.utilPct !== null ? `${Number(nearest.utilPct || 0).toFixed(1)}%` : "n/a%"}`;
+                if (hoverText) hoverText.textContent = label;
+                if (hoverBox && hoverText) {
+                  const boxW = Math.max(180, Math.min(280, label.length * 6.2));
+                  const left = x > (width - pad - boxW - 8) ? x - boxW - 8 : x + 8;
+                  hoverBox.setAttribute("x", left.toFixed(2));
+                  hoverBox.setAttribute("width", boxW.toFixed(2));
+                  hoverText.setAttribute("x", (left + 6).toFixed(2));
+                }
+              };
+              motorHoverArea.addEventListener("mouseenter", (ev) => updateMotorHover(ev));
+              motorHoverArea.addEventListener("mousemove", (ev) => updateMotorHover(ev));
+              motorHoverArea.addEventListener("mouseleave", () => {
+                if (hoverGroup) hoverGroup.style.display = "none";
+              });
+            }
+
+            svg.querySelectorAll("[data-rig-plan-fixture]").forEach((g) => {
+              g.addEventListener("mousedown", (ev) => {
+                ev.preventDefault();
+                riggingState.selectedPlanFixtureId = g.dataset.rigPlanFixture || "";
+                riggingPlanDragState.active = true;
+                riggingPlanDragState.fixtureId = g.dataset.rigPlanFixture || "";
+                riggingPlanDragState.spanId = g.dataset.rigSpanId || "";
+                riggingPlanDragState.groupId = g.dataset.rigGroupId || "";
+                riggingPlanDragState.ax = Number(g.dataset.rigAx || 0);
+                riggingPlanDragState.ay = Number(g.dataset.rigAy || 0);
+                riggingPlanDragState.bx = Number(g.dataset.rigBx || 0);
+                riggingPlanDragState.by = Number(g.dataset.rigBy || 0);
+                riggingPlanDragState.spanLen = Number(g.dataset.rigSpanLen || 0);
+                riggingPlanDragState.markerGroup = g;
+                riggingPlanDragState.lastProjected = null;
+                const fp = riggingState.fixturePlacements.find((x) => x.id === riggingPlanDragState.fixtureId);
+                const span = fp?.spanId ? getSpan(fp.spanId) : null;
+                if (span && !riggingPlanDragState.groupId) riggingPlanDragState.groupId = span.groupId || "";
+                g.style.cursor = "grabbing";
+              });
+              g.addEventListener("click", (ev) => {
+                ev.preventDefault();
+                ev.stopPropagation();
+                const nextId = String(g.dataset.rigPlanFixture || "");
+                if (String(riggingState.selectedPlanFixtureId || "") === nextId) return;
+                riggingState.selectedPlanFixtureId = nextId;
+                renderRigging();
+              });
+            });
+            if (svg.getAttribute("data-rig-select-bound") !== "1") {
+              svg.addEventListener("click", (ev) => {
+                const t = ev.target;
+                if (!(t instanceof Element)) return;
+                if (t.closest("[data-rig-plan-fixture]")) return;
+                if (!riggingState.selectedPlanFixtureId) return;
+                riggingState.selectedPlanFixtureId = "";
+                renderRigging();
+              });
+              svg.setAttribute("data-rig-select-bound", "1");
+            }
+            svg.querySelectorAll("[data-rig-plan-motor]").forEach((g) => {
+              g.addEventListener("mousedown", (ev) => {
+                ev.preventDefault();
+                const motorId = g.getAttribute("data-rig-plan-motor") || "";
+                const groupId = g.getAttribute("data-rig-group-id") || "";
+                if (!motorId || !groupId) return;
+                const gm = (riggingState.groupMotors || []).find((x) => x.id === motorId && x.groupId === groupId);
+                if (!gm) return;
+                const pointerPos = getPointerGroupPositionFromRigPlan(ev, groupId);
+                if (!Number.isFinite(Number(pointerPos))) return;
+                riggingPlanMotorDragState.active = true;
+                riggingPlanMotorDragState.motorId = motorId;
+                riggingPlanMotorDragState.groupId = groupId;
+                riggingPlanMotorDragState.markerGroup = g;
+                riggingPlanMotorDragState.posOffsetM = 0;
+                riggingPlanMotorDragState.lastProjectedPosM = Number(pointerPos || 0);
+                g.style.cursor = "grabbing";
+              });
+            });
+
+            if (!riggingPlanDragBound) {
+              window.addEventListener("mousemove", (ev) => {
+                if (!riggingPlanDragState.active || !riggingPlanDragState.markerGroup) return;
+                const groupId = riggingPlanDragState.groupId;
+                if (!groupId) return;
+                const projected = projectPointerToRigPlanSpan(ev, groupId);
+                if (!projected) return;
+                riggingPlanDragState.lastProjected = projected;
+                const x = projected.x;
+                const y = projected.y;
+                const dot = riggingPlanDragState.markerGroup.querySelector("[data-rig-item-dot]");
+                if (dot) {
+                  dot.setAttribute("cx", x.toFixed(2));
+                  dot.setAttribute("cy", (y + 12).toFixed(2));
+                }
+                const visual = riggingPlanDragState.markerGroup.querySelector("[data-rig-item-visual]");
+                if (visual) {
+                  visual.setAttribute("transform", `translate(${x.toFixed(2)} ${(y + 12).toFixed(2)})`);
+                }
+                const hit = riggingPlanDragState.markerGroup.querySelector("[data-rig-item-hit]");
+                if (hit) {
+                  hit.setAttribute("cx", x.toFixed(2));
+                  hit.setAttribute("cy", (y + 12).toFixed(2));
+                }
+                const wt = riggingPlanDragState.markerGroup.querySelector("[data-rig-item-weight]");
+                if (wt) {
+                  wt.setAttribute("x", x.toFixed(2));
+                  wt.setAttribute("y", (y + 52).toFixed(2));
+                }
+              });
+
+              window.addEventListener("mouseup", (ev) => {
+                if (!riggingPlanDragState.active) return;
+                const fp = riggingState.fixturePlacements.find((x) => x.id === riggingPlanDragState.fixtureId);
+                if (fp) {
+                  const groupId = riggingPlanDragState.groupId || (fp.spanId ? (getSpan(fp.spanId)?.groupId || "") : "");
+                  const projected = riggingPlanDragState.lastProjected || projectPointerToRigPlanSpan(ev, groupId);
+                  if (projected) {
+                    fp.spanId = projected.spanId;
+                    fp.positionM = Math.round(Number(projected.posInSpanM || 0) * 10) / 10;
+                  }
+                }
+                riggingPlanDragState.active = false;
+                riggingPlanDragState.fixtureId = "";
+                riggingPlanDragState.spanId = "";
+                riggingPlanDragState.groupId = "";
+                riggingPlanDragState.markerGroup = null;
+                riggingPlanDragState.lastProjected = null;
+                renderRigging();
+              });
+              riggingPlanDragBound = true;
+            }
+            if (!riggingPlanDeleteBound) {
+              window.addEventListener("keydown", (ev) => {
+                const key = String(ev.key || "");
+                if (key !== "Backspace" && key !== "Delete") return;
+                if (currentEngineeringSection !== "Rigging") return;
+                const t = ev.target;
+                if (t instanceof Element && t.closest("input, textarea, select, [contenteditable='true']")) return;
+                const selectedId = String(riggingState.selectedPlanFixtureId || "");
+                if (!selectedId) return;
+                if (!riggingState.fixturePlacements.some((x) => String(x.id || "") === selectedId)) {
+                  riggingState.selectedPlanFixtureId = "";
+                  return;
+                }
+                ev.preventDefault();
+                riggingState.fixturePlacements = riggingState.fixturePlacements.filter((x) => String(x.id || "") !== selectedId);
+                riggingState.selectedPlanFixtureId = "";
+                renderRigging();
+              });
+              riggingPlanDeleteBound = true;
+            }
+            if (!riggingPlanMotorDragBound) {
+              window.addEventListener("mousemove", (ev) => {
+                if (!riggingPlanMotorDragState.active || !riggingPlanMotorDragState.markerGroup) return;
+                const groupId = riggingPlanMotorDragState.groupId;
+                const projected = projectPointerToRigPlanSpan(ev, groupId);
+                if (!projected) return;
+                const groupPos = mapSpanLocalToGroupPosition(groupId, projected.spanId, projected.posInSpanM);
+                if (!Number.isFinite(Number(groupPos))) return;
+                const total = getRiggingGroupTotalSpan(groupId);
+                const nextPos = Math.max(0, Math.min(Math.max(0, total), Number(groupPos || 0)));
+                riggingPlanMotorDragState.lastProjectedPosM = nextPos;
+                const group = riggingPlanMotorDragState.markerGroup;
+                const dot = group.querySelector("[data-rig-motor-dot]");
+                if (dot) {
+                  dot.setAttribute("cx", projected.x.toFixed(2));
+                  dot.setAttribute("cy", (projected.y - 12).toFixed(2));
+                }
+                const glyph = group.querySelector("[data-rig-motor-glyph]");
+                if (glyph) {
+                  glyph.setAttribute("x", projected.x.toFixed(2));
+                  glyph.setAttribute("y", (projected.y - 9.2).toFixed(2));
+                }
+                const label = group.querySelector("[data-rig-motor-label]");
+                if (label) {
+                  label.setAttribute("x", projected.x.toFixed(2));
+                  label.setAttribute("y", (projected.y - 21.2).toFixed(2));
+                }
+                const load = group.querySelector("[data-rig-motor-load]");
+                if (load) {
+                  load.setAttribute("x", projected.x.toFixed(2));
+                  load.setAttribute("y", (projected.y - 30.0).toFixed(2));
+                }
+                const share = group.querySelector("[data-rig-motor-share]");
+                if (share) {
+                  share.setAttribute("x", projected.x.toFixed(2));
+                  share.setAttribute("y", (projected.y - 39.0).toFixed(2));
+                }
+                const hit = group.querySelector("[data-rig-motor-hit]");
+                if (hit) {
+                  hit.setAttribute("cx", projected.x.toFixed(2));
+                  hit.setAttribute("cy", (projected.y - 12).toFixed(2));
+                }
+              });
+              window.addEventListener("mouseup", (ev) => {
+                if (!riggingPlanMotorDragState.active) return;
+                const gm = (riggingState.groupMotors || []).find((x) => x.id === riggingPlanMotorDragState.motorId);
+                if (gm) {
+                  const total = getRiggingGroupTotalSpan(gm.groupId);
+                  let rawPos = riggingPlanMotorDragState.lastProjectedPosM;
+                  if (!Number.isFinite(Number(rawPos))) {
+                    const pointerPos = getPointerGroupPositionFromRigPlan(ev, gm.groupId);
+                    rawPos = Number.isFinite(Number(pointerPos)) ? Number(pointerPos) : NaN;
+                  }
+                  if (!Number.isFinite(Number(rawPos))) {
+                    riggingPlanMotorDragState.active = false;
+                    riggingPlanMotorDragState.motorId = "";
+                    riggingPlanMotorDragState.groupId = "";
+                    riggingPlanMotorDragState.markerGroup = null;
+                    riggingPlanMotorDragState.posOffsetM = 0;
+                    riggingPlanMotorDragState.lastProjectedPosM = null;
+                    renderRigging();
+                    return;
+                  }
+                  const nextPos = Math.max(0, Math.min(Math.max(0, total), Number(rawPos || 0)));
+                  gm.positionM = Number(nextPos.toFixed(3));
+                  const targetNodeId = resolveMotorNodeAtGroupPos(gm.groupId, gm.positionM);
+                  if (targetNodeId) {
+                    const pickup = (riggingState.pickups || []).find((x) => x.id === gm.pickupId);
+                    if (pickup) {
+                      pickup.nodeId = targetNodeId;
+                    }
+                  }
+                }
+                riggingPlanMotorDragState.active = false;
+                riggingPlanMotorDragState.motorId = "";
+                riggingPlanMotorDragState.groupId = "";
+                riggingPlanMotorDragState.markerGroup = null;
+                riggingPlanMotorDragState.posOffsetM = 0;
+                riggingPlanMotorDragState.lastProjectedPosM = null;
+                renderRigging();
+              });
+              riggingPlanMotorDragBound = true;
+            }
+          }
+        }
+
+        async function loadVenue3dLib() {
+          if (venue3dLibPromise) return venue3dLibPromise;
+          venue3dLibPromise = (async () => {
+            const THREE = await import("https://esm.sh/three@0.160.0");
+            const { OrbitControls } = await import("https://esm.sh/three@0.160.0/examples/jsm/controls/OrbitControls.js");
+            const { GLTFLoader } = await import("https://esm.sh/three@0.160.0/examples/jsm/loaders/GLTFLoader.js");
+            const { TransformControls } = await import("https://esm.sh/three@0.160.0/examples/jsm/controls/TransformControls.js");
+            return { THREE, OrbitControls, GLTFLoader, TransformControls };
+          })();
+          return venue3dLibPromise;
+        }
+
+        function disposeVenue3dRuntime() {
+          if (!venue3dRuntime) return;
+          try {
+            if (venue3dRuntime.frameId) cancelAnimationFrame(venue3dRuntime.frameId);
+            if (venue3dRuntime.controls) venue3dRuntime.controls.dispose();
+            if (venue3dRuntime.transformControls) venue3dRuntime.transformControls.dispose?.();
+            if (venue3dRuntime.renderer) {
+              venue3dRuntime.renderer.dispose();
+              venue3dRuntime.renderer.forceContextLoss?.();
+            }
+            if (venue3dRuntime.onResize) window.removeEventListener("resize", venue3dRuntime.onResize);
+            if (venue3dRuntime.onKeydown) window.removeEventListener("keydown", venue3dRuntime.onKeydown);
+            if (venue3dRuntime.onKeyup) window.removeEventListener("keyup", venue3dRuntime.onKeyup);
+          } catch (_) {}
+          venue3dRuntime = null;
+        }
+
+        async function initVenue3dViewer() {
+          const host = document.getElementById("venue3dCanvasHost");
+          const statusEl = document.getElementById("venue3dStatus");
+          const pickEl = document.getElementById("venue3dPick");
+          const resetBtn = document.getElementById("venue3dResetViewBtn");
+          const clearGearBtn = document.getElementById("venue3dClearGearBtn");
+          const outlinerEl = document.getElementById("venue3dOutliner");
+          const objNameEl = document.getElementById("venue3dObjName");
+            const objTypeEl = document.getElementById("venue3dObjType");
+            const objSourceEl = document.getElementById("venue3dObjSource");
+            const objHintEl = document.getElementById("venue3dObjHint");
+            const objPosXEl = document.getElementById("venue3dObjPosX");
+            const objPosYEl = document.getElementById("venue3dObjPosY");
+            const objPosZEl = document.getElementById("venue3dObjPosZ");
+            const objRotYEl = document.getElementById("venue3dObjRotY");
+            const objScaleEl = document.getElementById("venue3dObjScale");
+            const objScaleYGhostEl = document.getElementById("venue3dObjScaleYGhost");
+            const objScaleZGhostEl = document.getElementById("venue3dObjScaleZGhost");
+            const objCurveEl = document.getElementById("venue3dObjCurve");
+            const objCurveSegEl = document.getElementById("venue3dObjCurveSeg");
+            const objApplyBtn = document.getElementById("venue3dObjApplyBtn");
+            const objDeleteBtn = document.getElementById("venue3dObjDeleteBtn");
+          const gizmoTabs = document.getElementById("venue3dGizmoTabs");
+          const scaleEl = document.getElementById("venue3dScaleInput");
+          const modeTabs = document.getElementById("venue3dModeTabs");
+          const inputTabs = document.getElementById("venue3dInputTabs");
+          const projectionTabs = document.getElementById("venue3dProjectionTabs");
+          const viewTabs = document.getElementById("venue3dViewTabs");
+          if (!(host instanceof HTMLElement) || !statusEl || !pickEl) return;
+          const savedPose = (() => {
+            const fromRuntime = venue3dRuntime?.camera && venue3dRuntime?.controls
+              ? {
+                  px: Number(venue3dRuntime.camera.position.x || 0),
+                  py: Number(venue3dRuntime.camera.position.y || 0),
+                  pz: Number(venue3dRuntime.camera.position.z || 0),
+                  tx: Number(venue3dRuntime.controls.target.x || 0),
+                  ty: Number(venue3dRuntime.controls.target.y || 0),
+                  tz: Number(venue3dRuntime.controls.target.z || 0)
+                }
+              : null;
+            return fromRuntime || (venueState.venue3dPose && typeof venueState.venue3dPose === "object" ? venueState.venue3dPose : null);
+          })();
+          disposeVenue3dRuntime();
+          host.innerHTML = "";
+          const requestToken = `${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+          host.dataset.initToken = requestToken;
+          statusEl.textContent = "Loading 3D engine...";
+          try {
+            const { THREE, OrbitControls, GLTFLoader, TransformControls } = await loadVenue3dLib();
+            if (host.dataset.initToken !== requestToken) return;
+            const width = Math.max(320, Math.floor(host.clientWidth || 320));
+            const height = Math.max(320, Math.floor(host.clientHeight || 500));
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+            renderer.setSize(width, height, true);
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            renderer.setClearColor(0x141924, 1);
+            renderer.domElement.style.width = "100%";
+            renderer.domElement.style.height = "100%";
+            renderer.domElement.style.display = "block";
+            renderer.domElement.addEventListener("contextmenu", (ev) => ev.preventDefault());
+            host.appendChild(renderer.domElement);
+
+            const scene = new THREE.Scene();
+            const initialAspect = Math.max(0.1, width / Math.max(1, height));
+            const orthoSizeBase = Math.max(12, Math.max(Number(venueState.widthM || 30), Number(venueState.depthM || 20)) * 1.35);
+            const perspectiveCamera = new THREE.PerspectiveCamera(52, initialAspect, 0.05, 10000);
+            perspectiveCamera.position.set(16, 12, 16);
+            const orthographicCamera = new THREE.OrthographicCamera(
+              (-orthoSizeBase * initialAspect) / 2,
+              (orthoSizeBase * initialAspect) / 2,
+              orthoSizeBase / 2,
+              -orthoSizeBase / 2,
+              0.05,
+              10000
+            );
+            orthographicCamera.position.copy(perspectiveCamera.position);
+            orthographicCamera.up.set(0, 1, 0);
+            let camera = String(venueState.projectionMode || "perspective") === "orthographic"
+              ? orthographicCamera
+              : perspectiveCamera;
+
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.08;
+            controls.target.set(0, 0, 0);
+            controls.update();
+            const transformControls = new TransformControls(camera, renderer.domElement);
+            transformControls.setSize(0.85);
+            transformControls.visible = false;
+            scene.add(transformControls);
+            const persistCameraPose = () => {
+              venueState.venue3dPose = {
+                px: Number(camera.position.x || 0),
+                py: Number(camera.position.y || 0),
+                pz: Number(camera.position.z || 0),
+                tx: Number(controls.target.x || 0),
+                ty: Number(controls.target.y || 0),
+                tz: Number(controls.target.z || 0)
+              };
+            };
+            const applyCameraPose = (pose) => {
+              if (!pose || typeof pose !== "object") return false;
+              const vals = [pose.px, pose.py, pose.pz, pose.tx, pose.ty, pose.tz].map((v) => Number(v));
+              if (vals.some((v) => !Number.isFinite(v))) return false;
+              camera.position.set(vals[0], vals[1], vals[2]);
+              controls.target.set(vals[3], vals[4], vals[5]);
+              camera.up.set(0, 1, 0);
+              controls.update();
+              persistCameraPose();
+              return true;
+            };
+            controls.addEventListener("change", persistCameraPose);
+            const syncProjectionTabs = () => {
+              projectionTabs?.querySelectorAll("button[data-venue3d-projection]").forEach((btn) => {
+                btn.classList.toggle("active", btn.getAttribute("data-venue3d-projection") === String(venueState.projectionMode || "perspective"));
+              });
+            };
+            const setProjection = (mode) => {
+              const next = mode === "orthographic" ? "orthographic" : "perspective";
+              if (next === String(venueState.projectionMode || "perspective")) {
+                syncProjectionTabs();
+                return;
+              }
+              const prevCamera = camera;
+              const nextCamera = next === "orthographic" ? orthographicCamera : perspectiveCamera;
+              nextCamera.position.copy(prevCamera.position);
+              nextCamera.quaternion.copy(prevCamera.quaternion);
+              camera = nextCamera;
+              controls.object = camera;
+              controls.update();
+              transformControls.camera = camera;
+              venueState.projectionMode = next;
+              syncProjectionTabs();
+              persistCameraPose();
+              saveAppMemory();
+            };
+            syncProjectionTabs();
+            let navMode = "blender";
+            let blenderShiftPan = false;
+            let navInputProfile = "trackpad";
+            const applyControlBindings = () => {
+              const M = THREE.MOUSE;
+              controls.enableRotate = true;
+              controls.enablePan = true;
+              controls.enableZoom = true;
+              controls.zoomSpeed = navInputProfile === "trackpad" ? 0.72 : 1;
+              controls.rotateSpeed = 0.95;
+              controls.panSpeed = navInputProfile === "trackpad" ? 0.95 : 1.05;
+              controls.dampingFactor = navInputProfile === "trackpad" ? 0.11 : 0.08;
+              if (navMode === "plan") {
+                controls.mouseButtons = { LEFT: M.PAN, MIDDLE: M.PAN, RIGHT: M.PAN };
+                controls.touches = { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_PAN };
+                controls.rotateSpeed = 0.65;
+                controls.panSpeed = 1.2;
+                return;
+              }
+              if (navMode === "inspect") {
+                controls.mouseButtons = { LEFT: M.ROTATE, MIDDLE: M.DOLLY, RIGHT: M.PAN };
+                controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+                controls.rotateSpeed = 0.92;
+                controls.panSpeed = 0.95;
+                return;
+              }
+              // Blender-style:
+              // Mouse profile -> selection on LMB, orbit MMB, Shift+MMB pan.
+              // Trackpad profile -> LMB drag orbit, Shift+drag pan, wheel/pinch zoom.
+              controls.mouseButtons = navInputProfile === "trackpad"
+                ? { LEFT: blenderShiftPan ? M.PAN : M.ROTATE, MIDDLE: M.DOLLY, RIGHT: M.PAN }
+                : { LEFT: null, MIDDLE: blenderShiftPan ? M.PAN : M.ROTATE, RIGHT: M.PAN };
+              controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+              controls.rotateSpeed = 1.0;
+              controls.panSpeed = navInputProfile === "trackpad" ? 0.92 : 1.0;
+            };
+            const setInputProfile = (profile) => {
+              const safe = profile === "mouse" ? "mouse" : "trackpad";
+              navInputProfile = safe;
+              venueState.venue3dInputProfile = safe;
+              inputTabs?.querySelectorAll("button[data-venue3d-input]").forEach((btn) => {
+                btn.classList.toggle("active", btn.getAttribute("data-venue3d-input") === safe);
+              });
+              applyControlBindings();
+            };
+            const setControlMode = (mode) => {
+              const safe = mode === "inspect" || mode === "plan" ? mode : "blender";
+              navMode = safe;
+              venueState.venue3dNavMode = safe;
+              modeTabs?.querySelectorAll("button[data-venue3d-mode]").forEach((btn) => {
+                btn.classList.toggle("active", btn.getAttribute("data-venue3d-mode") === safe);
+              });
+              applyControlBindings();
+            };
+            setInputProfile(String(venueState.venue3dInputProfile || "trackpad"));
+            setControlMode(String(venueState.venue3dNavMode || "blender"));
+            const setGizmoMode = (mode) => {
+              const safe = (mode === "rotate" || mode === "scale") ? mode : "translate";
+              venueState.gizmoMode = safe;
+              transformControls.setMode(safe);
+              transformControls.setSpace("world");
+              transformControls.showX = true;
+              transformControls.showY = true;
+              transformControls.showZ = true;
+              gizmoTabs?.querySelectorAll("button[data-venue3d-gizmo]").forEach((btn) => {
+                btn.classList.toggle("active", btn.getAttribute("data-venue3d-gizmo") === safe);
+              });
+            };
+            setGizmoMode(String(venueState.gizmoMode || "translate"));
+
+            scene.add(new THREE.HemisphereLight(0xdde8ff, 0x18202c, 0.95));
+            const venueGridW = Math.max(1, Number(venueState.widthM || 30));
+            const venueGridD = Math.max(1, Number(venueState.depthM || 20));
+            const defaultVenueBounds = {
+              minX: 0,
+              maxX: venueGridW,
+              minZ: 0,
+              maxZ: venueGridD
+            };
+            const clampToVenueBounds = (x, z) => ({
+              x: Math.max(defaultVenueBounds.minX, Math.min(defaultVenueBounds.maxX, Number(x || 0))),
+              z: Math.max(defaultVenueBounds.minZ, Math.min(defaultVenueBounds.maxZ, Number(z || 0)))
+            });
+            transformControls.addEventListener("dragging-changed", (ev) => {
+              controls.enabled = !ev.value;
+            });
+            const gridRoot = new THREE.Group();
+            gridRoot.position.y = -0.001;
+            scene.add(gridRoot);
+            const buildOriginGrid = (widthM, depthM) => {
+              const w = Math.max(1, Math.ceil(widthM));
+              const d = Math.max(1, Math.ceil(depthM));
+              const originX = Math.max(0, Math.min(w, Number(venueState.gridOriginX || 0)));
+              const originY = Math.max(0, Math.min(d, Number(venueState.gridOriginY || 0)));
+              const majorStep = 5;
+              const addLine = (x1, z1, x2, z2, color, opacity, lineWidth = 1) => {
+                const geo = new THREE.BufferGeometry().setFromPoints([
+                  new THREE.Vector3(x1, 0, z1),
+                  new THREE.Vector3(x2, 0, z2)
+                ]);
+                const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity, linewidth: lineWidth });
+                const line = new THREE.Line(geo, mat);
+                gridRoot.add(line);
+              };
+              // Border
+              addLine(0, 0, w, 0, 0x6a7391, 0.75);
+              addLine(w, 0, w, d, 0x6a7391, 0.75);
+              addLine(w, d, 0, d, 0x6a7391, 0.75);
+              addLine(0, d, 0, 0, 0x6a7391, 0.75);
+              for (let x = 0; x <= w; x += 1) {
+                const major = x % majorStep === 0;
+                addLine(x, 0, x, d, major ? 0x55607a : 0x2e3445, major ? 0.8 : 0.55);
+              }
+              for (let z = 0; z <= d; z += 1) {
+                const major = z % majorStep === 0;
+                addLine(0, z, w, z, major ? 0x55607a : 0x2e3445, major ? 0.8 : 0.55);
+              }
+              const originDot = new THREE.Mesh(
+                new THREE.SphereGeometry(0.08, 10, 10),
+                new THREE.MeshBasicMaterial({ color: 0x9de0ff })
+              );
+              originDot.position.set(originX, 0.02, originY);
+              originDot.name = `Grid Origin 0,0 @ ${originX.toFixed(2)}, ${originY.toFixed(2)}m`;
+              gridRoot.add(originDot);
+            };
+            buildOriginGrid(venueGridW, venueGridD);
+            const axes = new THREE.AxesHelper(Math.max(2, Math.max(venueGridW, venueGridD) * 0.08));
+            axes.position.set(
+              Math.max(0, Math.min(venueGridW, Number(venueState.gridOriginX || 0))),
+              0,
+              Math.max(0, Math.min(venueGridD, Number(venueState.gridOriginY || 0)))
+            );
+            scene.add(axes);
+            const floorPlanRoot = new THREE.Group();
+            scene.add(floorPlanRoot);
+            const textureLoader = new THREE.TextureLoader();
+            let floorPlanMesh = null;
+            let floorPlanBounds = null;
+            const clearFloorPlanMesh = () => {
+              if (!floorPlanMesh) return;
+              floorPlanRoot.remove(floorPlanMesh);
+              floorPlanMesh.geometry?.dispose?.();
+              if (Array.isArray(floorPlanMesh.material)) floorPlanMesh.material.forEach((m) => m.dispose?.());
+              else floorPlanMesh.material?.dispose?.();
+              floorPlanMesh = null;
+              floorPlanBounds = null;
+              applyOutlinerVisibility();
+              renderSceneOutliner();
+            };
+            const fitViewToBounds = (bounds) => {
+              if (!bounds) return;
+              const size = new THREE.Vector3(
+                Math.max(0.1, Number(bounds.maxX) - Number(bounds.minX)),
+                0.1,
+                Math.max(0.1, Number(bounds.maxZ) - Number(bounds.minZ))
+              );
+              const center = new THREE.Vector3(
+                (Number(bounds.minX) + Number(bounds.maxX)) / 2,
+                0,
+                (Number(bounds.minZ) + Number(bounds.maxZ)) / 2
+              );
+              const maxDim = Math.max(size.x, size.z, 0.1);
+              fittedCenter.copy(center);
+              fittedMaxDim = maxDim;
+              const dist = camera.isPerspectiveCamera
+                ? (maxDim * 1.45) / Math.tan((camera.fov * Math.PI / 180) / 2)
+                : maxDim * 2.1;
+              camera.position.set(center.x + dist * 0.9, Math.max(6, dist * 0.55), center.z + dist * 0.9);
+              controls.target.copy(center);
+              camera.up.set(0, 1, 0);
+              controls.update();
+            };
+            const syncFloorPlanMesh = () => {
+              clearFloorPlanMesh();
+              const imgUrl = String(venueState.floorPlanDataUrl || "");
+              const m = getFloorPlanRenderMatrix(venueState.floorPlanWorldMatrix);
+              const imgW = Number(venueState.floorPlanImageWidthPx || 0);
+              const imgH = Number(venueState.floorPlanImageHeightPx || 0);
+              if (!imgUrl || !m || !(imgW > 0) || !(imgH > 0)) return Promise.resolve(false);
+              return new Promise((resolve) => {
+                textureLoader.load(imgUrl, (tex) => {
+                  tex.colorSpace = THREE.SRGBColorSpace;
+                  tex.needsUpdate = true;
+                  const mapPt = (u, v) => ({
+                    x: (Number(m.a || 0) * u) + (Number(m.c || 0) * v) + Number(m.e || 0),
+                    z: (Number(m.b || 0) * u) + (Number(m.d || 0) * v) + Number(m.f || 0)
+                  });
+                  const p00 = mapPt(0, 0);
+                  const p10 = mapPt(imgW, 0);
+                  const p01 = mapPt(0, imgH);
+                  const p11 = mapPt(imgW, imgH);
+                  const pos = new Float32Array([
+                    p00.x, 0.002, p00.z,
+                    p10.x, 0.002, p10.z,
+                    p01.x, 0.002, p01.z,
+                    p11.x, 0.002, p11.z
+                  ]);
+                  const uv = new Float32Array([
+                    0, 1,
+                    1, 1,
+                    0, 0,
+                    1, 0
+                  ]);
+                  const idx = [0, 2, 1, 2, 3, 1];
+                  const geo = new THREE.BufferGeometry();
+                  geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+                  geo.setAttribute("uv", new THREE.BufferAttribute(uv, 2));
+                  geo.setIndex(idx);
+                  geo.computeVertexNormals();
+                  const mat = new THREE.MeshBasicMaterial({
+                    map: tex,
+                    transparent: true,
+                    opacity: Math.max(0.08, Math.min(1, Number(venueState.floorPlanOpacity || 0.28))),
+                    side: THREE.DoubleSide,
+                    depthWrite: false
+                  });
+                  floorPlanMesh = new THREE.Mesh(geo, mat);
+                  floorPlanMesh.name = "Venue Floor Plan";
+                  floorPlanRoot.add(floorPlanMesh);
+                  floorPlanRoot.visible = !isOutlinerHidden("overlay:floorplan");
+                  floorPlanBounds = {
+                    minX: Math.min(p00.x, p10.x, p01.x, p11.x),
+                    maxX: Math.max(p00.x, p10.x, p01.x, p11.x),
+                    minZ: Math.min(p00.z, p10.z, p01.z, p11.z),
+                    maxZ: Math.max(p00.z, p10.z, p01.z, p11.z)
+                  };
+                  applyOutlinerVisibility();
+                  renderSceneOutliner();
+                  resolve(true);
+                }, undefined, () => resolve(false));
+              });
+            };
+
+            let loadedRoot = null;
+            let selectedImportedObject = null;
+            const raycaster = new THREE.Raycaster();
+            const pointer = new THREE.Vector2();
+            const loader = new GLTFLoader();
+            const modelTemplateCache = new Map();
+            const loadModelTemplate = (url) => {
+              const key = String(url || "").trim();
+              if (!key) return Promise.resolve(null);
+              if (modelTemplateCache.has(key)) return modelTemplateCache.get(key);
+              const promise = new Promise((resolve) => {
+                loader.load(
+                  key,
+                  (gltf) => {
+                    const src = gltf?.scene || gltf?.scenes?.[0] || null;
+                    resolve(src || null);
+                  },
+                  undefined,
+                  () => resolve(null)
+                );
+              });
+              modelTemplateCache.set(key, promise);
+              return promise;
+            };
+            const computeMeshBounds = (object3d) => {
+              const box = new THREE.Box3();
+              const tempBox = new THREE.Box3();
+              const hasBounds = { value: false };
+              object3d.updateMatrixWorld(true);
+              object3d.traverse((child) => {
+                if (!child || !child.isMesh || !child.geometry) return;
+                if (!child.geometry.boundingBox) child.geometry.computeBoundingBox();
+                const gbox = child.geometry.boundingBox;
+                if (!gbox) return;
+                tempBox.copy(gbox).applyMatrix4(child.matrixWorld);
+                if (!hasBounds.value) {
+                  box.copy(tempBox);
+                  hasBounds.value = true;
+                } else {
+                  box.union(tempBox);
+                }
+              });
+              return hasBounds.value ? box : null;
+            };
+            const centerAndFloorObject = (object3d) => {
+              const box = computeMeshBounds(object3d) || new THREE.Box3().setFromObject(object3d);
+              if (box.isEmpty()) return { width: 1, height: 1, depth: 1 };
+              const size = box.getSize(new THREE.Vector3());
+              const center = box.getCenter(new THREE.Vector3());
+              object3d.position.x -= center.x;
+              object3d.position.z -= center.z;
+              object3d.position.y -= box.min.y;
+              return {
+                width: Math.max(0.001, Number(size.x || 0.001)),
+                height: Math.max(0.001, Number(size.y || 0.001)),
+                depth: Math.max(0.001, Number(size.z || 0.001))
+              };
+            };
+            const mountModelInContainer = (container, modelPath, targetSize = null) => {
+              const path = String(modelPath || "").trim();
+              if (!path) return;
+              loadModelTemplate(path).then((template) => {
+                if (!template || !container.parent) return;
+                const model = template.clone(true);
+                const base = centerAndFloorObject(model);
+                if (targetSize && typeof targetSize === "object") {
+                  const tw = Number(targetSize.width || 0);
+                  const th = Number(targetSize.height || 0);
+                  const td = Number(targetSize.depth || 0);
+                  const sx = tw > 0 ? tw / base.width : null;
+                  const sy = th > 0 ? th / base.height : null;
+                  const sz = td > 0 ? td / base.depth : null;
+                  const fitMode = String(targetSize.fit || "contain");
+                  let uniform = null;
+                  if (fitMode === "height" && Number.isFinite(sy) && sy > 0) {
+                    uniform = sy;
+                  } else {
+                    const valid = [sx, sy, sz].filter((v) => Number.isFinite(v) && v > 0);
+                    if (valid.length) uniform = Math.min(...valid);
+                  }
+                  if (Number.isFinite(uniform) && uniform > 0) model.scale.setScalar(uniform);
+                }
+                const oldFallback = container.userData.fallbackMesh;
+                if (oldFallback && oldFallback.parent === container) container.remove(oldFallback);
+                container.userData.fallbackMesh = null;
+                model.userData.isModelAsset = true;
+                container.add(model);
+              }).catch(() => {});
+            };
+            const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+            let gearItemsById = Object.fromEntries(collectGearInventory().map((x) => [x.id, x]));
+            const gearRoot = new THREE.Group();
+            scene.add(gearRoot);
+            const gearMeshes = new Map();
+            const curveHandleRoot = new THREE.Group();
+            scene.add(curveHandleRoot);
+            let curveHandleMeshes = [];
+            const curveDragState = {
+              active: false,
+              placedId: "",
+              side: 0,
+              startClientX: 0,
+              startCurveDeg: 0
+            };
+            const trussRoot = new THREE.Group();
+            scene.add(trussRoot);
+            const trussMeshes = new Map();
+            const measureRoot = new THREE.Group();
+            scene.add(measureRoot);
+            const ensureOutlinerState = () => {
+              if (!venueState.sceneOutlinerCollapsed || typeof venueState.sceneOutlinerCollapsed !== "object") {
+                venueState.sceneOutlinerCollapsed = {};
+              }
+              if (!Array.isArray(venueState.sceneOutlinerHidden)) {
+                venueState.sceneOutlinerHidden = [];
+              }
+            };
+            const getOutlinerHiddenSet = () => {
+              ensureOutlinerState();
+              return new Set((venueState.sceneOutlinerHidden || []).map((k) => String(k)));
+            };
+            const isOutlinerCollapsed = (key) => {
+              ensureOutlinerState();
+              return Boolean(venueState.sceneOutlinerCollapsed[String(key)] === true);
+            };
+            const setOutlinerCollapsed = (key, collapsed) => {
+              ensureOutlinerState();
+              venueState.sceneOutlinerCollapsed[String(key)] = Boolean(collapsed);
+            };
+            const setOutlinerHidden = (key, hidden) => {
+              ensureOutlinerState();
+              const target = String(key || "");
+              if (!target) return;
+              const cur = new Set((venueState.sceneOutlinerHidden || []).map((k) => String(k)));
+              if (hidden) cur.add(target);
+              else cur.delete(target);
+              venueState.sceneOutlinerHidden = Array.from(cur);
+            };
+            const isOutlinerHidden = (key) => getOutlinerHiddenSet().has(String(key || ""));
+            const applyOutlinerVisibility = () => {
+              const hidden = getOutlinerHiddenSet();
+              gearMeshes.forEach((mesh, id) => {
+                if (mesh) mesh.visible = !hidden.has(`gear:${String(id)}`);
+              });
+              trussMeshes.forEach((mesh, id) => {
+                if (mesh) mesh.visible = !hidden.has(`truss:${String(id)}`);
+              });
+              if (floorPlanRoot) floorPlanRoot.visible = !hidden.has("overlay:floorplan");
+              if (loadedRoot) loadedRoot.visible = !hidden.has("imported:model");
+            };
+            let fittedCenter = new THREE.Vector3(0, 0, 0);
+            let fittedMaxDim = 10;
+            const ledPortPalette3d = ["#62d3ff", "#ff7d9f", "#8fff9c", "#ffd27b", "#a7b3ff", "#ff9d62", "#6de2a8", "#d28dff", "#ff6b6b", "#66e0ff", "#b1ff66", "#ffb366", "#9f86ff", "#53f3c2", "#ff8ad8", "#7dc3ff"];
+            const getLedPortColor3d = (port) => {
+              const p = Number(port || 0);
+              if (p >= 0 && p < ledPortPalette3d.length) return ledPortPalette3d[p];
+              const hue = (Math.max(0, p) * 47) % 360;
+              return `hsl(${hue}deg 85% 68%)`;
+            };
+            const parseLedKey3d = (key) => {
+              const m = String(key || "").match(/^(-?\d+),(-?\d+)$/);
+              if (!m) return null;
+              return { x: Number(m[1]), y: Number(m[2]) };
+            };
+            const buildLedOverlay3d = (source, wallW, wallH, wallD, curveDeg) => {
+              const mode = String(venueState.ledOverlayMode || "panels");
+              if (!["panels", "signal", "power"].includes(mode)) return null;
+              const ledMeta = source?.ledMeta;
+              const cols = Math.max(1, Number(ledMeta?.cols || 0));
+              const rows = Math.max(1, Number(ledMeta?.rows || 0));
+              if (!(cols > 0 && rows > 0)) return null;
+              const colWidthsRaw = Array.isArray(ledMeta?.colWidthsM) && ledMeta.colWidthsM.length === cols
+                ? ledMeta.colWidthsM.map((v) => Math.max(0.05, Number(v || 0.5)))
+                : Array.from({ length: cols }, () => Math.max(0.05, wallW / cols));
+              const rowHeightsRaw = Array.isArray(ledMeta?.rowHeightsM) && ledMeta.rowHeightsM.length === rows
+                ? ledMeta.rowHeightsM.map((v) => Math.max(0.05, Number(v || (wallH / rows))))
+                : Array.from({ length: rows }, () => Math.max(0.05, wallH / rows));
+              const sumColRaw = Math.max(0.001, colWidthsRaw.reduce((a, b) => a + b, 0));
+              const sumRowRaw = Math.max(0.001, rowHeightsRaw.reduce((a, b) => a + b, 0));
+              const xScale = wallW / sumColRaw;
+              const yScale = wallH / sumRowRaw;
+              const colWidths = colWidthsRaw.map((w) => w * xScale);
+              const rowHeights = rowHeightsRaw.map((h) => h * yScale);
+              const colEdges = [-wallW / 2];
+              for (let i = 0; i < cols; i += 1) colEdges.push(colEdges[colEdges.length - 1] + colWidths[i]);
+              const rowEdgesTop = [wallH / 2];
+              for (let i = 0; i < rows; i += 1) rowEdgesTop.push(rowEdgesTop[rowEdgesTop.length - 1] - rowHeights[i]);
+              const getCellCenter = (x, y) => ({
+                s: (colEdges[x] + colEdges[x + 1]) / 2,
+                y: (rowEdgesTop[y] + rowEdgesTop[y + 1]) / 2
+              });
+              const theta = (Math.abs(Number(curveDeg || 0)) * Math.PI) / 180;
+              const isCurved = theta >= 1e-6;
+              const dir = Number(curveDeg || 0) >= 0 ? 1 : -1;
+              const radius = isCurved ? (wallW / Math.max(1e-6, theta)) : 0;
+              const pointAt = (s, yy, off = 0.003) => {
+                if (!isCurved) return new THREE.Vector3(s, yy, (wallD / 2) + off);
+                const a = s / radius;
+                const bx = radius * Math.sin(a);
+                const bz = dir * radius * (1 - Math.cos(a));
+                // Front-face normal for each curved segment (matches BoxGeometry +Z after Y-rotation).
+                const nx = -dir * Math.sin(a);
+                const nz = Math.cos(a);
+                const frontOffset = (wallD / 2) + off;
+                return new THREE.Vector3(bx + (nx * frontOffset), yy, bz + (nz * frontOffset));
+              };
+              const overlay = new THREE.Group();
+              const labelMaterialCache = new Map();
+              const addPolyline = (pts, color, opacity = 1) => {
+                if (!Array.isArray(pts) || pts.length < 2) return;
+                const geo = new THREE.BufferGeometry().setFromPoints(pts);
+                const mat = new THREE.LineBasicMaterial({
+                  color: Number(new THREE.Color(color).getHex()),
+                  transparent: opacity < 1,
+                  opacity,
+                  depthTest: true,
+                  depthWrite: false
+                });
+                const line = new THREE.Line(geo, mat);
+                overlay.add(line);
+              };
+              const addCellLabel = (x, y, line1, line2, color, off = 0.0035) => {
+                if (!(x >= 0 && x < cols && y >= 0 && y < rows)) return;
+                const key = `${line1}|${line2}|${color}`;
+                let mat = labelMaterialCache.get(key);
+                if (!mat) {
+                  const canvas = document.createElement("canvas");
+                  canvas.width = 160;
+                  canvas.height = 112;
+                  const ctx = canvas.getContext("2d");
+                  if (!ctx) return;
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+                  ctx.fillStyle = "#1e2432";
+                  ctx.strokeStyle = color;
+                  ctx.lineWidth = 5;
+                  const r = 26;
+                  ctx.beginPath();
+                  ctx.moveTo(r, 8);
+                  ctx.lineTo(canvas.width - r, 8);
+                  ctx.quadraticCurveTo(canvas.width - 8, 8, canvas.width - 8, r);
+                  ctx.lineTo(canvas.width - 8, canvas.height - r);
+                  ctx.quadraticCurveTo(canvas.width - 8, canvas.height - 8, canvas.width - r, canvas.height - 8);
+                  ctx.lineTo(r, canvas.height - 8);
+                  ctx.quadraticCurveTo(8, canvas.height - 8, 8, canvas.height - r);
+                  ctx.lineTo(8, r);
+                  ctx.quadraticCurveTo(8, 8, r, 8);
+                  ctx.closePath();
+                  ctx.fill();
+                  ctx.stroke();
+                  ctx.fillStyle = "#f0f6ff";
+                  ctx.font = "700 34px system-ui, -apple-system, Segoe UI, sans-serif";
+                  ctx.textAlign = "center";
+                  ctx.textBaseline = "middle";
+                  ctx.fillText(String(line1 || ""), canvas.width / 2, 44);
+                  ctx.fillStyle = color;
+                  ctx.font = "700 24px system-ui, -apple-system, Segoe UI, sans-serif";
+                  ctx.fillText(String(line2 || ""), canvas.width / 2, 78);
+                  const tex = new THREE.CanvasTexture(canvas);
+                  tex.needsUpdate = true;
+                  if (typeof THREE.SRGBColorSpace !== "undefined") tex.colorSpace = THREE.SRGBColorSpace;
+                  mat = new THREE.MeshBasicMaterial({
+                    map: tex,
+                    transparent: true,
+                    opacity: 0.98,
+                    side: THREE.DoubleSide,
+                    depthTest: true,
+                    depthWrite: false
+                  });
+                  labelMaterialCache.set(key, mat);
+                }
+                const c = getCellCenter(x, y);
+                const wCell = Math.max(0.06, colWidths[x] * 0.44);
+                const hCell = Math.max(0.06, rowHeights[y] * 0.38);
+                const label = new THREE.Mesh(new THREE.PlaneGeometry(wCell, hCell), mat);
+                label.position.copy(pointAt(c.s, c.y, off));
+                if (isCurved) {
+                  const a = c.s / radius;
+                  label.rotation.y = -dir * a;
+                }
+                overlay.add(label);
+              };
+              const addCellFace = (x, y, color, opacity = 0.35, off = 0.0025) => {
+                if (!(x >= 0 && x < cols && y >= 0 && y < rows)) return;
+                const c = getCellCenter(x, y);
+                const wCell = Math.max(0.04, colWidths[x] * 0.92);
+                const hCell = Math.max(0.04, rowHeights[y] * 0.9);
+                const face = new THREE.Mesh(
+                  new THREE.PlaneGeometry(wCell, hCell),
+                  new THREE.MeshBasicMaterial({
+                    color: Number(new THREE.Color(color).getHex()),
+                    transparent: true,
+                    opacity,
+                    side: THREE.DoubleSide,
+                    depthTest: true,
+                    depthWrite: false,
+                    polygonOffset: true,
+                    polygonOffsetFactor: -1,
+                    polygonOffsetUnits: -1
+                  })
+                );
+                face.position.copy(pointAt(c.s, c.y, off));
+                if (isCurved) {
+                  const a = c.s / radius;
+                  face.rotation.y = -dir * a;
+                }
+                overlay.add(face);
+              };
+              const addCellBorder = (x, y, color, off = 0.0032) => {
+                if (!(x >= 0 && x < cols && y >= 0 && y < rows)) return;
+                const xL = colEdges[x];
+                const xR = colEdges[x + 1];
+                const yT = rowEdgesTop[y];
+                const yB = rowEdgesTop[y + 1];
+                addPolyline([
+                  pointAt(xL, yT, off),
+                  pointAt(xR, yT, off),
+                  pointAt(xR, yB, off),
+                  pointAt(xL, yB, off),
+                  pointAt(xL, yT, off)
+                ], color, 1);
+              };
+              if (mode === "panels") {
+                const gridColor = "#bfe2ff";
+                for (let c = 0; c <= cols; c += 1) {
+                  const s = colEdges[c];
+                  addPolyline([pointAt(s, wallH / 2, 0.003), pointAt(s, -wallH / 2, 0.003)], gridColor, 0.95);
+                }
+                const arcSamples = Math.max(10, cols * 2);
+                for (let r = 0; r <= rows; r += 1) {
+                  const yy = rowEdgesTop[r];
+                  const pts = [];
+                  for (let i = 0; i <= arcSamples; i += 1) {
+                    const t = i / arcSamples;
+                    const s = (-wallW / 2) + (wallW * t);
+                    pts.push(pointAt(s, yy, 0.003));
+                  }
+                  addPolyline(pts, gridColor, 0.95);
+                }
+              }
+              const wallId = String(ledMeta?.wallId || "");
+              const wallIdFromSource = String(source?.id || "").startsWith("video_led_")
+                ? String(source.id).slice("video_led_".length)
+                : "";
+              const walls = ledState.mode === "multi" ? (ledState.walls || []) : [ledState.single];
+              let ledWall = walls.find((w) => {
+                const wid = String(w?.id || "");
+                if (!wid) return false;
+                return wid === wallId || wid === wallIdFromSource;
+              }) || null;
+              if (!ledWall && wallIdFromSource) {
+                ledWall = walls.find((w) => {
+                  const name = String(w?.name || "").trim();
+                  return name && name === wallIdFromSource;
+                }) || null;
+              }
+              if (!ledWall && ledState.mode !== "multi" && walls.length === 1) {
+                ledWall = walls[0] || null;
+              }
+              if (!ledWall && walls.length) {
+                const sourceName = String(source?.name || "").trim();
+                if (sourceName) {
+                  ledWall = walls.find((w) => String(w?.name || "").trim() === sourceName) || null;
+                }
+              }
+              if (mode === "panels") {
+                for (let y = 0; y < rows; y += 1) {
+                  for (let x = 0; x < cols; x += 1) {
+                    const even = ((x + y) % 2) === 0;
+                    const col = even ? "#5c6e94" : "#4b5d82";
+                    addCellFace(x, y, col, 0.48, 0.0025);
+                    addCellBorder(x, y, "#bfe2ff", 0.0032);
+                  }
+                }
+              }
+              if (!ledWall) return overlay;
+              if (mode === "signal") {
+                ensureLedWallMapping(ledWall);
+                ensureLedWallRouting(ledWall);
+                const disabledSet = new Set((ledWall.mapping.disabledCabinets || []).map((k) => String(k)));
+                const orderedKeys = buildCabinetMapOrder(cols, rows, ledWall.mapping).map((c) => `${c.x},${c.y}`).filter((k) => !disabledSet.has(k));
+                const orderedKeySet = new Set(orderedKeys);
+                const paths = {};
+                if (ledWall.routing.portPaths && typeof ledWall.routing.portPaths === "object") {
+                  for (let p = 0; p < 512; p += 1) {
+                    const arr = Array.isArray(ledWall.routing.portPaths[p]) ? ledWall.routing.portPaths[p] : (Array.isArray(ledWall.routing.portPaths[String(p)]) ? ledWall.routing.portPaths[String(p)] : null);
+                    if (!arr) continue;
+                    paths[p] = arr.filter((k, idx) => orderedKeySet.has(String(k)) && arr.indexOf(k) === idx).map((k) => String(k));
+                  }
+                }
+                if (!Object.keys(paths).length && ledWall.routing.assignments && typeof ledWall.routing.assignments === "object") {
+                  const idxMap = new Map(orderedKeys.map((k, i) => [k, i]));
+                  Object.entries(ledWall.routing.assignments).forEach(([k, port]) => {
+                    const key = String(k);
+                    const p = Number(port);
+                    if (!orderedKeySet.has(key) || !Number.isInteger(p) || p < 0) return;
+                    if (!Array.isArray(paths[p])) paths[p] = [];
+                    paths[p].push(key);
+                  });
+                  Object.keys(paths).forEach((p) => {
+                    paths[p] = paths[p].sort((a, b) => (idxMap.get(a) || 0) - (idxMap.get(b) || 0));
+                  });
+                }
+                const signalByKey = {};
+                Object.entries(paths).forEach(([p, keys]) => {
+                  const port = Number(p);
+                  const col = getLedPortColor3d(port);
+                  keys.forEach((k, idx) => {
+                    signalByKey[String(k)] = { port, chain: idx + 1, color: col };
+                  });
+                  const pts = keys.map((k) => parseLedKey3d(k)).filter(Boolean).map((xy) => getCellCenter(xy.x, xy.y)).map((c) => pointAt(c.s, c.y, 0.0034));
+                  addPolyline(pts, col, 1);
+                });
+                for (let y = 0; y < rows; y += 1) {
+                  for (let x = 0; x < cols; x += 1) {
+                    addCellFace(x, y, "#202737", 0.96, 0.0024);
+                  }
+                }
+                Object.entries(signalByKey).forEach(([key, meta]) => {
+                  const xy = parseLedKey3d(key);
+                  if (!xy) return;
+                  addCellBorder(xy.x, xy.y, meta.color, 0.0032);
+                  addCellLabel(xy.x, xy.y, `P${meta.port + 1}`, `#${meta.chain}`, meta.color, 0.0036);
+                });
+                if (!Object.keys(signalByKey).length) {
+                  for (let y = 0; y < rows; y += 1) {
+                    for (let x = 0; x < cols; x += 1) {
+                      addCellFace(x, y, "#202737", 0.96, 0.0024);
+                      addCellBorder(x, y, "#7f95bf", 0.0032);
+                    }
+                  }
+                }
+              } else if (mode === "power") {
+                const panelDef = LED_PANELS.find((p) => p.id === String(ledMeta?.panelType || "")) || LED_PANELS.find((p) => p.id === ledWall.panelType) || LED_PANELS[0];
+                const calcProxy = { panelsW: cols, panelsH: rows, rowHeightsM: rowHeights };
+                let power = null;
+                try {
+                  power = buildLedPowerLines(calcProxy, ledWall, panelDef);
+                } catch (_) {
+                  power = { lines: [], phaseColors: { L1: "#55c7ff", L2: "#f8cc4f", L3: "#86e28f" } };
+                }
+                const fallbackPhaseColors = { L1: "#55c7ff", L2: "#f8cc4f", L3: "#86e28f" };
+                const disabledSet = new Set((ledWall.mapping?.disabledCabinets || []).map((k) => String(k)));
+                const orderedKeys = buildCabinetMapOrder(cols, rows, ledWall.mapping)
+                  .map((c) => `${c.x},${c.y}`)
+                  .filter((k) => !disabledSet.has(k));
+                if (!power || !Array.isArray(power.lines) || !power.lines.length) {
+                  const perLine = Math.max(1, Math.floor(Number(panelDef?.maxPanelsPerPowerLine || 16)));
+                  const phaseOrder = ["L1", "L2", "L3"];
+                  const lines = [];
+                  let cursor = 0;
+                  let lineNum = 1;
+                  while (cursor < orderedKeys.length) {
+                    const phase = phaseOrder[(lineNum - 1) % phaseOrder.length];
+                    const keys = orderedKeys.slice(cursor, cursor + perLine);
+                    lines.push({ id: `L${lineNum}`, phase, keys });
+                    cursor += keys.length;
+                    lineNum += 1;
+                  }
+                  power = { lines, phaseColors: fallbackPhaseColors };
+                }
+                const powerByKey = {};
+                (power?.lines || []).forEach((line) => {
+                  const col = (power?.phaseColors?.[line.phase] || "#7aa3ff");
+                  line.keys.forEach((k, idx) => {
+                    powerByKey[String(k)] = { phase: line.phase, lineId: line.id, chain: idx + 1, color: col };
+                  });
+                });
+                for (let y = 0; y < rows; y += 1) {
+                  for (let x = 0; x < cols; x += 1) {
+                    addCellFace(x, y, "#202737", 0.96, 0.0024);
+                  }
+                }
+                Object.entries(powerByKey).forEach(([key, meta]) => {
+                  const xy = parseLedKey3d(key);
+                  if (!xy) return;
+                  addCellFace(xy.x, xy.y, meta.color, 0.34, 0.0026);
+                  addCellBorder(xy.x, xy.y, meta.color, 0.0032);
+                  addCellLabel(xy.x, xy.y, meta.lineId, meta.phase, meta.color, 0.0036);
+                });
+                if (!Object.keys(powerByKey).length) {
+                  for (let y = 0; y < rows; y += 1) {
+                    for (let x = 0; x < cols; x += 1) {
+                      addCellFace(x, y, "#202737", 0.96, 0.0024);
+                      addCellBorder(x, y, "#7f95bf", 0.0032);
+                    }
+                  }
+                }
+              }
+              if (mode === "panels") {
+                const panelDotMat = new THREE.MeshBasicMaterial({ color: 0xcbe9ff });
+                for (let y = 0; y < rows; y += 1) {
+                  for (let x = 0; x < cols; x += 1) {
+                    const c = getCellCenter(x, y);
+                    const dot = new THREE.Mesh(new THREE.SphereGeometry(0.008, 8, 8), panelDotMat);
+                    dot.position.copy(pointAt(c.s, c.y, 0.0038));
+                    overlay.add(dot);
+                  }
+                }
+              }
+              return overlay;
+            };
+            const buildGearMesh = (placed) => {
+              const source = gearItemsById[placed.sourceId] || {};
+              const color = Number(new THREE.Color(source.color || "#8f98ab").getHex());
+              const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.7, metalness: 0.08 });
+              const dept = String(source.department || "Other").toLowerCase();
+              const weight = Number(source.weightKg || 0);
+              const scale = Math.max(0.45, Math.min(2.4, Math.cbrt(Math.max(1, weight) / 14)));
+              let mesh;
+              let targetSize = null;
+              if (dept === "lighting") {
+                mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.23 * scale, 0.26 * scale, 0.45 * scale, 18), mat);
+                const dim = 0.62 * scale;
+                targetSize = { width: dim, height: dim, depth: dim, fit: "height" };
+              } else if (dept === "video") {
+                const wallW = Math.max(0.5, Number(source.footprintW || 1));
+                const wallH = Math.max(0.5, Number(source.heightM || 1));
+                const wallD = Math.max(0.08, Number(source.footprintD || 0.2));
+                const videoMat = new THREE.MeshStandardMaterial({ color: 0x1e2431, roughness: 0.72, metalness: 0.06 });
+                const curveDeg = Number.isFinite(Number(placed.curveDeg)) ? Number(placed.curveDeg) : 0;
+                const curveSeg = Math.max(4, Math.min(64, Math.round(Number(placed.curveSegments || 12))));
+                if (Math.abs(curveDeg) >= 1) {
+                  const theta = (Math.abs(curveDeg) * Math.PI) / 180;
+                  // Keep total screen length constant: arc length L = r * theta = wallW.
+                  const radius = wallW / Math.max(1e-6, theta);
+                  const segArc = theta / curveSeg;
+                  const segChord = Math.max(0.03, 2 * radius * Math.sin(segArc / 2));
+                  const dir = curveDeg >= 0 ? 1 : -1;
+                  const group = new THREE.Group();
+                  for (let i = 0; i < curveSeg; i += 1) {
+                    const a = (-theta / 2) + ((i + 0.5) * segArc);
+                    const part = new THREE.Mesh(new THREE.BoxGeometry(segChord, wallH, wallD), videoMat);
+                    part.position.set(radius * Math.sin(a), 0, dir * radius * (1 - Math.cos(a)));
+                    part.rotation.y = -dir * a;
+                    group.add(part);
+                  }
+                  mesh = group;
+                } else {
+                  mesh = new THREE.Mesh(new THREE.BoxGeometry(wallW, wallH, wallD), videoMat);
+                }
+                const overlay = buildLedOverlay3d(source, wallW, wallH, wallD, curveDeg);
+                if (overlay) {
+                  if (mesh instanceof THREE.Group) {
+                    mesh.add(overlay);
+                  } else {
+                    const withOverlay = new THREE.Group();
+                    withOverlay.add(mesh);
+                    withOverlay.add(overlay);
+                    mesh = withOverlay;
+                  }
+                }
+                targetSize = { width: wallW, height: wallH, depth: wallD };
+              } else if (dept === "audio" || dept === "sound") {
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(0.5 * scale, 0.75 * scale, 0.45 * scale), mat);
+                targetSize = { width: 0.5 * scale, height: 0.75 * scale, depth: 0.45 * scale };
+              } else if (dept === "venue") {
+                const modelW = Math.max(0.2, Number(source.footprintW || 1));
+                const modelD = Math.max(0.08, Number(source.footprintD || 0.2));
+                const modelH = Math.max(0.2, Number(source.heightM || 1));
+                const isDeck = String(source.venueKind || "") === "stage_deck";
+                const isStageSpan = String(source.venueKind || "") === "stage_span";
+                if (isDeck || isStageSpan) {
+                  const topHeight = Math.max(0.08, Number(source.defaultY || 0.6));
+                  const deckThickness = Math.max(0.08, Math.min(0.14, modelH));
+                  const centerY = Math.max(deckThickness / 2, topHeight - (deckThickness / 2));
+                  const group = new THREE.Group();
+                  const legMat = new THREE.MeshStandardMaterial({ color: 0x8e97b3, roughness: 0.65, metalness: 0.22 });
+                  const topMat = mat.clone();
+                  topMat.roughness = 0.62;
+                  topMat.metalness = 0.12;
+                  const legRadius = Math.max(0.012, Math.min(0.03, Math.min(modelW, modelD) * 0.05));
+                  const legHeight = Math.max(0.05, centerY - (deckThickness / 2));
+                  if (isStageSpan) {
+                    const cols = Math.max(1, Math.round(Number(source.deckCols || 1)));
+                    const rows = Math.max(1, Math.round(Number(source.deckRows || 1)));
+                    const deckW = modelW / cols;
+                    const deckD = modelD / rows;
+                    const topGap = 0.01;
+                    const legGeo = new THREE.CylinderGeometry(
+                      Math.max(0.01, Math.min(0.025, legRadius * 0.9)),
+                      Math.max(0.01, Math.min(0.025, legRadius * 0.9)),
+                      legHeight,
+                      10
+                    );
+                    for (let c = 0; c < cols; c += 1) {
+                      for (let r = 0; r < rows; r += 1) {
+                        const deckCx = (-modelW / 2) + (deckW * (c + 0.5));
+                        const deckCz = (-modelD / 2) + (deckD * (r + 0.5));
+                        const topW = Math.max(0.08, deckW - topGap);
+                        const topD = Math.max(0.08, deckD - topGap);
+                        const deckTop = new THREE.Mesh(new THREE.BoxGeometry(topW, deckThickness, topD), topMat);
+                        deckTop.position.set(deckCx, centerY, deckCz);
+                        group.add(deckTop);
+                        const lx = Math.max(0.03, (deckW * 0.5) - 0.05);
+                        const lz = Math.max(0.03, (deckD * 0.5) - 0.05);
+                        [
+                          [-lx, -lz],
+                          [lx, -lz],
+                          [-lx, lz],
+                          [lx, lz]
+                        ].forEach(([ox, oz]) => {
+                          const leg = new THREE.Mesh(legGeo, legMat);
+                          leg.position.set(deckCx + ox, legHeight / 2, deckCz + oz);
+                          group.add(leg);
+                        });
+                      }
+                    }
+                  } else {
+                    const deckTop = new THREE.Mesh(new THREE.BoxGeometry(modelW, deckThickness, modelD), topMat);
+                    deckTop.position.y = centerY;
+                    group.add(deckTop);
+                    const legGeo = new THREE.CylinderGeometry(legRadius, legRadius, legHeight, 12);
+                    [
+                      [-0.46 * modelW, -0.46 * modelD],
+                      [0.46 * modelW, -0.46 * modelD],
+                      [-0.46 * modelW, 0.46 * modelD],
+                      [0.46 * modelW, 0.46 * modelD]
+                    ].forEach(([lx, lz]) => {
+                      const leg = new THREE.Mesh(legGeo, legMat);
+                      leg.position.set(lx, legHeight / 2, lz);
+                      group.add(leg);
+                    });
+                  }
+                  mesh = group;
+                  targetSize = { width: modelW, height: Math.max(modelH, topHeight), depth: modelD };
+                } else {
+                  mesh = new THREE.Mesh(new THREE.BoxGeometry(modelW, modelH, modelD), mat);
+                  targetSize = { width: modelW, height: modelH, depth: modelD };
+                }
+              } else if (dept === "rigging") {
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(1.1 * scale, 0.18 * scale, 0.18 * scale), mat);
+                targetSize = { width: 1.1 * scale, height: 0.18 * scale, depth: 0.18 * scale };
+              } else {
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(0.55 * scale, 0.55 * scale, 0.55 * scale), mat);
+                targetSize = { width: 0.55 * scale, height: 0.55 * scale, depth: 0.55 * scale };
+              }
+              const container = new THREE.Group();
+              container.userData.fallbackMesh = mesh;
+              container.add(mesh);
+              const defaultY = dept === "video"
+                ? Math.max(0.25, Number(source.heightM || 1) / 2)
+                : (dept === "venue" && (String(source.venueKind || "") === "stage_deck" || String(source.venueKind || "") === "stage_span")
+                  ? 0
+                  : (Number.isFinite(Number(source.defaultY)) ? Number(source.defaultY) : 0.35));
+              const yPos = Number.isFinite(Number(placed.y)) ? Number(placed.y) : defaultY;
+              container.position.set(Number(placed.x || 0), yPos, Number(placed.z || 0));
+              const rotYDeg = Number.isFinite(Number(placed.rotYDeg)) ? Number(placed.rotYDeg) : 0;
+              const scaleMul = Math.max(0.1, Number.isFinite(Number(placed.scale)) ? Number(placed.scale) : 1);
+              container.rotation.y = (rotYDeg * Math.PI) / 180;
+              container.scale.setScalar(scaleMul);
+              container.userData.placedId = placed.id;
+              container.userData.sourceId = placed.sourceId;
+              container.name = source.name || "Gear";
+              const fixtureAsset = dept === "lighting"
+                ? ""
+                : (dept === "video"
+                  ? ""
+                  : (resolveFixtureModelAssetPath(source) || String(MODEL_ASSET_MAP.defaults?.[dept] || "")));
+              if (fixtureAsset) mountModelInContainer(container, fixtureAsset, targetSize);
+              return container;
+            };
+            const updateSelectedVisual = () => {
+              const applyEmissive = (root, colorHex) => {
+                if (!root) return;
+                root.traverse?.((obj) => {
+                  const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+                  mats.forEach((m) => {
+                    if (!m || !("emissive" in m)) return;
+                    m.emissive = m.emissive || new THREE.Color(0x000000);
+                    m.emissive.set(colorHex);
+                    m.needsUpdate = true;
+                  });
+                });
+              };
+              gearMeshes.forEach((mesh, id) => {
+                const selected = id === gearState.selectedPlacedId;
+                applyEmissive(mesh, selected ? 0x243040 : 0x000000);
+              });
+              trussMeshes.forEach((mesh, id) => {
+                const selected = id === venueState.selectedTrussPlacementId;
+                applyEmissive(mesh, selected ? 0x352100 : 0x000000);
+              });
+              const selectedMesh = gearState.selectedPlacedId ? gearMeshes.get(gearState.selectedPlacedId) : null;
+              const selectedTruss = venueState.selectedTrussPlacementId ? trussMeshes.get(venueState.selectedTrussPlacementId) : null;
+              const attachObj = selectedMesh || selectedTruss || null;
+              if (attachObj && attachObj.visible !== false) {
+                transformControls.visible = true;
+                transformControls.attach(attachObj);
+              } else {
+                transformControls.visible = false;
+                transformControls.detach();
+              }
+              syncCurveHandles();
+              renderSceneOutliner();
+            };
+            const clearCurveHandles = () => {
+              curveHandleMeshes.forEach((h) => {
+                if (h?.parent) h.parent.remove(h);
+                h?.geometry?.dispose?.();
+                if (Array.isArray(h?.material)) h.material.forEach((m) => m.dispose?.());
+                else h?.material?.dispose?.();
+              });
+              curveHandleMeshes = [];
+              while (curveHandleRoot.children.length) {
+                const child = curveHandleRoot.children.pop();
+                if (!child) break;
+                child.traverse?.((obj) => {
+                  if (obj.geometry) obj.geometry.dispose?.();
+                  if (obj.material) {
+                    if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
+                    else obj.material.dispose?.();
+                  }
+                });
+              }
+            };
+            const syncCurveHandles = () => {
+              clearCurveHandles();
+              const placedId = String(gearState.selectedPlacedId || "");
+              if (!placedId) return;
+              const placed = (gearState.placedItems || []).find((x) => String(x.id) === placedId);
+              if (!placed) return;
+              const src = gearItemsById[placed.sourceId] || null;
+              if (String(src?.department || "").toLowerCase() !== "video") return;
+              const wallMesh = gearMeshes.get(placedId);
+              if (!wallMesh) return;
+              const wallW = Math.max(0.5, Number(src.footprintW || 1));
+              const wallH = Math.max(0.5, Number(src.heightM || 1));
+              const curveDeg = Number.isFinite(Number(placed.curveDeg)) ? Number(placed.curveDeg) : 0;
+              const theta = (Math.abs(curveDeg) * Math.PI) / 180;
+              const dir = curveDeg >= 0 ? 1 : -1;
+              let endX = wallW / 2;
+              let endZ = 0;
+              if (Math.abs(curveDeg) >= 1 && theta > 1e-6) {
+                const radius = wallW / Math.max(1e-6, theta);
+                endX = Math.max(0.01, radius * Math.sin(theta / 2));
+                endZ = dir * radius * (1 - Math.cos(theta / 2));
+              }
+              const handleMat = new THREE.MeshStandardMaterial({
+                color: 0xffd789,
+                roughness: 0.35,
+                metalness: 0.18,
+                emissive: 0x3f2b0a
+              });
+              const addHandle = (side) => {
+                const h = new THREE.Mesh(new THREE.SphereGeometry(Math.max(0.045, wallW * 0.014), 14, 14), handleMat.clone());
+                h.position.set(side * endX, wallH * 0.52, endZ);
+                h.userData.curveHandle = true;
+                h.userData.side = side;
+                h.userData.placedId = placedId;
+                wallMesh.add(h);
+                curveHandleMeshes.push(h);
+              };
+              addHandle(-1);
+              addHandle(1);
+            };
+            const updateObjectControlPanel = () => {
+              const placed = (gearState.placedItems || []).find((x) => x.id === gearState.selectedPlacedId);
+              const src = placed ? (gearItemsById[placed.sourceId] || null) : null;
+              const truss = venueState.selectedTrussPlacementId ? trussMeshes.get(venueState.selectedTrussPlacementId) : null;
+              const srcDept = String(src?.department || "").toLowerCase();
+              const isVideoWall = Boolean(placed && srcDept === "video");
+              const resetMeta = () => {
+                if (objTypeEl) objTypeEl.textContent = "Type: -";
+                if (objSourceEl) objSourceEl.textContent = "Source: -";
+                if (objHintEl) objHintEl.textContent = "Tip: select and drag in viewport, or edit values here.";
+              };
+              if (selectedImportedObject && !placed && !truss) {
+                if (objNameEl) objNameEl.textContent = `Selected: ${selectedImportedObject.name || "Imported Object"}`;
+                if (objTypeEl) objTypeEl.textContent = "Type: Imported";
+                if (objSourceEl) objSourceEl.textContent = "Source: Model";
+                if (objHintEl) objHintEl.textContent = "Imported model supports selection and delete.";
+                if (objPosXEl) objPosXEl.value = String(Number(selectedImportedObject.position?.x || 0).toFixed(2));
+                if (objPosYEl) objPosYEl.value = String(Number(selectedImportedObject.position?.y || 0).toFixed(2));
+                if (objPosZEl) objPosZEl.value = String(Number(selectedImportedObject.position?.z || 0).toFixed(2));
+                if (objRotYEl) objRotYEl.value = String(Number(((selectedImportedObject.rotation?.y || 0) * 180) / Math.PI).toFixed(0));
+                if (objScaleEl) objScaleEl.value = String(Number(selectedImportedObject.scale?.x || 1).toFixed(2));
+                if (objScaleYGhostEl) objScaleYGhostEl.value = String(Number(selectedImportedObject.scale?.y || 1).toFixed(2));
+                if (objScaleZGhostEl) objScaleZGhostEl.value = String(Number(selectedImportedObject.scale?.z || 1).toFixed(2));
+                if (objCurveEl) objCurveEl.value = "";
+                if (objCurveSegEl) objCurveSegEl.value = "";
+                if (objCurveEl) objCurveEl.disabled = true;
+                if (objCurveSegEl) objCurveSegEl.disabled = true;
+                if (objApplyBtn) objApplyBtn.disabled = true;
+                if (objDeleteBtn) objDeleteBtn.disabled = false;
+                return;
+              }
+              if (truss && !placed) {
+                if (objNameEl) objNameEl.textContent = `Selected: ${truss.name || "Truss Group"}`;
+                if (objTypeEl) objTypeEl.textContent = "Type: Truss Group";
+                if (objSourceEl) objSourceEl.textContent = "Source: Rigging";
+                if (objHintEl) objHintEl.textContent = "Transform is driven from rigging placement.";
+                if (objPosXEl) objPosXEl.value = String(Number(truss.position.x || 0).toFixed(2));
+                if (objPosYEl) objPosYEl.value = String(Number(truss.position.y || 0).toFixed(2));
+                if (objPosZEl) objPosZEl.value = String(Number(truss.position.z || 0).toFixed(2));
+                if (objRotYEl) objRotYEl.value = String(Number((truss.rotation.y * 180) / Math.PI).toFixed(0));
+                if (objScaleEl) objScaleEl.value = "1.00";
+                if (objScaleYGhostEl) objScaleYGhostEl.value = "1.00";
+                if (objScaleZGhostEl) objScaleZGhostEl.value = "1.00";
+                if (objCurveEl) objCurveEl.value = "";
+                if (objCurveSegEl) objCurveSegEl.value = "";
+                if (objCurveEl) objCurveEl.disabled = true;
+                if (objCurveSegEl) objCurveSegEl.disabled = true;
+                if (objApplyBtn) objApplyBtn.disabled = true;
+                if (objDeleteBtn) objDeleteBtn.disabled = true;
+                return;
+              }
+              if (objNameEl) objNameEl.textContent = placed && src ? `Selected: ${src.name}` : "Selected: -";
+              if (placed && src) {
+                if (objTypeEl) objTypeEl.textContent = `Type: ${src.department || "Other"}`;
+                if (objSourceEl) objSourceEl.textContent = `Source: ${src.manufacturer ? `${src.manufacturer} / ` : ""}${src.name || "-"}`;
+                if (objHintEl) objHintEl.textContent = isVideoWall
+                  ? "Video wall selected. Curve controls are active."
+                  : "Use gizmo or values below to edit transform.";
+              } else {
+                resetMeta();
+              }
+              if (objPosXEl) objPosXEl.value = placed ? String(Number(placed.x || 0).toFixed(2)) : "";
+              if (objPosYEl) {
+                const defaultY = src && String(src.department || "").toLowerCase() === "video"
+                  ? Math.max(0.25, Number(src.heightM || 1) / 2)
+                  : (String(src?.department || "").toLowerCase() === "venue" && (String(src?.venueKind || "") === "stage_deck" || String(src?.venueKind || "") === "stage_span")
+                    ? 0
+                    : (Number.isFinite(Number(src?.defaultY)) ? Number(src.defaultY) : 0.35));
+                const yVal = placed ? (Number.isFinite(Number(placed.y)) ? Number(placed.y) : defaultY) : 0;
+                objPosYEl.value = placed ? String(Number(yVal).toFixed(2)) : "";
+              }
+              if (objPosZEl) objPosZEl.value = placed ? String(Number(placed.z || 0).toFixed(2)) : "";
+              if (objRotYEl) objRotYEl.value = placed ? String(Number(placed.rotYDeg || 0).toFixed(0)) : "";
+              if (objScaleEl) objScaleEl.value = placed ? String(Number(placed.scale || 1).toFixed(2)) : "";
+              if (objScaleYGhostEl) objScaleYGhostEl.value = placed ? String(Number(placed.scale || 1).toFixed(2)) : "";
+              if (objScaleZGhostEl) objScaleZGhostEl.value = placed ? String(Number(placed.scale || 1).toFixed(2)) : "";
+              if (objCurveEl) objCurveEl.value = placed ? String(Number(placed.curveDeg || 0).toFixed(0)) : "";
+              if (objCurveSegEl) objCurveSegEl.value = placed ? String(Math.max(4, Math.min(64, Math.round(Number(placed.curveSegments || 12))))) : "";
+              if (objCurveEl) objCurveEl.disabled = !isVideoWall;
+              if (objCurveSegEl) objCurveSegEl.disabled = !isVideoWall;
+              if (objApplyBtn) objApplyBtn.disabled = !placed;
+              if (objDeleteBtn) objDeleteBtn.disabled = !placed;
+            };
+            const renderSceneOutliner = () => {
+              if (!outlinerEl) return;
+              ensureOutlinerState();
+              const eyeSvg = (visible) => visible
+                ? '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"></path><circle cx="12" cy="12" r="2.7"></circle></svg>'
+                : '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6c2.1 0 3.9.6 5.4 1.5"></path><path d="M22 12s-3.5 6-10 6c-2.1 0-3.9-.6-5.4-1.5"></path><path d="M3 3l18 18"></path></svg>';
+              const selectedKey = gearState.selectedPlacedId
+                ? `gear:${String(gearState.selectedPlacedId)}`
+                : (venueState.selectedTrussPlacementId
+                  ? `truss:${String(venueState.selectedTrussPlacementId)}`
+                  : (selectedImportedObject ? "imported:model" : ""));
+              const gearItems = (gearState.placedItems || []).map((p) => {
+                const src = gearItemsById[p.sourceId] || {};
+                return {
+                  key: `gear:${String(p.id)}`,
+                  label: String(src.name || "Gear"),
+                  group: String(src.department || "Other"),
+                  type: "gear",
+                  rawId: String(p.id)
+                };
+              });
+              const byDept = {};
+              gearItems.forEach((g) => {
+                const dept = g.group || "Other";
+                if (!Array.isArray(byDept[dept])) byDept[dept] = [];
+                byDept[dept].push(g);
+              });
+              const trussItems = (venueState.trussPlacements || []).map((tp) => {
+                const label = String(tp.label || tp.sourceGroupName || "Truss Group");
+                return { key: `truss:${String(tp.id || "")}`, label, type: "truss", rawId: String(tp.id || "") };
+              });
+              const modelItems = [];
+              if (loadedRoot) modelItems.push({ key: "imported:model", label: String(venueState.model3dName || "Imported Model"), type: "imported" });
+              if (floorPlanMesh) modelItems.push({ key: "overlay:floorplan", label: "Floor Plan Overlay", type: "overlay" });
+
+              const rows = [];
+              const hidden = getOutlinerHiddenSet();
+              const mkGroup = (key, label, children, level = 0) => {
+                if (!children.length) return;
+                const collapsed = isOutlinerCollapsed(key);
+                const childKeys = children.map((c) => c.key);
+                const visibleCount = childKeys.filter((k) => !hidden.has(String(k))).length;
+                const groupVisible = visibleCount > 0;
+                rows.push({
+                  rowType: "group",
+                  key,
+                  label,
+                  level,
+                  collapsed,
+                  visible: groupVisible,
+                  childKeys
+                });
+                if (!collapsed) {
+                  children.forEach((c) => rows.push({ ...c, rowType: "item", level: level + 1, visible: !hidden.has(String(c.key)), selected: selectedKey === c.key }));
+                }
+              };
+
+              mkGroup("group:truss", "Truss Groups", trussItems, 0);
+              const deptNames = Object.keys(byDept).sort((a, b) => a.localeCompare(b));
+              if (deptNames.length) {
+                const gearGroupChildren = [];
+                deptNames.forEach((dept) => {
+                  const deptChildren = (byDept[dept] || []).sort((a, b) => a.label.localeCompare(b.label));
+                  gearGroupChildren.push({
+                    key: `group:gear:${dept}`,
+                    label: dept,
+                    type: "subgroup",
+                    children: deptChildren
+                  });
+                });
+                const gearCollapsed = isOutlinerCollapsed("group:gear");
+                const gearVisible = gearGroupChildren.some((g) => g.children.some((c) => !hidden.has(c.key)));
+                rows.push({
+                  rowType: "group",
+                  key: "group:gear",
+                  label: "Gear",
+                  level: 0,
+                  collapsed: gearCollapsed,
+                  visible: gearVisible,
+                  childKeys: gearGroupChildren.flatMap((g) => g.children.map((c) => c.key))
+                });
+                if (!gearCollapsed) {
+                  gearGroupChildren.forEach((sub) => {
+                    mkGroup(sub.key, sub.label, sub.children, 1);
+                  });
+                }
+              }
+              mkGroup("group:models", "Models & Overlays", modelItems, 0);
+
+              if (!rows.length) {
+                outlinerEl.innerHTML = '<div class="muted">No scene objects yet.</div>';
+                return;
+              }
+
+              outlinerEl.innerHTML = rows.map((row) => {
+                const leftPad = Math.max(0, Number(row.level || 0)) * 14;
+                const isGroup = row.rowType === "group";
+                const toggle = isGroup
+                  ? `<button class="outliner-toggle" data-outliner-toggle="${row.key}" title="${row.collapsed ? "Expand" : "Collapse"}">${row.collapsed ? "▸" : "▾"}</button>`
+                  : '<button class="outliner-toggle dim" tabindex="-1">·</button>';
+                const eye = `<button class="outliner-eye" data-outliner-eye="${row.key}" title="${row.visible ? "Hide" : "Show"}">${eyeSvg(Boolean(row.visible))}</button>`;
+                return `
+                  <div class="outliner-row ${row.selected ? "active" : ""}" data-hidden="${row.visible ? "0" : "1"}" data-outliner-row="${row.key}" data-outliner-type="${row.rowType}" style="padding-left:${leftPad}px;">
+                    ${toggle}
+                    <span style="display:inline-block;width:14px;height:14px;"></span>
+                    <span class="outliner-label ${isGroup ? "outliner-group-label" : ""}">${row.label}</span>
+                    ${eye}
+                  </div>
+                `;
+              }).join("");
+
+              outlinerEl.querySelectorAll("[data-outliner-toggle]").forEach((btn) => {
+                btn.addEventListener("click", (ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                  const key = String(btn.getAttribute("data-outliner-toggle") || "");
+                  if (!key) return;
+                  setOutlinerCollapsed(key, !isOutlinerCollapsed(key));
+                  renderSceneOutliner();
+                  saveAppMemory();
+                });
+              });
+              outlinerEl.querySelectorAll("[data-outliner-eye]").forEach((btn) => {
+                btn.addEventListener("click", (ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                  const key = String(btn.getAttribute("data-outliner-eye") || "");
+                  if (!key) return;
+                  const applyTo = [];
+                  if (key.startsWith("group:gear:")) {
+                    const dept = key.replace("group:gear:", "");
+                    (gearState.placedItems || []).forEach((p) => {
+                      const src = gearItemsById[p.sourceId] || {};
+                      if (String(src.department || "Other") === dept) applyTo.push(`gear:${String(p.id)}`);
+                    });
+                  } else if (key === "group:gear") {
+                    (gearState.placedItems || []).forEach((p) => applyTo.push(`gear:${String(p.id)}`));
+                  } else if (key === "group:truss") {
+                    (venueState.trussPlacements || []).forEach((tp) => applyTo.push(`truss:${String(tp.id || "")}`));
+                  } else if (key === "group:models") {
+                    if (loadedRoot) applyTo.push("imported:model");
+                    if (floorPlanMesh) applyTo.push("overlay:floorplan");
+                  } else {
+                    applyTo.push(key);
+                  }
+                  const currentlyVisibleCount = applyTo.filter((k) => !isOutlinerHidden(k)).length;
+                  const hideAll = currentlyVisibleCount > 0;
+                  applyTo.forEach((k) => setOutlinerHidden(k, hideAll));
+                  applyOutlinerVisibility();
+                  updateSelectedVisual();
+                  renderSceneOutliner();
+                  saveAppMemory();
+                });
+              });
+              outlinerEl.querySelectorAll("[data-outliner-row]").forEach((rowEl) => {
+                rowEl.addEventListener("click", () => {
+                  const key = String(rowEl.getAttribute("data-outliner-row") || "");
+                  const type = String(rowEl.getAttribute("data-outliner-type") || "");
+                  if (type !== "item") return;
+                  if (key.startsWith("gear:")) {
+                    gearState.selectedPlacedId = key.slice("gear:".length);
+                    venueState.selectedTrussPlacementId = "";
+                    selectedImportedObject = null;
+                  } else if (key.startsWith("truss:")) {
+                    venueState.selectedTrussPlacementId = key.slice("truss:".length);
+                    gearState.selectedPlacedId = "";
+                    selectedImportedObject = null;
+                  } else if (key === "imported:model") {
+                    selectedImportedObject = loadedRoot || null;
+                    gearState.selectedPlacedId = "";
+                    venueState.selectedTrussPlacementId = "";
+                  } else {
+                    return;
+                  }
+                  updateSelectedVisual();
+                  updateObjectControlPanel();
+                  renderSceneOutliner();
+                });
+              });
+            };
+            const buildGearMeshSignature = (placed, source) => {
+              const dept = String(source?.department || "Other").toLowerCase();
+              if (dept === "video") {
+                const ledMeta = source?.ledMeta || {};
+                const wallId = String(ledMeta?.wallId || "");
+                const walls = ledState.mode === "multi" ? (ledState.walls || []) : [ledState.single];
+                const wall = walls.find((w) => String(w?.id || "") === wallId) || null;
+                const routingSig = wall ? JSON.stringify({
+                  map: wall.mapping || {},
+                  route: wall.routing?.portPaths || {},
+                  assign: wall.routing?.assignments || {}
+                }) : "";
+                return JSON.stringify({
+                  d: dept,
+                  w: Number(source?.footprintW || 0),
+                  h: Number(source?.heightM || 0),
+                  z: Number(source?.footprintD || 0),
+                  c: Number(placed?.curveDeg || 0),
+                  s: Math.max(4, Math.min(64, Math.round(Number(placed?.curveSegments || 12)))),
+                  om: String(venueState.ledOverlayMode || "panels"),
+                  rs: routingSig
+                });
+              }
+              if (dept === "venue") {
+                return JSON.stringify({
+                  d: dept,
+                  k: String(source?.venueKind || ""),
+                  w: Number(source?.footprintW || 0),
+                  h: Number(source?.heightM || 0),
+                  z: Number(source?.footprintD || 0),
+                  y: Number(source?.defaultY || 0)
+                });
+              }
+              return dept;
+            };
+            const syncGearMeshes = () => {
+              gearItemsById = Object.fromEntries(collectGearInventory().map((x) => [x.id, x]));
+              const current = new Set((gearState.placedItems || []).map((p) => p.id));
+              Array.from(gearMeshes.keys()).forEach((id) => {
+                if (current.has(id)) return;
+                const mesh = gearMeshes.get(id);
+                if (mesh) {
+                  gearRoot.remove(mesh);
+                  mesh.geometry?.dispose?.();
+                  if (Array.isArray(mesh.material)) mesh.material.forEach((m) => m.dispose?.());
+                  else mesh.material?.dispose?.();
+                }
+                gearMeshes.delete(id);
+              });
+              (gearState.placedItems || []).forEach((p) => {
+                let mesh = gearMeshes.get(p.id);
+                const source = gearItemsById[p.sourceId] || {};
+                const meshSig = buildGearMeshSignature(p, source);
+                if (!mesh) {
+                  mesh = buildGearMesh(p);
+                  mesh.userData.meshSig = meshSig;
+                  gearMeshes.set(p.id, mesh);
+                  gearRoot.add(mesh);
+                } else {
+                  if (String(mesh.userData.meshSig || "") !== String(meshSig)) {
+                    gearRoot.remove(mesh);
+                    const rebuilt = buildGearMesh(p);
+                    rebuilt.userData.meshSig = meshSig;
+                    gearMeshes.set(p.id, rebuilt);
+                    gearRoot.add(rebuilt);
+                    mesh = rebuilt;
+                  }
+                  const dept = String(source.department || "Other").toLowerCase();
+                  const defaultY = dept === "video"
+                    ? Math.max(0.25, Number(source.heightM || 1) / 2)
+                    : (dept === "venue" && (String(source.venueKind || "") === "stage_deck" || String(source.venueKind || "") === "stage_span")
+                      ? 0
+                      : (Number.isFinite(Number(source.defaultY)) ? Number(source.defaultY) : 0.35));
+                  const yPos = Number.isFinite(Number(p.y)) ? Number(p.y) : defaultY;
+                  mesh.position.set(Number(p.x || 0), yPos, Number(p.z || 0));
+                  const rotYDeg = Number.isFinite(Number(p.rotYDeg)) ? Number(p.rotYDeg) : 0;
+                  const scaleMul = Math.max(0.1, Number.isFinite(Number(p.scale)) ? Number(p.scale) : 1);
+                  mesh.rotation.y = (rotYDeg * Math.PI) / 180;
+                  mesh.scale.setScalar(scaleMul);
+                }
+                mesh.visible = !isOutlinerHidden(`gear:${String(p.id)}`);
+              });
+              if (gearState.selectedPlacedId && !current.has(gearState.selectedPlacedId)) {
+                gearState.selectedPlacedId = "";
+              }
+              applyOutlinerVisibility();
+              updateSelectedVisual();
+              updateObjectControlPanel();
+            };
+            const syncPlacedFromTransformObject = () => {
+              const obj = transformControls.object;
+              if (!obj) return;
+              const trussPlacementId = String(obj.userData?.trussPlacementId || "");
+              if (trussPlacementId) {
+                const tp = (venueState.trussPlacements || []).find((x) => String(x.id || "") === trussPlacementId);
+                if (!tp) return;
+                const groupId = String(tp.sourceGroupId || obj.userData?.trussGroupId || "");
+                const totalSpanM = Math.max(0, Number(getRiggingGroupTotalSpan(groupId) || 0));
+                if (!(totalSpanM > 0)) return;
+                const cx = Number(obj.position.x || 0);
+                const minY = Number.isFinite(Number(obj.userData?.trussBaseCenterY)) ? Number(obj.userData.trussBaseCenterY) : 0.08;
+                const cy = Math.max(minY, Number(obj.position.y || minY));
+                const cz = Number(obj.position.z || 0);
+                const heading = Number(obj.rotation.y || 0);
+                const ux = Math.cos(heading);
+                const uz = Math.sin(heading);
+                const half = totalSpanM / 2;
+                const p1 = clampToVenueBounds(cx - (ux * half), cz - (uz * half));
+                const p2 = clampToVenueBounds(cx + (ux * half), cz + (uz * half));
+                tp.x1 = Number(p1.x.toFixed(3));
+                tp.y1 = Number(p1.z.toFixed(3));
+                tp.x2 = Number(p2.x.toFixed(3));
+                tp.y2 = Number(p2.z.toFixed(3));
+                tp.heightY = Number(cy.toFixed(3));
+                const ndx = tp.x2 - tp.x1;
+                const ndz = tp.y2 - tp.y1;
+                obj.position.x = (tp.x1 + tp.x2) / 2;
+                obj.position.y = tp.heightY;
+                obj.position.z = (tp.y1 + tp.y2) / 2;
+                obj.rotation.y = Math.atan2(ndz, ndx);
+                updateObjectControlPanel();
+                return;
+              }
+              const placedId = obj.userData?.placedId;
+              if (!placedId) return;
+              const placed = (gearState.placedItems || []).find((x) => x.id === placedId);
+              if (!placed) return;
+              const source = gearItemsById[placed.sourceId] || {};
+              const dept = String(source.department || "Other").toLowerCase();
+              const clamped = clampToVenueBounds(obj.position.x, obj.position.z);
+              obj.position.x = clamped.x;
+              obj.position.z = clamped.z;
+              placed.x = Number(obj.position.x.toFixed(3));
+              placed.z = Number(obj.position.z.toFixed(3));
+              obj.position.y = Math.max(0.05, Number(obj.position.y || 0.35));
+              placed.y = Number(obj.position.y.toFixed(3));
+              placed.rotYDeg = Number(((obj.rotation.y * 180) / Math.PI).toFixed(3));
+              const sx = Number(obj.scale.x || 1);
+              const sy = Number(obj.scale.y || sx || 1);
+              const sz = Number(obj.scale.z || sx || 1);
+              const nextScale = Math.max(0.1, Math.min(5, (sx + sy + sz) / 3));
+              obj.scale.setScalar(nextScale);
+              placed.scale = Number(nextScale.toFixed(3));
+              updateObjectControlPanel();
+            };
+            transformControls.addEventListener("objectChange", () => {
+              syncPlacedFromTransformObject();
+              saveAppMemory();
+            });
+            transformControls.addEventListener("mouseUp", () => {
+              syncPlacedFromTransformObject();
+              syncTrussMeshes();
+              updateSelectedVisual();
+              saveAppMemory();
+            });
+            const clearTrussMeshes = () => {
+              trussMeshes.clear();
+              while (trussRoot.children.length) {
+                const child = trussRoot.children.pop();
+                if (!child) break;
+                child.traverse?.((obj) => {
+                  if (obj.geometry) obj.geometry.dispose?.();
+                  if (obj.material) {
+                    if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
+                    else obj.material.dispose?.();
+                  }
+                });
+              }
+            };
+            const syncTrussMeshes = () => {
+              clearTrussMeshes();
+              const rigGroupById = Object.fromEntries(getRiggingGroups().map((g) => [g.id, g]));
+              const placementsByGroupId = {};
+              (venueState.trussPlacements || []).forEach((tp) => {
+                if (!tp || !tp.sourceGroupId || !rigGroupById[tp.sourceGroupId]) return;
+                placementsByGroupId[String(tp.sourceGroupId)] = tp;
+              });
+              Object.values(placementsByGroupId).forEach((tp) => {
+                const groupId = String(tp.sourceGroupId || "");
+                const group = rigGroupById[groupId] || null;
+                const totalSpanM = Math.max(0, Number(getRiggingGroupTotalSpan(groupId) || 0));
+                if (!(totalSpanM > 0)) return;
+
+                let x1 = Number(tp.x1 || 0);
+                let z1 = Number(tp.y1 || 0);
+                let x2 = Number(tp.x2 || 0);
+                let z2 = Number(tp.y2 || 0);
+                let dx = x2 - x1;
+                let dz = z2 - z1;
+                let len = Math.hypot(dx, dz);
+                if (!(len > 1e-6)) {
+                  dx = totalSpanM;
+                  dz = 0;
+                  len = Math.max(1e-6, totalSpanM);
+                }
+                const ux = dx / len;
+                const uz = dz / len;
+                const cx = (x1 + x2) / 2;
+                const cz = (z1 + z2) / 2;
+                const half = totalSpanM / 2;
+                const n1 = clampToVenueBounds(cx - (ux * half), cz - (uz * half));
+                const n2 = clampToVenueBounds(cx + (ux * half), cz + (uz * half));
+                x1 = n1.x;
+                z1 = n1.z;
+                x2 = n2.x;
+                z2 = n2.z;
+                tp.x1 = Number(x1.toFixed(3));
+                tp.y1 = Number(z1.toFixed(3));
+                tp.x2 = Number(x2.toFixed(3));
+                tp.y2 = Number(z2.toFixed(3));
+                dx = x2 - x1;
+                dz = z2 - z1;
+                len = Math.max(0.001, Math.hypot(dx, dz));
+                const heading = Math.atan2(dz, dx);
+                const lineColor = new THREE.Color(group?.color || tp.color || "#f08a3c");
+                const firstSpan = (getRiggingGroupSpans(groupId)[0]?.span) || null;
+                const firstTrussType = firstSpan ? getTrussType(firstSpan.trussTypeId) : null;
+                const trussAsset = resolveTrussModelAssetPathBySeries(firstTrussType?.series || "");
+                const trussHeightM = Math.max(0.08, Number(firstTrussType?.height_mm || 300) / 1000);
+                const trussDepthM = Math.max(0.08, Number(firstTrussType?.width_mm || 300) / 1000);
+                const trussCenterY = Math.max(trussHeightM * 0.5, 0.08);
+                const yCenter = Number.isFinite(Number(tp.heightY)) ? Number(tp.heightY) : trussCenterY;
+
+                const beamContainer = new THREE.Group();
+                beamContainer.position.set((x1 + x2) / 2, yCenter, (z1 + z2) / 2);
+                beamContainer.rotation.y = heading;
+                beamContainer.name = `${group?.name || tp.label || "Truss Group"} (${totalSpanM.toFixed(2)}m)`;
+                beamContainer.userData.trussGroupId = groupId;
+                beamContainer.userData.trussPlacementId = tp.id;
+                beamContainer.userData.trussBaseCenterY = trussCenterY;
+                beamContainer.visible = !isOutlinerHidden(`truss:${String(tp.id)}`);
+                trussRoot.add(beamContainer);
+                trussMeshes.set(String(tp.id), beamContainer);
+                const beam = new THREE.Mesh(
+                  new THREE.BoxGeometry(len, trussHeightM, trussDepthM),
+                  new THREE.MeshStandardMaterial({
+                    color: lineColor,
+                    roughness: 0.55,
+                    metalness: 0.25,
+                    emissive: lineColor.clone().multiplyScalar(0.05)
+                  })
+                );
+                beam.userData.isFallback = true;
+                beamContainer.userData.fallbackMesh = beam;
+                beamContainer.add(beam);
+                if (trussAsset) {
+                  mountModelInContainer(beamContainer, trussAsset, { width: len, height: trussHeightM, depth: trussDepthM });
+                }
+
+                const endMat = new THREE.MeshStandardMaterial({ color: 0xf5f2ff, roughness: 0.35, metalness: 0.1 });
+                const endR = Math.max(0.05, Math.min(0.12, trussDepthM * 0.22));
+                const endA = new THREE.Mesh(new THREE.SphereGeometry(endR, 10, 10), endMat.clone());
+                const endB = new THREE.Mesh(new THREE.SphereGeometry(endR, 10, 10), endMat.clone());
+                endA.position.set(-len / 2, trussHeightM * 0.5 + endR * 0.15, 0);
+                endB.position.set(len / 2, trussHeightM * 0.5 + endR * 0.15, 0);
+                beamContainer.add(endA);
+                beamContainer.add(endB);
+
+                // Intentionally render connected spans as one continuous truss body per group.
+
+                const fixtureLines = [];
+                (riggingState.fixturePlacements || []).forEach((fp) => {
+                  const span = fp?.spanId ? getSpan(fp.spanId) : null;
+                  if (!span || String(span.groupId || "") !== groupId) return;
+                  const gp = mapSpanLocalToGroupPosition(groupId, span.id, Number(fp.positionM || 0));
+                  if (!Number.isFinite(Number(gp))) return;
+                  const fixture = fp.fixtureKey ? getLightingFixtureByKey(fp.fixtureKey) : null;
+                  fixtureLines.push({
+                    fixtureKey: fp.fixtureKey || "",
+                    manufacturer: fixture?.manufacturer || "",
+                    model: fixture?.model || "",
+                    fixtureName: fp.fixtureName || "Fixture",
+                    positionM: Number(gp),
+                    weightKg: (Number(fp.weightKg || 0) + Number(fp.clampWeightKg || 0)) * Math.max(1, Number(fp.quantity || 1)),
+                    dimensions_mm: fixture?.dimensions_mm || null
+                  });
+                });
+                if (!fixtureLines.length) {
+                  (riggingState.groupFixtures || []).forEach((gf) => {
+                    if (String(gf.groupId || "") !== groupId) return;
+                    const fixture = gf.fixtureKey ? getLightingFixtureByKey(gf.fixtureKey) : null;
+                    fixtureLines.push({
+                      fixtureKey: gf.fixtureKey || "",
+                      manufacturer: fixture?.manufacturer || "",
+                      model: fixture?.model || "",
+                      fixtureName: gf.fixtureName || "Fixture",
+                      positionM: Number(gf.positionM || 0),
+                      weightKg: Number(gf.weightKg || 0),
+                      dimensions_mm: fixture?.dimensions_mm || null
+                    });
+                  });
+                }
+                fixtureLines.forEach((fxLine) => {
+                  const gfPos = Math.max(0, Math.min(totalSpanM, Number(fxLine.positionM || 0)));
+                  const localX = -len / 2 + (gfPos / Math.max(0.001, totalSpanM)) * len;
+                  const weight = Number.isFinite(Number(fxLine.weightKg)) ? Number(fxLine.weightKg) : 0;
+                  const dims = fxLine.dimensions_mm || {};
+                  const fxW = Math.max(0.18, Number.isFinite(Number(dims.width)) ? Number(dims.width) / 1000 : 0.45);
+                  const fxH = Math.max(0.18, Number.isFinite(Number(dims.height)) ? Number(dims.height) / 1000 : 0.45);
+                  const fxD = Math.max(0.12, Number.isFinite(Number(dims.length)) ? Number(dims.length) / 1000 : 0.28);
+                  const fixtureContainer = new THREE.Group();
+                  fixtureContainer.position.set(localX, -(trussHeightM * 0.5 + fxH * 0.55), 0);
+                  fixtureContainer.name = `${fxLine.fixtureName || "Fixture"} ${weight > 0 ? `(${weight.toFixed(1)}kg)` : ""}`.trim();
+                  const hanger = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.012, 0.012, Math.max(0.15, fxH * 0.25), 8),
+                    new THREE.MeshStandardMaterial({ color: 0xd9dff0, roughness: 0.45, metalness: 0.15 })
+                  );
+                  hanger.position.set(0, fxH * 0.42, 0);
+                  fixtureContainer.add(hanger);
+                  const modelSource = { manufacturer: fxLine.manufacturer || "", name: fxLine.model || fxLine.fixtureName || "" };
+                  const body = new THREE.Mesh(
+                    new THREE.BoxGeometry(fxW, fxH, fxD),
+                    new THREE.MeshStandardMaterial({ color: 0x6de2a8, roughness: 0.45, metalness: 0.05, emissive: 0x103b2a })
+                  );
+                  body.userData.modelSource = modelSource;
+                  fixtureContainer.add(body);
+                  beamContainer.add(fixtureContainer);
+                });
+
+                const motorItems = (riggingState.groupMotors || []).filter((gm) => String(gm.groupId || "") === groupId);
+                motorItems.forEach((gm) => {
+                  const gp = Math.max(0, Math.min(totalSpanM, Number(gm.positionM || 0)));
+                  const localX = -len / 2 + (gp / Math.max(0.001, totalSpanM)) * len;
+                  const radius = Math.max(0.04, Math.min(trussDepthM * 0.45, trussHeightM * 0.45));
+                  const motorBall = new THREE.Mesh(
+                    new THREE.SphereGeometry(radius, 14, 14),
+                    new THREE.MeshStandardMaterial({ color: 0xffd766, roughness: 0.35, metalness: 0.18, emissive: 0x332400 })
+                  );
+                  motorBall.position.set(localX, (trussHeightM * 0.5) + radius, 0);
+                  const motor = getMotor(gm.motorId);
+                  motorBall.name = `${motor?.brand || "Motor"} ${motor?.model || ""}`.trim();
+                  beamContainer.add(motorBall);
+                });
+              });
+              if (venueState.selectedTrussPlacementId && !trussMeshes.has(String(venueState.selectedTrussPlacementId))) {
+                venueState.selectedTrussPlacementId = "";
+              }
+              applyOutlinerVisibility();
+              updateSelectedVisual();
+              updateObjectControlPanel();
+            };
+            const getPathDistance = (pts) => (pts || []).reduce((sum, p, i, arr) => {
+              if (!p || i === 0) return sum;
+              const prev = arr[i - 1];
+              if (!prev) return sum;
+              const a = normalizeVenueMeasurePoint3D(p);
+              const b = normalizeVenueMeasurePoint3D(prev);
+              return sum + Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
+            }, 0);
+            const updateMeasureUI = () => {
+              const cableCurrentEl = document.getElementById("venueMeasureCurrent");
+              const generalCurrentEl = document.getElementById("venueGeneralMeasureCurrent");
+              const cableSaveBtn = document.getElementById("venueMeasureSaveBtn");
+              const generalSaveBtn = document.getElementById("venueGeneralMeasureSaveBtn");
+              const cableDistance = getPathDistance(venueState.measurePoints || []);
+              const generalDistance = getPathDistance(venueState.generalMeasurePoints || []);
+              if (cableCurrentEl) cableCurrentEl.textContent = `Current: ${cableDistance > 0 ? `${cableDistance.toFixed(2)} m` : (venueState.measureArmed ? "Click in 3D to add points." : "-")}`;
+              if (generalCurrentEl) generalCurrentEl.textContent = `Current: ${generalDistance > 0 ? `${generalDistance.toFixed(2)} m` : (venueState.generalMeasureArmed ? "Click in 3D to add points." : "-")}`;
+              if (cableSaveBtn) cableSaveBtn.disabled = !(cableDistance > 0);
+              if (generalSaveBtn) generalSaveBtn.disabled = !(generalDistance > 0);
+            };
+            const clearMeasureOverlays = () => {
+              while (measureRoot.children.length) {
+                const child = measureRoot.children.pop();
+                if (!child) break;
+                child.geometry?.dispose?.();
+                if (Array.isArray(child.material)) child.material.forEach((m) => m.dispose?.());
+                else child.material?.dispose?.();
+              }
+            };
+            const syncMeasureOverlays = () => {
+              clearMeasureOverlays();
+              const addPath = (pts, colorHex) => {
+                const points = (pts || []).filter(Boolean).map((p) => {
+                  const v = normalizeVenueMeasurePoint3D(p);
+                  return new THREE.Vector3(v.x, v.y, v.z);
+                });
+                points.forEach((pt) => {
+                  const dot = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.08, 10, 10),
+                    new THREE.MeshBasicMaterial({ color: colorHex })
+                  );
+                  dot.position.copy(pt);
+                  measureRoot.add(dot);
+                });
+                if (points.length >= 2) {
+                  const geo = new THREE.BufferGeometry().setFromPoints(points);
+                  const line = new THREE.Line(
+                    geo,
+                    new THREE.LineBasicMaterial({ color: colorHex, transparent: true, opacity: 0.9 })
+                  );
+                  measureRoot.add(line);
+                }
+              };
+              addPath(venueState.measurePoints || [], 0x6de2a8);
+              addPath(venueState.generalMeasurePoints || [], 0x53c5ff);
+              updateMeasureUI();
+            };
+            const fitViewToObject = (object3d) => {
+              const box = new THREE.Box3().setFromObject(object3d);
+              if (box.isEmpty()) return;
+              const size = box.getSize(new THREE.Vector3());
+              const center = box.getCenter(new THREE.Vector3());
+              const maxDim = Math.max(size.x, size.y, size.z, 0.1);
+              fittedCenter.copy(center);
+              fittedMaxDim = maxDim;
+              const dist = camera.isPerspectiveCamera
+                ? (maxDim * 1.45) / Math.tan((camera.fov * Math.PI / 180) / 2)
+                : maxDim * 2.1;
+              camera.position.set(center.x + dist * 0.9, center.y + dist * 0.55, center.z + dist * 0.9);
+              controls.target.copy(center);
+              camera.up.set(0, 1, 0);
+              controls.update();
+            };
+            const setView = (view) => {
+              const dist = Math.max(2, fittedMaxDim * 1.9);
+              const c = fittedCenter.clone();
+              if (view === "isometric") {
+                camera.position.set(c.x + (dist * 0.95), c.y + (dist * 0.72), c.z + (dist * 0.95));
+              } else if (view === "front") {
+                camera.position.set(c.x, c.y, c.z + dist);
+              } else if (view === "back") {
+                camera.position.set(c.x, c.y, c.z - dist);
+              } else if (view === "left") {
+                camera.position.set(c.x - dist, c.y, c.z);
+              } else if (view === "right") {
+                camera.position.set(c.x + dist, c.y, c.z);
+              } else if (view === "top") {
+                camera.position.set(c.x, c.y + dist, c.z);
+              } else {
+                if (loadedRoot) {
+                  fitViewToObject(loadedRoot);
+                  return;
+                }
+                if (floorPlanBounds) {
+                  fitViewToBounds(floorPlanBounds);
+                  return;
+                }
+                fitViewToBounds(defaultVenueBounds);
+                return;
+              }
+              controls.target.copy(c);
+              camera.up.set(0, 1, 0);
+              controls.update();
+            };
+            const getScaledModelSize = () => {
+              if (!loadedRoot) return null;
+              const box = new THREE.Box3().setFromObject(loadedRoot);
+              if (box.isEmpty()) return null;
+              const size = box.getSize(new THREE.Vector3());
+              return { x: Number(size.x || 0), y: Number(size.y || 0), z: Number(size.z || 0) };
+            };
+            const getVenueFitScale = () => {
+              if (!loadedRoot) return 1;
+              const venueW = Math.max(0.1, Number(venueState.widthM || 0));
+              const venueD = Math.max(0.1, Number(venueState.depthM || 0));
+              loadedRoot.scale.setScalar(1);
+              loadedRoot.updateMatrixWorld(true);
+              const baseSize = getScaledModelSize();
+              if (!baseSize) return 1;
+              const fitX = baseSize.x > 0.001 ? (venueW * 0.92) / baseSize.x : 1;
+              const fitZ = baseSize.z > 0.001 ? (venueD * 0.92) / baseSize.z : 1;
+              const fit = Math.min(fitX, fitZ);
+              return Number.isFinite(fit) && fit > 0 ? fit : 1;
+            };
+            const applyModelScale = () => {
+              if (!loadedRoot) return;
+              const userScale = Math.max(0.001, Number(venueState.model3dScale || 1));
+              const fitScale = getVenueFitScale();
+              loadedRoot.scale.setScalar(fitScale * userScale);
+              loadedRoot.updateMatrixWorld(true);
+            };
+            const disposeObject3D = (rootObj) => {
+              if (!rootObj) return;
+              rootObj.traverse((obj) => {
+                if (obj.geometry) obj.geometry.dispose?.();
+                if (obj.material) {
+                  if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
+                  else obj.material.dispose?.();
+                }
+              });
+            };
+            const clearLoaded = () => {
+              if (!loadedRoot) return;
+              scene.remove(loadedRoot);
+              disposeObject3D(loadedRoot);
+              loadedRoot = null;
+              selectedImportedObject = null;
+              applyOutlinerVisibility();
+              renderSceneOutliner();
+            };
+            const getImportedTopLevelObject = (node) => {
+              if (!loadedRoot || !node) return null;
+              let cur = node;
+              while (cur && cur.parent && cur.parent !== loadedRoot) cur = cur.parent;
+              if (cur && cur.parent === loadedRoot) return cur;
+              return null;
+            };
+            const getPlacedIdFromNode = (node) => {
+              let cur = node;
+              while (cur) {
+                const id = cur.userData?.placedId;
+                if (id) return String(id);
+                cur = cur.parent;
+              }
+              return "";
+            };
+            const loadModel = (url) => {
+              if (!url) {
+                clearLoaded();
+                if (floorPlanBounds) {
+                  fitViewToBounds(floorPlanBounds);
+                  statusEl.textContent = "2D floor plan scaled in 3D. Drag gear onto the mapped venue.";
+                } else {
+                  fitViewToBounds(defaultVenueBounds);
+                  statusEl.textContent = "No 3D model loaded. Upload a model or calibrate a floor plan.";
+                }
+                applyCameraPose(savedPose);
+                return;
+              }
+              statusEl.textContent = "Loading model...";
+              loader.load(url, (gltf) => {
+                clearLoaded();
+                loadedRoot = gltf.scene || gltf.scenes?.[0] || null;
+                if (!loadedRoot) {
+                  statusEl.textContent = "Model loaded, but no scene found.";
+                  return;
+                }
+                applyModelScale();
+                scene.add(loadedRoot);
+                loadedRoot.visible = !isOutlinerHidden("imported:model");
+                fitViewToObject(loadedRoot);
+                const size = getScaledModelSize();
+                const sizeTxt = size ? ` (${size.x.toFixed(1)}m x ${size.z.toFixed(1)}m footprint)` : "";
+                statusEl.textContent = `Loaded: ${venueState.model3dName || "3D model"}${sizeTxt}${floorPlanBounds ? " + Floor plan mapped" : ""}`;
+                pickEl.textContent = "Selected: -";
+                applyOutlinerVisibility();
+                renderSceneOutliner();
+                applyCameraPose(savedPose);
+              }, undefined, (err) => {
+                statusEl.textContent = "Failed to load model. Upload a valid .glb/.gltf file.";
+                console.error("Venue 3D load error", err);
+              });
+            };
+
+            const dragObjectState = { active: false, placedId: "", offsetX: 0, offsetZ: 0 };
+            const getDropWorldPoint = (event) => {
+              const rect = renderer.domElement.getBoundingClientRect();
+              pointer.x = ((event.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1;
+              pointer.y = -(((event.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1);
+              raycaster.setFromCamera(pointer, camera);
+              const out = new THREE.Vector3();
+              const hit = raycaster.ray.intersectPlane(plane, out);
+              if (!hit) return null;
+              const clamped = clampToVenueBounds(out.x, out.z);
+              out.set(clamped.x, out.y, clamped.z);
+              return out;
+            };
+            const getMeasureWorldPoint = (event) => {
+              const rect = renderer.domElement.getBoundingClientRect();
+              pointer.x = ((event.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1;
+              pointer.y = -(((event.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1);
+              raycaster.setFromCamera(pointer, camera);
+              const candidates = [];
+              candidates.push(...Array.from(gearMeshes.values()));
+              candidates.push(...Array.from(trussMeshes.values()));
+              if (loadedRoot) candidates.push(...loadedRoot.children);
+              if (floorPlanMesh) candidates.push(floorPlanMesh);
+              if (candidates.length) {
+                const hits = raycaster.intersectObjects(candidates, true);
+                if (hits.length) {
+                  const hp = hits[0].point.clone();
+                  const clamped = clampToVenueBounds(hp.x, hp.z);
+                  hp.set(clamped.x, hp.y, clamped.z);
+                  return hp;
+                }
+              }
+              return getDropWorldPoint(event);
+            };
+            const pickObject = (ev) => {
+              if (Number(ev.button) !== 0) return;
+              if (venueState.measureArmed || venueState.generalMeasureArmed) {
+                const p3 = getMeasureWorldPoint(ev);
+                if (p3) {
+                  const point = {
+                    x: Number(p3.x.toFixed(3)),
+                    y: Number(p3.y.toFixed(3)),
+                    z: Number(p3.z.toFixed(3))
+                  };
+                  if (venueState.measureArmed) venueState.measurePoints = [...(venueState.measurePoints || []), point];
+                  if (venueState.generalMeasureArmed) venueState.generalMeasurePoints = [...(venueState.generalMeasurePoints || []), point];
+                  syncMeasureOverlays();
+                  pickEl.textContent = `Measure point @ X ${point.x.toFixed(2)} / Y ${point.y.toFixed(2)} / Z ${point.z.toFixed(2)} m`;
+                  saveAppMemory();
+                }
+                return;
+              }
+              const rect = renderer.domElement.getBoundingClientRect();
+              pointer.x = ((ev.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1;
+              pointer.y = -(((ev.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1);
+              raycaster.setFromCamera(pointer, camera);
+              if (curveHandleMeshes.length) {
+                const handleHits = raycaster.intersectObjects(curveHandleMeshes, false);
+                if (handleHits.length) {
+                  const handle = handleHits[0].object;
+                  const placedId = String(handle?.userData?.placedId || "");
+                  const side = Number(handle?.userData?.side || 0);
+                  const placed = (gearState.placedItems || []).find((x) => String(x.id) === placedId);
+                  if (placed && (side === -1 || side === 1)) {
+                    curveDragState.active = true;
+                    curveDragState.placedId = placedId;
+                    curveDragState.side = side;
+                    curveDragState.startClientX = Number(ev.clientX || 0);
+                    curveDragState.startCurveDeg = Number.isFinite(Number(placed.curveDeg)) ? Number(placed.curveDeg) : 0;
+                    controls.enabled = false;
+                    transformControls.enabled = false;
+                    ev.preventDefault();
+                    return;
+                  }
+                }
+              }
+              const gizmoHelper = transformControls.getHelper ? transformControls.getHelper() : null;
+              if (gizmoHelper) {
+                const gizmoHits = raycaster.intersectObject(gizmoHelper, true);
+                if (gizmoHits.length) return;
+              }
+              if (transformControls.dragging || transformControls.axis) return;
+              const gearHits = raycaster.intersectObjects(Array.from(gearMeshes.values()), true);
+              if (gearHits.length) {
+                const hit = gearHits[0];
+                const placedId = getPlacedIdFromNode(hit.object);
+                gearState.selectedPlacedId = placedId || "";
+                venueState.selectedTrussPlacementId = "";
+                selectedImportedObject = null;
+                const placed = (gearState.placedItems || []).find((x) => x.id === placedId);
+                dragObjectState.active = false;
+                dragObjectState.placedId = "";
+                dragObjectState.offsetX = 0;
+                dragObjectState.offsetZ = 0;
+                controls.enabled = true;
+                const src = placed ? gearItemsById[placed.sourceId] : null;
+                const p = hit.point || new THREE.Vector3();
+                pickEl.textContent = src
+                  ? `Selected: ${src.name} @ ${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} m`
+                  : "Selected: -";
+                updateSelectedVisual();
+                updateObjectControlPanel();
+                return;
+              }
+              const trussHits = raycaster.intersectObjects(Array.from(trussMeshes.values()), true);
+              if (trussHits.length) {
+                let node = trussHits[0].object;
+                while (node && !node.userData?.trussPlacementId) node = node.parent;
+                const trussPlacementId = String(node?.userData?.trussPlacementId || "");
+                if (trussPlacementId) {
+                  venueState.selectedTrussPlacementId = trussPlacementId;
+                  gearState.selectedPlacedId = "";
+                  selectedImportedObject = null;
+                  dragObjectState.active = false;
+                  dragObjectState.placedId = "";
+                  dragObjectState.offsetX = 0;
+                  dragObjectState.offsetZ = 0;
+                  controls.enabled = true;
+                  const p = trussHits[0].point || new THREE.Vector3();
+                  const tr = (venueState.trussPlacements || []).find((x) => String(x.id || "") === trussPlacementId);
+                  const label = tr?.label || tr?.sourceGroupName || node?.name || "Truss Group";
+                  pickEl.textContent = `Selected: ${label} @ ${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} m`;
+                  updateSelectedVisual();
+                  updateObjectControlPanel();
+                  return;
+                }
+              }
+              dragObjectState.active = false;
+              dragObjectState.placedId = "";
+              dragObjectState.offsetX = 0;
+              dragObjectState.offsetZ = 0;
+              controls.enabled = true;
+              const modelHits = loadedRoot ? raycaster.intersectObjects(loadedRoot.children, true) : [];
+              if (!modelHits.length) {
+                gearState.selectedPlacedId = "";
+                venueState.selectedTrussPlacementId = "";
+                selectedImportedObject = null;
+                pickEl.textContent = "Selected: -";
+                updateSelectedVisual();
+                updateObjectControlPanel();
+                return;
+              }
+              const hit = modelHits[0];
+              const p = hit.point || new THREE.Vector3();
+              const top = getImportedTopLevelObject(hit.object);
+              selectedImportedObject = top || null;
+              const name = top?.name ? String(top.name) : (hit.object?.name ? String(hit.object.name) : "Imported object");
+              pickEl.textContent = `Selected: ${name} @ ${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} m`;
+              updateSelectedVisual();
+              updateObjectControlPanel();
+            };
+            renderer.domElement.addEventListener("pointerdown", pickObject);
+            renderer.domElement.addEventListener("dragover", (ev) => {
+              ev.preventDefault();
+              ev.dataTransfer.dropEffect = "copy";
+            });
+            renderer.domElement.addEventListener("drop", (ev) => {
+              ev.preventDefault();
+              const sourceId = ev.dataTransfer?.getData("application/x-thebase-gear")
+                || ev.dataTransfer?.getData("text/plain")
+                || gearState.selectedInventoryId;
+              if (!sourceId) return;
+              const source = gearItemsById[sourceId];
+              if (!source) return;
+              const point = getDropWorldPoint(ev);
+              if (!point) return;
+              const clamped = clampToVenueBounds(point.x, point.z);
+              gearState.placedItems.push({
+                id: makeGearPlacedId(),
+                sourceId,
+                x: Number(clamped.x.toFixed(3)),
+                y: (String(source.venueKind || "") === "stage_deck" || String(source.venueKind || "") === "stage_span")
+                  ? 0
+                  : (Number.isFinite(Number(source.defaultY)) ? Number(source.defaultY) : 0.35),
+                z: Number(clamped.z.toFixed(3)),
+                rotYDeg: 0,
+                scale: 1
+              });
+              statusEl.textContent = `Placed: ${source.name}`;
+              syncGearMeshes();
+            });
+            renderer.domElement.addEventListener("pointermove", (ev) => {
+              if (curveDragState.active) {
+                const placed = (gearState.placedItems || []).find((x) => String(x.id) === String(curveDragState.placedId));
+                if (!placed) return;
+                const dx = Number(ev.clientX || 0) - Number(curveDragState.startClientX || 0);
+                const nextCurve = Number(curveDragState.startCurveDeg || 0) + (Number(curveDragState.side || 1) * dx * 0.35);
+                placed.curveDeg = Math.max(-180, Math.min(180, nextCurve));
+                if (!Number.isFinite(Number(placed.curveSegments))) placed.curveSegments = 12;
+                syncGearMeshes();
+                return;
+              }
+              if (!dragObjectState.active || !(ev.buttons & 1)) return;
+              const point = getDropWorldPoint(ev);
+              if (!point) return;
+              const placed = (gearState.placedItems || []).find((x) => x.id === dragObjectState.placedId);
+              if (!placed) return;
+              const next = clampToVenueBounds(
+                Number(point.x || 0) + Number(dragObjectState.offsetX || 0),
+                Number(point.z || 0) + Number(dragObjectState.offsetZ || 0)
+              );
+              placed.x = Number(next.x.toFixed(3));
+              placed.z = Number(next.z.toFixed(3));
+              syncGearMeshes();
+            });
+            const releaseDrag = () => {
+              if (curveDragState.active) {
+                curveDragState.active = false;
+                curveDragState.placedId = "";
+                curveDragState.side = 0;
+                transformControls.enabled = true;
+                controls.enabled = true;
+                saveAppMemory();
+                return;
+              }
+              if (!dragObjectState.active) return;
+              dragObjectState.active = false;
+              dragObjectState.placedId = "";
+              dragObjectState.offsetX = 0;
+              dragObjectState.offsetZ = 0;
+              controls.enabled = true;
+              saveAppMemory();
+            };
+            renderer.domElement.addEventListener("pointerup", releaseDrag);
+            renderer.domElement.addEventListener("pointerleave", releaseDrag);
+            clearGearBtn?.addEventListener("click", () => {
+              gearState.placedItems = [];
+              gearState.selectedPlacedId = "";
+              pickEl.textContent = "Selected: -";
+              syncGearMeshes();
+              saveAppMemory();
+            });
+            objApplyBtn?.addEventListener("click", () => {
+              const placed = (gearState.placedItems || []).find((x) => x.id === gearState.selectedPlacedId);
+              if (!placed) return;
+              const px = Number(objPosXEl?.value || placed.x || 0);
+              const py = Number(objPosYEl?.value || placed.y || 0.35);
+              const pz = Number(objPosZEl?.value || placed.z || 0);
+              const ry = Number(objRotYEl?.value || placed.rotYDeg || 0);
+              const sc = Number(objScaleEl?.value || placed.scale || 1);
+              const cv = Number(objCurveEl?.value ?? placed.curveDeg ?? 0);
+              const cvs = Number(objCurveSegEl?.value ?? placed.curveSegments ?? 12);
+              const next = clampToVenueBounds(
+                Number.isFinite(px) ? px : Number(placed.x || 0),
+                Number.isFinite(pz) ? pz : Number(placed.z || 0)
+              );
+              placed.x = Number(next.x.toFixed(3));
+              placed.y = Number.isFinite(py) ? Number(Math.max(0.05, py).toFixed(3)) : Number(placed.y || 0.35);
+              placed.z = Number(next.z.toFixed(3));
+              placed.rotYDeg = Number.isFinite(ry) ? ry : Number(placed.rotYDeg || 0);
+              placed.scale = Number.isFinite(sc) ? Math.max(0.1, sc) : Math.max(0.1, Number(placed.scale || 1));
+              placed.curveDeg = Number.isFinite(cv) ? Math.max(-180, Math.min(180, cv)) : Number(placed.curveDeg || 0);
+              placed.curveSegments = Number.isFinite(cvs) ? Math.max(4, Math.min(64, Math.round(cvs))) : Math.max(4, Math.min(64, Math.round(Number(placed.curveSegments || 12))));
+              syncGearMeshes();
+              saveAppMemory();
+            });
+            const deleteSelected3dObject = () => {
+              const id = gearState.selectedPlacedId;
+              if (id) {
+                gearState.placedItems = (gearState.placedItems || []).filter((x) => x.id !== id);
+                gearState.selectedPlacedId = "";
+                pickEl.textContent = "Selected: -";
+                syncGearMeshes();
+                saveAppMemory();
+                return true;
+              }
+              if (selectedImportedObject && loadedRoot && selectedImportedObject.parent) {
+                selectedImportedObject.parent.remove(selectedImportedObject);
+                disposeObject3D(selectedImportedObject);
+                selectedImportedObject = null;
+                pickEl.textContent = "Selected: -";
+                updateSelectedVisual();
+                updateObjectControlPanel();
+                saveAppMemory();
+                return true;
+              }
+              const trussPlacementId = String(venueState.selectedTrussPlacementId || "");
+              if (trussPlacementId) {
+                const before = (venueState.trussPlacements || []).length;
+                const removed = (venueState.trussPlacements || []).find((x) => String(x.id || "") === trussPlacementId) || null;
+                venueState.trussPlacements = (venueState.trussPlacements || []).filter((x) => String(x.id || "") !== trussPlacementId);
+                if (removed?.sourceGroupId) {
+                  const gid = String(removed.sourceGroupId || "");
+                  if (gid) {
+                    const prev = Array.isArray(venueState.suppressedRigGroupIds) ? venueState.suppressedRigGroupIds.map((x) => String(x || "")) : [];
+                    if (!prev.includes(gid)) prev.push(gid);
+                    venueState.suppressedRigGroupIds = prev;
+                  }
+                }
+                venueState.selectedTrussPlacementId = "";
+                pickEl.textContent = "Selected: -";
+                syncTrussMeshes();
+                saveAppMemory();
+                return (venueState.trussPlacements || []).length !== before;
+              }
+              return false;
+            };
+            objDeleteBtn?.addEventListener("click", () => {
+              deleteSelected3dObject();
+            });
+            const frameSelected = () => {
+              if (gearState.selectedPlacedId) {
+                const mesh = gearMeshes.get(gearState.selectedPlacedId);
+                if (mesh) {
+                  fitViewToObject(mesh);
+                  return;
+                }
+              }
+              if (venueState.selectedTrussPlacementId) {
+                const mesh = trussMeshes.get(String(venueState.selectedTrussPlacementId || ""));
+                if (mesh) {
+                  fitViewToObject(mesh);
+                  return;
+                }
+              }
+              if (selectedImportedObject) {
+                fitViewToObject(selectedImportedObject);
+                return;
+              }
+              const root = new THREE.Group();
+              let any = false;
+              Array.from(gearMeshes.values()).forEach((m) => {
+                if (!m) return;
+                root.add(m.clone());
+                any = true;
+              });
+              Array.from(trussMeshes.values()).forEach((m) => {
+                if (!m) return;
+                root.add(m.clone());
+                any = true;
+              });
+              if (any) fitViewToObject(root);
+            };
+            const onVenue3dKeydown = (ev) => {
+              const key = String(ev.key || "");
+              const t = ev.target;
+              if (t instanceof Element && t.closest("input, textarea, select, [contenteditable='true']")) return;
+              const section = String(currentEngineeringSection || "").toLowerCase();
+              if (section !== "venue") return;
+
+              if (key === "Shift") {
+                if (navMode === "blender" && !blenderShiftPan) {
+                  blenderShiftPan = true;
+                  applyControlBindings();
+                }
+                return;
+              }
+
+              if (key === "Backspace" || key === "Delete") {
+                if (!gearState.selectedPlacedId && !selectedImportedObject && !venueState.selectedTrussPlacementId) return;
+                ev.preventDefault();
+                deleteSelected3dObject();
+                return;
+              }
+
+              const lower = key.toLowerCase();
+              if (lower === "g") {
+                ev.preventDefault();
+                setGizmoMode("translate");
+                saveAppMemory();
+                return;
+              }
+              if (lower === "r") {
+                ev.preventDefault();
+                setGizmoMode("rotate");
+                saveAppMemory();
+                return;
+              }
+              if (lower === "s") {
+                ev.preventDefault();
+                setGizmoMode("scale");
+                saveAppMemory();
+                return;
+              }
+              if (lower === "f") {
+                ev.preventDefault();
+                frameSelected();
+                return;
+              }
+              if (key === "5" || key === "Numpad5") {
+                ev.preventDefault();
+                setProjection(String(venueState.projectionMode || "perspective") === "orthographic" ? "perspective" : "orthographic");
+                return;
+              }
+              if (key === "1" || key === "Numpad1") {
+                ev.preventDefault();
+                setView(ev.ctrlKey ? "back" : "front");
+                return;
+              }
+              if (key === "3" || key === "Numpad3") {
+                ev.preventDefault();
+                setView(ev.ctrlKey ? "left" : "right");
+                return;
+              }
+              if (key === "7" || key === "Numpad7") {
+                ev.preventDefault();
+                setView("top");
+              }
+            };
+            const onVenue3dKeyup = (ev) => {
+              const key = String(ev.key || "");
+              if (key !== "Shift") return;
+              if (navMode === "blender" && blenderShiftPan) {
+                blenderShiftPan = false;
+                applyControlBindings();
+              }
+            };
+            window.addEventListener("keydown", onVenue3dKeydown);
+            window.addEventListener("keyup", onVenue3dKeyup);
+
+            const onResize = () => {
+              if (!host || !renderer || !camera) return;
+              const nextW = Math.max(320, Math.floor(host.clientWidth || 320));
+              const nextH = Math.max(320, Math.floor(host.clientHeight || 500));
+              renderer.setSize(nextW, nextH, true);
+              const aspect = Math.max(0.1, nextW / Math.max(1, nextH));
+              perspectiveCamera.aspect = aspect;
+              perspectiveCamera.updateProjectionMatrix();
+              orthographicCamera.left = (-orthoSizeBase * aspect) / 2;
+              orthographicCamera.right = (orthoSizeBase * aspect) / 2;
+              orthographicCamera.top = orthoSizeBase / 2;
+              orthographicCamera.bottom = -orthoSizeBase / 2;
+              orthographicCamera.updateProjectionMatrix();
+            };
+            window.addEventListener("resize", onResize);
+
+            const tick = () => {
+              if (transformControls.dragging) {
+                syncPlacedFromTransformObject();
+              }
+              controls.update();
+              renderer.render(scene, camera);
+              venue3dRuntime.frameId = requestAnimationFrame(tick);
+            };
+            venue3dRuntime = { renderer, scene, camera, controls, transformControls, frameId: 0, onResize, onKeydown: onVenue3dKeydown, onKeyup: onVenue3dKeyup, refreshMeasurements: syncMeasureOverlays };
+            resetBtn?.addEventListener("click", () => {
+              setView("home");
+            });
+            modeTabs?.querySelectorAll("button[data-venue3d-mode]").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const mode = String(btn.getAttribute("data-venue3d-mode") || "blender");
+                setControlMode(mode);
+                saveAppMemory();
+              });
+            });
+            inputTabs?.querySelectorAll("button[data-venue3d-input]").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const profile = String(btn.getAttribute("data-venue3d-input") || "trackpad");
+                setInputProfile(profile);
+                saveAppMemory();
+              });
+            });
+            viewTabs?.querySelectorAll("button[data-venue3d-view]").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const view = String(btn.getAttribute("data-venue3d-view") || "home");
+                setView(view);
+              });
+            });
+            projectionTabs?.querySelectorAll("button[data-venue3d-projection]").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const mode = String(btn.getAttribute("data-venue3d-projection") || "perspective");
+                setProjection(mode);
+              });
+            });
+            gizmoTabs?.querySelectorAll("button[data-venue3d-gizmo]").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const mode = String(btn.getAttribute("data-venue3d-gizmo") || "translate");
+                setGizmoMode(mode);
+                saveAppMemory();
+              });
+            });
+            scaleEl?.addEventListener("change", () => {
+              const next = Math.max(0.01, Number(scaleEl.value || 1));
+              venueState.model3dScale = next;
+              if (scaleEl.value !== String(next)) scaleEl.value = String(next);
+              applyModelScale();
+              if (loadedRoot) fitViewToObject(loadedRoot);
+            });
+            syncGearMeshes();
+            syncTrussMeshes();
+            syncMeasureOverlays();
+            syncFloorPlanMesh().then((hasFloorPlan) => {
+              loadModel(venueState.model3dUrl);
+              if (hasFloorPlan && !venueState.model3dUrl) {
+                pickEl.textContent = "Selected: Floor plan mapped. Place gear in 3D.";
+              }
+              applyCameraPose(savedPose);
+            });
+            tick();
+          } catch (err) {
+            const msg = err && err.message ? String(err.message) : "Unknown error";
+            statusEl.textContent = `3D engine failed to initialize: ${msg}`;
+            pickEl.textContent = "Selected: -";
+            console.error("Venue 3D init error", err);
+          }
+        }
+
+        function makeGearPlacedId() {
+          return `gear_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+        }
+        function makeVenueModelId() {
+          return `venue_model_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+        }
+        function getStageDeckTypeById(id) {
+          return PROLYTE_STAGE_DECK_SIZES.find((x) => x.id === id) || PROLYTE_STAGE_DECK_SIZES[0];
+        }
+
+        function getDepartmentColor(department) {
+          const key = String(department || "Other").toLowerCase();
+          if (key === "video") return "#52c67d";
+          if (key === "lighting") return "#e15c5c";
+          if (key === "audio" || key === "sound") return "#5b86ff";
+          if (key === "rigging") return "#f08a3c";
+          if (key === "power") return "#8457e8";
+          if (key === "venue") return "#35bfb4";
+          return "#8f98ab";
+        }
+        function normalizeModelKey(text) {
+          return String(text || "")
+            .toLowerCase()
+            .replace(/\([^)]*\)/g, "")
+            .replace(/[^a-z0-9]+/g, " ")
+            .trim();
+        }
+        function resolveFixtureModelAssetPath(source) {
+          if (!source) return "";
+          const manufacturerRaw = String(source.manufacturer || "");
+          const nameRaw = String(source.name || "");
+          const modelRaw = nameRaw.replace(/\s*\([^)]*\)\s*$/, "").trim();
+          const byRaw = String(
+            GDTF_MODEL_MAP[`${manufacturerRaw}__${nameRaw}`]
+            || GDTF_MODEL_MAP[`${manufacturerRaw}__${modelRaw}`]
+            || ""
+          );
+          if (byRaw) return byRaw;
+          const manufacturer = normalizeModelKey(manufacturerRaw);
+          const model = normalizeModelKey(modelRaw || nameRaw);
+          if (manufacturer && model) {
+            const key = `${manufacturer}::${model}`;
+            const byGdtf = String(GDTF_MODEL_MAP[key] || "");
+            if (byGdtf) return byGdtf;
+          }
+          const fixtures = MODEL_ASSET_MAP.fixtures && typeof MODEL_ASSET_MAP.fixtures === "object"
+            ? MODEL_ASSET_MAP.fixtures
+            : {};
+          if (!manufacturer || !model) return "";
+          const key = `${manufacturer}::${model}`;
+          return String(fixtures[key] || "");
+        }
+        function resolveTrussModelAssetPathBySeries(series) {
+          const truss = MODEL_ASSET_MAP.truss && typeof MODEL_ASSET_MAP.truss === "object"
+            ? MODEL_ASSET_MAP.truss
+            : {};
+          const key = normalizeModelKey(series || "").replace(/\s+/g, "");
+          return String(truss[key] || "");
+        }
+        function normalizeVenueMeasurePoint3D(point) {
+          const p = point && typeof point === "object" ? point : {};
+          const x = Number.isFinite(Number(p.x)) ? Number(p.x) : 0;
+          const hasZ = Number.isFinite(Number(p.z));
+          // Backward compatible: old points used {x, y} where y represented ground Z.
+          const y = hasZ ? (Number.isFinite(Number(p.y)) ? Number(p.y) : 0) : 0;
+          const z = hasZ ? Number(p.z) : (Number.isFinite(Number(p.y)) ? Number(p.y) : 0);
+          return { x, y, z };
+        }
+        function getVenuePathDistance(points) {
+          return (points || []).reduce((sum, p, i, arr) => {
+            if (!p || i === 0) return sum;
+            const prev = arr[i - 1];
+            if (!prev) return sum;
+            const a = normalizeVenueMeasurePoint3D(p);
+            const b = normalizeVenueMeasurePoint3D(prev);
+            return sum + Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z);
+          }, 0);
+        }
+        function refreshVenueMeasureControls() {
+          const cableArmBtn = document.getElementById("venueMeasureArmBtn");
+          const cableCurrentEl = document.getElementById("venueMeasureCurrent");
+          const cableSaveBtn = document.getElementById("venueMeasureSaveBtn");
+          const generalArmBtn = document.getElementById("venueGeneralMeasureArmBtn");
+          const generalCurrentEl = document.getElementById("venueGeneralMeasureCurrent");
+          const generalSaveBtn = document.getElementById("venueGeneralMeasureSaveBtn");
+          const cableDistance = getVenuePathDistance(venueState.measurePoints || []);
+          const generalDistance = getVenuePathDistance(venueState.generalMeasurePoints || []);
+          if (cableArmBtn) cableArmBtn.classList.toggle("active", Boolean(venueState.measureArmed));
+          if (generalArmBtn) generalArmBtn.classList.toggle("active", Boolean(venueState.generalMeasureArmed));
+          if (cableCurrentEl) cableCurrentEl.textContent = `Current: ${cableDistance > 0 ? `${cableDistance.toFixed(2)} m` : (venueState.measureArmed ? "Click in 3D to add points." : "-")}`;
+          if (generalCurrentEl) generalCurrentEl.textContent = `Current: ${generalDistance > 0 ? `${generalDistance.toFixed(2)} m` : (venueState.generalMeasureArmed ? "Click in 3D to add points." : "-")}`;
+          if (cableSaveBtn) cableSaveBtn.disabled = !(cableDistance > 0);
+          if (generalSaveBtn) generalSaveBtn.disabled = !(generalDistance > 0);
+        }
+        function captureVenue3dPose() {
+          if (!venue3dRuntime?.camera || !venue3dRuntime?.controls) return null;
+          return {
+            px: Number(venue3dRuntime.camera.position.x || 0),
+            py: Number(venue3dRuntime.camera.position.y || 0),
+            pz: Number(venue3dRuntime.camera.position.z || 0),
+            tx: Number(venue3dRuntime.controls.target.x || 0),
+            ty: Number(venue3dRuntime.controls.target.y || 0),
+            tz: Number(venue3dRuntime.controls.target.z || 0)
+          };
+        }
+        function applyVenue3dPoseToRuntime(pose) {
+          if (!pose || !venue3dRuntime?.camera || !venue3dRuntime?.controls) return false;
+          const vals = [pose.px, pose.py, pose.pz, pose.tx, pose.ty, pose.tz].map((v) => Number(v));
+          if (vals.some((v) => !Number.isFinite(v))) return false;
+          venue3dRuntime.camera.position.set(vals[0], vals[1], vals[2]);
+          venue3dRuntime.controls.target.set(vals[3], vals[4], vals[5]);
+          venue3dRuntime.camera.up.set(0, 1, 0);
+          venue3dRuntime.controls.update();
+          venueState.venue3dPose = { ...pose };
+          return true;
+        }
+        function getFloorPlanRenderMatrix(baseMatrix) {
+          if (!baseMatrix || typeof baseMatrix !== "object") return null;
+          const scaleAdj = Math.max(0.05, Number(venueState.floorPlanScaleAdjust || 1));
+          const originX = Number(venueState.gridOriginX || 0);
+          const originY = Number(venueState.gridOriginY || 0);
+          const a = Number(baseMatrix.a || 0) * scaleAdj;
+          const b = Number(baseMatrix.b || 0) * scaleAdj;
+          const c = Number(baseMatrix.c || 0) * scaleAdj;
+          const d = Number(baseMatrix.d || 0) * scaleAdj;
+          const eBase = Number(baseMatrix.e || 0);
+          const fBase = Number(baseMatrix.f || 0);
+          return {
+            a,
+            b,
+            c,
+            d,
+            e: originX + ((eBase - originX) * scaleAdj),
+            f: originY + ((fBase - originY) * scaleAdj)
+          };
+        }
+
+        function collectGearInventory() {
+          const out = [];
+          const pushItem = (row) => {
+            if (!row || !row.id || !row.name) return;
+            out.push({
+              id: String(row.id),
+              department: String(row.department || "Other"),
+              manufacturer: String(row.manufacturer || ""),
+              name: String(row.name || "Item"),
+              quantity: Math.max(1, Math.round(Number(row.quantity || 1))),
+              weightKg: Number.isFinite(Number(row.weightKg)) ? Number(row.weightKg) : null,
+              powerW: Number.isFinite(Number(row.powerW)) ? Number(row.powerW) : null,
+              footprintW: Number.isFinite(Number(row.footprintW)) ? Number(row.footprintW) : null,
+              footprintD: Number.isFinite(Number(row.footprintD)) ? Number(row.footprintD) : null,
+              heightM: Number.isFinite(Number(row.heightM)) ? Number(row.heightM) : null,
+              defaultY: Number.isFinite(Number(row.defaultY)) ? Number(row.defaultY) : null,
+              venueKind: String(row.venueKind || ""),
+              notes: String(row.notes || ""),
+              ledMeta: row.ledMeta && typeof row.ledMeta === "object" ? safeClone(row.ledMeta) : null,
+              color: getDepartmentColor(row.department)
+            });
+          };
+          // Important: only include equipment actively used in this project/calculator state.
+          // Full catalogs remain available in Settings/backend data and are not listed here until used.
+
+          (lightingState.fixtures || []).forEach((line) => {
+            const fixture = getLightingFixtureByKey(line.fixtureKey);
+            const qty = Math.max(1, Math.round(Number(line.quantity || 1)));
+            const dims = fixture?.dimensions_mm || {};
+            const dimL = Number.isFinite(Number(dims.length)) ? Number(dims.length) / 1000 : null;
+            const dimW = Number.isFinite(Number(dims.width)) ? Number(dims.width) / 1000 : null;
+            const dimH = Number.isFinite(Number(dims.height)) ? Number(dims.height) / 1000 : null;
+            pushItem({
+              id: `lx_${line.id}`,
+              department: "Lighting",
+              manufacturer: fixture?.manufacturer || "",
+              name: fixture?.model ? `${fixture.model} (${line.modeName || "Mode"})` : "Lighting Fixture",
+              quantity: qty,
+              weightKg: fixture?.weight_kg,
+              powerW: Number.isFinite(Number(fixture?.power?.max_w)) ? Number(fixture.power.max_w) : fixture?.power?.avg_w,
+              footprintW: dimW || dimL,
+              footprintD: dimL || dimW,
+              heightM: dimH,
+              notes: line.groupId ? `Group: ${(lightingState.groups || []).find((g) => g.id === line.groupId)?.name || line.groupId}` : ""
+            });
+          });
+
+          (powerState.manualLoads || []).forEach((load) => {
+            if (!load) return;
+            pushItem({
+              id: `pwr_${load.id}`,
+              department: load.department || "Power",
+              manufacturer: "Load",
+              name: load.name || "Power Load",
+              quantity: Math.max(1, Math.round(Number(load.quantity || 1))),
+              weightKg: null,
+              powerW: Number.isFinite(Number(load.watts_max)) ? Number(load.watts_max) : (Number.isFinite(Number(load.watts_avg)) ? Number(load.watts_avg) : null),
+              notes: load.preferred_connection || ""
+            });
+          });
+
+          const ledWalls = ledState.mode === "multi" ? ledState.walls : [ledState.single];
+          (ledWalls || []).forEach((w, idx) => {
+            const panel = LED_PANELS.find((p) => p.id === w.panelType) || LED_PANELS[0];
+            const calc = calcLedWall(panel, Number(w.width || 0), Number(w.height || 0));
+            if (!(calc.panelCount > 0)) return;
+            const requestedW = Math.max(0, Number(w.width || 0));
+            const requestedH = Math.max(0, Number(w.height || 0));
+            const cols = Math.max(1, Number(calc.panelsW || 1));
+            const rows = Math.max(1, Number(calc.panelsH || 1));
+            const rowHeightsM = (Array.isArray(calc.rowHeightsM) && calc.rowHeightsM.length === rows)
+              ? calc.rowHeightsM.map((h) => Math.max(0.05, Number(h || panel.panelH)))
+              : Array.from({ length: rows }, () => Math.max(0.05, Number(panel.panelH || 0.5)));
+            const colWidthsM = Array.from({ length: cols }, () => Math.max(0.05, Number(panel.panelW || 0.5)));
+            pushItem({
+              id: `video_led_${w.id || idx}`,
+              department: "Video",
+              manufacturer: panel.name.split(" ")[0] || "LED",
+              name: `${w.name || `Wall ${idx + 1}`}`,
+              quantity: calc.panelCount,
+              weightKg: null,
+              powerW: Number(panel.maxW || panel.avgW || 0),
+              footprintW: Number(requestedW > 0 ? requestedW : Number(calc.builtW || 0)),
+              footprintD: 0.2,
+              heightM: Number(requestedH > 0 ? requestedH : Number(calc.builtH || 0)),
+              notes: `${calc.panelsW}x${calc.panelsH} cabinets (built ${calc.builtW.toFixed(2)}m x ${calc.builtH.toFixed(2)}m)`,
+              ledMeta: {
+                wallId: String(w.id || `idx_${idx}`),
+                panelType: String(panel.id || ""),
+                cols,
+                rows,
+                colWidthsM,
+                rowHeightsM
+              }
+            });
+          });
+
+          (riggingState.spans || []).forEach((span) => {
+            const truss = trussCatalog.find((t) => t.id === span.trussTypeId);
+            const length = Number(span.lengthM || 0);
+            if (!(length > 0)) return;
+            const kgpm = Number(truss?.weight_per_m_kg || 0);
+            pushItem({
+              id: `rig_span_${span.id}`,
+              department: "Rigging",
+              manufacturer: truss?.manufacturer || "Prolyte",
+              name: `${truss?.series || "Truss"} ${span.id}`,
+              quantity: 1,
+              weightKg: Number.isFinite(kgpm) && kgpm > 0 ? kgpm * length : null,
+              powerW: null,
+              notes: `${length.toFixed(2)}m`
+            });
+          });
+          (riggingState.groupMotors || []).forEach((gm) => {
+            const motor = motorCatalog.find((m) => m.id === gm.motorId);
+            pushItem({
+              id: `rig_motor_${gm.id}`,
+              department: "Rigging",
+              manufacturer: motor?.brand || "Motor",
+              name: motor?.model || "Motor",
+              quantity: 1,
+              weightKg: motor?.self_weight_kg,
+              powerW: null,
+              notes: `WLL ${Number(motor?.wll_kg || 0)}kg`
+            });
+          });
+          (riggingState.accessories || []).forEach((a) => {
+            pushItem({
+              id: `rig_acc_${a.id}`,
+              department: "Rigging",
+              manufacturer: "Accessory",
+              name: a.name || "Accessory",
+              quantity: 1,
+              weightKg: a.weightKg,
+              powerW: null,
+              notes: a.placement || ""
+            });
+          });
+          (venueState.customVenueModels || []).forEach((item) => {
+            const width = Number(item.widthM || 0);
+            const depth = Number(item.depthM || 0);
+            const height = Number(item.heightM || 0);
+            const defaultY = Number(item.defaultY || 0);
+            pushItem({
+              id: String(item.id || ""),
+              department: "Venue",
+              manufacturer: String(item.manufacturer || "Custom"),
+              name: String(item.name || "Venue Model"),
+              quantity: 1,
+              weightKg: Number.isFinite(Number(item.weightKg)) ? Number(item.weightKg) : null,
+              powerW: null,
+              footprintW: Number.isFinite(width) && width > 0 ? width : null,
+              footprintD: Number.isFinite(depth) && depth > 0 ? depth : null,
+              heightM: Number.isFinite(height) && height > 0 ? height : null,
+              venueKind: String(item.kind || ""),
+              notes: item.kind === "stage_deck"
+                ? `Deck top ${Math.max(0, defaultY).toFixed(2)}m`
+                : (item.kind === "stage_span"
+                  ? `Stage span (${Math.max(1, Number(item.deckCols || 1))} x ${Math.max(1, Number(item.deckRows || 1))} decks) @ ${Math.max(0, defaultY).toFixed(2)}m`
+                  : "Custom wall"),
+              defaultY: Number.isFinite(defaultY) ? defaultY : null
+            });
+          });
+          return out.sort((a, b) => {
+            const d = a.department.localeCompare(b.department);
+            if (d !== 0) return d;
+            return a.name.localeCompare(b.name);
+          });
+        }
+
+        function syncVenueTrussPlacementsFromRigging() {
+          const groups = getRiggingGroups();
+          const groupIds = new Set(groups.map((g) => String(g.id || "")));
+          const suppressedSet = new Set(
+            (Array.isArray(venueState.suppressedRigGroupIds) ? venueState.suppressedRigGroupIds : [])
+              .map((id) => String(id || ""))
+              .filter((id) => id && groupIds.has(id))
+          );
+          venueState.suppressedRigGroupIds = Array.from(suppressedSet);
+          const venueW = Math.max(1, Number(venueState.widthM || 30));
+          const venueD = Math.max(1, Number(venueState.depthM || 20));
+          const existing = Array.isArray(venueState.trussPlacements) ? venueState.trussPlacements : [];
+          const existingByGroupId = Object.fromEntries(
+            existing
+              .filter((p) => p && p.sourceGroupId)
+              .map((p) => [String(p.sourceGroupId), p])
+          );
+          const next = [];
+          groups.forEach((g, idx) => {
+            if (suppressedSet.has(String(g.id || ""))) return;
+            const totalSpan = Math.max(0, Number(getRiggingGroupTotalSpan(g.id) || 0));
+            if (!(totalSpan > 0)) return;
+            const found = existingByGroupId[g.id];
+            const p = found
+              ? { ...found }
+              : {
+                  id: `venue_truss_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+                  sourceGroupId: g.id,
+                  label: g.name || `Group ${idx + 1}`,
+                  color: g.color || "#f08a3c",
+                  x1: 0,
+                  y1: Math.max(0, Math.min(venueD, (1.5 + idx * 2.2))),
+                  x2: Math.max(0, Math.min(venueW, totalSpan)),
+                  y2: Math.max(0, Math.min(venueD, (1.5 + idx * 2.2)))
+                };
+
+            p.sourceGroupId = g.id;
+            p.label = g.name || p.label || g.id;
+            p.color = g.color || p.color || "#f08a3c";
+
+            let x1 = Number(p.x1 || 0);
+            let y1 = Number(p.y1 || 0);
+            let x2 = Number(p.x2 || 0);
+            let y2 = Number(p.y2 || 0);
+            let dx = x2 - x1;
+            let dy = y2 - y1;
+            let currLen = Math.hypot(dx, dy);
+            if (!(currLen > 1e-6)) {
+              dx = 1;
+              dy = 0;
+              currLen = 1;
+            }
+            const ux = dx / currLen;
+            const uy = dy / currLen;
+            const cx = (x1 + x2) / 2;
+            const cy = (y1 + y2) / 2;
+            const half = totalSpan / 2;
+            let nx1 = cx - (ux * half);
+            let ny1 = cy - (uy * half);
+            let nx2 = cx + (ux * half);
+            let ny2 = cy + (uy * half);
+
+            const minX = Math.min(nx1, nx2);
+            const maxX = Math.max(nx1, nx2);
+            const minY = Math.min(ny1, ny2);
+            const maxY = Math.max(ny1, ny2);
+            let shiftX = 0;
+            let shiftY = 0;
+            if (minX < 0) shiftX = -minX;
+            if (maxX > venueW) shiftX = Math.min(shiftX || Infinity, venueW - maxX);
+            if (!Number.isFinite(shiftX)) shiftX = 0;
+            if (minY < 0) shiftY = -minY;
+            if (maxY > venueD) shiftY = Math.min(shiftY || Infinity, venueD - maxY);
+            if (!Number.isFinite(shiftY)) shiftY = 0;
+
+            nx1 += shiftX;
+            ny1 += shiftY;
+            nx2 += shiftX;
+            ny2 += shiftY;
+
+            p.x1 = Number(nx1.toFixed(3));
+            p.y1 = Number(ny1.toFixed(3));
+            p.x2 = Number(nx2.toFixed(3));
+            p.y2 = Number(ny2.toFixed(3));
+            next.push(p);
+          });
+          venueState.trussPlacements = next;
+        }
+
+        function disposeGear3dRuntime() {
+          if (!gear3dRuntime) return;
+          try {
+            if (gear3dRuntime.frameId) cancelAnimationFrame(gear3dRuntime.frameId);
+            if (gear3dRuntime.controls) gear3dRuntime.controls.dispose();
+            if (gear3dRuntime.renderer) {
+              gear3dRuntime.renderer.dispose();
+              gear3dRuntime.renderer.forceContextLoss?.();
+            }
+            if (gear3dRuntime.onResize) window.removeEventListener("resize", gear3dRuntime.onResize);
+          } catch (_) {}
+          gear3dRuntime = null;
+        }
+
+        function renderGear() {
+          if (!main) return;
+          const items = collectGearInventory();
+          if (!gearState.selectedInventoryId || !items.some((x) => x.id === gearState.selectedInventoryId)) {
+            gearState.selectedInventoryId = items[0]?.id || "";
+          }
+          const selected = items.find((x) => x.id === gearState.selectedInventoryId) || null;
+          main.innerHTML = `
+            <div class="card">
+              <div class="toolbar">
+                <h2>Gear</h2>
+                <span class="badge">${items.length} inventory lines</span>
+              </div>
+              <div class="grid grid-2" style="margin-top:0.6rem;align-items:start;">
+                <div class="card">
+                  <h3 style="margin-top:0;">Inventory (All Departments)</h3>
+                  <div class="muted">Drag a gear chip into the 3D viewer to place an object.</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.55rem;max-height:240px;overflow:auto;">
+                    ${items.map((item) => `
+                      <button
+                        data-gear-chip="${item.id}"
+                        draggable="true"
+                        style="border-color:${item.color};color:${item.color};"
+                        class="${item.id === gearState.selectedInventoryId ? "active" : ""}"
+                        title="${item.manufacturer ? `${item.manufacturer} - ` : ""}${item.name}"
+                      >${item.department}: ${item.name} x${item.quantity}</button>
+                    `).join("") || '<span class="muted">No gear found yet. Add equipment in department modules or Settings.</span>'}
+                  </div>
+                  <div class="table-wrap" style="margin-top:0.6rem;">
+                    <table>
+                      <thead><tr><th>Manufacturer</th><th>Name</th><th>Dept</th><th>Qty</th><th>Weight</th><th>Power</th></tr></thead>
+                      <tbody>
+                        ${items.map((item) => `
+                          <tr>
+                            <td>${item.manufacturer || "-"}</td>
+                            <td>${item.name}</td>
+                            <td>${item.department}</td>
+                            <td>${item.quantity}</td>
+                            <td>${Number.isFinite(item.weightKg) ? `${item.weightKg.toFixed(1)} kg` : "-"}</td>
+                            <td>${Number.isFinite(item.powerW) ? `${Math.round(item.powerW)} W` : "-"}</td>
+                          </tr>
+                        `).join("") || '<tr><td colspan="6" class="muted">No items</td></tr>'}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="toolbar">
+                    <h3 style="margin:0;">3D Gear Layout</h3>
+                    <div style="display:flex;gap:0.45rem;align-items:center;">
+                      <button id="gear3dResetViewBtn">Reset View</button>
+                      <button id="gear3dClearBtn">Clear Placed</button>
+                    </div>
+                  </div>
+                  <div class="muted" id="gear3dStatus" style="margin-top:0.25rem;">Loading 3D viewer...</div>
+                  <div class="muted" id="gear3dPick" style="margin-top:0.2rem;">Selected: -</div>
+                  <div class="muted" style="margin-top:0.2rem;">Selected Source: ${selected ? `${selected.department} - ${selected.name}` : "-"}</div>
+                  <div id="gear3dCanvasHost" style="margin-top:0.55rem;height:540px;border:1px solid var(--theme-line-soft);border-radius:12px;background:var(--theme-input);overflow:hidden;"></div>
+                </div>
+              </div>
+            </div>
+          `;
+
+          document.querySelectorAll("[data-gear-chip]").forEach((chip) => {
+            chip.addEventListener("click", () => {
+              gearState.selectedInventoryId = chip.dataset.gearChip || "";
+              renderGear();
+            });
+            chip.addEventListener("dragstart", (ev) => {
+              const id = chip.dataset.gearChip || "";
+              gearState.selectedInventoryId = id;
+              ev.dataTransfer?.setData("text/plain", id);
+              ev.dataTransfer?.setData("application/x-thebase-gear", id);
+              ev.dataTransfer.effectAllowed = "copy";
+            });
+          });
+          document.getElementById("gear3dClearBtn")?.addEventListener("click", () => {
+            gearState.placedItems = [];
+            initGear3dViewer();
+          });
+          document.getElementById("gear3dResetViewBtn")?.addEventListener("click", () => {
+            if (gear3dRuntime && typeof gear3dRuntime.resetView === "function") gear3dRuntime.resetView();
+          });
+          initGear3dViewer();
+        }
+
+        async function initGear3dViewer() {
+          const host = document.getElementById("gear3dCanvasHost");
+          const statusEl = document.getElementById("gear3dStatus");
+          const pickEl = document.getElementById("gear3dPick");
+          if (!(host instanceof HTMLElement) || !statusEl || !pickEl) return;
+          disposeGear3dRuntime();
+          host.innerHTML = "";
+          statusEl.textContent = "Loading 3D engine...";
+          try {
+            const { THREE, OrbitControls } = await loadVenue3dLib();
+            const width = Math.max(320, Math.floor(host.clientWidth || 320));
+            const height = Math.max(320, Math.floor(host.clientHeight || 500));
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+            renderer.setSize(width, height, true);
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            renderer.setClearColor(0x141924, 1);
+            renderer.domElement.style.width = "100%";
+            renderer.domElement.style.height = "100%";
+            renderer.domElement.style.display = "block";
+            host.appendChild(renderer.domElement);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(52, width / height, 0.05, 10000);
+            camera.position.set(18, 15, 18);
+            camera.up.set(0, 1, 0);
+
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.08;
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            scene.add(new THREE.HemisphereLight(0xdde8ff, 0x18202c, 0.95));
+            scene.add(new THREE.DirectionalLight(0xffffff, 0.5));
+            const grid = new THREE.GridHelper(40, 40, 0x55607a, 0x2e3445);
+            grid.position.y = -0.001;
+            scene.add(grid);
+            scene.add(new THREE.AxesHelper(2.5));
+
+            const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+            const raycaster = new THREE.Raycaster();
+            const pointer = new THREE.Vector2();
+            const meshes = new Map();
+            const itemsById = Object.fromEntries(collectGearInventory().map((x) => [x.id, x]));
+
+            const buildMeshForItem = (placed) => {
+              const source = itemsById[placed.sourceId] || {};
+              const color = Number(new THREE.Color(source.color || "#8f98ab").getHex());
+              const mat = new THREE.MeshStandardMaterial({ color, roughness: 0.7, metalness: 0.08 });
+              const dept = String(source.department || "Other").toLowerCase();
+              const weight = Number(source.weightKg || 0);
+              const scale = Math.max(0.45, Math.min(2.4, Math.cbrt(Math.max(1, weight) / 14)));
+              let mesh;
+              if (dept === "lighting") {
+                mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.23 * scale, 0.26 * scale, 0.45 * scale, 18), mat);
+              } else if (dept === "video") {
+                const wallW = Math.max(0.5, Number(source.footprintW || 1));
+                const wallH = Math.max(0.5, Number(source.heightM || 1));
+                const wallD = Math.max(0.08, Number(source.footprintD || 0.2));
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(wallW, wallH, wallD), mat);
+              } else if (dept === "audio" || dept === "sound") {
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(0.5 * scale, 0.75 * scale, 0.45 * scale), mat);
+              } else if (dept === "rigging") {
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(1.1 * scale, 0.18 * scale, 0.18 * scale), mat);
+              } else {
+                mesh = new THREE.Mesh(new THREE.BoxGeometry(0.55 * scale, 0.55 * scale, 0.55 * scale), mat);
+              }
+              if (dept === "video") {
+                const y = Math.max(0.25, Number(source.heightM || 1) / 2);
+                mesh.position.set(Number(placed.x || 0), y, Number(placed.z || 0));
+              } else {
+                mesh.position.set(Number(placed.x || 0), Number(placed.y || 0.35), Number(placed.z || 0));
+              }
+              mesh.userData.placedId = placed.id;
+              mesh.userData.sourceId = placed.sourceId;
+              mesh.name = source.name || "Gear";
+              return mesh;
+            };
+
+            const syncScene = () => {
+              const current = new Set((gearState.placedItems || []).map((p) => p.id));
+              Array.from(meshes.keys()).forEach((id) => {
+                if (current.has(id)) return;
+                const mesh = meshes.get(id);
+                if (mesh) {
+                  scene.remove(mesh);
+                  mesh.geometry?.dispose?.();
+                  if (Array.isArray(mesh.material)) mesh.material.forEach((m) => m.dispose?.());
+                  else mesh.material?.dispose?.();
+                }
+                meshes.delete(id);
+              });
+              (gearState.placedItems || []).forEach((p) => {
+                let mesh = meshes.get(p.id);
+                if (!mesh) {
+                  mesh = buildMeshForItem(p);
+                  meshes.set(p.id, mesh);
+                  scene.add(mesh);
+                } else {
+                  const source = itemsById[p.sourceId] || {};
+                  const dept = String(source.department || "Other").toLowerCase();
+                  if (dept === "video") {
+                    const y = Math.max(0.25, Number(source.heightM || 1) / 2);
+                    mesh.position.set(Number(p.x || 0), y, Number(p.z || 0));
+                  } else {
+                    mesh.position.set(Number(p.x || 0), Number(p.y || 0.35), Number(p.z || 0));
+                  }
+                }
+              });
+            };
+
+            const getDropWorldPoint = (event) => {
+              const rect = renderer.domElement.getBoundingClientRect();
+              pointer.x = ((event.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1;
+              pointer.y = -(((event.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1);
+              raycaster.setFromCamera(pointer, camera);
+              const out = new THREE.Vector3();
+              const hit = raycaster.ray.intersectPlane(plane, out);
+              return hit ? out : null;
+            };
+
+            renderer.domElement.addEventListener("dragover", (ev) => {
+              ev.preventDefault();
+              ev.dataTransfer.dropEffect = "copy";
+            });
+            renderer.domElement.addEventListener("drop", (ev) => {
+              ev.preventDefault();
+              const id = ev.dataTransfer?.getData("application/x-thebase-gear")
+                || ev.dataTransfer?.getData("text/plain")
+                || gearState.selectedInventoryId;
+              if (!id) return;
+              const source = itemsById[id];
+              if (!source) return;
+              const p = getDropWorldPoint(ev);
+              if (!p) return;
+              gearState.placedItems.push({
+                id: makeGearPlacedId(),
+                sourceId: id,
+                x: Number(p.x.toFixed(3)),
+                y: (String(source.venueKind || "") === "stage_deck" || String(source.venueKind || "") === "stage_span")
+                  ? 0
+                  : (Number.isFinite(Number(source.defaultY)) ? Number(source.defaultY) : 0.35),
+                z: Number(p.z.toFixed(3))
+              });
+              statusEl.textContent = `Placed: ${source.name}`;
+              syncScene();
+            });
+
+            const pickObject = (ev) => {
+              const rect = renderer.domElement.getBoundingClientRect();
+              pointer.x = ((ev.clientX - rect.left) / Math.max(1, rect.width)) * 2 - 1;
+              pointer.y = -(((ev.clientY - rect.top) / Math.max(1, rect.height)) * 2 - 1);
+              raycaster.setFromCamera(pointer, camera);
+              const hit = raycaster.intersectObjects(Array.from(meshes.values()), false)[0];
+              if (!hit) {
+                gearState.selectedPlacedId = "";
+                pickEl.textContent = "Selected: -";
+                return;
+              }
+              const placedId = hit.object?.userData?.placedId;
+              gearState.selectedPlacedId = placedId || "";
+              const placed = (gearState.placedItems || []).find((x) => x.id === placedId);
+              const src = placed ? itemsById[placed.sourceId] : null;
+              const p = hit.point || new THREE.Vector3();
+              pickEl.textContent = src
+                ? `Selected: ${src.name} @ ${p.x.toFixed(2)}, ${p.y.toFixed(2)}, ${p.z.toFixed(2)} m`
+                : "Selected: -";
+            };
+            renderer.domElement.addEventListener("pointerdown", pickObject);
+
+            const onResize = () => {
+              if (!host || !renderer || !camera) return;
+              const nextW = Math.max(320, Math.floor(host.clientWidth || 320));
+              const nextH = Math.max(320, Math.floor(host.clientHeight || 500));
+              renderer.setSize(nextW, nextH, true);
+              camera.aspect = nextW / nextH;
+              camera.updateProjectionMatrix();
+            };
+            window.addEventListener("resize", onResize);
+
+            const resetView = () => {
+              camera.position.set(18, 15, 18);
+              controls.target.set(0, 0, 0);
+              camera.up.set(0, 1, 0);
+              controls.update();
+            };
+            resetView();
+            syncScene();
+
+            const tick = () => {
+              controls.update();
+              renderer.render(scene, camera);
+              gear3dRuntime.frameId = requestAnimationFrame(tick);
+            };
+            gear3dRuntime = { renderer, scene, camera, controls, frameId: 0, onResize, resetView };
+            statusEl.textContent = "Gear 3D ready. Drag chips into the viewer.";
+            tick();
+          } catch (err) {
+            const msg = err && err.message ? String(err.message) : "Unknown error";
+            statusEl.textContent = `3D engine failed to initialize: ${msg}`;
+            pickEl.textContent = "Selected: -";
+            console.error("Gear 3D init error", err);
+          }
+        }
+
+        function renderVenue() {
+          if (!main) return;
+          syncVenueTrussPlacementsFromRigging();
+          venueState.trussPlacements = (venueState.trussPlacements || []).filter((x) => x && typeof x === "object" && x.id);
+          const safeNum = (v, fallback) => {
+            const n = Number(v);
+            return Number.isFinite(n) ? n : fallback;
+          };
+          const widthM = Math.max(1, safeNum(venueState.widthM, 30));
+          const depthM = Math.max(1, safeNum(venueState.depthM, 20));
+          const majorStepM = Math.max(0.5, safeNum(venueState.majorStepM, 1));
+          const minorStepM = Math.max(0.25, Math.min(majorStepM, safeNum(venueState.minorStepM, 0.5)));
+          const floorPlanOpacity = Math.max(0.05, Math.min(1, safeNum(venueState.floorPlanOpacity, 0.28)));
+          const hasFloorPlan = Boolean(venueState.floorPlanDataUrl);
+          const hasWorldMatrix = Boolean(venueState.floorPlanWorldMatrix);
+          const wizardAutoOpen = Boolean(hasFloorPlan && !hasWorldMatrix && !venueState.floorPlanWizardDismissed);
+          const wizardOpen = Boolean((venueState.floorPlanWizardOpen || venueState.floorPlanWizardForceOpen || wizardAutoOpen) && hasFloorPlan);
+          const wizardImgW = Math.max(1, Number(venueState.floorPlanImageWidthPx || 1600));
+          const wizardImgH = Math.max(1, Number(venueState.floorPlanImageHeightPx || 900));
+          const wizardSafeHref = hasFloorPlan ? String(venueState.floorPlanDataUrl).replace(/"/g, "&quot;") : "";
+          const wizardXDistM = Math.max(0.1, Number(venueState.floorPlanWizardXDistanceM || 10));
+          const wizardYDistM = Math.max(0.1, Number(venueState.floorPlanWizardYDistanceM || 10));
+          const wizardRotDeg = Number(venueState.floorPlanWizardRotationDeg || 0);
+          const wizardCx = wizardImgW / 2;
+          const wizardCy = wizardImgH / 2;
+          const wizardHasScaleOrigin = Boolean(venueState.floorPlanWizardOriginPx);
+          const wizardHasZero = Boolean(venueState.floorPlanWizardZeroPx);
+          const wizardHasX = Boolean(venueState.floorPlanWizardXPx);
+          const wizardHasY = Boolean(venueState.floorPlanWizardYPx);
+          const wizardActivePoint = String(venueState.floorPlanWizardActivePoint || "scale");
+          const rigGroups = getRiggingGroups();
+          if (venueState.selectedVenueRigGroupId && !rigGroups.some((g) => g.id === venueState.selectedVenueRigGroupId)) {
+            venueState.selectedVenueRigGroupId = "";
+          }
+          if (!venueState.selectedVenueRigGroupId && rigGroups[0]) {
+            venueState.selectedVenueRigGroupId = rigGroups[0].id;
+          }
+          const selectedVenueGroup = rigGroups.find((g) => g.id === venueState.selectedVenueRigGroupId) || null;
+          const selectedVenueGroupTotalSpanM = selectedVenueGroup ? getRiggingGroupTotalSpan(selectedVenueGroup.id) : 0;
+          const multiPointDistanceM = getVenuePathDistance(venueState.measurePoints || []);
+          const generalDistanceM = getVenuePathDistance(venueState.generalMeasurePoints || []);
+          const generalLogRows = (venueState.generalMeasurementLog || []).slice(0, 10).map((row, idx) => `
+            <tr>
+              <td>${idx + 1}</td>
+              <td>${Number(row.distanceM || 0).toFixed(2)} m</td>
+              <td><button data-general-measure-delete="${String(row.id || "")}" data-general-measure-index="${idx}" aria-label="Delete general measurement">×</button></td>
+            </tr>
+          `).join("");
+          const activeMeasureDistanceM = multiPointDistanceM;
+          const measurementLogRows = (venueState.measurementLog || []).map((row, idx) => `
+            <tr>
+              <td>${idx + 1}</td>
+              <td data-measure-name="${String(row.id || "")}" title="Double-click to rename">${
+                venueState.measurementEditingId === String(row.id || "")
+                  ? `<input id="venueMeasureInlineNameInput" type="text" value="${String(venueState.measurementEditingValue || row.name || `Measurement ${idx + 1}`).replace(/"/g, "&quot;")}" style="max-width:160px;" />`
+                  : String(row.name || `Measurement ${idx + 1}`)
+              }</td>
+              <td>
+                <select data-measure-category="${String(row.id || "")}" style="min-width:72px;padding:0.2rem 0.35rem;">
+                  <option value="AV" ${String(row.category || "GEN") === "AV" ? "selected" : ""}>AV</option>
+                  <option value="LX" ${String(row.category || "GEN") === "LX" ? "selected" : ""}>LX</option>
+                  <option value="SX" ${String(row.category || "GEN") === "SX" ? "selected" : ""}>SX</option>
+                  <option value="PWR" ${String(row.category || "GEN") === "PWR" ? "selected" : ""}>PWR</option>
+                  <option value="GEN" ${String(row.category || "GEN") === "GEN" ? "selected" : ""}>GEN</option>
+                </select>
+              </td>
+              <td>
+                <select data-measure-cable="${String(row.id || "")}" style="min-width:120px;padding:0.2rem 0.35rem;">
+                  <option value="" ${!row.cableType ? "selected" : ""}>Select</option>
+                  ${CABLE_CATALOG.map((c) => `<option value="${c.type}" ${row.cableType === c.type ? "selected" : ""}>${c.type}</option>`).join("")}
+                  ${row.cableType && !CABLE_CATALOG.some((c) => c.type === row.cableType) ? `<option value="${String(row.cableType).replace(/"/g, "&quot;")}" selected>${String(row.cableType)}</option>` : ""}
+                </select>
+              </td>
+              <td><input data-measure-maxdist="${String(row.id || "")}" type="number" min="0" step="0.1" value="${Number.isFinite(Number(row.cableMaxDistM)) ? Number(row.cableMaxDistM) : ""}" placeholder="m" style="max-width:90px;" /></td>
+              <td>${Number(row.distanceM || 0).toFixed(2)} m</td>
+              <td>
+                ${
+  !Number.isFinite(Number(row.cableMaxDistM)) || Number(row.cableMaxDistM) <= 0
+    ? '<span class="badge">No Limit</span>'
+    : (() => {
+      const maxM = Number(row.cableMaxDistM);
+      const distM = Number(row.distanceM || 0);
+      if (distM > maxM) return '<span class="badge" style="background:#5a1f28;color:#ffd9de;border-color:#a84657;">Over</span>';
+      if (distM > (maxM * 0.85)) return '<span class="badge" style="background:#4b3a1b;color:#ffe7be;border-color:#9f7a2f;">Limit</span>';
+      return '<span class="badge" style="background:#1e4f36;color:#d9ffe8;border-color:#3fa16e;">Safe</span>';
+    })()
+}
+              </td>
+              <td><button data-measure-delete="${String(row.id || "")}" aria-label="Delete measurement">×</button></td>
+            </tr>
+          `).join("");
+          const venueGearInventory = collectGearInventory();
+          const stageDeckType = getStageDeckTypeById(venueState.stageDeckSizeId);
+          const customVenueRows = (venueState.customVenueModels || []).map((item) => `
+            <tr>
+              <td>${String(item.kind || "") === "stage_deck" ? "Deck" : (String(item.kind || "") === "stage_span" ? "Stage Span" : "Wall")}</td>
+              <td>${String(item.name || "Model")}</td>
+              <td>${Number(item.widthM || 0).toFixed(2)} x ${Number(item.depthM || 0).toFixed(2)} x ${Number(item.heightM || 0).toFixed(2)}m</td>
+              <td>${Number.isFinite(Number(item.defaultY)) ? Number(item.defaultY).toFixed(2) : "-"}m</td>
+              <td><button data-venue-model-remove="${String(item.id || "")}" aria-label="Remove custom venue model">×</button></td>
+            </tr>
+          `).join("");
+          if (!gearState.selectedInventoryId || !venueGearInventory.some((x) => x.id === gearState.selectedInventoryId)) {
+            gearState.selectedInventoryId = venueGearInventory[0]?.id || "";
+          }
+          const wizardStepLabel = !wizardHasScaleOrigin
+            ? "Step 1: Click Scale Anchor"
+            : !wizardHasX
+              ? "Step 2: Click X Reference"
+              : !wizardHasY
+                ? "Step 3: Click Y Reference"
+                : !wizardHasZero
+                  ? "Step 4: Click 0,0 Point"
+                  : "All points set. Apply calibration.";
+
+          main.innerHTML = `
+            <div class="card">
+              <div class="toolbar">
+                <h2>Venue - 3D Plan</h2>
+              </div>
+              <div class="grid grid-4" style="margin-top:0.6rem;">
+                <div><label>Major Grid (m)</label><input id="venueMajorStepM" type="number" min="0.5" step="0.5" value="${majorStepM}" /></div>
+                <div><label>Minor Grid (m)</label><input id="venueMinorStepM" type="number" min="0.25" step="0.25" value="${minorStepM}" /></div>
+                <div>
+                  <label>Venue Width</label>
+                  <div class="badge" style="display:inline-flex;align-items:center;gap:0.3rem;padding:0.45rem 0.6rem;font-size:0.95rem;">
+                    <span class="muted">Calibrated</span>
+                    <strong>${widthM.toFixed(2)} m</strong>
+                  </div>
+                </div>
+                <div>
+                  <label>Venue Depth</label>
+                  <div class="badge" style="display:inline-flex;align-items:center;gap:0.3rem;padding:0.45rem 0.6rem;font-size:0.95rem;">
+                    <span class="muted">Calibrated</span>
+                    <strong>${depthM.toFixed(2)} m</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="card" style="margin-top:0.7rem;">
+                <div class="toolbar" style="margin-bottom:0.45rem;">
+                  <h3 style="margin:0;font-size:1rem;">Overlay Settings</h3>
+                </div>
+                <div class="grid grid-4">
+                  <div style="grid-column:span 2;">
+                    <label>Floor Plan</label>
+                    <div style="display:flex;align-items:center;gap:0.45rem;margin-top:0.1rem;">
+                      <button id="venueFloorPlanPickBtn" type="button">Choose Image</button>
+                      <span class="muted">Image files</span>
+                    </div>
+                    <input id="venueFloorPlanFile" type="file" accept="image/*,.png,.jpg,.jpeg,.webp,.bmp" style="display:none;" />
+                    <div class="muted" style="margin-top:0.25rem;">Upload a floor plan image to calibrate.</div>
+                    <div class="muted" style="margin-top:0.15rem;" id="venueFloorPlanLoadedName">${venueState.floorPlanSourceName ? `Loaded: ${String(venueState.floorPlanSourceName).replace(/</g, "&lt;").replace(/>/g, "&gt;")}` : "Loaded: none"}</div>
+                  </div>
+                  <div>
+                    <label>Opacity</label>
+                    <input id="venueFloorPlanOpacity" type="range" min="0.05" max="1" step="0.01" value="${floorPlanOpacity}" />
+                    <div class="muted"><span id="venueFloorPlanOpacityLabel">${Math.round(floorPlanOpacity * 100)}%</span></div>
+                  </div>
+                  <div style="display:flex;align-items:flex-end;gap:0.45rem;">
+                    <button id="venueOpenCalWizardBtn" ${hasFloorPlan ? "" : "disabled"}>Calibrate</button>
+                    <button id="venueFloorPlanClearBtn" ${hasFloorPlan ? "" : "disabled"}>Clear</button>
+                  </div>
+                  <div>
+                    <label>0X Marker (m)</label>
+                    <input id="venueGridOriginX" type="number" step="0.01" min="0" value="${Math.max(0, Number(venueState.gridOriginX || 0)).toFixed(2)}" />
+                  </div>
+                  <div>
+                    <label>0Y Marker (m)</label>
+                    <input id="venueGridOriginY" type="number" step="0.01" min="0" value="${Math.max(0, Number(venueState.gridOriginY || 0)).toFixed(2)}" />
+                  </div>
+                  <div>
+                    <label>Overlay Scale</label>
+                    <input id="venueFloorPlanScaleAdjust" type="number" min="0.05" step="0.01" value="${Math.max(0.05, Number(venueState.floorPlanScaleAdjust || 1)).toFixed(2)}" />
+                  </div>
+                  <div style="display:flex;align-items:flex-end;">
+                    <button id="venueGridOriginResetBtn">Reset 0X/0Y</button>
+                  </div>
+                </div>
+                <div class="muted" style="margin-top:0.35rem;">
+                  ${hasWorldMatrix ? "Calibrated transform active. 0X/0Y marker position and overlay scale are independent." : "Not calibrated yet. Use Calibrate to align origin, X and Y distances."}
+                </div>
+                <div class="badge" style="display:inline-flex;margin-top:0.35rem;border-color:var(--theme-line-soft);">
+                  ${String(venueState.floorPlanImportStatus || "No floor plan loaded")}
+                </div>
+                ${venueState.floorPlanImportError ? `<div class="bad" style="margin-top:0.35rem;">${String(venueState.floorPlanImportError).replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>` : ""}
+              </div>
+              <div class="card" style="margin-top:0.7rem;">
+                <div class="toolbar" style="margin-bottom:0.45rem;">
+                  <h3 style="margin:0;font-size:1rem;">Truss Placement (From Rigging)</h3>
+                </div>
+                <div class="grid grid-3">
+                  <div>
+                    <label>Rigging Group</label>
+                    <select id="venueRigGroupSel">
+                      ${rigGroups.map((g) => `<option value="${g.id}" ${g.id === venueState.selectedVenueRigGroupId ? "selected" : ""}>${g.name}</option>`).join("")}
+                    </select>
+                  </div>
+                  <div>
+                    <label>Total Group Span</label>
+                    <input value="${selectedVenueGroupTotalSpanM.toFixed(2)} m" disabled />
+                  </div>
+                  <div class="dropzone" style="display:flex;align-items:center;">
+                    ${selectedVenueGroup && selectedVenueGroupTotalSpanM > 0
+                      ? `<span class="chip" draggable="true" id="venueRigSpanDragChip"
+                          data-venue-drag-group-id="${selectedVenueGroup.id}"
+                          data-venue-drag-group-name="${selectedVenueGroup.name.replace(/"/g, "&quot;")}"
+                          data-venue-drag-span-length="${Number(selectedVenueGroupTotalSpanM || 0)}"
+                          data-venue-drag-span-color="${selectedVenueGroup.color || "#f08a3c"}"
+                          title="Drag this full truss group onto the venue grid."
+                        >Drag Group: ${selectedVenueGroup.name} (${Number(selectedVenueGroupTotalSpanM || 0).toFixed(1)}m)</span>`
+                      : `<span class="muted">Select a rigging group with spans.</span>`}
+                  </div>
+                </div>
+                <div class="muted" style="margin-top:0.35rem;">Drop on the venue grid, then drag endpoints to reposition.</div>
+              </div>
+              <div class="card" style="margin-top:0.7rem;">
+                <div class="toolbar" style="margin-bottom:0.45rem;">
+                  <h3 style="margin:0;font-size:1rem;">General Measurement</h3>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:0.45rem;align-items:center;">
+                  <button id="venueGeneralMeasureArmBtn" class="${venueState.generalMeasureArmed ? "active" : ""}">Start Measure</button>
+                  <button id="venueGeneralMeasureSaveBtn" ${generalDistanceM > 0 ? "" : "disabled"}>Save Measure</button>
+                  <button id="venueGeneralMeasureClearBtn">Clear</button>
+                  <span class="muted" id="venueGeneralMeasureCurrent">Current: ${generalDistanceM > 0 ? `${generalDistanceM.toFixed(2)} m` : (venueState.generalMeasureArmed ? "Click in 3D to add points." : "-")}</span>
+                </div>
+                <div class="table-wrap" style="margin-top:0.55rem;">
+                  <table>
+                    <thead><tr><th>#</th><th>Distance</th><th>Action</th></tr></thead>
+                    <tbody>${generalLogRows || '<tr><td colspan="3" class="muted">No measurements yet.</td></tr>'}</tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="card" style="margin-top:0.7rem;">
+                <div class="toolbar" style="margin-bottom:0.45rem;">
+                  <h3 style="margin:0;font-size:1rem;">Cable Runs</h3>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:0.45rem;align-items:center;">
+                  <button id="venueMeasureArmBtn" class="${venueState.measureArmed ? "active" : ""}">Start Run</button>
+                  <button id="venueMeasureSaveBtn" ${activeMeasureDistanceM > 0 ? "" : "disabled"}>Save Run</button>
+                  <button id="venueMeasureClearBtn">Clear</button>
+                  <span class="muted" id="venueMeasureCurrent">Current: ${activeMeasureDistanceM > 0 ? `${activeMeasureDistanceM.toFixed(2)} m` : (venueState.measureArmed ? "Click in 3D to add points." : "-")}</span>
+                </div>
+                <div class="table-wrap" style="margin-top:0.55rem;">
+                  <table>
+                    <thead><tr><th>#</th><th>Name</th><th>Category</th><th>Cable Type</th><th>Max Dist</th><th>Distance</th><th>Status</th><th>Action</th></tr></thead>
+                    <tbody>${measurementLogRows || '<tr><td colspan="8" class="muted">No measurements yet.</td></tr>'}</tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="card" style="margin-top:0.75rem;">
+                <div class="toolbar">
+                  <h3 style="margin:0;">Venue 3D</h3>
+                  <div style="display:flex;gap:0.45rem;align-items:flex-end;flex-wrap:wrap;">
+                    <div>
+                      <label>Model File (.glb/.gltf)</label>
+                      <input id="venue3dFile" type="file" accept=".glb,.gltf,model/gltf-binary,model/gltf+json" />
+                    </div>
+                    <div style="min-width:120px;">
+                      <label>Model Scale</label>
+                      <input id="venue3dScaleInput" type="number" min="0.01" step="0.01" value="${Math.max(0.01, Number(venueState.model3dScale || 1))}" />
+                    </div>
+                    <button id="venue3dResetViewBtn">Reset View</button>
+                  </div>
+                </div>
+                <div class="venue3d-controls">
+                  <div class="venue3d-control-group wide">
+                    <span class="venue3d-control-label">Camera</span>
+                    <div class="venue3d-camera-cluster">
+                      <div class="venue3d-mini">
+                        <span class="venue3d-mini-label">Navigation</span>
+                        <div class="tabs" id="venue3dModeTabs">
+                          <button data-venue3d-mode="blender" class="${String(venueState.venue3dNavMode || "blender") === "blender" ? "active" : ""}">Blender</button>
+                          <button data-venue3d-mode="inspect" class="${String(venueState.venue3dNavMode || "blender") === "inspect" ? "active" : ""}">Inspect</button>
+                          <button data-venue3d-mode="plan" class="${String(venueState.venue3dNavMode || "blender") === "plan" ? "active" : ""}">Plan</button>
+                        </div>
+                      </div>
+                      <div class="venue3d-mini">
+                        <span class="venue3d-mini-label">Input</span>
+                        <div class="tabs" id="venue3dInputTabs">
+                          <button data-venue3d-input="trackpad" class="${String(venueState.venue3dInputProfile || "trackpad") === "trackpad" ? "active" : ""}">Trackpad</button>
+                          <button data-venue3d-input="mouse" class="${String(venueState.venue3dInputProfile || "trackpad") === "mouse" ? "active" : ""}">Mouse</button>
+                        </div>
+                      </div>
+                      <div class="venue3d-mini">
+                        <span class="venue3d-mini-label">Type</span>
+                        <div class="tabs" id="venue3dProjectionTabs">
+                          <button data-venue3d-projection="perspective" class="${String(venueState.projectionMode || "perspective") === "perspective" ? "active" : ""}">Perspective</button>
+                          <button data-venue3d-projection="orthographic" class="${String(venueState.projectionMode || "perspective") === "orthographic" ? "active" : ""}">Orthographic</button>
+                        </div>
+                      </div>
+                      <div class="venue3d-mini">
+                        <span class="venue3d-mini-label">Views</span>
+                        <div class="tabs" id="venue3dViewTabs">
+                          <button data-venue3d-view="home">Home</button>
+                          <button data-venue3d-view="isometric">Isometric</button>
+                          <button data-venue3d-view="front">Front</button>
+                          <button data-venue3d-view="back">Back</button>
+                          <button data-venue3d-view="left">Left</button>
+                          <button data-venue3d-view="right">Right</button>
+                          <button data-venue3d-view="top">Top</button>
+                        </div>
+                      </div>
+                      <div class="venue3d-hints" aria-label="Viewport shortcuts">
+                        <span class="badge">Trackpad: Drag Orbit</span>
+                        <span class="badge">Trackpad: Shift+Drag Pan</span>
+                        <span class="badge">Mouse: MMB Orbit</span>
+                        <span class="badge">Mouse: Shift+MMB Pan</span>
+                        <span class="badge">Wheel Zoom</span>
+                        <span class="badge">G/R/S Gizmo</span>
+                        <span class="badge">1/3/7 Views</span>
+                        <span class="badge">5 Projection</span>
+                        <span class="badge">F Frame</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="venue3d-control-group">
+                    <span class="venue3d-control-label">LED Overlay</span>
+                    <select id="venue3dLedOverlayMode">
+                      <option value="panels" ${String(venueState.ledOverlayMode || "panels") === "panels" ? "selected" : ""}>Panels</option>
+                      <option value="signal" ${String(venueState.ledOverlayMode || "panels") === "signal" ? "selected" : ""}>Controller Wiring</option>
+                      <option value="power" ${String(venueState.ledOverlayMode || "panels") === "power" ? "selected" : ""}>Power Distribution</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="muted" style="margin-top:0.3rem;">Blender-style quick nav: use mode buttons + view snaps. Mouse wheel zoom remains active.</div>
+                <div class="muted" id="venue3dStatus" style="margin-top:0.4rem;">Loading 3D viewer...</div>
+                <div class="muted" id="venue3dPick" style="margin-top:0.2rem;">Selected: -</div>
+                <div style="margin-top:0.55rem;display:grid;grid-template-columns:320px minmax(0,1fr);gap:0.7rem;align-items:start;">
+                  <div class="card" style="margin:0;max-height:760px;overflow:auto;">
+                    <div class="toolbar" style="margin-bottom:0.4rem;">
+                      <h3 style="margin:0;font-size:1rem;">Gear Inventory</h3>
+                      <button id="venue3dClearGearBtn">Clear</button>
+                    </div>
+                    <div class="muted" style="margin-bottom:0.35rem;">Drag onto the 3D view.</div>
+                    <div class="card" style="margin:0 0 0.55rem 0;">
+                      <h3 style="margin:0 0 0.35rem 0;font-size:0.96rem;">Add Models</h3>
+                      <div class="grid grid-2" style="gap:0.4rem;">
+                        <div><label>Wall Width (m)</label><input id="venueWallWidthM" type="number" min="0.1" step="0.1" value="${Math.max(0.1, Number(venueState.wallWidthM || 8))}" /></div>
+                        <div><label>Wall Height (m)</label><input id="venueWallHeightM" type="number" min="0.1" step="0.1" value="${Math.max(0.1, Number(venueState.wallHeightM || 4))}" /></div>
+                        <div><label>Wall Depth (m)</label><input id="venueWallDepthM" type="number" min="0.02" step="0.01" value="${Math.max(0.02, Number(venueState.wallDepthM || 0.12))}" /></div>
+                        <div><label>Wall Scale</label><input id="venueWallScale" type="number" min="0.1" step="0.1" value="${Math.max(0.1, Number(venueState.wallScale || 1))}" /></div>
+                      </div>
+                      <div style="display:flex;gap:0.35rem;align-items:flex-end;flex-wrap:wrap;margin-top:0.4rem;">
+                        <div style="max-width:120px;"><label>Wall Weight (kg)</label><input id="venueWallWeightKg" type="number" min="0" step="1" value="${Math.max(0, Number(venueState.wallWeightKg || 120))}" /></div>
+                        <button id="venueAddWallBtn">Add Wall</button>
+                      </div>
+                      <hr style="border:none;border-top:1px solid var(--theme-line-soft);margin:0.55rem 0;" />
+                      <div class="grid grid-2" style="gap:0.4rem;">
+                        <div>
+                          <label>Prolyte Stage Deck</label>
+                          <select id="venueStageDeckSizeSel">
+                            ${PROLYTE_STAGE_DECK_SIZES.map((d) => `<option value="${d.id}" ${d.id === stageDeckType.id ? "selected" : ""}>${d.name}</option>`).join("")}
+                          </select>
+                        </div>
+                        <div><label>Stage Height (m)</label><input id="venueStageDeckHeightM" type="number" min="0.08" step="0.01" value="${Math.max(0.08, Number(venueState.stageDeckHeightM || 0.6))}" /></div>
+                      </div>
+                      <div class="muted" style="margin-top:0.3rem;">Selected: ${stageDeckType.widthM.toFixed(2)}m x ${stageDeckType.depthM.toFixed(2)}m deck.</div>
+                      <div style="display:flex;gap:0.35rem;flex-wrap:wrap;margin-top:0.35rem;">
+                        <button id="venueAddStageDeckBtn">Add Stage Deck</button>
+                      </div>
+                      <div class="grid grid-2" style="gap:0.4rem;margin-top:0.5rem;">
+                        <div><label>Stage Span Width (m)</label><input id="venueStageSpanWidthM" type="number" min="0.5" step="0.1" value="${Math.max(0.5, Number(venueState.stageSpanWidthM || 10))}" /></div>
+                        <div><label>Stage Span Depth (m)</label><input id="venueStageSpanDepthM" type="number" min="0.5" step="0.1" value="${Math.max(0.5, Number(venueState.stageSpanDepthM || 6))}" /></div>
+                      </div>
+                      <div class="muted" style="margin-top:0.25rem;">Auto builds a full stage from selected deck size.</div>
+                      <div style="margin-top:0.3rem;"><button id="venueBuildStageSpanBtn">Build Stage Span</button></div>
+                      <div class="table-wrap" style="margin-top:0.5rem;max-height:180px;">
+                        <table>
+                          <thead><tr><th>Type</th><th>Name</th><th>Size</th><th>Top</th><th></th></tr></thead>
+                          <tbody>${customVenueRows || '<tr><td colspan="5" class="muted">No custom walls/decks yet.</td></tr>'}</tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.35rem;">
+                      ${venueGearInventory.map((item) => `
+                        <span
+                          class="chip"
+                          draggable="true"
+                          data-venue-gear-chip="${item.id}"
+                          style="border-color:${item.color};color:${item.color};"
+                          title="${(item.manufacturer ? `${item.manufacturer} - ` : "") + item.name}"
+                        >${item.department}: ${item.name} x${item.quantity}</span>
+                      `).join("") || '<span class="muted">No gear available.</span>'}
+                    </div>
+                    <div class="outliner">
+                      <div class="outliner-head">Scene Outliner</div>
+                      <div class="outliner-body" id="venue3dOutliner">
+                        <div class="muted">No scene objects yet.</div>
+                      </div>
+                    </div>
+                    <div class="obj-inspector">
+                      <div class="obj-inspector-head">
+                        <div class="obj-inspector-title">Object Properties</div>
+                        <div class="obj-inspector-name" id="venue3dObjName">Selected: -</div>
+                        <div class="obj-inspector-meta">
+                          <span class="badge" id="venue3dObjType">Type: -</span>
+                          <span class="badge" id="venue3dObjSource">Source: -</span>
+                        </div>
+                      </div>
+                      <div class="obj-section">
+                        <div class="obj-section-label">Mode</div>
+                        <div class="tabs" id="venue3dGizmoTabs" style="margin:0;">
+                          <button data-venue3d-gizmo="translate" class="${String(venueState.gizmoMode || "translate") === "translate" ? "active" : ""}">Move (G)</button>
+                          <button data-venue3d-gizmo="rotate" class="${String(venueState.gizmoMode || "translate") === "rotate" ? "active" : ""}">Rotate (R)</button>
+                          <button data-venue3d-gizmo="scale" class="${String(venueState.gizmoMode || "translate") === "scale" ? "active" : ""}">Scale (S)</button>
+                        </div>
+                      </div>
+                      <div class="obj-section">
+                        <div class="obj-section-label">Transform</div>
+                        <div class="obj-axis-row">
+                          <label></label>
+                          <div class="obj-axis-head">X</div>
+                          <div class="obj-axis-head">Y</div>
+                          <div class="obj-axis-head">Z</div>
+                        </div>
+                        <div class="obj-axis-row">
+                          <label>Location (m)</label>
+                          <input id="venue3dObjPosX" type="number" step="0.01" />
+                          <input id="venue3dObjPosY" type="number" step="0.01" />
+                          <input id="venue3dObjPosZ" type="number" step="0.01" />
+                        </div>
+                        <div class="obj-axis-row">
+                          <label>Rotation (deg)</label>
+                          <input value="0" disabled />
+                          <input id="venue3dObjRotY" type="number" step="1" />
+                          <input value="0" disabled />
+                        </div>
+                        <div class="obj-axis-row">
+                          <label>Scale</label>
+                          <input id="venue3dObjScale" type="number" min="0.1" step="0.05" />
+                          <input id="venue3dObjScaleYGhost" type="number" value="1.00" disabled />
+                          <input id="venue3dObjScaleZGhost" type="number" value="1.00" disabled />
+                        </div>
+                      </div>
+                      <div class="obj-section">
+                        <div class="obj-section-label">Geometry</div>
+                        <div class="obj-geometry-grid">
+                          <div><label>Curve (deg)</label><input id="venue3dObjCurve" type="number" step="1" /></div>
+                          <div><label>Curve Segments</label><input id="venue3dObjCurveSeg" type="number" min="4" max="64" step="1" /></div>
+                        </div>
+                      </div>
+                      <div class="obj-section">
+                        <div class="obj-actions">
+                          <button id="venue3dObjApplyBtn">Apply</button>
+                          <button id="venue3dObjDeleteBtn">Delete</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.35rem;" id="venue3dObjHint">Tip: select and drag in viewport, or edit values here.</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="venue3dCanvasHost" style="height:760px;border:1px solid var(--theme-line-soft);border-radius:12px;background:var(--theme-input);overflow:hidden;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-backdrop ${wizardOpen ? "open" : ""}" id="venueCalModalBackdrop">
+              <div class="modal-card" style="width:min(980px,96vw);padding:1rem;">
+                <div class="modal-head">
+                  <strong>Floor Plan Calibration</strong>
+                  <button id="venueCalWizardCancelBtn">Close</button>
+                </div>
+                <div class="muted" style="margin-bottom:0.45rem;">${wizardStepLabel}</div>
+                <div class="grid grid-4" style="margin-bottom:0.55rem;">
+                  <div style="grid-column:span 2;">
+                    <label>Point To Place</label>
+                    <div class="tabs" style="margin-top:0.35rem;">
+                      <button id="venueCalPickScaleBtn" class="${wizardActivePoint === "scale" ? "active" : ""}">Scale Anchor</button>
+                      <button id="venueCalPickXBtn" class="${wizardActivePoint === "x" ? "active" : ""}">X Point</button>
+                      <button id="venueCalPickYBtn" class="${wizardActivePoint === "y" ? "active" : ""}">Y Point</button>
+                      <button id="venueCalPickZeroBtn" class="${wizardActivePoint === "zero" ? "active" : ""}">0,0 Point</button>
+                    </div>
+                  </div>
+                  <div>
+                    <label>X Distance (m)</label>
+                    <input id="venueCalWizardXDistM" type="number" min="0.1" step="0.1" value="${wizardXDistM}" />
+                  </div>
+                  <div>
+                    <label>Y Distance (m)</label>
+                    <input id="venueCalWizardYDistM" type="number" min="0.1" step="0.1" value="${wizardYDistM}" />
+                  </div>
+                  <div style="display:flex;align-items:flex-end;gap:0.45rem;">
+                    <button id="venueCalWizardResetPointsBtn">Reset Points</button>
+                    <button id="venueCalWizardRotateBtn">Rotate 90°</button>
+                  </div>
+                  <div style="display:flex;align-items:flex-end;justify-content:flex-end;gap:0.45rem;">
+                    <button id="venueCalWizardApplyBtn" ${wizardHasScaleOrigin && wizardHasX && wizardHasY && wizardHasZero ? "" : "disabled"}>Apply</button>
+                  </div>
+                </div>
+                <svg id="venueCalWizardSvg" viewBox="0 0 ${wizardImgW} ${wizardImgH}" style="width:100%;height:min(72vh,560px);border:1px solid var(--theme-line-soft);border-radius:10px;background:#121722;cursor:crosshair;">
+                  <g transform="rotate(${wizardRotDeg.toFixed(3)} ${wizardCx.toFixed(2)} ${wizardCy.toFixed(2)})">
+                    <image href="${wizardSafeHref}" x="0" y="0" width="${wizardImgW}" height="${wizardImgH}" preserveAspectRatio="none" />
+                    ${venueState.floorPlanWizardOriginPx ? `<circle cx="${Number(venueState.floorPlanWizardOriginPx.x).toFixed(2)}" cy="${Number(venueState.floorPlanWizardOriginPx.y).toFixed(2)}" r="9" fill="#27c46b" stroke="#f0ffee" stroke-width="2"/><text x="${(Number(venueState.floorPlanWizardOriginPx.x)+12).toFixed(2)}" y="${(Number(venueState.floorPlanWizardOriginPx.y)-10).toFixed(2)}" fill="#dbffe9" font-size="16">Scale Anchor</text>` : ""}
+                    ${venueState.floorPlanWizardXPx ? `<circle cx="${Number(venueState.floorPlanWizardXPx.x).toFixed(2)}" cy="${Number(venueState.floorPlanWizardXPx.y).toFixed(2)}" r="9" fill="#53c5ff" stroke="#f0f9ff" stroke-width="2"/><text x="${(Number(venueState.floorPlanWizardXPx.x)+12).toFixed(2)}" y="${(Number(venueState.floorPlanWizardXPx.y)-10).toFixed(2)}" fill="#e0f5ff" font-size="16">X (${wizardXDistM.toFixed(2)}m)</text>` : ""}
+                    ${venueState.floorPlanWizardYPx ? `<circle cx="${Number(venueState.floorPlanWizardYPx.x).toFixed(2)}" cy="${Number(venueState.floorPlanWizardYPx.y).toFixed(2)}" r="9" fill="#ffd766" stroke="#fff9df" stroke-width="2"/><text x="${(Number(venueState.floorPlanWizardYPx.x)+12).toFixed(2)}" y="${(Number(venueState.floorPlanWizardYPx.y)-10).toFixed(2)}" fill="#fff1c6" font-size="16">Y (${wizardYDistM.toFixed(2)}m)</text>` : ""}
+                    ${venueState.floorPlanWizardZeroPx ? `<circle cx="${Number(venueState.floorPlanWizardZeroPx.x).toFixed(2)}" cy="${Number(venueState.floorPlanWizardZeroPx.y).toFixed(2)}" r="9" fill="#e782ff" stroke="#f8e5ff" stroke-width="2"/><text x="${(Number(venueState.floorPlanWizardZeroPx.x)+12).toFixed(2)}" y="${(Number(venueState.floorPlanWizardZeroPx.y)-10).toFixed(2)}" fill="#f4ddff" font-size="16">0,0 Point</text>` : ""}
+                    ${venueState.floorPlanWizardOriginPx && venueState.floorPlanWizardXPx ? `<line x1="${Number(venueState.floorPlanWizardOriginPx.x).toFixed(2)}" y1="${Number(venueState.floorPlanWizardOriginPx.y).toFixed(2)}" x2="${Number(venueState.floorPlanWizardXPx.x).toFixed(2)}" y2="${Number(venueState.floorPlanWizardXPx.y).toFixed(2)}" stroke="#74d0ff" stroke-width="2" stroke-dasharray="6 4"/>` : ""}
+                    ${venueState.floorPlanWizardOriginPx && venueState.floorPlanWizardYPx ? `<line x1="${Number(venueState.floorPlanWizardOriginPx.x).toFixed(2)}" y1="${Number(venueState.floorPlanWizardOriginPx.y).toFixed(2)}" x2="${Number(venueState.floorPlanWizardYPx.x).toFixed(2)}" y2="${Number(venueState.floorPlanWizardYPx.y).toFixed(2)}" stroke="#ffe089" stroke-width="2" stroke-dasharray="6 4"/>` : ""}
+                    ${venueState.floorPlanWizardZeroPx ? `<line x1="${Number(venueState.floorPlanWizardZeroPx.x).toFixed(2)}" y1="${Number(venueState.floorPlanWizardZeroPx.y).toFixed(2)}" x2="${Number(venueState.floorPlanWizardZeroPx.x + 18).toFixed(2)}" y2="${Number(venueState.floorPlanWizardZeroPx.y).toFixed(2)}" stroke="#e782ff" stroke-width="2"/><line x1="${Number(venueState.floorPlanWizardZeroPx.x).toFixed(2)}" y1="${Number(venueState.floorPlanWizardZeroPx.y).toFixed(2)}" x2="${Number(venueState.floorPlanWizardZeroPx.x).toFixed(2)}" y2="${Number(venueState.floorPlanWizardZeroPx.y + 18).toFixed(2)}" stroke="#e782ff" stroke-width="2"/>` : ""}
+                  </g>
+                </svg>
+              </div>
+            </div>
+          `;
+
+          const redraw = () => {
+            const svg = document.getElementById("venuePlanSvg");
+            if (!svg) return;
+            try {
+            const zoom = Math.max(0.5, Math.min(4, Number(venueState.zoom || 1)));
+            venueState.zoom = zoom;
+            if (venueState.floorPlanWorldMatrix && venueState.floorPlanImageWidthPx && venueState.floorPlanImageHeightPx) {
+              const m = getFloorPlanRenderMatrix(venueState.floorPlanWorldMatrix);
+              const imgW = Math.max(1, Number(venueState.floorPlanImageWidthPx || 1));
+              const imgH = Math.max(1, Number(venueState.floorPlanImageHeightPx || 1));
+              const corners = [
+                { x: 0, y: 0 },
+                { x: imgW, y: 0 },
+                { x: imgW, y: imgH },
+                { x: 0, y: imgH }
+              ].map((p) => ({
+                x: (Number(m.a || 0) * p.x) + (Number(m.c || 0) * p.y) + Number(m.e || 0),
+                y: (Number(m.b || 0) * p.x) + (Number(m.d || 0) * p.y) + Number(m.f || 0)
+              }));
+              const minX = Math.min(...corners.map((p) => p.x));
+              const minY = Math.min(...corners.map((p) => p.y));
+              const maxX = Math.max(...corners.map((p) => p.x));
+              const maxY = Math.max(...corners.map((p) => p.y));
+              const spanX = Math.max(0.1, maxX - minX);
+              const spanY = Math.max(0.1, maxY - minY);
+              const fitPad = 1.2;
+              const nextW = Math.max(1, Number((spanX * fitPad).toFixed(2)));
+              const nextD = Math.max(1, Number((spanY * fitPad).toFixed(2)));
+              if (Math.abs(nextW - Number(venueState.widthM || 0)) > 0.01 || Math.abs(nextD - Number(venueState.depthM || 0)) > 0.01) {
+                venueState.widthM = nextW;
+                venueState.depthM = nextD;
+              }
+            }
+            const w = Math.max(1, safeNum(venueState.widthM, 30));
+            const d = Math.max(1, safeNum(venueState.depthM, 20));
+            const major = Math.max(0.5, safeNum(venueState.majorStepM, 1));
+            const minor = Math.max(0.25, Math.min(major, safeNum(venueState.minorStepM, 0.5)));
+            const W = 980;
+            const H = 560;
+            const safeZoom = Math.max(0.5, Math.min(4, safeNum(zoom, 1)));
+            const vbW = W / safeZoom;
+            const vbH = H / safeZoom;
+            const maxVbX = Math.max(0, W - vbW);
+            const maxVbY = Math.max(0, H - vbH);
+            let vbX = Number.isFinite(Number(venueState.viewX)) ? Number(venueState.viewX) : (W - vbW) / 2;
+            let vbY = Number.isFinite(Number(venueState.viewY)) ? Number(venueState.viewY) : (H - vbH) / 2;
+            vbX = Math.max(0, Math.min(maxVbX, vbX));
+            vbY = Math.max(0, Math.min(maxVbY, vbY));
+            venueState.viewX = vbX;
+            venueState.viewY = vbY;
+            svg.setAttribute("viewBox", `${vbX} ${vbY} ${vbW} ${vbH}`);
+            const padL = 54;
+            const padR = 22;
+            const padT = 36;
+            const padB = 42;
+            const innerW = W - padL - padR;
+            const innerH = H - padT - padB;
+            const xToPx = (x) => padL + ((x / w) * innerW);
+            const yToPx = (y) => padT + ((y / d) * innerH);
+            const pxToX = (px) => ((px - padL) / innerW) * w;
+            const pxToY = (py) => ((py - padT) / innerH) * d;
+            const niceStep = (v) => {
+              if (!Number.isFinite(v) || v <= 0) return 1;
+              const mag = 10 ** Math.floor(Math.log10(v));
+              const n = v / mag;
+              if (n <= 1) return 1 * mag;
+              if (n <= 2) return 2 * mag;
+              if (n <= 5) return 5 * mag;
+              return 10 * mag;
+            };
+            const out = [];
+            const trussOverlayOut = [];
+            const esc = (v) => String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            const markerX = Math.max(0, Math.min(w, Number(venueState.gridOriginX || 0)));
+            const markerY = Math.max(0, Math.min(d, Number(venueState.gridOriginY || 0)));
+
+            out.push(`<rect x="${padL}" y="${padT}" width="${innerW}" height="${innerH}" fill="#1a1630" stroke="#6f5da8" stroke-width="1.4"/>`);
+            const markerPx = xToPx(markerX);
+            const markerPy = yToPx(markerY);
+            out.push(`<circle cx="${markerPx.toFixed(2)}" cy="${markerPy.toFixed(2)}" r="3.8" fill="#9de0ff" stroke="#e7f7ff" stroke-width="1.0"/>`);
+            out.push(`<line x1="${(markerPx - 7).toFixed(2)}" y1="${markerPy.toFixed(2)}" x2="${(markerPx + 7).toFixed(2)}" y2="${markerPy.toFixed(2)}" stroke="#9de0ff" stroke-width="1"/>`);
+            out.push(`<line x1="${markerPx.toFixed(2)}" y1="${(markerPy - 7).toFixed(2)}" x2="${markerPx.toFixed(2)}" y2="${(markerPy + 7).toFixed(2)}" stroke="#9de0ff" stroke-width="1"/>`);
+            out.push(`<text x="${(markerPx + 8).toFixed(2)}" y="${(markerPy - 8).toFixed(2)}" fill="#d4dae8" font-size="10">0X, 0Y</text>`);
+            if (venueState.floorPlanDataUrl) {
+              const safeHref = String(venueState.floorPlanDataUrl).replace(/"/g, "&quot;");
+              const imgOpacity = Math.max(0.05, Math.min(1, Number(venueState.floorPlanOpacity || 0.28)));
+              if (venueState.floorPlanWorldMatrix && venueState.floorPlanImageWidthPx && venueState.floorPlanImageHeightPx) {
+                const m = getFloorPlanRenderMatrix(venueState.floorPlanWorldMatrix);
+                const sX = innerW / Math.max(1, w);
+                const sY = innerH / Math.max(1, d);
+                const ma = sX * Number(m.a || 0);
+                const mb = sY * Number(m.b || 0);
+                const mc = sX * Number(m.c || 0);
+                const md = sY * Number(m.d || 0);
+                const me = (sX * Number(m.e || 0)) + padL;
+                const mf = (sY * Number(m.f || 0)) + padT;
+                out.push(`<g transform="matrix(${ma.toFixed(8)} ${mb.toFixed(8)} ${mc.toFixed(8)} ${md.toFixed(8)} ${me.toFixed(3)} ${mf.toFixed(3)})"><image x="0" y="0" width="${Number(venueState.floorPlanImageWidthPx).toFixed(2)}" height="${Number(venueState.floorPlanImageHeightPx).toFixed(2)}" href="${safeHref}" preserveAspectRatio="none" opacity="${imgOpacity.toFixed(3)}"/></g>`);
+              } else {
+                const imgScale = Math.max(0.01, Number(venueState.floorPlanScale || 1));
+                const imgOffsetX = Number(venueState.floorPlanOffsetX || 0);
+                const imgOffsetY = Number(venueState.floorPlanOffsetY || 0);
+                const imgWorldW = w * imgScale;
+                const imgWorldH = d * imgScale;
+                const imgX = xToPx(imgOffsetX);
+                const imgY = yToPx(imgOffsetY);
+                const imgW = (imgWorldW / w) * innerW;
+                const imgH = (imgWorldH / d) * innerH;
+                const imgCx = imgX + (imgW / 2);
+                const imgCy = imgY + (imgH / 2);
+                const imgRot = Number(venueState.floorPlanRotationDeg || 0);
+                out.push(`<g transform="rotate(${imgRot.toFixed(3)} ${imgCx.toFixed(2)} ${imgCy.toFixed(2)})"><image x="${imgX.toFixed(2)}" y="${imgY.toFixed(2)}" width="${imgW.toFixed(2)}" height="${imgH.toFixed(2)}" href="${safeHref}" preserveAspectRatio="none" opacity="${imgOpacity.toFixed(3)}"/></g>`);
+              }
+            }
+
+            for (let x = 0; x <= w + 1e-9; x += minor) {
+              const px = xToPx(x);
+              const majorLine = Math.abs((x / major) - Math.round(x / major)) < 1e-9;
+              out.push(`<line x1="${px.toFixed(2)}" y1="${padT}" x2="${px.toFixed(2)}" y2="${padT + innerH}" stroke="${majorLine ? "#4f5566" : "#373d4b"}" stroke-width="${majorLine ? "1" : "0.6"}"/>`);
+            }
+            for (let y = 0; y <= d + 1e-9; y += minor) {
+              const py = yToPx(y);
+              const majorLine = Math.abs((y / major) - Math.round(y / major)) < 1e-9;
+              out.push(`<line x1="${padL}" y1="${py.toFixed(2)}" x2="${padL + innerW}" y2="${py.toFixed(2)}" stroke="${majorLine ? "#4f5566" : "#373d4b"}" stroke-width="${majorLine ? "1" : "0.6"}"/>`);
+            }
+            try {
+              const rigGroupById = Object.fromEntries(getRiggingGroups().map((g) => [g.id, g]));
+              (venueState.trussPlacements || []).forEach((tp, idx) => {
+                if (!tp || typeof tp !== "object") return;
+                const x1 = xToPx(Number(tp.x1 || 0));
+                const y1 = yToPx(Number(tp.y1 || 0));
+                const x2 = xToPx(Number(tp.x2 || 0));
+                const y2 = yToPx(Number(tp.y2 || 0));
+                const color = tp.color || "#f08a3c";
+                const group = rigGroupById[tp.sourceGroupId || ""];
+                const label = tp.label || group?.name || `Truss ${idx + 1}`;
+                const labelText = `${label}${group ? ` - ${group.name}` : ""}`;
+                out.push(`<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="${color}" stroke-width="4" stroke-linecap="round" style="pointer-events:none;" />`);
+                out.push(`<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="#f3eeff55" stroke-width="1.2" stroke-dasharray="4 3" style="pointer-events:none;" />`);
+                trussOverlayOut.push(`<line data-venue-truss-draggable="1" data-venue-truss-id="${tp.id}" x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="#00000000" stroke-width="18" style="cursor:move;" />`);
+                const groupFixtures = (riggingState.groupFixtures || []).filter((gf) => gf.groupId && gf.groupId === tp.sourceGroupId);
+                const totalSpan = Math.max(0.001, getRiggingGroupTotalSpan(tp.sourceGroupId || ""));
+                groupFixtures.forEach((gf) => {
+                  const t = Math.max(0, Math.min(1, Number(gf.positionM || 0) / totalSpan));
+                  const fx = x1 + ((x2 - x1) * t);
+                  const fy = y1 + ((y2 - y1) * t);
+                  out.push(`<circle cx="${fx.toFixed(2)}" cy="${fy.toFixed(2)}" r="4" fill="#74f2b7" stroke="#e8fff6" stroke-width="1.0" style="pointer-events:none;" />`);
+                });
+                trussOverlayOut.push(`<circle data-venue-truss-handle="start" data-venue-truss-id="${tp.id}" cx="${x1.toFixed(2)}" cy="${y1.toFixed(2)}" r="5.2" fill="${color}" stroke="#f3eeff" stroke-width="1.3" style="cursor:grab;" />`);
+                trussOverlayOut.push(`<circle data-venue-truss-handle="end" data-venue-truss-id="${tp.id}" cx="${x2.toFixed(2)}" cy="${y2.toFixed(2)}" r="5.2" fill="${color}" stroke="#f3eeff" stroke-width="1.3" style="cursor:grab;" />`);
+                trussOverlayOut.push(`<text x="${((x1 + x2) / 2).toFixed(2)}" y="${(((y1 + y2) / 2) - 9).toFixed(2)}" text-anchor="middle" fill="#efe9ff" font-size="10" style="pointer-events:none;">${esc(labelText)}</text>`);
+              });
+            } catch (_) {}
+            try {
+              const gearBySourceId = Object.fromEntries(collectGearInventory().map((g) => [g.id, g]));
+              (gearState.placedItems || []).forEach((item, idx) => {
+                if (!item) return;
+                const gx = Number(item.x || 0);
+                const gy = Number(item.z || 0);
+                if (!Number.isFinite(gx) || !Number.isFinite(gy)) return;
+                if (gx < 0 || gy < 0 || gx > w || gy > d) return;
+                const src = gearBySourceId[item.sourceId] || {};
+                const color = src.color || getDepartmentColor(src.department || "Other");
+                const px = xToPx(gx);
+                const py = yToPx(gy);
+                const label = String(src.name || `G${idx + 1}`).slice(0, 10);
+                out.push(`<circle cx="${px.toFixed(2)}" cy="${py.toFixed(2)}" r="4.4" fill="${color}" stroke="#eef3ff" stroke-width="1.1" style="pointer-events:none;" />`);
+                out.push(`<text x="${(px + 6).toFixed(2)}" y="${(py - 6).toFixed(2)}" fill="#e8efff" font-size="8.5" style="pointer-events:none;">${esc(label)}</text>`);
+              });
+            } catch (_) {}
+
+            // Viewport-anchored rulers: always visible and scale by zoom level / visible range.
+            const visXMin = Math.max(0, Math.min(w, pxToX(vbX)));
+            const visXMax = Math.max(0, Math.min(w, pxToX(vbX + vbW)));
+            const visYMin = Math.max(0, Math.min(d, pxToY(vbY)));
+            const visYMax = Math.max(0, Math.min(d, pxToY(vbY + vbH)));
+            const visXRange = Math.max(0.0001, Math.abs(visXMax - visXMin));
+            const visYRange = Math.max(0.0001, Math.abs(visYMax - visYMin));
+            const xTickStep = Math.max(0.1, niceStep(visXRange / 9));
+            const yTickStep = Math.max(0.1, niceStep(visYRange / 8));
+            const fs = Math.max(4.5, Math.min(10, 10 * (vbW / W)));
+            const labelFmt = (v, step) => (step < 1 ? `${v.toFixed(1)}m` : `${v.toFixed(0)}m`);
+            const rulerTopY = vbY + (8 * (vbH / H));
+            const rulerLeftX = vbX + (6 * (vbW / W));
+            out.push(`<rect x="${vbX}" y="${vbY}" width="${vbW}" height="${22 * (vbH / H)}" fill="#130f22cc" />`);
+            out.push(`<rect x="${vbX}" y="${vbY}" width="${24 * (vbW / W)}" height="${vbH}" fill="#130f22cc" />`);
+            for (let x = Math.ceil(visXMin / xTickStep) * xTickStep; x <= visXMax + 1e-9; x += xTickStep) {
+              const px = xToPx(x);
+              out.push(`<line x1="${px.toFixed(2)}" y1="${(rulerTopY + 8 * (vbH / H)).toFixed(2)}" x2="${px.toFixed(2)}" y2="${(rulerTopY + 14 * (vbH / H)).toFixed(2)}" stroke="#cfc6ea" stroke-width="${(1 * (vbW / W)).toFixed(2)}" />`);
+              out.push(`<text x="${px.toFixed(2)}" y="${(rulerTopY + 6 * (vbH / H)).toFixed(2)}" text-anchor="middle" fill="#d4dae8" font-size="${fs.toFixed(2)}">${labelFmt(x, xTickStep)}</text>`);
+            }
+            for (let y = Math.ceil(visYMin / yTickStep) * yTickStep; y <= visYMax + 1e-9; y += yTickStep) {
+              const py = yToPx(y);
+              out.push(`<line x1="${(rulerLeftX + 11 * (vbW / W)).toFixed(2)}" y1="${py.toFixed(2)}" x2="${(rulerLeftX + 17 * (vbW / W)).toFixed(2)}" y2="${py.toFixed(2)}" stroke="#cfc6ea" stroke-width="${(1 * (vbW / W)).toFixed(2)}" />`);
+              out.push(`<text x="${(rulerLeftX + 9 * (vbW / W)).toFixed(2)}" y="${(py + (fs * 0.35)).toFixed(2)}" text-anchor="end" fill="#d4dae8" font-size="${fs.toFixed(2)}">${labelFmt(y, yTickStep)}</text>`);
+            }
+
+            out.push(`<text x="${padL}" y="${H - 10}" fill="#bdb2df" font-size="11">Venue ${w.toFixed(1)}m x ${d.toFixed(1)}m</text>`);
+            if ((venueState.measurePoints || []).length) {
+              const pts = venueState.measurePoints;
+              for (let i = 0; i < pts.length; i += 1) {
+                const p = pts[i];
+                if (!p) continue;
+                const px = xToPx(p.x);
+                const py = yToPx(p.y);
+                out.push(`<circle cx="${px.toFixed(2)}" cy="${py.toFixed(2)}" r="4.8" fill="#ffd766" stroke="#fff4cf" stroke-width="1.1" />`);
+                out.push(`<text x="${(px + 8).toFixed(2)}" y="${(py - 7).toFixed(2)}" fill="#fff1c8" font-size="9">${i + 1}</text>`);
+                if (i > 0) {
+                  const prev = pts[i - 1];
+                  const ppx = xToPx(prev.x);
+                  const ppy = yToPx(prev.y);
+                  out.push(`<line x1="${ppx.toFixed(2)}" y1="${ppy.toFixed(2)}" x2="${px.toFixed(2)}" y2="${py.toFixed(2)}" stroke="#ffd766" stroke-width="1.5" stroke-dasharray="5 3" />`);
+                }
+              }
+              if (pts.length >= 2) {
+                const total = pts.reduce((sum, p, i, arr) => {
+                  if (!p || i === 0) return sum;
+                  const prev = arr[i - 1];
+                  if (!prev) return sum;
+                  return sum + Math.hypot(Number(p.x) - Number(prev.x), Number(p.y) - Number(prev.y));
+                }, 0);
+                const last = pts[pts.length - 1];
+                const lx = xToPx(last.x);
+                const ly = yToPx(last.y);
+                out.push(`<text x="${(lx + 10).toFixed(2)}" y="${(ly + 12).toFixed(2)}" fill="#fff1c8" font-size="11">Total ${total.toFixed(2)}m</text>`);
+              }
+            }
+            if ((venueState.generalMeasurePoints || []).length) {
+              const pts = venueState.generalMeasurePoints;
+              for (let i = 0; i < pts.length; i += 1) {
+                const p = pts[i];
+                if (!p) continue;
+                const px = xToPx(p.x);
+                const py = yToPx(p.y);
+                out.push(`<circle cx="${px.toFixed(2)}" cy="${py.toFixed(2)}" r="4.4" fill="#6de2a8" stroke="#e8fff5" stroke-width="1.0" />`);
+                if (i > 0) {
+                  const prev = pts[i - 1];
+                  const ppx = xToPx(prev.x);
+                  const ppy = yToPx(prev.y);
+                  out.push(`<line x1="${ppx.toFixed(2)}" y1="${ppy.toFixed(2)}" x2="${px.toFixed(2)}" y2="${py.toFixed(2)}" stroke="#6de2a8" stroke-width="1.4" stroke-dasharray="4 3" />`);
+                }
+              }
+            }
+            out.push(`<rect id="venueHoverArea" x="${padL}" y="${padT}" width="${innerW}" height="${innerH}" fill="#00000000" />`);
+            out.push(`<line id="venueCrossV" x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + innerH}" stroke="#cfc6ea88" stroke-width="1" stroke-dasharray="3 3" style="display:none;pointer-events:none;" />`);
+            out.push(`<line id="venueCrossH" x1="${padL}" y1="${padT}" x2="${padL + innerW}" y2="${padT}" stroke="#cfc6ea88" stroke-width="1" stroke-dasharray="3 3" style="display:none;pointer-events:none;" />`);
+            if (trussOverlayOut.length) out.push(...trussOverlayOut);
+            svg.innerHTML = out.join("");
+            const zoomPct = document.getElementById("venueZoomPct");
+            if (zoomPct) zoomPct.textContent = `${Math.round(safeZoom * 100)}%`;
+
+            const hoverArea = document.getElementById("venueHoverArea");
+            const crossV = document.getElementById("venueCrossV");
+            const crossH = document.getElementById("venueCrossH");
+            const mouseXEl = document.getElementById("venueMouseX");
+            const mouseYEl = document.getElementById("venueMouseY");
+            const updatePointer = (ev) => {
+              const rect = svg.getBoundingClientRect();
+              const vb = (svg.getAttribute("viewBox") || "0 0 980 560").split(/\s+/).map(Number);
+              const vbX = vb[0] || 0;
+              const vbY = vb[1] || 0;
+              const vbW = vb[2] || 980;
+              const vbH = vb[3] || 560;
+              const sx = vbX + (((ev.clientX - rect.left) / Math.max(1, rect.width)) * vbW);
+              const sy = vbY + (((ev.clientY - rect.top) / Math.max(1, rect.height)) * vbH);
+              const clampedX = Math.max(padL, Math.min(padL + innerW, sx));
+              const clampedY = Math.max(padT, Math.min(padT + innerH, sy));
+              const wx = Math.max(0, Math.min(w, pxToX(clampedX)));
+              const wy = Math.max(0, Math.min(d, pxToY(clampedY)));
+              if (mouseXEl) mouseXEl.textContent = wx.toFixed(2);
+              if (mouseYEl) mouseYEl.textContent = wy.toFixed(2);
+              if (crossV) {
+                crossV.setAttribute("x1", clampedX.toFixed(2));
+                crossV.setAttribute("x2", clampedX.toFixed(2));
+                crossV.style.display = "";
+              }
+              if (crossH) {
+                crossH.setAttribute("y1", clampedY.toFixed(2));
+                crossH.setAttribute("y2", clampedY.toFixed(2));
+                crossH.style.display = "";
+              }
+            };
+            const handleMeasureClick = (ev) => {
+              const target = ev.target;
+              if (target instanceof Element && target.closest("[data-venue-truss-handle]")) return;
+              if (target instanceof Element && target.closest("[data-venue-truss-draggable]")) return;
+              if ((!venueState.measureArmed && !venueState.generalMeasureArmed) || venuePanState.dragging) return;
+              const rect = svg.getBoundingClientRect();
+              const vb = (svg.getAttribute("viewBox") || "0 0 980 560").split(/\s+/).map(Number);
+              const vbX = vb[0] || 0;
+              const vbY = vb[1] || 0;
+              const vbW = vb[2] || 980;
+              const vbH = vb[3] || 560;
+              const sx = vbX + (((ev.clientX - rect.left) / Math.max(1, rect.width)) * vbW);
+              const sy = vbY + (((ev.clientY - rect.top) / Math.max(1, rect.height)) * vbH);
+              const clampedX = Math.max(padL, Math.min(padL + innerW, sx));
+              const clampedY = Math.max(padT, Math.min(padT + innerH, sy));
+              const wx = Math.max(0, Math.min(w, pxToX(clampedX)));
+              const wy = Math.max(0, Math.min(d, pxToY(clampedY)));
+              if (venueState.measureArmed) {
+                venueState.measurePoints = [...(venueState.measurePoints || []), { x: wx, y: wy }];
+              } else if (venueState.generalMeasureArmed) {
+                venueState.generalMeasurePoints = [...(venueState.generalMeasurePoints || []), { x: wx, y: wy }];
+              }
+              renderVenue();
+            };
+            const handlePointerLeave = () => {
+              if (mouseXEl) mouseXEl.textContent = "-";
+              if (mouseYEl) mouseYEl.textContent = "-";
+              if (crossV) crossV.style.display = "none";
+              if (crossH) crossH.style.display = "none";
+            };
+            const pointerTarget = hoverArea || svg;
+            pointerTarget?.addEventListener("mousemove", updatePointer);
+            pointerTarget?.addEventListener("mouseenter", updatePointer);
+            pointerTarget?.addEventListener("click", handleMeasureClick);
+            pointerTarget?.addEventListener("mouseleave", handlePointerLeave);
+
+            const venueDragChip = document.getElementById("venueRigSpanDragChip");
+            venueDragChip?.addEventListener("dragstart", (ev) => {
+              venueRigDragPayload = {
+                groupId: venueDragChip.getAttribute("data-venue-drag-group-id") || "",
+                label: venueDragChip.getAttribute("data-venue-drag-group-name") || "Truss Group",
+                lengthM: Number(venueDragChip.getAttribute("data-venue-drag-span-length") || 0),
+                color: venueDragChip.getAttribute("data-venue-drag-span-color") || "#f08a3c"
+              };
+              try {
+                ev.dataTransfer?.setData("text/plain", JSON.stringify(venueRigDragPayload));
+              } catch (_) {}
+              ev.dataTransfer.effectAllowed = "copy";
+            });
+            venueDragChip?.addEventListener("dragend", () => {
+              venueRigDragPayload = null;
+            });
+            const eventToWorld = (ev) => {
+              const rect = svg.getBoundingClientRect();
+              const vb = (svg.getAttribute("viewBox") || "0 0 980 560").split(/\s+/).map(Number);
+              const vbX = vb[0] || 0;
+              const vbY = vb[1] || 0;
+              const vbW = vb[2] || 980;
+              const vbH = vb[3] || 560;
+              const sx = vbX + (((ev.clientX - rect.left) / Math.max(1, rect.width)) * vbW);
+              const sy = vbY + (((ev.clientY - rect.top) / Math.max(1, rect.height)) * vbH);
+              const clampedX = Math.max(padL, Math.min(padL + innerW, sx));
+              const clampedY = Math.max(padT, Math.min(padT + innerH, sy));
+              const wx = Math.max(0, Math.min(w, pxToX(clampedX)));
+              const wy = Math.max(0, Math.min(d, pxToY(clampedY)));
+              return { wx, wy };
+            };
+            const handleVenueDragOver = (ev) => {
+              if (!venueRigDragPayload) return;
+              ev.preventDefault();
+              if (hoverArea) hoverArea.setAttribute("fill", "#7e6ac51a");
+            };
+            const handleVenueDragLeave = () => {
+              if (hoverArea) hoverArea.setAttribute("fill", "#00000000");
+            };
+            const handleVenueDrop = (ev) => {
+              if (hoverArea) hoverArea.setAttribute("fill", "#00000000");
+              let payload = venueRigDragPayload;
+              if (!payload) {
+                try {
+                  payload = JSON.parse(ev.dataTransfer?.getData("text/plain") || "{}");
+                } catch (_) {}
+              }
+              if (!payload || !payload.groupId || !Number.isFinite(Number(payload.lengthM)) || Number(payload.lengthM) <= 0) return;
+              ev.preventDefault();
+              const p = eventToWorld(ev);
+              const len = Number(payload.lengthM);
+              const x1 = Math.max(0, Math.min(w, p.wx - (len / 2)));
+              const x2 = Math.max(0, Math.min(w, p.wx + (len / 2)));
+              const groupId = String(payload.groupId || "");
+              if (groupId) {
+                venueState.suppressedRigGroupIds = (Array.isArray(venueState.suppressedRigGroupIds) ? venueState.suppressedRigGroupIds : [])
+                  .map((x) => String(x || ""))
+                  .filter((id) => id && id !== groupId);
+                venueState.trussPlacements = (venueState.trussPlacements || []).filter((x) => String(x?.sourceGroupId || "") !== groupId);
+              }
+              const placement = {
+                id: `venue_truss_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+                sourceGroupId: groupId,
+                label: payload.label || groupId,
+                color: payload.color || "#f08a3c",
+                x1,
+                y1: p.wy,
+                x2,
+                y2: p.wy
+              };
+              venueState.trussPlacements = [placement, ...(venueState.trussPlacements || [])];
+              renderVenue();
+            };
+            const dragTarget = hoverArea || svg;
+            dragTarget?.addEventListener("dragover", handleVenueDragOver);
+            dragTarget?.addEventListener("dragleave", handleVenueDragLeave);
+            dragTarget?.addEventListener("drop", handleVenueDrop);
+
+            svg.querySelectorAll("[data-venue-truss-handle]").forEach((el) => {
+              el.addEventListener("mousedown", (ev) => {
+                ev.preventDefault();
+                const id = el.getAttribute("data-venue-truss-id") || "";
+                const handle = el.getAttribute("data-venue-truss-handle") || "";
+                if (!id || !handle) return;
+                const placement = (venueState.trussPlacements || []).find((x) => x.id === id);
+                if (!placement) return;
+                venueTrussDragState.active = true;
+                venueTrussDragState.id = id;
+                venueTrussDragState.handle = handle;
+                venueTrussDragState.startX = ev.clientX;
+                venueTrussDragState.startY = ev.clientY;
+                venueTrussDragState.lengthM = Math.max(
+                  0.001,
+                  Math.hypot(
+                    Number(placement.x2 || 0) - Number(placement.x1 || 0),
+                    Number(placement.y2 || 0) - Number(placement.y1 || 0)
+                  )
+                );
+                if (handle === "start") {
+                  venueTrussDragState.fixedX = Number(placement.x2 || 0);
+                  venueTrussDragState.fixedY = Number(placement.y2 || 0);
+                } else {
+                  venueTrussDragState.fixedX = Number(placement.x1 || 0);
+                  venueTrussDragState.fixedY = Number(placement.y1 || 0);
+                }
+              });
+            });
+            svg.querySelectorAll("[data-venue-truss-draggable]").forEach((el) => {
+              el.addEventListener("mousedown", (ev) => {
+                ev.preventDefault();
+                const id = el.getAttribute("data-venue-truss-id") || "";
+                if (!id) return;
+                const placement = (venueState.trussPlacements || []).find((x) => x.id === id);
+                if (!placement) return;
+                const p = eventToWorld(ev);
+                venueTrussDragState.active = true;
+                venueTrussDragState.id = id;
+                venueTrussDragState.handle = "move";
+                venueTrussDragState.pointerStartWX = Number(p.wx || 0);
+                venueTrussDragState.pointerStartWY = Number(p.wy || 0);
+                venueTrussDragState.origX1 = Number(placement.x1 || 0);
+                venueTrussDragState.origY1 = Number(placement.y1 || 0);
+                venueTrussDragState.origX2 = Number(placement.x2 || 0);
+                venueTrussDragState.origY2 = Number(placement.y2 || 0);
+              });
+            });
+            if (!venueTrussDragBound) {
+              window.addEventListener("mousemove", (ev) => {
+                if (!venueTrussDragState.active) return;
+                const svgEl = document.getElementById("venuePlanSvg");
+                if (!svgEl) return;
+                const placement = (venueState.trussPlacements || []).find((x) => x.id === venueTrussDragState.id);
+                if (!placement) return;
+                const rect = svgEl.getBoundingClientRect();
+                const vb = (svgEl.getAttribute("viewBox") || "0 0 980 560").split(/\s+/).map(Number);
+                const vbX = vb[0] || 0;
+                const vbY = vb[1] || 0;
+                const vbW = vb[2] || 980;
+                const vbH = vb[3] || 560;
+                const sx = vbX + (((ev.clientX - rect.left) / Math.max(1, rect.width)) * vbW);
+                const sy = vbY + (((ev.clientY - rect.top) / Math.max(1, rect.height)) * vbH);
+                const dynW = Math.max(1, Number(venueState.widthM || 1));
+                const dynD = Math.max(1, Number(venueState.depthM || 1));
+                const dynPadL = 54;
+                const dynPadR = 22;
+                const dynPadT = 36;
+                const dynPadB = 42;
+                const dynInnerW = 980 - dynPadL - dynPadR;
+                const dynInnerH = 560 - dynPadT - dynPadB;
+                const clampedX = Math.max(dynPadL, Math.min(dynPadL + dynInnerW, sx));
+                const clampedY = Math.max(dynPadT, Math.min(dynPadT + dynInnerH, sy));
+                const p = {
+                  wx: Math.max(0, Math.min(dynW, ((clampedX - dynPadL) / dynInnerW) * dynW)),
+                  wy: Math.max(0, Math.min(dynD, ((clampedY - dynPadT) / dynInnerH) * dynD))
+                };
+                if (venueTrussDragState.handle === "move") {
+                  const wantDx = Number(p.wx || 0) - Number(venueTrussDragState.pointerStartWX || 0);
+                  const wantDy = Number(p.wy || 0) - Number(venueTrussDragState.pointerStartWY || 0);
+                  const ox1 = Number(venueTrussDragState.origX1 || 0);
+                  const oy1 = Number(venueTrussDragState.origY1 || 0);
+                  const ox2 = Number(venueTrussDragState.origX2 || 0);
+                  const oy2 = Number(venueTrussDragState.origY2 || 0);
+                  const minDx = -Math.min(ox1, ox2);
+                  const maxDx = dynW - Math.max(ox1, ox2);
+                  const minDy = -Math.min(oy1, oy2);
+                  const maxDy = dynD - Math.max(oy1, oy2);
+                  const dx = Math.max(minDx, Math.min(maxDx, wantDx));
+                  const dy = Math.max(minDy, Math.min(maxDy, wantDy));
+                  placement.x1 = ox1 + dx;
+                  placement.y1 = oy1 + dy;
+                  placement.x2 = ox2 + dx;
+                  placement.y2 = oy2 + dy;
+                  redraw();
+                  return;
+                }
+                const anchorX = Number(venueTrussDragState.fixedX || 0);
+                const anchorY = Number(venueTrussDragState.fixedY || 0);
+                const targetDx = Number(p.wx) - anchorX;
+                const targetDy = Number(p.wy) - anchorY;
+                const mag = Math.hypot(targetDx, targetDy);
+                const baseLen = Math.max(0.001, Number(venueTrussDragState.lengthM || 0.001));
+                let ux = 1;
+                let uy = 0;
+                if (mag > 1e-6) {
+                  ux = targetDx / mag;
+                  uy = targetDy / mag;
+                } else {
+                  const fallbackDx = Number(placement.x2 || 0) - Number(placement.x1 || 0);
+                  const fallbackDy = Number(placement.y2 || 0) - Number(placement.y1 || 0);
+                  const fallbackMag = Math.hypot(fallbackDx, fallbackDy);
+                  if (fallbackMag > 1e-6) {
+                    ux = fallbackDx / fallbackMag;
+                    uy = fallbackDy / fallbackMag;
+                  }
+                }
+                if (venueTrussDragState.handle === "start") {
+                  placement.x2 = anchorX;
+                  placement.y2 = anchorY;
+                  placement.x1 = anchorX + (ux * baseLen);
+                  placement.y1 = anchorY + (uy * baseLen);
+                } else {
+                  placement.x1 = anchorX;
+                  placement.y1 = anchorY;
+                  placement.x2 = anchorX + (ux * baseLen);
+                  placement.y2 = anchorY + (uy * baseLen);
+                }
+                redraw();
+              });
+              window.addEventListener("mouseup", () => {
+                if (!venueTrussDragState.active) return;
+                venueTrussDragState.active = false;
+                venueTrussDragState.id = "";
+                venueTrussDragState.handle = "";
+                venueTrussDragState.lengthM = 0;
+                venueTrussDragState.pointerStartWX = 0;
+                venueTrussDragState.pointerStartWY = 0;
+                venueTrussDragState.origX1 = 0;
+                venueTrussDragState.origY1 = 0;
+                venueTrussDragState.origX2 = 0;
+                venueTrussDragState.origY2 = 0;
+              });
+              venueTrussDragBound = true;
+            }
+            } catch (err) {
+              // Hard fallback: always show a basic visible grid even if advanced layers fail.
+              const W = 980;
+              const H = 560;
+              const padL = 54;
+              const padR = 22;
+              const padT = 36;
+              const padB = 42;
+              const innerW = W - padL - padR;
+              const innerH = H - padT - padB;
+              const lines = [];
+              lines.push(`<rect x="${padL}" y="${padT}" width="${innerW}" height="${innerH}" fill="#1a1630" stroke="#6f5da8" stroke-width="1.4"/>`);
+              for (let x = 0; x <= innerW; x += (innerW / 20)) {
+                const px = padL + x;
+                lines.push(`<line x1="${px.toFixed(2)}" y1="${padT}" x2="${px.toFixed(2)}" y2="${padT + innerH}" stroke="#3b2f5f" stroke-width="0.8"/>`);
+              }
+              for (let y = 0; y <= innerH; y += (innerH / 12)) {
+                const py = padT + y;
+                lines.push(`<line x1="${padL}" y1="${py.toFixed(2)}" x2="${padL + innerW}" y2="${py.toFixed(2)}" stroke="#3b2f5f" stroke-width="0.8"/>`);
+              }
+              const wSafe = Math.max(1, Number(venueState.widthM || 1));
+              const dSafe = Math.max(1, Number(venueState.depthM || 1));
+              const ox = Math.max(0, Math.min(wSafe, Number(venueState.gridOriginX || 0)));
+              const oy = Math.max(0, Math.min(dSafe, Number(venueState.gridOriginY || 0)));
+              const oxPx = padL + ((ox / wSafe) * innerW);
+              const oyPx = padT + ((oy / dSafe) * innerH);
+              lines.push(`<circle cx="${oxPx.toFixed(2)}" cy="${oyPx.toFixed(2)}" r="3.8" fill="#9de0ff" stroke="#e7f7ff" stroke-width="1.0"/>`);
+              lines.push(`<text x="${(oxPx + 8).toFixed(2)}" y="${(oyPx - 8).toFixed(2)}" fill="#d4dae8" font-size="10">0X, 0Y</text>`);
+              lines.push(`<text x="${padL}" y="${H - 10}" fill="#bdb2df" font-size="11">Venue fallback grid</text>`);
+              svg.setAttribute("viewBox", "0 0 980 560");
+              svg.innerHTML = lines.join("");
+              console.error("Venue redraw failed; fallback grid rendered.", err);
+            }
+          };
+
+          const bindNumber = (id, cb) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener("input", () => {
+              cb(Number(el.value || 0));
+              redraw();
+            });
+            el.addEventListener("change", () => {
+              cb(Number(el.value || 0));
+              redraw();
+            });
+          };
+
+          bindNumber("venueMajorStepM", (v) => { venueState.majorStepM = Math.max(0.5, v); if (venueState.minorStepM > venueState.majorStepM) venueState.minorStepM = venueState.majorStepM; });
+          bindNumber("venueMinorStepM", (v) => { venueState.minorStepM = Math.max(0.25, Math.min(venueState.majorStepM, v)); });
+          const computeWorldMatrixFromWizard = () => {
+            const o = venueState.floorPlanWizardOriginPx;
+            const z0 = venueState.floorPlanWizardZeroPx;
+            const xp = venueState.floorPlanWizardXPx;
+            const yp = venueState.floorPlanWizardYPx;
+            if (!o || !xp || !yp || !z0) return null;
+            const xDist = Math.max(0.1, Number(venueState.floorPlanWizardXDistanceM || 0.1));
+            const yDist = Math.max(0.1, Number(venueState.floorPlanWizardYDistanceM || 0.1));
+            const vx = { x: Number(xp.x) - Number(o.x), y: Number(xp.y) - Number(o.y) };
+            const vy = { x: Number(yp.x) - Number(o.x), y: Number(yp.y) - Number(o.y) };
+            const det = (vx.x * vy.y) - (vy.x * vx.y);
+            if (Math.abs(det) < 1e-6) return null;
+            const inv00 = vy.y / det;
+            const inv01 = -vy.x / det;
+            const inv10 = -vx.y / det;
+            const inv11 = vx.x / det;
+            const a = xDist * inv00;
+            const c = xDist * inv01;
+            const b = yDist * inv10;
+            const d = yDist * inv11;
+            const eBase = -((a * Number(o.x)) + (c * Number(o.y)));
+            const fBase = -((b * Number(o.x)) + (d * Number(o.y)));
+            const zeroWorldX = (a * Number(z0.x)) + (c * Number(z0.y)) + eBase;
+            const zeroWorldY = (b * Number(z0.x)) + (d * Number(z0.y)) + fBase;
+            const originX = Math.max(0, Number(venueState.gridOriginX || 0));
+            const originY = Math.max(0, Number(venueState.gridOriginY || 0));
+            const e = eBase + (originX - zeroWorldX);
+            const f = fBase + (originY - zeroWorldY);
+            return { a, b, c, d, e, f };
+          };
+          const fitVenueToWorldMatrix = (matrix) => {
+            const imgW = Math.max(1, Number(venueState.floorPlanImageWidthPx || 1));
+            const imgH = Math.max(1, Number(venueState.floorPlanImageHeightPx || 1));
+            const corners = [
+              { x: 0, y: 0 },
+              { x: imgW, y: 0 },
+              { x: imgW, y: imgH },
+              { x: 0, y: imgH }
+            ].map((p) => ({
+              x: (Number(matrix.a || 0) * p.x) + (Number(matrix.c || 0) * p.y) + Number(matrix.e || 0),
+              y: (Number(matrix.b || 0) * p.x) + (Number(matrix.d || 0) * p.y) + Number(matrix.f || 0)
+            }));
+            const minX = Math.min(...corners.map((p) => p.x), 0);
+            const minY = Math.min(...corners.map((p) => p.y), 0);
+            const maxX = Math.max(...corners.map((p) => p.x), 0);
+            const maxY = Math.max(...corners.map((p) => p.y), 0);
+            // Rebase calibrated overlay so its transformed bounds start at 0,0.
+            // This prevents apparent clipping / floating after calibration.
+            matrix.e = Number(matrix.e || 0) - minX;
+            matrix.f = Number(matrix.f || 0) - minY;
+            const spanX = Math.max(0.1, maxX - minX);
+            const spanY = Math.max(0.1, maxY - minY);
+            const pad = 1.1;
+            venueState.widthM = Math.max(1, Math.ceil(spanX * pad * 2) / 2);
+            venueState.depthM = Math.max(1, Math.ceil(spanY * pad * 2) / 2);
+            venueState.gridOriginX = Math.max(0, Math.min(venueState.widthM, Number(venueState.gridOriginX || 0)));
+            venueState.gridOriginY = Math.max(0, Math.min(venueState.depthM, Number(venueState.gridOriginY || 0)));
+            venueState.viewX = null;
+            venueState.viewY = null;
+          };
+          const floorPlanFileInput = document.getElementById("venueFloorPlanFile");
+          document.getElementById("venueFloorPlanPickBtn")?.addEventListener("click", () => {
+            floorPlanFileInput?.click();
+          });
+          const setFloorPlanImportStatus = (status, error = "") => {
+            venueState.floorPlanImportStatus = String(status || "Idle");
+            venueState.floorPlanImportError = String(error || "");
+          };
+          const openFloorPlanWizard = () => {
+            venueState.floorPlanWizardOpen = true;
+            venueState.floorPlanWizardForceOpen = true;
+            venueState.floorPlanWizardDismissed = false;
+            venueState.floorPlanWizardActivePoint = "scale";
+            venueState.floorPlanWizardRotationDeg = 0;
+            venueState.floorPlanWizardOriginPx = null;
+            venueState.floorPlanWizardZeroPx = null;
+            venueState.floorPlanWizardXPx = null;
+            venueState.floorPlanWizardYPx = null;
+          };
+          const applyFloorPlanImageData = (dataUrl, knownDims = null, options = { openWizard: true }) => {
+            venueState.floorPlanDataUrl = String(dataUrl || "");
+            venueState.floorPlanWorldMatrix = null;
+            venueState.floorPlanScale = 1;
+            venueState.floorPlanScaleAdjust = 1;
+            venueState.floorPlanRotationDeg = 0;
+            venueState.floorPlanOffsetX = 0;
+            venueState.floorPlanOffsetY = 0;
+            venueState.floorPlanCalibrating = false;
+            venueState.floorPlanCalPointA = null;
+            venueState.floorPlanCalPointB = null;
+            venueState.floorPlanWizardDismissed = false;
+            venueState.floorPlanImageWidthPx = Math.max(1, Number(knownDims?.width || 1600));
+            venueState.floorPlanImageHeightPx = Math.max(1, Number(knownDims?.height || 900));
+            if (options?.openWizard !== false) openFloorPlanWizard();
+            renderVenue();
+          };
+          const clearFloorPlanPdfRuntime = () => {
+            venueFloorPlanPdfRuntime.bytes = null;
+            venueFloorPlanPdfRuntime.docPromise = null;
+            venueFloorPlanPdfRuntime.pageCache.clear();
+          };
+          floorPlanFileInput?.addEventListener("change", async () => {
+            const file = floorPlanFileInput.files && floorPlanFileInput.files[0];
+            if (!file) return;
+            const isImage = String(file.type || "").startsWith("image/") || /\.(png|jpe?g|webp|bmp|gif)$/i.test(file.name || "");
+            if (!isImage) {
+              alert("Please upload an image floor plan (PNG, JPG, WEBP, BMP).");
+              floorPlanFileInput.value = "";
+              return;
+            }
+            // Reset and load a new image floor plan session.
+            clearFloorPlanPdfRuntime();
+            venueState.floorPlanDataUrl = "";
+            venueState.floorPlanImageWidthPx = null;
+            venueState.floorPlanImageHeightPx = null;
+            venueState.floorPlanWorldMatrix = null;
+            venueState.floorPlanWizardOriginPx = null;
+            venueState.floorPlanWizardZeroPx = null;
+            venueState.floorPlanWizardXPx = null;
+            venueState.floorPlanWizardYPx = null;
+            venueState.floorPlanWizardDismissed = false;
+            venueState.floorPlanSourceName = String(file.name || "Image");
+            venueState.floorPlanPdfTotalPages = 0;
+            renderVenue();
+            setFloorPlanImportStatus("Loading image...");
+            try {
+              const dataUrl = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(String(reader.result || ""));
+                reader.onerror = () => reject(new Error("Unable to read image file."));
+                reader.readAsDataURL(file);
+              });
+              const dims = await new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve({ width: Math.max(1, Number(img.naturalWidth || img.width || 1)), height: Math.max(1, Number(img.naturalHeight || img.height || 1)) });
+                img.onerror = () => reject(new Error("Unable to decode image."));
+                img.src = String(dataUrl || "");
+              });
+              applyFloorPlanImageData(String(dataUrl || ""), dims, { openWizard: true });
+              setFloorPlanImportStatus("Ready");
+            } catch (err) {
+              console.error("Floor plan import failed:", err);
+              setFloorPlanImportStatus("Import failed", err?.message || "Unknown image import error.");
+              alert(`Unable to import floor plan image. ${err?.message || ""}`.trim());
+              renderVenue();
+            } finally {
+              floorPlanFileInput.value = "";
+            }
+          });
+          const floorOpacityInput = document.getElementById("venueFloorPlanOpacity");
+          const floorOpacityLabel = document.getElementById("venueFloorPlanOpacityLabel");
+          floorOpacityInput?.addEventListener("input", () => {
+            const next = Math.max(0.05, Math.min(1, Number(floorOpacityInput.value || 0.28)));
+            venueState.floorPlanOpacity = next;
+            if (floorOpacityLabel) floorOpacityLabel.textContent = `${Math.round(next * 100)}%`;
+            redraw();
+          });
+          document.getElementById("venueFloorPlanScaleAdjust")?.addEventListener("input", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            venueState.floorPlanScaleAdjust = Math.max(0.05, Number(target.value || 1));
+            renderVenue();
+          });
+          document.getElementById("venueGridOriginX")?.addEventListener("input", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            const next = Math.max(0, Number(target.value || 0));
+            venueState.gridOriginX = Math.min(Math.max(1, Number(venueState.widthM || 1)), next);
+            renderVenue();
+          });
+          document.getElementById("venueGridOriginY")?.addEventListener("input", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            const next = Math.max(0, Number(target.value || 0));
+            venueState.gridOriginY = Math.min(Math.max(1, Number(venueState.depthM || 1)), next);
+            renderVenue();
+          });
+          document.getElementById("venueGridOriginResetBtn")?.addEventListener("click", () => {
+            venueState.gridOriginX = 0;
+            venueState.gridOriginY = 0;
+            renderVenue();
+          });
+          document.getElementById("venueOpenCalWizardBtn")?.addEventListener("click", () => {
+            if (!venueState.floorPlanDataUrl) return;
+            venueState.floorPlanWizardOpen = true;
+            venueState.floorPlanWizardForceOpen = true;
+            venueState.floorPlanWizardDismissed = false;
+            venueState.floorPlanWizardActivePoint = "scale";
+            venueState.floorPlanWizardRotationDeg = 0;
+            venueState.floorPlanWizardOriginPx = null;
+            venueState.floorPlanWizardZeroPx = null;
+            venueState.floorPlanWizardXPx = null;
+            venueState.floorPlanWizardYPx = null;
+            renderVenue();
+          });
+          document.getElementById("venueRigGroupSel")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLSelectElement)) return;
+            venueState.selectedVenueRigGroupId = target.value;
+            renderVenue();
+          });
+          const venue3dFileInput = document.getElementById("venue3dFile");
+          venue3dFileInput?.addEventListener("change", () => {
+            const file = venue3dFileInput.files && venue3dFileInput.files[0];
+            if (!file) return;
+            if (!/\.(glb|gltf)$/i.test(file.name)) {
+              alert("Please select a .glb or .gltf file.");
+              venue3dFileInput.value = "";
+              return;
+            }
+            if (venueState.model3dUrl && venueState.model3dUrl.startsWith("blob:")) {
+              try { URL.revokeObjectURL(venueState.model3dUrl); } catch (_) {}
+            }
+            venueState.model3dUrl = URL.createObjectURL(file);
+            venueState.model3dName = file.name;
+            initVenue3dViewer();
+          });
+          document.getElementById("venue3dScaleInput")?.addEventListener("input", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            venueState.model3dScale = Math.max(0.01, Number(target.value || 1));
+          });
+          document.getElementById("venue3dLedOverlayMode")?.addEventListener("change", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLSelectElement)) return;
+            const next = String(target.value || "panels");
+            venueState.ledOverlayMode = ["panels", "signal", "power"].includes(next) ? next : "panels";
+            renderVenue();
+          });
+          const clampNum = (value, fallback, min, max = Number.POSITIVE_INFINITY) => {
+            const n = Number(value);
+            if (!Number.isFinite(n)) return fallback;
+            return Math.min(max, Math.max(min, n));
+          };
+          document.getElementById("venueWallWidthM")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.wallWidthM = clampNum(t.value, Number(venueState.wallWidthM || 8), 0.1);
+          });
+          document.getElementById("venueWallHeightM")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.wallHeightM = clampNum(t.value, Number(venueState.wallHeightM || 4), 0.1);
+          });
+          document.getElementById("venueWallDepthM")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.wallDepthM = clampNum(t.value, Number(venueState.wallDepthM || 0.12), 0.02);
+          });
+          document.getElementById("venueWallScale")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.wallScale = clampNum(t.value, Number(venueState.wallScale || 1), 0.1);
+          });
+          document.getElementById("venueWallWeightKg")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.wallWeightKg = clampNum(t.value, Number(venueState.wallWeightKg || 120), 0);
+          });
+          document.getElementById("venueStageDeckSizeSel")?.addEventListener("change", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLSelectElement)) return;
+            venueState.stageDeckSizeId = t.value;
+            renderVenue();
+          });
+          document.getElementById("venueStageDeckHeightM")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.stageDeckHeightM = clampNum(t.value, Number(venueState.stageDeckHeightM || 0.6), 0.08);
+          });
+          document.getElementById("venueStageSpanWidthM")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.stageSpanWidthM = clampNum(t.value, Number(venueState.stageSpanWidthM || 10), 0.5);
+          });
+          document.getElementById("venueStageSpanDepthM")?.addEventListener("input", (ev) => {
+            const t = ev.target;
+            if (!(t instanceof HTMLInputElement)) return;
+            venueState.stageSpanDepthM = clampNum(t.value, Number(venueState.stageSpanDepthM || 6), 0.5);
+          });
+          document.getElementById("venueAddWallBtn")?.addEventListener("click", () => {
+            const scale = Math.max(0.1, Number(venueState.wallScale || 1));
+            const widthM = Math.max(0.1, Number(venueState.wallWidthM || 8) * scale);
+            const heightM = Math.max(0.1, Number(venueState.wallHeightM || 4) * scale);
+            const depthM = Math.max(0.02, Number(venueState.wallDepthM || 0.12) * scale);
+            const wall = {
+              id: makeVenueModelId(),
+              kind: "wall",
+              manufacturer: "Custom",
+              name: `Wall ${Number(widthM).toFixed(2)}m x ${Number(heightM).toFixed(2)}m`,
+              widthM,
+              depthM,
+              heightM,
+              weightKg: Math.max(0, Number(venueState.wallWeightKg || 0)),
+              defaultY: Math.max(0.1, heightM / 2)
+            };
+            venueState.customVenueModels = [wall, ...(venueState.customVenueModels || [])];
+            const wallCount = (venueState.customVenueModels || []).filter((x) => String(x.kind || "") === "wall").length;
+            const lane = (wallCount - 1) % 6;
+            const row = Math.floor((wallCount - 1) / 6);
+            gearState.placedItems = [
+              {
+                id: makeGearPlacedId(),
+                sourceId: wall.id,
+                x: Number(((lane * 1.6) - 4).toFixed(3)),
+                y: Number((wall.defaultY || Math.max(0.1, heightM / 2)).toFixed(3)),
+                z: Number((row * 1.8).toFixed(3)),
+                rotYDeg: 0,
+                scale: 1
+              },
+              ...(gearState.placedItems || [])
+            ];
+            gearState.selectedInventoryId = wall.id;
+            gearState.selectedPlacedId = gearState.placedItems[0]?.id || "";
+            renderVenue();
+          });
+          document.getElementById("venueAddStageDeckBtn")?.addEventListener("click", () => {
+            const deckType = getStageDeckTypeById(venueState.stageDeckSizeId);
+            const deckTop = Math.max(0.08, Number(venueState.stageDeckHeightM || 0.6));
+            const deck = {
+              id: makeVenueModelId(),
+              kind: "stage_deck",
+              manufacturer: "Prolyte",
+              name: `${deckType.name} @ ${deckTop.toFixed(2)}m`,
+              widthM: Number(deckType.widthM),
+              depthM: Number(deckType.depthM),
+              heightM: 0.12,
+              weightKg: Number(deckType.deckWeightKg || 0),
+              defaultY: deckTop
+            };
+            venueState.customVenueModels = [deck, ...(venueState.customVenueModels || [])];
+            const deckCount = (venueState.customVenueModels || []).filter((x) => String(x.kind || "") === "stage_deck").length;
+            const lane = (deckCount - 1) % 5;
+            const row = Math.floor((deckCount - 1) / 5);
+            gearState.placedItems = [
+              {
+                id: makeGearPlacedId(),
+                sourceId: deck.id,
+                x: Number(((lane * (deckType.widthM + 0.6)) - 4).toFixed(3)),
+                y: 0,
+                z: Number(((row * (deckType.depthM + 0.8)) + 3).toFixed(3)),
+                rotYDeg: 0,
+                scale: 1
+              },
+              ...(gearState.placedItems || [])
+            ];
+            gearState.selectedInventoryId = deck.id;
+            gearState.selectedPlacedId = gearState.placedItems[0]?.id || "";
+            renderVenue();
+          });
+          document.getElementById("venueBuildStageSpanBtn")?.addEventListener("click", () => {
+            const deckType = getStageDeckTypeById(venueState.stageDeckSizeId);
+            const deckTop = Math.max(0.08, Number(venueState.stageDeckHeightM || 0.6));
+            const targetW = Math.max(0.5, Number(venueState.stageSpanWidthM || 10));
+            const targetD = Math.max(0.5, Number(venueState.stageSpanDepthM || 6));
+            const cols = Math.max(1, Math.ceil(targetW / Math.max(0.1, Number(deckType.widthM || 1))));
+            const rows = Math.max(1, Math.ceil(targetD / Math.max(0.1, Number(deckType.depthM || 1))));
+            const builtW = Number(deckType.widthM || 1) * cols;
+            const builtD = Number(deckType.depthM || 1) * rows;
+            const totalDecks = cols * rows;
+            const stage = {
+              id: makeVenueModelId(),
+              kind: "stage_span",
+              manufacturer: "Prolyte",
+              name: `Stage Span ${builtW.toFixed(2)}m x ${builtD.toFixed(2)}m`,
+              widthM: builtW,
+              depthM: builtD,
+              heightM: 0.12,
+              weightKg: Number(deckType.deckWeightKg || 0) * totalDecks,
+              defaultY: deckTop,
+              deckCols: cols,
+              deckRows: rows
+            };
+            venueState.customVenueModels = [stage, ...(venueState.customVenueModels || [])];
+            gearState.placedItems = [
+              {
+                id: makeGearPlacedId(),
+                sourceId: stage.id,
+                x: 0,
+                y: 0,
+                z: 0,
+                rotYDeg: 0,
+                scale: 1
+              },
+              ...(gearState.placedItems || [])
+            ];
+            gearState.selectedInventoryId = stage.id;
+            gearState.selectedPlacedId = gearState.placedItems[0]?.id || "";
+            renderVenue();
+          });
+          document.querySelectorAll("button[data-venue-model-remove]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const id = String(btn.getAttribute("data-venue-model-remove") || "");
+              if (!id) return;
+              venueState.customVenueModels = (venueState.customVenueModels || []).filter((x) => String(x.id || "") !== id);
+              gearState.placedItems = (gearState.placedItems || []).filter((x) => String(x.sourceId || "") !== id);
+              if (gearState.selectedPlacedId && !(gearState.placedItems || []).some((x) => x.id === gearState.selectedPlacedId)) {
+                gearState.selectedPlacedId = "";
+              }
+              renderVenue();
+            });
+          });
+          document.getElementById("venueMeasureArmBtn")?.addEventListener("click", () => {
+            venueState.measureArmed = true;
+            venueState.generalMeasureArmed = false;
+            gearState.selectedPlacedId = "";
+            venueState.selectedTrussPlacementId = "";
+            refreshVenueMeasureControls();
+            venue3dRuntime?.refreshMeasurements?.();
+            saveAppMemory();
+          });
+          document.getElementById("venueMeasureClearBtn")?.addEventListener("click", () => {
+            venueState.measurePoints = [];
+            refreshVenueMeasureControls();
+            venue3dRuntime?.refreshMeasurements?.();
+            saveAppMemory();
+          });
+          document.getElementById("venueMeasureSaveBtn")?.addEventListener("click", (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            const poseBeforeSave = captureVenue3dPose();
+            if (poseBeforeSave) venueState.venue3dPose = { ...poseBeforeSave };
+            venueState.measureArmed = false;
+            const pts = venueState.measurePoints || [];
+            const points = pts.length;
+            const distance = getVenuePathDistance(pts);
+            if (distance <= 0) {
+              refreshVenueMeasureControls();
+              venue3dRuntime?.refreshMeasurements?.();
+              return;
+            }
+            const nextIndex = (venueState.measurementLog || []).length + 1;
+            const entry = {
+              id: `m_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+              name: `Measurement ${nextIndex}`,
+              category: "GEN",
+              cableType: "",
+              cableMaxDistM: null,
+              distanceM: distance,
+              points
+            };
+            venueState.measurementLog = [entry, ...(venueState.measurementLog || [])];
+            renderVenue();
+            if (poseBeforeSave) {
+              setTimeout(() => applyVenue3dPoseToRuntime(poseBeforeSave), 0);
+              setTimeout(() => applyVenue3dPoseToRuntime(poseBeforeSave), 120);
+            }
+          });
+          document.getElementById("venueGeneralMeasureArmBtn")?.addEventListener("click", () => {
+            venueState.generalMeasureArmed = true;
+            venueState.measureArmed = false;
+            gearState.selectedPlacedId = "";
+            venueState.selectedTrussPlacementId = "";
+            refreshVenueMeasureControls();
+            venue3dRuntime?.refreshMeasurements?.();
+            saveAppMemory();
+          });
+          document.getElementById("venueGeneralMeasureClearBtn")?.addEventListener("click", () => {
+            venueState.generalMeasurePoints = [];
+            refreshVenueMeasureControls();
+            venue3dRuntime?.refreshMeasurements?.();
+            saveAppMemory();
+          });
+          document.getElementById("venueGeneralMeasureSaveBtn")?.addEventListener("click", (ev) => {
+            ev.preventDefault();
+            ev.stopPropagation();
+            const poseBeforeSave = captureVenue3dPose();
+            if (poseBeforeSave) venueState.venue3dPose = { ...poseBeforeSave };
+            venueState.generalMeasureArmed = false;
+            const pts = venueState.generalMeasurePoints || [];
+            const distance = getVenuePathDistance(pts);
+            if (distance <= 0) {
+              refreshVenueMeasureControls();
+              venue3dRuntime?.refreshMeasurements?.();
+              return;
+            }
+            const next = [{
+              id: `gm_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+              distanceM: distance
+            }, ...(venueState.generalMeasurementLog || [])].slice(0, 10);
+            venueState.generalMeasurementLog = next;
+            renderVenue();
+            if (poseBeforeSave) {
+              setTimeout(() => applyVenue3dPoseToRuntime(poseBeforeSave), 0);
+              setTimeout(() => applyVenue3dPoseToRuntime(poseBeforeSave), 120);
+            }
+          });
+          document.querySelectorAll("select[data-measure-category]").forEach((sel) => {
+            sel.addEventListener("change", () => {
+              const id = sel.getAttribute("data-measure-category");
+              if (!id) return;
+              const row = (venueState.measurementLog || []).find((x) => x && x.id === id);
+              if (!row) return;
+              const allowed = ["AV", "LX", "SX", "PWR", "GEN"];
+              const next = allowed.includes(sel.value) ? sel.value : "GEN";
+              row.category = next;
+              renderVenue();
+            });
+          });
+          document.querySelectorAll("select[data-measure-cable]").forEach((sel) => {
+            sel.addEventListener("change", () => {
+              const id = sel.getAttribute("data-measure-cable");
+              if (!id) return;
+              const row = (venueState.measurementLog || []).find((x) => x && x.id === id);
+              if (!row) return;
+              row.cableType = String(sel.value || "").trim();
+              const match = CABLE_CATALOG.find((c) => c.type === row.cableType);
+              if (match) row.cableMaxDistM = Number(match.maxDistanceM);
+              renderVenue();
+            });
+          });
+          document.querySelectorAll("input[data-measure-maxdist]").forEach((inp) => {
+            inp.addEventListener("change", () => {
+              const id = inp.getAttribute("data-measure-maxdist");
+              if (!id) return;
+              const row = (venueState.measurementLog || []).find((x) => x && x.id === id);
+              if (!row) return;
+              const val = Number(inp.value);
+              row.cableMaxDistM = Number.isFinite(val) && val > 0 ? val : null;
+              renderVenue();
+            });
+          });
+          document.querySelectorAll("[data-measure-name]").forEach((cell) => {
+            cell.addEventListener("dblclick", () => {
+              const id = cell.getAttribute("data-measure-name");
+              if (!id) return;
+              const row = (venueState.measurementLog || []).find((x) => x && x.id === id);
+              if (!row) return;
+              venueState.measurementEditingId = id;
+              venueState.measurementEditingValue = String(row.name || "");
+              renderVenue();
+            });
+          });
+          const inlineNameInput = document.getElementById("venueMeasureInlineNameInput");
+          if (inlineNameInput instanceof HTMLInputElement) {
+            inlineNameInput.focus();
+            inlineNameInput.select();
+            const commit = () => {
+              const id = venueState.measurementEditingId;
+              if (!id) return;
+              const row = (venueState.measurementLog || []).find((x) => x && x.id === id);
+              if (!row) {
+                venueState.measurementEditingId = "";
+                venueState.measurementEditingValue = "";
+                renderVenue();
+                return;
+              }
+              const clean = String(inlineNameInput.value || "").trim();
+              if (clean) row.name = clean;
+              venueState.measurementEditingId = "";
+              venueState.measurementEditingValue = "";
+              renderVenue();
+            };
+            const cancel = () => {
+              venueState.measurementEditingId = "";
+              venueState.measurementEditingValue = "";
+              renderVenue();
+            };
+            inlineNameInput.addEventListener("input", () => {
+              venueState.measurementEditingValue = inlineNameInput.value;
+            });
+            inlineNameInput.addEventListener("blur", commit);
+            inlineNameInput.addEventListener("keydown", (ev) => {
+              if (ev.key === "Enter") {
+                ev.preventDefault();
+                commit();
+              } else if (ev.key === "Escape") {
+                ev.preventDefault();
+                cancel();
+              }
+            });
+          }
+          document.querySelectorAll("button[data-measure-delete]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-measure-delete");
+              if (!id) return;
+              venueState.measurementLog = (venueState.measurementLog || []).filter((x) => x && x.id !== id);
+              if (venueState.measurementEditingId === id) {
+                venueState.measurementEditingId = "";
+                venueState.measurementEditingValue = "";
+              }
+              renderVenue();
+            });
+          });
+          document.querySelectorAll("button[data-general-measure-delete]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-general-measure-delete");
+              const idx = Number(btn.getAttribute("data-general-measure-index"));
+              if (id) {
+                venueState.generalMeasurementLog = (venueState.generalMeasurementLog || []).filter((x) => x && x.id !== id);
+              } else if (Number.isInteger(idx) && idx >= 0) {
+                venueState.generalMeasurementLog = (venueState.generalMeasurementLog || []).filter((_, i) => i !== idx);
+              } else {
+                return;
+              }
+              renderVenue();
+            });
+          });
+          document.getElementById("venueCalPickScaleBtn")?.addEventListener("click", () => {
+            venueState.floorPlanWizardActivePoint = "scale";
+            renderVenue();
+          });
+          document.getElementById("venueCalPickXBtn")?.addEventListener("click", () => {
+            venueState.floorPlanWizardActivePoint = "x";
+            renderVenue();
+          });
+          document.getElementById("venueCalPickYBtn")?.addEventListener("click", () => {
+            venueState.floorPlanWizardActivePoint = "y";
+            renderVenue();
+          });
+          document.getElementById("venueCalPickZeroBtn")?.addEventListener("click", () => {
+            venueState.floorPlanWizardActivePoint = "zero";
+            renderVenue();
+          });
+          const calSvg = document.getElementById("venueCalWizardSvg");
+          calSvg?.addEventListener("click", (ev) => {
+            const vb = (calSvg.getAttribute("viewBox") || `0 0 ${wizardImgW} ${wizardImgH}`).split(/\s+/).map(Number);
+            const vbX = vb[0] || 0;
+            const vbY = vb[1] || 0;
+            const vbW = vb[2] || wizardImgW;
+            const vbH = vb[3] || wizardImgH;
+            const cx = vbX + (vbW / 2);
+            const cy = vbY + (vbH / 2);
+            const rotDeg = Number(venueState.floorPlanWizardRotationDeg || 0);
+            const ctm = calSvg.getScreenCTM();
+            if (!ctm) return;
+            const pt = calSvg.createSVGPoint();
+            pt.x = ev.clientX;
+            pt.y = ev.clientY;
+            const local = pt.matrixTransform(ctm.inverse());
+            const rad = (-rotDeg * Math.PI) / 180;
+            const cos = Math.cos(rad);
+            const sin = Math.sin(rad);
+            const dx = Number(local.x) - cx;
+            const dy = Number(local.y) - cy;
+            const unrotX = (dx * cos) - (dy * sin) + cx;
+            const unrotY = (dx * sin) + (dy * cos) + cy;
+            const p = {
+              x: Math.max(vbX, Math.min(vbX + vbW, unrotX)),
+              y: Math.max(vbY, Math.min(vbY + vbH, unrotY))
+            };
+            const mode = String(venueState.floorPlanWizardActivePoint || "scale");
+            if (mode === "scale") {
+              venueState.floorPlanWizardOriginPx = p;
+            } else if (mode === "x") {
+              venueState.floorPlanWizardXPx = p;
+            } else if (mode === "y") {
+              venueState.floorPlanWizardYPx = p;
+            } else if (mode === "zero") {
+              venueState.floorPlanWizardZeroPx = p;
+            } else {
+              venueState.floorPlanWizardOriginPx = p;
+            }
+            renderVenue();
+          });
+          document.getElementById("venueCalWizardRotateBtn")?.addEventListener("click", () => {
+            const next = (Number(venueState.floorPlanWizardRotationDeg || 0) + 90) % 360;
+            venueState.floorPlanWizardRotationDeg = next;
+            renderVenue();
+          });
+          document.getElementById("venueCalWizardXDistM")?.addEventListener("input", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            venueState.floorPlanWizardXDistanceM = Math.max(0.1, Number(target.value || 0.1));
+          });
+          document.getElementById("venueCalWizardYDistM")?.addEventListener("input", (ev) => {
+            const target = ev.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            venueState.floorPlanWizardYDistanceM = Math.max(0.1, Number(target.value || 0.1));
+          });
+          document.getElementById("venueCalWizardResetPointsBtn")?.addEventListener("click", () => {
+            venueState.floorPlanWizardActivePoint = "scale";
+            venueState.floorPlanWizardRotationDeg = 0;
+            venueState.floorPlanWizardOriginPx = null;
+            venueState.floorPlanWizardZeroPx = null;
+            venueState.floorPlanWizardXPx = null;
+            venueState.floorPlanWizardYPx = null;
+            renderVenue();
+          });
+          document.getElementById("venueCalWizardCancelBtn")?.addEventListener("click", () => {
+            venueState.floorPlanWizardOpen = false;
+            venueState.floorPlanWizardForceOpen = false;
+            venueState.floorPlanWizardDismissed = true;
+            venueState.floorPlanWizardRotationDeg = 0;
+            renderVenue();
+          });
+          document.getElementById("venueCalWizardApplyBtn")?.addEventListener("click", () => {
+            const matrix = computeWorldMatrixFromWizard();
+            if (!matrix) {
+              alert("Calibration points are invalid. Please reselect Scale Anchor, X, Y, and 0,0 points.");
+              return;
+            }
+            venueState.floorPlanWorldMatrix = matrix;
+            venueState.floorPlanWizardOpen = false;
+            venueState.floorPlanWizardForceOpen = false;
+            venueState.floorPlanWizardDismissed = true;
+            venueState.floorPlanWizardRotationDeg = 0;
+            renderVenue();
+          });
+          document.getElementById("venueFloorPlanClearBtn")?.addEventListener("click", () => {
+            clearFloorPlanPdfRuntime();
+            venueState.floorPlanDataUrl = "";
+            venueState.floorPlanImageWidthPx = null;
+            venueState.floorPlanImageHeightPx = null;
+            venueState.floorPlanWorldMatrix = null;
+            venueState.floorPlanSourceName = "";
+            venueState.floorPlanPdfTotalPages = 0;
+            venueState.floorPlanPdfLastPage = 1;
+            venueState.floorPlanImportStatus = "No floor plan loaded";
+            venueState.floorPlanImportError = "";
+            venueState.floorPlanWizardOpen = false;
+            venueState.floorPlanWizardForceOpen = false;
+            venueState.floorPlanWizardDismissed = false;
+            venueState.floorPlanWizardRotationDeg = 0;
+            venueState.floorPlanWizardOriginPx = null;
+            venueState.floorPlanWizardZeroPx = null;
+            venueState.floorPlanWizardXPx = null;
+            venueState.floorPlanWizardYPx = null;
+            venueState.floorPlanScale = 1;
+            venueState.floorPlanScaleAdjust = 1;
+            venueState.floorPlanRotationDeg = 0;
+            venueState.floorPlanOffsetX = 0;
+            venueState.floorPlanOffsetY = 0;
+            venueState.floorPlanCalibrating = false;
+            venueState.floorPlanCalPointA = null;
+            venueState.floorPlanCalPointB = null;
+            redraw();
+          });
+          const applyZoomAtPoint = (targetZoom, fx, fy) => {
+            const svg = document.getElementById("venuePlanSvg");
+            if (!svg) return;
+            const vb = (svg.getAttribute("viewBox") || "0 0 980 560").split(/\s+/).map(Number);
+            const oldX = vb[0] || 0;
+            const oldY = vb[1] || 0;
+            const oldW = vb[2] || 980;
+            const oldH = vb[3] || 560;
+            const zx = Math.max(0, Math.min(1, Number(fx)));
+            const zy = Math.max(0, Math.min(1, Number(fy)));
+            const anchorX = oldX + (zx * oldW);
+            const anchorY = oldY + (zy * oldH);
+
+            const W = 980;
+            const H = 560;
+            const nextZoom = Math.max(0.5, Math.min(4, Number(targetZoom)));
+            const newW = W / nextZoom;
+            const newH = H / nextZoom;
+            const maxVbX = Math.max(0, W - newW);
+            const maxVbY = Math.max(0, H - newH);
+            venueState.zoom = nextZoom;
+            venueState.viewX = Math.max(0, Math.min(maxVbX, anchorX - (zx * newW)));
+            venueState.viewY = Math.max(0, Math.min(maxVbY, anchorY - (zy * newH)));
+            redraw();
+          };
+          document.getElementById("venueZoomOutBtn")?.addEventListener("click", () => {
+            applyZoomAtPoint(Number((venueState.zoom - 0.05).toFixed(2)), 0.5, 0.5);
+          });
+          document.getElementById("venueZoomInBtn")?.addEventListener("click", () => {
+            applyZoomAtPoint(Number((venueState.zoom + 0.05).toFixed(2)), 0.5, 0.5);
+          });
+          document.getElementById("venueZoomResetBtn")?.addEventListener("click", () => {
+            venueState.zoom = 1;
+            venueState.viewX = null;
+            venueState.viewY = null;
+            redraw();
+          });
+          const venueSvg = document.getElementById("venuePlanSvg");
+          if (venueSvg) {
+            venueSvg.style.cursor = venuePanState.spaceDown ? "grab" : "";
+            venueSvg.addEventListener("mousedown", (ev) => {
+              const active = currentEngineeringSection;
+              if (active !== "Venue") return;
+              if (!venuePanState.spaceDown || ev.button !== 0) return;
+              venuePanState.dragging = true;
+              venuePanState.lastX = ev.clientX;
+              venuePanState.lastY = ev.clientY;
+              venueSvg.style.cursor = "grabbing";
+              ev.preventDefault();
+            });
+            venueSvg.onwheel = (ev) => {
+              ev.preventDefault();
+              const raw = Math.max(-120, Math.min(120, Number(ev.deltaY || 0)));
+              const delta = (-raw / 120) * 0.03;
+              const rect = venueSvg.getBoundingClientRect();
+              const fx = (ev.clientX - rect.left) / Math.max(1, rect.width);
+              const fy = (ev.clientY - rect.top) / Math.max(1, rect.height);
+              applyZoomAtPoint(Number((venueState.zoom + delta).toFixed(3)), fx, fy);
+            };
+          }
+          if (!venuePanBound) {
+            window.addEventListener("keydown", (ev) => {
+              if (ev.code !== "Space") return;
+              const t = ev.target;
+              if (t instanceof Element && t.closest("input, textarea, select, [contenteditable='true']")) return;
+              const active = currentEngineeringSection;
+              if (active === "Venue") ev.preventDefault();
+              if (active !== "Venue") return;
+              venuePanState.spaceDown = true;
+              const s = document.getElementById("venuePlanSvg");
+              if (s && !venuePanState.dragging) s.style.cursor = "grab";
+            });
+            window.addEventListener("keyup", (ev) => {
+              if (ev.code !== "Space") return;
+              venuePanState.spaceDown = false;
+              venuePanState.dragging = false;
+              const s = document.getElementById("venuePlanSvg");
+              if (s) s.style.cursor = "";
+            });
+            window.addEventListener("blur", () => {
+              venuePanState.spaceDown = false;
+              venuePanState.dragging = false;
+              const s = document.getElementById("venuePlanSvg");
+              if (s) s.style.cursor = "";
+            });
+            window.addEventListener("mousemove", (ev) => {
+              if (!venuePanState.dragging) return;
+              const s = document.getElementById("venuePlanSvg");
+              if (!s) return;
+              const rect = s.getBoundingClientRect();
+              const dx = ev.clientX - venuePanState.lastX;
+              const dy = ev.clientY - venuePanState.lastY;
+              venuePanState.lastX = ev.clientX;
+              venuePanState.lastY = ev.clientY;
+              const W = 980;
+              const H = 560;
+              const zoom = Math.max(0.5, Math.min(4, Number(venueState.zoom || 1)));
+              const vbW = W / zoom;
+              const vbH = H / zoom;
+              const maxVbX = Math.max(0, W - vbW);
+              const maxVbY = Math.max(0, H - vbH);
+              venueState.viewX = Math.max(0, Math.min(maxVbX, Number(venueState.viewX || 0) - ((dx / Math.max(1, rect.width)) * vbW)));
+              venueState.viewY = Math.max(0, Math.min(maxVbY, Number(venueState.viewY || 0) - ((dy / Math.max(1, rect.height)) * vbH)));
+              redraw();
+            });
+            window.addEventListener("mouseup", () => {
+              if (!venuePanState.dragging) return;
+              venuePanState.dragging = false;
+              const s = document.getElementById("venuePlanSvg");
+              if (s) s.style.cursor = venuePanState.spaceDown ? "grab" : "";
+            });
+            venuePanBound = true;
+          }
+          document.querySelectorAll("[data-venue-gear-chip]").forEach((chip) => {
+            chip.addEventListener("dragstart", (ev) => {
+              const id = chip.getAttribute("data-venue-gear-chip") || "";
+              gearState.selectedInventoryId = id;
+              ev.dataTransfer?.setData("text/plain", id);
+              ev.dataTransfer?.setData("application/x-thebase-gear", id);
+              ev.dataTransfer.effectAllowed = "copy";
+            });
+            chip.addEventListener("click", () => {
+              gearState.selectedInventoryId = chip.getAttribute("data-venue-gear-chip") || "";
+            });
+          });
+          redraw();
+          initVenue3dViewer();
+        }
+
+        function getObjectTypeForContext() {
+          if (currentEngineeringSection === "Lighting") return "fixture";
+          if (currentEngineeringSection === "Video") return "led_wall";
+          if (currentEngineeringSection === "Rigging") return "truss_group";
+          if (currentEngineeringSection === "Power") return "power_plan";
+          if (currentEngineeringSection === "Sound") return "audio_system";
+          if (currentEngineeringSection === "Venue") return "venue_3d";
+          if (currentEngineeringSection === "RF") return "rf_plan";
+          return "module";
+        }
+
+        function readPropertyRows(tabName, objectType) {
+          const tab = String(tabName || "General");
+          if (currentEngineeringSection === "Video") {
+            const wall = getActiveLedWall();
+            const calc = calculateLedForWall(wall || {});
+            if (!wall || !calc) return [{ key: "Status", value: "No wall selected" }];
+            if (tab === "General") return [
+              { key: "Wall", value: wall.name || "Wall" },
+              { key: "Panel Type", value: (LED_PANELS.find((p) => p.id === wall.panelType)?.name) || wall.panelType || "-" },
+              { key: "Panels", value: `${calc.panelsWidth} x ${calc.panelsHeight} (${calc.totalPanels})` }
+            ];
+            if (tab === "Signal / Routing") return [
+              { key: "Controllers", value: (wall.routing?.controllers || []).map((c) => `${(LED_CONTROLLERS.find((x) => x.id === c.id)?.name) || c.id} x${c.qty}`).join(", ") || "None" },
+              { key: "Mapped Ports", value: String(Object.keys(wall.routing?.assignments || {}).length) },
+              { key: "Selected Port", value: `P${Number(wall.routing?.selectedPort || 0) + 1}` }
+            ];
+            if (tab === "Power") return [
+              { key: "Supply", value: ledState.powerSupplyType === "socapex" ? "Socapex 6-way" : "32A" },
+              { key: "Avg Current", value: `${Number(calc.avgPowerA || 0).toFixed(1)} A` },
+              { key: "Max Current", value: `${Number(calc.maxPowerA || 0).toFixed(1)} A` }
+            ];
+            return [{ key: "Info", value: "LED wall engineering data" }];
+          }
+          if (currentEngineeringSection === "Lighting") {
+            const f = getLightingFixtureByKey(lightingState.selectedFixtureKey || "") || null;
+            if (tab === "General") return [
+              { key: "Fixture", value: f ? `${f.manufacturer} ${f.model}` : "None selected" },
+              { key: "Groups", value: String((lightingState.groups || []).length) },
+              { key: "Fixture Lines", value: String((lightingState.fixtures || []).length) }
+            ];
+            if (tab === "Signal / Routing") return [{ key: "Patch", value: "DMX patch managed in Lighting planner" }];
+            if (tab === "Power") return [{ key: "Group Power", value: "See Group Outputs" }];
+            if (tab === "Physical") return [{ key: "Weight", value: f && Number.isFinite(Number(f.weight_kg)) ? `${Number(f.weight_kg).toFixed(1)} kg` : "-" }];
+            return [{ key: "Notes", value: "Lighting object properties" }];
+          }
+          if (currentEngineeringSection === "Rigging") {
+            const calc = riggingState.lastCalc || runRiggingCalculation();
+            const activeGroup = getRiggingGroupById(riggingState.selectedPlanGroupId || riggingState.selectedTrussGroupId || "");
+            if (tab === "General") return [
+              { key: "Group", value: activeGroup?.name || "No group selected" },
+              { key: "Spans", value: String((riggingState.spans || []).length) },
+              { key: "Motors", value: String((riggingState.pickups || []).length) }
+            ];
+            if (tab === "Physical") return [
+              { key: "Total Weight", value: `${Number(calc.totalWeightKg || 0).toFixed(1)} kg` },
+              { key: "Safety Factor", value: Number(riggingState.safetyFactor || 1).toFixed(2) }
+            ];
+            if (tab === "Power") return [{ key: "Motor Load", value: "See motor labels and reaction graph" }];
+            return [{ key: "Status", value: calc.blocked ? "Blocked by rigging blockers" : "Calculation valid" }];
+          }
+          if (currentEngineeringSection === "Power") {
+            const plan = buildPowerPlan();
+            const tot = plan?.totals?.max || { W: 0, VA: 0, A: 0 };
+            if (tab === "General") return [
+              { key: "Loads", value: String(getCombinedPowerLoads().length) },
+              { key: "Max VA", value: `${Math.round(Number(tot.VA || 0)).toLocaleString()} VA` },
+              { key: "Max Current", value: `${Number(tot.A || 0).toFixed(1)} A` }
+            ];
+            if (tab === "Power") return [{ key: "Compliance", value: String(plan?.compliance?.overall || "PASS") }];
+            if (tab === "Signal / Routing") return [{ key: "Phase Balance", value: "L1 / L2 / L3 auto-balanced" }];
+            return [{ key: "Notes", value: "South African 3-phase planning defaults enabled." }];
+          }
+          if (currentEngineeringSection === "Sound") {
+            if (tab === "General") return [
+              { key: "Event", value: audioState.showInfo?.eventName || "-" },
+              { key: "Inputs", value: String((audioState.console?.inputs || []).length) },
+              { key: "Outputs", value: String((audioState.console?.outputs || []).length) }
+            ];
+            if (tab === "Power") return [{ key: "Audio Loads", value: `${(audioState.power?.loads || []).length} line(s)` }];
+            return [{ key: "Routing", value: "Console + stagebox routes in Audio tab." }];
+          }
+          if (currentEngineeringSection === "Venue") {
+            if (tab === "General") return [
+              { key: "Placed Gear", value: String((venueState.placedModels || []).length) },
+              { key: "Floorplan", value: venueState.floorPlanDataUrl ? "Calibrated" : "None" },
+              { key: "Projection", value: venueState.projectionMode === "orthographic" ? "Orthographic" : "Perspective" }
+            ];
+            if (tab === "Physical") return [
+              { key: "Origin", value: `${Number(venueState.gridOriginX || 0).toFixed(1)}m, ${Number(venueState.gridOriginY || 0).toFixed(1)}m` },
+              { key: "Scale", value: Number(venueState.floorPlanScale || 1).toFixed(4) }
+            ];
+            return [{ key: "Notes", value: "3D world and venue planning context." }];
+          }
+          return [{ key: "Module", value: currentEngineeringSection }];
+        }
+
+        function renderPropertyPanel() {
+          if (!propertyTabsEl || !propertyPanelBodyEl || !propObjectTypeEl) return;
+          const objectType = getObjectTypeForContext();
+          const lastTab = propertyTabMemory[objectType];
+          const activeTab = PROPERTY_TABS.includes(lastTab) ? lastTab : "General";
+          propObjectTypeEl.textContent = objectType.replace(/_/g, " ");
+          propertyTabsEl.innerHTML = PROPERTY_TABS.map((tab) => `<button data-prop-tab="${tab}" class="${tab === activeTab ? "active" : ""}">${tab}</button>`).join("");
+          const rows = readPropertyRows(activeTab, objectType);
+          propertyPanelBodyEl.innerHTML = `
+            <div class="muted" style="margin-bottom:0.42rem;">${activeTab}</div>
+            ${(rows || []).map((r) => `
+              <div class="property-row">
+                <div class="property-key">${r.key}</div>
+                <div class="property-val">${r.value}</div>
+              </div>
+            `).join("")}
+          `;
+          propertyTabsEl.querySelectorAll("[data-prop-tab]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const nextTab = btn.getAttribute("data-prop-tab") || "General";
+              propertyTabMemory[objectType] = nextTab;
+              localStorage.setItem(PROPERTY_TAB_KEY, JSON.stringify(propertyTabMemory));
+              renderPropertyPanel();
+            });
+          });
+        }
+
+        function renderModuleSidebar() {
+          if (!moduleSidebar) return;
+          const iconSvg = (key) => {
+            const icons = {
+              video: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="14" height="10" rx="2"></rect><path d="M17.5 8.5L21 6.8v7.4l-3.5-1.7z"></path><path d="M6 18.5h9"></path><path d="M10.5 15.5v3"></path></svg>',
+              lighting: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5h10"></path><path d="M8.5 4.5v4l3.5 4v3"></path><path d="M15.5 4.5v4l-3.5 4"></path><path d="M9.5 18h5"></path><path d="M10.5 20h3"></path></svg>',
+              audio: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 14h3l4.5 3.5V6.5L6.5 10h-3z"></path><path d="M14.5 10.2a4.2 4.2 0 0 1 0 3.6"></path><path d="M17.5 8a7.4 7.4 0 0 1 0 8"></path><path d="M20 5.5a11 11 0 0 1 0 13"></path></svg>',
+              rigging: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5h16"></path><path d="M6.5 6.5l5.5 10 5.5-10"></path><path d="M9.2 11.4h5.6"></path><path d="M12 16.5v4"></path><circle cx="12" cy="21" r="1.4"></circle></svg>',
+              power: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 4v6"></path><path d="M15.5 4v6"></path><path d="M6 10h12v4a6 6 0 0 1-12 0z"></path></svg>',
+              venue3d: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"></path><path d="M12 12l8-4.5"></path><path d="M12 12v9"></path><path d="M12 12L4 7.5"></path></svg>',
+              rf: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18.5" r="1.2"></circle><path d="M12 17v-4"></path><path d="M8.5 13.5a5 5 0 0 1 7 0"></path><path d="M6 11a8.5 8.5 0 0 1 12 0"></path><path d="M3.5 8.5a12 12 0 0 1 17 0"></path></svg>',
+              outputs: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="13" height="17" rx="2"></rect><path d="M8 8h5"></path><path d="M8 12h5"></path><path d="M8 16h3"></path><path d="M17 8.5h3.5"></path><path d="M18.8 6.8l1.7 1.7-1.7 1.7"></path></svg>',
+              projects: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="8" height="6" rx="1.5"></rect><rect x="13" y="5" width="8" height="6" rx="1.5"></rect><rect x="8" y="13" width="8" height="6" rx="1.5"></rect><path d="M11 8h2"></path><path d="M12 11v2"></path></svg>',
+              settings: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="7" r="2"></circle><circle cx="16" cy="12" r="2"></circle><circle cx="10" cy="17" r="2"></circle><path d="M10 7h10"></path><path d="M3.5 7H6"></path><path d="M3.5 12H14"></path><path d="M18 12h2.5"></path><path d="M3.5 17H8"></path><path d="M12 17h8.5"></path></svg>'
+            };
+            return icons[key] || icons.settings;
+          };
+          moduleSidebar.innerHTML = MODULE_MENU.map((m) => {
+            const active = (m.id === currentEngineeringSection)
+              || (m.id === "3D" && currentEngineeringSection === "Venue");
+            return `
+              <button class="nav-btn ${active ? "active" : ""}" data-module-nav="${m.id}" title="${m.label}">
+                <span class="nav-icon" style="border-color:${m.color};color:${m.color};">${iconSvg(m.iconKey)}</span>
+                <span class="nav-label">${m.label}</span>
+              </button>
+            `;
+          }).join("");
+          moduleSidebar.querySelectorAll("[data-module-nav]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const moduleName = btn.getAttribute("data-module-nav") || "Video";
+              setEngineeringSection(moduleName);
+            });
+          });
+        }
+
+        function updateSystemStatusBar() {
+          if (!systemStatusPillEl || !systemStatusTextEl || !activeModuleIndicatorEl || !modeIndicatorEl) return;
+          let level = "READY";
+          let text = "System ready";
+          if (currentEngineeringSection === "Rigging") {
+            const calc = riggingState.lastCalc || runRiggingCalculation();
+            if (calc.blockers?.length) {
+              level = "ERROR";
+              text = `${calc.blockers.length} blocker(s) in rigging calculation`;
+            } else if (calc.warnings?.length) {
+              level = "WARN";
+              text = `${calc.warnings.length} warning(s) in rigging calculation`;
+            }
+          } else if (currentEngineeringSection === "Power") {
+            const overall = String(buildPowerPlan()?.compliance?.overall || "PASS");
+            if (overall === "FAIL") {
+              level = "ERROR";
+              text = "Power compliance fail";
+            } else if (overall === "WARN") {
+              level = "WARN";
+              text = "Power compliance warning";
+            }
+          }
+          systemStatusPillEl.textContent = level;
+          systemStatusPillEl.className = `status-pill ${level === "ERROR" ? "error" : (level === "WARN" ? "warn" : "ready")}`;
+          systemStatusTextEl.textContent = text;
+          activeModuleIndicatorEl.textContent = currentEngineeringSection;
+          modeIndicatorEl.textContent = currentUiMode === "canvas" ? "Planning Canvas Mode" : "Engineering Data Mode";
+        }
+
+        function refreshEngineeringChrome() {
+          currentUiMode = ["Venue", "Rigging", "Video"].includes(currentEngineeringSection) ? "canvas" : "data";
+          renderModuleSidebar();
+          renderPropertyPanel();
+          updateSystemStatusBar();
+        }
+
+        function setEngineeringSection(name) {
+          currentEngineeringSection = name;
+          if (name !== "Venue") disposeVenue3dRuntime();
+          disposeGear3dRuntime();
+          if (name !== "Video" && typeof ledWiringKeyHandler === "function") {
+            window.removeEventListener("keydown", ledWiringKeyHandler);
+            ledWiringKeyHandler = null;
+          }
+          const themeMap = {
+            Video: "Video",
+            Sound: "Sound",
+            Lighting: "Lighting",
+            Power: "Power",
+            Rigging: "Rigging",
+            Venue: "Venue",
+            RF: "Sound",
+            Outputs: "Power"
+          };
+          document.body.setAttribute("data-dept", themeMap[name] || "Power");
+          localStorage.setItem("thebase.activeDept", themeMap[name] || "Power");
+          saveAppMemory();
+          try {
+            if (name === "Video") {
+              renderVideoSubTab("LED");
+              return;
+            }
+            if (name === "Lighting") {
+              renderLighting();
+              return;
+            }
+            if (name === "Sound") {
+              renderSound();
+              return;
+            }
+            if (name === "Venue") {
+              renderVenue();
+              return;
+            }
+            if (name === "Rigging") {
+              renderRigging();
+              return;
+            }
+            if (name === "Power") {
+              renderPower();
+              return;
+            }
+            renderPlaceholder(name, `${name} workspace is ready for implementation.`);
+          } catch (err) {
+            console.error("Section render failed:", name, err);
+            renderPlaceholder(name, `${name} failed to render. Check console for details.`);
+          } finally {
+            refreshEngineeringChrome();
+          }
+        }
+
+        window.addEventListener("storage", (ev) => {
+          if (!window.TheBaseSettings) return;
+          if (ev.key !== TheBaseSettings.STORAGE_KEY) return;
+          const latest = getSettingsState();
+          applySettingsToRuntime(latest);
+          setEngineeringSection(currentEngineeringSection || "Video");
+        });
+
+        async function bootstrapEngineeringPage() {
+          ensureSettingsSeeded();
+          loadRiggingCatalogs();
+          const appSettings = getSettingsState();
+          applySettingsToRuntime(appSettings);
+          loadLightingFixtures();
+
+          if (window.TheBaseCloud && TheBaseCloud.isConfigured()) {
+            try {
+              await TheBaseCloud.init();
+              const user = await TheBaseCloud.requireSession("login.html");
+              if (!user) return;
+              await TheBaseCloud.ensureProfile(user);
+              const active = TheBaseCloud.getActiveProject();
+              if (!active?.id) {
+                window.location.href = "projects.html";
+                return;
+              }
+              const allowed = await TheBaseCloud.userCanAccessProject(active.id);
+              if (!allowed) {
+                TheBaseCloud.clearActiveProject();
+                window.location.href = "projects.html";
+                return;
+              }
+              // Every project starts from a clean default baseline first,
+              // then project snapshot data is applied if it exists.
+              applyAppMemorySnapshot(safeClone(DEFAULT_APP_SNAPSHOT));
+              const remote = await TheBaseCloud.loadProjectSnapshot(active.id);
+              if (remote?.snapshot && typeof remote.snapshot === "object") {
+                applyAppMemorySnapshot(remote.snapshot);
+              } else {
+                await TheBaseCloud.saveProjectSnapshot(active.id, buildAppMemorySnapshot());
+              }
+              startCloudProjectAutosave();
+            } catch (err) {
+              console.error("Cloud bootstrap failed", err);
+              window.location.href = "projects.html";
+              return;
+            }
+          }
+
+          const DEPTS = new Set(["Video", "Lighting", "Sound", "Rigging", "Power", "Venue"]);
+          const urlDept = new URLSearchParams(window.location.search).get("dept") || "";
+          const storedDept = localStorage.getItem("thebase.activeDept") || "Video";
+          const initDept = DEPTS.has(urlDept) ? urlDept : (DEPTS.has(storedDept) ? storedDept : "Video");
+          setEngineeringSection(initDept);
+          startAppMemoryAutosave();
+          if (main) {
+            const observer = new MutationObserver(() => {
+              refreshEngineeringChrome();
+            });
+            observer.observe(main, { childList: true, subtree: false });
+          }
+          refreshEngineeringChrome();
+        }
+        bootstrapEngineeringPage();
+
+        document.addEventListener("click", (e) => {
+          const btn = e.target.closest("button");
+          if (!btn || btn.disabled) return;
+          btn.classList.add("action-done");
+          setTimeout(() => btn.classList.remove("action-done"), 220);
+        });
+      })();
