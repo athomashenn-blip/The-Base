@@ -17,12 +17,15 @@
         --theme-bg-c: #111217;
         --theme-glow-a: #6a738420;
         --theme-glow-b: #8d97aa1a;
-        --theme-header-a: #282434;
-        --theme-header-b: #201d2c;
-        --theme-main-a: #24222e;
-        --theme-main-b: #1f1d29;
-        --theme-card-a: #2a2736;
-        --theme-card-b: #22202d;
+        --theme-header-a: #2b3039;
+        --theme-header-b: #232831;
+        --theme-main-a: #252932;
+        --theme-main-b: #20242c;
+        --theme-card-a: #303640;
+        --theme-card-b: #282e38;
+        --theme-input: #1b1923;
+        --theme-btn-a: #343946;
+        --theme-btn-b: #2a2f3a;
         --logo-hue: 0deg;
       }
       * { box-sizing: border-box; }
@@ -116,8 +119,9 @@
       .layout {
         margin-top: 0.8rem;
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: 74px minmax(0, 1fr);
         gap: 0.8rem;
+        align-items: start;
       }
       .nav {
         border: 1px solid var(--line);
@@ -127,6 +131,10 @@
         display: grid;
         gap: 0.5rem;
         align-content: start;
+        width: 74px;
+        overflow: visible;
+        position: relative;
+        z-index: 35;
       }
       .nav button {
         width: 100%;
@@ -137,8 +145,58 @@
         padding: 0.65rem;
         color: var(--text);
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        position: relative;
+        overflow: visible;
+      }
+      .nav-label {
+        position: absolute;
+        left: calc(100% + 10px);
+        top: 50%;
+        transform: translateY(-50%);
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: auto;
+        border: 1px solid var(--line-2);
+        border-radius: 10px;
+        padding: 0.34rem 0.56rem;
+        background: linear-gradient(180deg, var(--theme-card-a), var(--theme-card-b));
+        box-shadow: 0 8px 20px #0000004f;
+        transition: opacity 140ms ease, transform 140ms ease;
+        z-index: 60;
+      }
+      .nav button:hover .nav-label,
+      .nav button:focus-visible .nav-label {
+        opacity: 1;
+      }
+      .nav-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 8px;
+        border: 1px solid var(--line-2);
+        display: inline-grid;
+        place-items: center;
+        flex: 0 0 auto;
+        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+      }
+      .nav-icon svg {
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
       }
       .nav button.active { border-color: var(--btn-active); background: linear-gradient(180deg, color-mix(in srgb, var(--btn-active) 42%, #1d1a2a 58%), color-mix(in srgb, var(--btn-line) 55%, #181522 45%)); }
+      .nav button:hover .nav-icon,
+      .nav button:focus-visible .nav-icon {
+        transform: scale(1.6);
+        border-color: var(--btn-active);
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--btn-active), #000 50%);
+      }
       .subnav {
         display: grid;
         gap: 0.35rem;
@@ -159,6 +217,79 @@
         border-radius: 22px;
         background: linear-gradient(180deg, var(--theme-main-a), var(--theme-main-b) 78%);
         padding: 1rem;
+        min-height: calc(100vh - 182px);
+      }
+      .properties-panel {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: linear-gradient(180deg, var(--theme-main-a), var(--theme-main-b) 78%);
+        padding: 0.7rem;
+        position: sticky;
+        top: 0.8rem;
+        max-height: calc(100vh - 112px);
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        gap: 0.55rem;
+      }
+      .property-tabs {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 0.35rem;
+      }
+      .property-tabs button {
+        padding: 0.35rem 0.25rem;
+        font-size: 0.72rem;
+      }
+      .property-panel-body {
+        overflow: auto;
+        border: 1px solid var(--line-2);
+        border-radius: 10px;
+        padding: 0.5rem;
+        background: var(--theme-input);
+      }
+      .property-row {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr);
+        gap: 0.45rem;
+        align-items: center;
+        padding: 0.28rem 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--line-2), transparent 50%);
+      }
+      .property-row:last-child { border-bottom: 0; }
+      .property-key { color: var(--muted); font-size: 0.75rem; }
+      .property-val { font-size: 0.82rem; word-break: break-word; }
+      .system-status-bar {
+        position: fixed;
+        left: 0.55rem;
+        right: 0.55rem;
+        bottom: 0.35rem;
+        border: 1px solid var(--line-2);
+        border-radius: 10px;
+        background: linear-gradient(180deg, #1a1f29f2, #141923f2);
+        padding: 0.35rem 0.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.7rem;
+        z-index: 30;
+      }
+      .status-pill {
+        border: 1px solid var(--line-2);
+        border-radius: 999px;
+        padding: 0.12rem 0.48rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+      }
+      .status-pill.ready { border-color: #1f9e5d; color: #7aefb4; }
+      .status-pill.warn { border-color: #b2731b; color: #ffc982; }
+      .status-pill.error { border-color: #b73758; color: #ff97b1; }
+      .status-text {
+        font-size: 0.76rem;
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 56vw;
       }
       .card {
         border: 1px solid var(--line-2);
@@ -204,9 +335,12 @@
         overflow: auto;
         border: 1px solid var(--line-2);
         border-radius: 10px;
+        background: #171c25;
       }
-      table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-      th, td { border: 1px solid var(--line); padding: 0.35rem 0.4rem; vertical-align: top; }
+      table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.9rem; }
+      th, td { border: 0; border-bottom: 1px solid color-mix(in srgb, var(--line-2), transparent 34%); padding: 0.35rem 0.4rem; vertical-align: top; }
+      tbody tr:nth-child(even) td { background: color-mix(in srgb, #202634, transparent 38%); }
+      tbody tr:hover td { background: color-mix(in srgb, var(--btn-active), #1a1f2a 88%); }
       th { position: sticky; top: 0; background: #1f2534; }
       input, select, textarea {
         width: 100%;
@@ -290,20 +424,34 @@
         --theme-bg-c: #111217;
         --theme-glow-a: #6a738420;
         --theme-glow-b: #8d97aa1a;
-        --theme-header-a: #282434;
-        --theme-header-b: #201d2c;
-        --theme-main-a: #24222e;
-        --theme-main-b: #1f1d29;
-        --theme-card-a: #2a2736;
-        --theme-card-b: #22202d;
+        --theme-header-a: #2b3039;
+        --theme-header-b: #232831;
+        --theme-main-a: #252932;
+        --theme-main-b: #20242c;
+        --theme-card-a: #303640;
+        --theme-card-b: #282e38;
+        --theme-input: #1b1923;
+        --theme-btn-a: #343946;
+        --theme-btn-b: #2a2f3a;
       }
       @media (max-width: 1100px) {
-        .layout { grid-template-columns: 1fr; }
-        .nav { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+        .layout { grid-template-columns: 74px 1fr; }
+        .properties-panel { display: none; }
         .settings-layout { grid-template-columns: 1fr; }
       }
       @media (max-width: 820px) {
-        .nav { grid-template-columns: 1fr; }
+        .layout { grid-template-columns: 1fr; }
+        .nav { width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .nav .nav-label {
+          position: static;
+          transform: none;
+          opacity: 1;
+          pointer-events: auto;
+          border: 0;
+          box-shadow: none;
+          padding: 0;
+          background: transparent;
+        }
         .header { flex-direction: column; align-items: flex-start; }
       }
     </style>
@@ -321,17 +469,7 @@
         </div>
         <div class="header-links">
           <a class="header-link-btn" href="projects.html">Projects</a>
-          <div class="header-link-group">
-            <a class="header-link-btn" href="index.html">Engineering</a>
-            <div class="header-dropdown" aria-label="Engineering Departments">
-              <a href="index.html?dept=Video">Video</a>
-              <a href="index.html?dept=Lighting">Lighting</a>
-              <a href="index.html?dept=Sound">Sound</a>
-              <a href="index.html?dept=Rigging">Rigging</a>
-              <a href="index.html?dept=Power">Power</a>
-              <a href="index.html?dept=Venue">Venue</a>
-            </div>
-          </div>
+          <a class="header-link-btn" href="index.html">Engineering</a>
           <a class="header-link-btn" href="reports.html">Reports</a>
           <a class="header-link-btn active" href="settings.html">Settings</a>
         </div>
@@ -339,6 +477,7 @@
       </header>
 
       <section class="layout">
+        <aside class="nav" id="settingsSidebar" aria-label="Modules"></aside>
         <main class="main">
           <div class="settings-layout">
             <section class="card">
@@ -353,7 +492,6 @@
                   <input id="settingsImportFile" type="file" accept="application/json" style="display:none;" />
                 </div>
               </div>
-              <div class="settings-tabs" id="settingsTabs" style="margin-top:0.65rem;"></div>
               <div style="display:flex;justify-content:space-between;gap:0.5rem;align-items:flex-end;flex-wrap:wrap;">
                 <div>
                   <h2 id="settingsSectionTitle" style="margin:0;">Department</h2>
@@ -429,6 +567,16 @@
         </main>
       </section>
     </div>
+    <footer class="system-status-bar" id="settingsStatusBar">
+      <div style="display:flex;align-items:center;gap:0.65rem;min-width:0;">
+        <span class="status-pill ready" id="settingsStatusPill">READY</span>
+        <span class="status-text" id="settingsStatusText">Settings ready</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.65rem;">
+        <span class="pill">Engineering Data Mode</span>
+        <span class="muted" style="font-size:0.76rem;" id="settingsActiveModule">Settings</span>
+      </div>
+    </footer>
 
     <script src="data/settings-store.js"></script>
     <script>
@@ -448,7 +596,7 @@
       const storedDept = localStorage.getItem("thebase.activeDept") || "Video";
       applyDeptTheme(storedDept);
 
-      const SETTINGS_TABS = ["Global", "Video", "Lighting", "Audio", "Rigging", "Power", "Venue"];
+      const SETTINGS_TABS = ["Video", "Lighting", "Audio", "Rigging", "Power", "Venue"];
       const seedDefaults = {
         departments: {
           Video: { equipment: [] },
@@ -461,11 +609,26 @@
       };
 
       let settingsState = TheBaseSettings.loadSettings(seedDefaults);
-      let activeSettingsTab = "Global";
+      let activeSettingsTab = "Video";
       let editingEquipmentId = "";
+      const SETTINGS_UI_TABS = ["General", "Signal / Routing", "Power", "Network", "Physical", "Notes"];
+      const settingsSidebar = document.getElementById("settingsSidebar");
+      const settingsPropertyTabs = document.getElementById("settingsPropertyTabs");
+      const settingsPropertyBody = document.getElementById("settingsPropertyBody");
+      const settingsPropObject = document.getElementById("settingsPropObject");
+      const settingsStatusPill = document.getElementById("settingsStatusPill");
+      const settingsStatusText = document.getElementById("settingsStatusText");
+      const MODULE_MENU = [
+        { id: "Video", label: "Video", iconKey: "video", color: "#57b36a" },
+        { id: "Lighting", label: "Lighting", iconKey: "lighting", color: "#e25555" },
+        { id: "Audio", label: "Audio", iconKey: "audio", color: "#4f82ff" },
+        { id: "Rigging", label: "Rigging", iconKey: "rigging", color: "#f08a3c" },
+        { id: "Power", label: "Power", iconKey: "power", color: "#8b5cff" },
+        { id: "Venue", label: "Venue", iconKey: "venue3d", color: "#35bdb0" }
+      ];
+      let settingsPropertyTab = "General";
 
       const ui = {
-        tabs: document.getElementById("settingsTabs"),
         title: document.getElementById("settingsSectionTitle"),
         subtitle: document.getElementById("settingsSectionSubtitle"),
         table: document.getElementById("settingsEquipmentTable"),
@@ -494,7 +657,6 @@
       }
 
       function getActiveEquipment() {
-        if (activeSettingsTab === "Global") return [];
         return settingsState.departments[activeSettingsTab]?.equipment || [];
       }
 
@@ -520,17 +682,6 @@
         ui.powerA.value = item.power_use?.amps ?? "";
         ui.notes.value = item.notes || "";
         ui.formError.textContent = "";
-      }
-
-      function renderTabs() {
-        ui.tabs.innerHTML = SETTINGS_TABS.map((tab) => `<button data-settings-tab="${tab}" class="${tab === activeSettingsTab ? "active" : ""}">${tab}</button>`).join("");
-        ui.tabs.querySelectorAll("[data-settings-tab]").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            activeSettingsTab = btn.dataset.settingsTab || "Global";
-            editingEquipmentId = "";
-            renderSettingsView();
-          });
-        });
       }
 
       function renderEquipmentTable() {
@@ -570,7 +721,7 @@
           b.addEventListener("click", () => {
             const id = b.dataset.eqToggle;
             const item = getActiveEquipment().find((x) => x.id === id);
-            if (!item || activeSettingsTab === "Global") return;
+            if (!item) return;
             const updated = { ...item, enabled: item.enabled === false };
             settingsState = TheBaseSettings.upsertEquipment(settingsState, activeSettingsTab, updated);
             saveSettingsState();
@@ -580,7 +731,7 @@
         ui.table.querySelectorAll("[data-eq-delete]").forEach((b) => {
           b.addEventListener("click", () => {
             const id = b.dataset.eqDelete;
-            if (!id || activeSettingsTab === "Global") return;
+            if (!id) return;
             settingsState = TheBaseSettings.removeEquipment(settingsState, activeSettingsTab, id, true);
             saveSettingsState();
             renderSettingsView();
@@ -589,14 +740,8 @@
       }
 
       function renderRules() {
-        const isGlobal = activeSettingsTab === "Global";
-        ui.rulesJson.disabled = isGlobal;
-        document.getElementById("deptRulesSaveBtn").disabled = isGlobal;
-        if (isGlobal) {
-          ui.rulesJson.value = "{}";
-          ui.rulesError.textContent = "";
-          return;
-        }
+        ui.rulesJson.disabled = false;
+        document.getElementById("deptRulesSaveBtn").disabled = false;
         ui.rulesJson.value = JSON.stringify(settingsState.departments[activeSettingsTab]?.rules || {}, null, 2);
         ui.rulesError.textContent = "";
       }
@@ -611,11 +756,121 @@
         ui.globalElecSafety.value = g.safety_factors?.electrical ?? 0.8;
       }
 
+      function renderSidebar() {
+        if (!settingsSidebar) return;
+        const iconSvg = (key) => {
+          const icons = {
+            video: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="14" height="10" rx="2"></rect><path d="M17.5 8.5L21 6.8v7.4l-3.5-1.7z"></path><path d="M6 18.5h9"></path><path d="M10.5 15.5v3"></path></svg>',
+            lighting: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5h10"></path><path d="M8.5 4.5v4l3.5 4v3"></path><path d="M15.5 4.5v4l-3.5 4"></path><path d="M9.5 18h5"></path><path d="M10.5 20h3"></path></svg>',
+            audio: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 14h3l4.5 3.5V6.5L6.5 10h-3z"></path><path d="M14.5 10.2a4.2 4.2 0 0 1 0 3.6"></path><path d="M17.5 8a7.4 7.4 0 0 1 0 8"></path><path d="M20 5.5a11 11 0 0 1 0 13"></path></svg>',
+            rigging: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5h16"></path><path d="M6.5 6.5l5.5 10 5.5-10"></path><path d="M9.2 11.4h5.6"></path><path d="M12 16.5v4"></path><circle cx="12" cy="21" r="1.4"></circle></svg>',
+            power: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 4v6"></path><path d="M15.5 4v6"></path><path d="M6 10h12v4a6 6 0 0 1-12 0z"></path></svg>',
+            venue3d: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"></path><path d="M12 12l8-4.5"></path><path d="M12 12v9"></path><path d="M12 12L4 7.5"></path></svg>',
+            outputs: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="13" height="17" rx="2"></rect><path d="M8 8h5"></path><path d="M8 12h5"></path><path d="M8 16h3"></path><path d="M17 8.5h3.5"></path><path d="M18.8 6.8l1.7 1.7-1.7 1.7"></path></svg>',
+            projects: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="8" height="6" rx="1.5"></rect><rect x="13" y="5" width="8" height="6" rx="1.5"></rect><rect x="8" y="13" width="8" height="6" rx="1.5"></rect><path d="M11 8h2"></path><path d="M12 11v2"></path></svg>',
+            settings: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="7" r="2"></circle><circle cx="16" cy="12" r="2"></circle><circle cx="10" cy="17" r="2"></circle><path d="M10 7h10"></path><path d="M3.5 7H6"></path><path d="M3.5 12H14"></path><path d="M18 12h2.5"></path><path d="M3.5 17H8"></path><path d="M12 17h8.5"></path></svg>'
+          };
+          return icons[key] || icons.settings;
+        };
+        settingsSidebar.innerHTML = MODULE_MENU.map((m) => `
+          <button data-settings-dept="${m.id}" class="${m.id === activeSettingsTab ? "active" : ""}" title="${m.label}">
+            <span class="nav-icon" style="border-color:${m.color};color:${m.color};">${iconSvg(m.iconKey)}</span>
+            <span class="nav-label">${m.label}</span>
+          </button>
+        `).join("");
+        settingsSidebar.querySelectorAll("button[data-settings-dept]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const next = String(btn.getAttribute("data-settings-dept") || "Video");
+            if (!SETTINGS_TABS.includes(next)) return;
+            activeSettingsTab = next;
+            editingEquipmentId = "";
+            renderSettingsView();
+          });
+        });
+      }
+
+      function getPropertyRows() {
+        const tab = String(settingsPropertyTab || "General");
+        if (tab === "General") {
+          return [
+            { k: "Section", v: activeSettingsTab },
+            { k: "Equipment Rows", v: String(getActiveEquipment().length) },
+            { k: "Search", v: ui.search.value ? "Filtered" : "All rows" }
+          ];
+        }
+        if (tab === "Power") {
+          const rows = getActiveEquipment();
+          const totalW = rows.reduce((s, r) => s + (Number(r?.power_use?.watts) || 0), 0);
+          const totalA = rows.reduce((s, r) => s + (Number(r?.power_use?.amps) || 0), 0);
+          return [
+            { k: "Total Watts", v: `${totalW.toFixed(1)} W` },
+            { k: "Total Amps", v: `${totalA.toFixed(2)} A` },
+            { k: "Rows with Power", v: String(rows.filter((r) => Number.isFinite(Number(r?.power_use?.watts)) || Number.isFinite(Number(r?.power_use?.amps))).length) }
+          ];
+        }
+        if (tab === "Physical") {
+          const rows = getActiveEquipment();
+          const totalKg = rows.reduce((s, r) => s + (Number(r?.weight_kg) || 0), 0);
+          return [
+            { k: "Total Weight", v: `${totalKg.toFixed(1)} kg` },
+            { k: "Weighted Rows", v: String(rows.filter((r) => Number.isFinite(Number(r?.weight_kg))).length) },
+            { k: "Unit", v: settingsState.global?.units?.weight || "kg" }
+          ];
+        }
+        if (tab === "Notes") {
+          return [
+            { k: "Rules Editor", v: "Department JSON rules active" },
+            { k: "Data Source", v: "Local Settings Store" },
+            { k: "Sync", v: "Engineering reads from this page" }
+          ];
+        }
+        return [
+          { k: "Category", v: tab },
+          { k: "Status", v: "Configured" }
+        ];
+      }
+
+      function renderPropertyPanel() {
+        if (!settingsPropertyTabs || !settingsPropertyBody || !settingsPropObject) return;
+        settingsPropObject.textContent = activeSettingsTab.toLowerCase();
+        settingsPropertyTabs.innerHTML = SETTINGS_UI_TABS.map((tab) => `<button data-prop-tab="${tab}" class="${tab === settingsPropertyTab ? "active" : ""}">${tab}</button>`).join("");
+        const rows = getPropertyRows();
+        settingsPropertyBody.innerHTML = rows.map((r) => `
+          <div class="property-row">
+            <div class="property-key">${r.k}</div>
+            <div class="property-val">${r.v}</div>
+          </div>
+        `).join("");
+        settingsPropertyTabs.querySelectorAll("[data-prop-tab]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            settingsPropertyTab = btn.getAttribute("data-prop-tab") || "General";
+            renderPropertyPanel();
+          });
+        });
+      }
+
+      function renderSettingsStatus() {
+        if (!settingsStatusPill || !settingsStatusText) return;
+        const eq = getActiveEquipment();
+        const missing = eq.filter((r) => !String(r.manufacturer || "").trim() || !String(r.name || "").trim());
+        const warn = eq.filter((r) => !Number.isFinite(Number(r?.weight_kg)) || (!Number.isFinite(Number(r?.power_use?.watts)) && !Number.isFinite(Number(r?.power_use?.amps))));
+        let level = "READY";
+        let text = "Settings ready";
+        if (missing.length) {
+          level = "ERROR";
+          text = `${missing.length} row(s) missing required identity fields`;
+        } else if (warn.length) {
+          level = "WARN";
+          text = `${warn.length} row(s) missing weight or power values`;
+        }
+        settingsStatusPill.textContent = level;
+        settingsStatusPill.className = `status-pill ${level === "ERROR" ? "error" : (level === "WARN" ? "warn" : "ready")}`;
+        settingsStatusText.textContent = text;
+      }
+
       function renderSettingsView() {
-        renderTabs();
-        const isGlobal = activeSettingsTab === "Global";
+        renderSidebar();
         const themeDeptMap = {
-          Global: "Power",
           Video: "Video",
           Lighting: "Lighting",
           Audio: "Sound",
@@ -624,19 +879,18 @@
           Venue: "Venue"
         };
         applyDeptTheme(themeDeptMap[activeSettingsTab] || "Power");
-        ui.title.textContent = isGlobal ? "Global Settings" : `${activeSettingsTab} Settings`;
-        ui.subtitle.textContent = isGlobal
-          ? "Global defaults for units, safety and exports."
-          : `Manage ${activeSettingsTab} equipment and rules.`;
-        ui.search.disabled = isGlobal;
-        ui.showDisabled.disabled = isGlobal;
-        ["manufacturer", "name", "weight", "powerW", "powerA", "notes"].forEach((k) => { ui[k].disabled = isGlobal; });
-        document.getElementById("equipmentSaveBtn").disabled = isGlobal;
-        document.getElementById("equipmentCancelBtn").disabled = isGlobal;
+        ui.title.textContent = `${activeSettingsTab} Settings`;
+        ui.subtitle.textContent = `Manage ${activeSettingsTab} equipment and rules.`;
+        ui.search.disabled = false;
+        ui.showDisabled.disabled = false;
+        ["manufacturer", "name", "weight", "powerW", "powerA", "notes"].forEach((k) => { ui[k].disabled = false; });
+        document.getElementById("equipmentSaveBtn").disabled = false;
+        document.getElementById("equipmentCancelBtn").disabled = false;
         renderEquipmentTable();
         renderRules();
         renderGlobals();
-        if (isGlobal) resetForm();
+        renderPropertyPanel();
+        renderSettingsStatus();
       }
 
       function validateEquipmentInput() {
@@ -654,7 +908,6 @@
       }
 
       document.getElementById("equipmentSaveBtn")?.addEventListener("click", () => {
-        if (activeSettingsTab === "Global") return;
         const v = validateEquipmentInput();
         if (!v.ok) {
           ui.formError.textContent = v.message;
@@ -682,7 +935,6 @@
       });
 
       document.getElementById("deptRulesSaveBtn")?.addEventListener("click", () => {
-        if (activeSettingsTab === "Global") return;
         try {
           const parsed = JSON.parse(String(ui.rulesJson.value || "{}"));
           settingsState.departments[activeSettingsTab].rules = parsed && typeof parsed === "object" ? parsed : {};

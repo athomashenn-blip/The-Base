@@ -17,12 +17,15 @@
         --theme-bg-c: #111217;
         --theme-glow-a: #6a738420;
         --theme-glow-b: #8d97aa1a;
-        --theme-header-a: #282434;
-        --theme-header-b: #201d2c;
-        --theme-main-a: #24222e;
-        --theme-main-b: #1f1d29;
-        --theme-card-a: #2a2736;
-        --theme-card-b: #22202d;
+        --theme-header-a: #2b3039;
+        --theme-header-b: #232831;
+        --theme-main-a: #252932;
+        --theme-main-b: #20242c;
+        --theme-card-a: #303640;
+        --theme-card-b: #282e38;
+        --theme-input: #1b1923;
+        --theme-btn-a: #343946;
+        --theme-btn-b: #2a2f3a;
         --logo-hue: 0deg;
       }
       * { box-sizing: border-box; }
@@ -116,13 +119,133 @@
         gap: 0.4rem;
         align-items: center;
       }
-      .main {
+      .layout {
         margin-top: 0.8rem;
+        display: grid;
+        grid-template-columns: 74px minmax(0, 1fr);
+        gap: 0.8rem;
+        align-items: start;
+      }
+      .nav {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 1rem 0.8rem;
+        background: linear-gradient(180deg, var(--theme-main-a), var(--theme-main-b) 74%, color-mix(in srgb, var(--theme-main-b) 80%, #000 20%));
+        display: grid;
+        gap: 0.5rem;
+        align-content: start;
+        width: 74px;
+        overflow: visible;
+        position: relative;
+        z-index: 35;
+      }
+      .nav button {
+        width: 100%;
+        text-align: left;
+        border: 1px solid var(--btn-line);
+        background: linear-gradient(180deg, var(--theme-btn-a), var(--theme-btn-b));
+        border-radius: 12px;
+        padding: 0.56rem 0.55rem;
+        color: var(--text);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        position: relative;
+        overflow: visible;
+      }
+      .nav button.active { border-color: var(--btn-active); background: color-mix(in srgb, var(--btn-active) 20%, #1a1c25 80%); }
+      .nav-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 8px;
+        border: 1px solid var(--line-2);
+        display: inline-grid;
+        place-items: center;
+        flex: 0 0 auto;
+        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+      }
+      .nav-icon svg {
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .nav-label {
+        position: absolute;
+        left: calc(100% + 10px);
+        top: 50%;
+        transform: translateY(-50%);
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: auto;
+        border: 1px solid var(--line-2);
+        border-radius: 10px;
+        padding: 0.34rem 0.56rem;
+        background: linear-gradient(180deg, var(--theme-card-a), var(--theme-card-b));
+        box-shadow: 0 8px 20px #0000004f;
+        transition: opacity 140ms ease, transform 140ms ease;
+        z-index: 60;
+      }
+      .nav button:hover .nav-label,
+      .nav button:focus-visible .nav-label {
+        opacity: 1;
+      }
+      .nav button:hover .nav-icon,
+      .nav button:focus-visible .nav-icon {
+        transform: scale(1.6);
+        border-color: var(--btn-active);
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--btn-active), #000 50%);
+      }
+      .main {
         border: 1px solid var(--line);
         border-radius: 22px;
         background: linear-gradient(180deg, var(--theme-main-a), var(--theme-main-b) 78%);
         padding: 1rem;
+        min-height: calc(100vh - 182px);
       }
+      .properties-panel {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: linear-gradient(180deg, var(--theme-main-a), var(--theme-main-b) 78%);
+        padding: 0.7rem;
+        position: sticky;
+        top: 0.8rem;
+        max-height: calc(100vh - 112px);
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        gap: 0.55rem;
+      }
+      .property-tabs {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 0.35rem;
+      }
+      .property-tabs button {
+        padding: 0.35rem 0.25rem;
+        font-size: 0.72rem;
+      }
+      .property-panel-body {
+        overflow: auto;
+        border: 1px solid var(--line-2);
+        border-radius: 10px;
+        padding: 0.5rem;
+        background: var(--theme-input);
+      }
+      .property-row {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr);
+        gap: 0.45rem;
+        align-items: center;
+        padding: 0.28rem 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--line-2), transparent 50%);
+      }
+      .property-row:last-child { border-bottom: 0; }
+      .property-key { color: var(--muted); font-size: 0.75rem; }
+      .property-val { font-size: 0.82rem; word-break: break-word; }
       .card {
         border: 1px solid var(--line-2);
         border-radius: 14px;
@@ -137,25 +260,6 @@
         gap: 0.7rem;
         flex-wrap: wrap;
       }
-      .tabs {
-        margin-top: 0.65rem;
-        display: flex;
-        gap: 0.45rem;
-        flex-wrap: wrap;
-      }
-      .tabs button {
-        font: inherit;
-        color: inherit;
-        border: 1px solid var(--btn-line);
-        background: linear-gradient(180deg, #343946, #2a2f3a);
-        border-radius: 10px;
-        padding: 0.45rem 0.72rem;
-        cursor: pointer;
-      }
-      .tabs button.active {
-        border-color: var(--btn-active);
-        background: linear-gradient(180deg, color-mix(in srgb, var(--btn-active) 38%, #323846 62%), color-mix(in srgb, var(--btn-line) 58%, #262b36 42%));
-      }
       .inputs {
         display: flex;
         gap: 0.45rem;
@@ -163,7 +267,7 @@
         align-items: center;
       }
       input, select {
-        background: #181b25;
+        background: var(--theme-input);
         border: 1px solid var(--line-2);
         color: var(--text);
         border-radius: 8px;
@@ -173,7 +277,7 @@
       .btn {
         border: 1px solid var(--btn-line);
         border-radius: 8px;
-        background: linear-gradient(180deg, #343946, #2a2f3a);
+        background: linear-gradient(180deg, var(--theme-btn-a), var(--theme-btn-b));
         color: var(--text);
         padding: 0.4rem 0.62rem;
         cursor: pointer;
@@ -208,21 +312,26 @@
       .kpi b { font-size: 1rem; }
       .table-wrap {
         margin-top: 0.75rem;
-        border: 1px solid var(--line);
+        border: 1px solid var(--line-2);
         border-radius: 10px;
         overflow: auto;
         max-height: 42vh;
+        background: #1a1f27;
       }
       table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
         font-size: 0.82rem;
       }
       th, td {
-        border: 1px solid var(--line);
+        border: 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--line-2), transparent 34%);
         padding: 0.38rem 0.42rem;
         vertical-align: top;
       }
+      tbody tr:nth-child(even) td { background: color-mix(in srgb, #1f242d, transparent 38%); }
+      tbody tr:hover td { background: color-mix(in srgb, var(--btn-active), #1d232c 88%); }
       th {
         text-align: left;
         color: var(--muted);
@@ -230,12 +339,135 @@
         position: sticky;
         top: 0;
       }
+      .audio-sheet-grid {
+        margin-top: 0.75rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+      }
+      .audio-sheet-card {
+        border: 1px solid var(--line-2);
+        border-radius: 10px;
+        padding: 0.5rem;
+        background: linear-gradient(170deg, var(--theme-card-a), var(--theme-card-b));
+      }
+      .audio-sheet-card h4 {
+        margin: 0;
+        font-size: 0.9rem;
+      }
+      .audio-sheet-card .table-wrap {
+        margin-top: 0.45rem;
+        max-height: none;
+        overflow: visible;
+      }
+      .audio-print-page {
+        border: 1px solid var(--line-2);
+        border-radius: 12px;
+        padding: 0.65rem;
+        background: linear-gradient(170deg, var(--theme-card-a), var(--theme-card-b));
+      }
+      .audio-print-page .audio-sheet-grid {
+        margin-top: 0.45rem;
+      }
+      .pdf-viewer {
+        margin-top: 0.75rem;
+        border: 1px solid var(--line-2);
+        border-radius: 12px;
+        background: #1f242c;
+        overflow: hidden;
+      }
+      .pdf-viewer-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.55rem;
+        padding: 0.5rem 0.65rem;
+        border-bottom: 1px solid color-mix(in srgb, var(--line-2), transparent 20%);
+        background: #2c323b;
+      }
+      .pdf-viewer-pages {
+        max-height: 72vh;
+        overflow: auto;
+        padding: 1rem 0.8rem 1.4rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+        gap: 1rem;
+        align-items: start;
+        background: #21262f;
+      }
+      .audio-print-page {
+        width: 100%;
+        max-width: 520px;
+        justify-self: center;
+        aspect-ratio: 210 / 297;
+        border: 1px solid #d2d7e2;
+        border-radius: 0;
+        padding: 0.52rem;
+        background: #fff;
+        color: #121212;
+        box-shadow: 0 10px 28px #00000055;
+        overflow: hidden;
+      }
+      .audio-print-page h4,
+      .audio-print-page .muted,
+      .audio-print-page .badge,
+      .audio-print-page th,
+      .audio-print-page td,
+      .audio-print-page b {
+        color: #111 !important;
+      }
+      .audio-print-page .audio-sheet-card {
+        border: 1px solid #d8dbe4;
+        background: #fff;
+        padding: 0.38rem;
+      }
+      .audio-print-page .audio-sheet-card .table-wrap {
+        border-color: #d8dbe4;
+        background: #fff;
+      }
+      .audio-print-page table {
+        font-size: 0.76rem;
+      }
+      .audio-print-page th {
+        position: static;
+        background: #f4f6fa;
+      }
+      .audio-print-page tbody tr:nth-child(even) td,
+      .audio-print-page tbody tr:hover td {
+        background: transparent;
+      }
       .badge {
         font-size: 0.74rem;
         border: 1px solid var(--btn-line);
         border-radius: 999px;
         padding: 0.16rem 0.5rem;
       }
+      .system-status-bar {
+        position: fixed;
+        left: 0.55rem;
+        right: 0.55rem;
+        bottom: 0.35rem;
+        border: 1px solid var(--line-2);
+        border-radius: 10px;
+        background: linear-gradient(180deg, #1a1f29f2, #141923f2);
+        padding: 0.35rem 0.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.7rem;
+        z-index: 30;
+      }
+      .status-pill {
+        border: 1px solid var(--line-2);
+        border-radius: 999px;
+        padding: 0.12rem 0.48rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+      }
+      .status-pill.ready { border-color: #1f9e5d; color: #7aefb4; }
+      .status-pill.warn { border-color: #b2731b; color: #ffc982; }
+      .status-pill.error { border-color: #b73758; color: #ff97b1; }
+      .status-text { font-size: 0.76rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 56vw; }
       body[data-dept="Video"] {
         --logo-hue: -150deg;
         --line: #3e784f; --line-2: #4d8f61; --btn-line: #579b67; --btn-active: #70c984;
@@ -285,18 +517,119 @@
         --theme-bg-c: #111217;
         --theme-glow-a: #6a738420;
         --theme-glow-b: #8d97aa1a;
-        --theme-header-a: #282434;
-        --theme-header-b: #201d2c;
-        --theme-main-a: #24222e;
-        --theme-main-b: #1f1d29;
-        --theme-card-a: #2a2736;
-        --theme-card-b: #22202d;
+        --theme-header-a: #2b3039;
+        --theme-header-b: #232831;
+        --theme-main-a: #252932;
+        --theme-main-b: #20242c;
+        --theme-card-a: #303640;
+        --theme-card-b: #282e38;
+        --theme-input: #1b1923;
+        --theme-btn-a: #343946;
+        --theme-btn-b: #2a2f3a;
       }
       @media (max-width: 1040px) {
+        .layout { grid-template-columns: 74px 1fr; }
+        .properties-panel { display: none; }
         .grid { grid-template-columns: 1fr 1fr; }
       }
       @media (max-width: 760px) {
+        .layout { grid-template-columns: 1fr; }
+        .nav { width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .nav .nav-label {
+          position: static;
+          transform: none;
+          opacity: 1;
+          pointer-events: auto;
+          border: 0;
+          box-shadow: none;
+          padding: 0;
+          background: transparent;
+        }
         .grid { grid-template-columns: 1fr; }
+        .audio-sheet-grid { grid-template-columns: 1fr; }
+        .pdf-viewer-pages {
+          max-height: none;
+          padding: 0.65rem 0.45rem 0.95rem;
+          grid-template-columns: 1fr;
+        }
+        .audio-print-page {
+          width: 100%;
+          aspect-ratio: auto;
+          min-height: 92vh;
+        }
+      }
+      @page {
+        size: A4 portrait;
+        margin: 12mm;
+      }
+      @media print {
+        body {
+          background: #fff !important;
+          color: #111 !important;
+        }
+        .header,
+        .nav,
+        .properties-panel,
+        .system-status-bar,
+        .inputs,
+        .pdf-viewer-toolbar,
+        #reportProjectSel,
+        #reportDateFrom,
+        #reportDateTo,
+        #reportCountBadge {
+          display: none !important;
+        }
+        .shell, .layout, .main {
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          border: 0 !important;
+          background: #fff !important;
+        }
+        .layout { display: block !important; }
+        .card, .section, .audio-sheet-card, .table-wrap {
+          border: 1px solid #d4d7df !important;
+          background: #fff !important;
+          box-shadow: none !important;
+          break-inside: avoid-page;
+        }
+        .audio-print-page {
+          border: 0 !important;
+          padding: 0 !important;
+          margin: 0 0 8mm 0 !important;
+          background: #fff !important;
+          box-shadow: none !important;
+          aspect-ratio: auto !important;
+          min-height: 0 !important;
+          break-after: page;
+        }
+        .audio-print-page:last-child {
+          break-after: auto;
+        }
+        .pdf-viewer,
+        .pdf-viewer-pages {
+          border: 0 !important;
+          background: #fff !important;
+          padding: 0 !important;
+          max-height: none !important;
+          overflow: visible !important;
+        }
+        h2, h3, h4, .muted, .badge, th, td, b {
+          color: #111 !important;
+        }
+        .table-wrap {
+          max-height: none !important;
+          overflow: visible !important;
+        }
+        th {
+          position: static !important;
+          background: #f4f6fa !important;
+        }
+        tbody tr:nth-child(even) td,
+        tbody tr:hover td {
+          background: transparent !important;
+        }
       }
     </style>
   </head>
@@ -313,43 +646,44 @@
         </div>
         <div class="header-links">
           <a class="header-link-btn" href="projects.html">Projects</a>
-          <div class="header-link-group">
-            <a class="header-link-btn" href="index.html">Engineering</a>
-            <div class="header-dropdown" aria-label="Engineering Departments">
-              <a href="index.html?dept=Video">Video</a>
-              <a href="index.html?dept=Lighting">Lighting</a>
-              <a href="index.html?dept=Sound">Sound</a>
-              <a href="index.html?dept=Rigging">Rigging</a>
-              <a href="index.html?dept=Power">Power</a>
-              <a href="index.html?dept=Venue">Venue</a>
-            </div>
-          </div>
+          <a class="header-link-btn" href="index.html">Engineering</a>
           <a class="header-link-btn active" href="reports.html">Reports</a>
           <a class="header-link-btn" href="settings.html">Settings</a>
         </div>
         <div class="header-actions"></div>
       </header>
-      <main class="main">
-        <div class="card">
+      <section class="layout">
+        <aside class="nav" id="reportsSidebar" aria-label="Modules"></aside>
+        <main class="main">
+          <div class="card">
           <div class="toolbar">
             <h2>Technical Reports</h2>
             <span class="badge" id="reportCountBadge">0 report rows</span>
           </div>
-          <div class="muted">All reports on one page with department filtering and exports.</div>
+          <div class="muted">All departments in one engineering report view.</div>
           <div class="inputs" style="margin-top:0.55rem;">
             <select id="reportProjectSel">
               <option value="current">Current Project</option>
             </select>
             <input id="reportDateFrom" type="date" />
             <input id="reportDateTo" type="date" />
-            <button class="btn" id="exportCsvBtn">Export CSV</button>
-            <button class="btn" id="exportJsonBtn">Export JSON</button>
+            <button class="btn" id="exportPdfBtn" style="display:none;">Export PDF</button>
           </div>
-          <div class="tabs" id="reportTabs"></div>
           <div id="reportContent" class="sections"></div>
-        </div>
-      </main>
+          </div>
+        </main>
+      </section>
     </div>
+    <footer class="system-status-bar" id="reportsStatusBar">
+      <div style="display:flex;align-items:center;gap:0.65rem;min-width:0;">
+        <span class="status-pill ready" id="reportsStatusPill">READY</span>
+        <span class="status-text" id="reportsStatusText">Reports ready</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.65rem;">
+        <span class="badge">Engineering Data Mode</span>
+        <span class="muted" style="font-size:0.76rem;" id="reportsActiveModule">Reports</span>
+      </div>
+    </footer>
     <script src="data/lighting-fixtures.js"></script>
     <script src="data/power-calculator.js"></script>
     <script src="data/settings-store.js"></script>
@@ -363,17 +697,173 @@
         });
       }
       const reportThemeMap = { All: "Power", Video: "Video", Lighting: "Lighting", Audio: "Sound", Rigging: "Rigging", Power: "Power", Venue: "Venue" };
+      const APP_MEMORY_KEY = "thebase.app.memory.v1";
       function applyDeptTheme(dept) {
         const mapped = reportThemeMap[dept] || "Video";
         document.body.setAttribute("data-dept", mapped);
         localStorage.setItem("thebase.activeDept", mapped);
       }
       const departments = ["Video", "Lighting", "Audio", "Rigging", "Power", "Venue"];
-      let activeTab = "All";
+      let activeTab = "Video";
+      const reportsSidebar = document.getElementById("reportsSidebar");
+      const reportsPropertyTabs = document.getElementById("reportsPropertyTabs");
+      const reportsPropertyBody = document.getElementById("reportsPropertyBody");
+      const reportsPropObject = document.getElementById("reportsPropObject");
+      const reportsStatusPill = document.getElementById("reportsStatusPill");
+      const reportsStatusText = document.getElementById("reportsStatusText");
+      const REPORT_PROP_TABS = ["General", "Signal / Routing", "Power", "Network", "Physical", "Notes"];
+      let reportPropertyTab = "General";
+      const MODULE_MENU = [
+        { jumpTo: "Video", label: "Video", iconKey: "video", color: "#57b36a", active: true },
+        { jumpTo: "Lighting", label: "Lighting", iconKey: "lighting", color: "#e25555" },
+        { jumpTo: "Audio", label: "Audio", iconKey: "audio", color: "#4f82ff" },
+        { jumpTo: "Rigging", label: "Rigging", iconKey: "rigging", color: "#f08a3c" },
+        { jumpTo: "Power", label: "Power", iconKey: "power", color: "#8b5cff" },
+        { jumpTo: "Venue", label: "Venue", iconKey: "venue3d", color: "#35bdb0" }
+      ];
+
+      function renderReportsSidebar() {
+        if (!reportsSidebar) return;
+        const iconSvg = (key) => {
+          const icons = {
+            video: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="14" height="10" rx="2"></rect><path d="M17.5 8.5L21 6.8v7.4l-3.5-1.7z"></path><path d="M6 18.5h9"></path><path d="M10.5 15.5v3"></path></svg>',
+            lighting: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5h10"></path><path d="M8.5 4.5v4l3.5 4v3"></path><path d="M15.5 4.5v4l-3.5 4"></path><path d="M9.5 18h5"></path><path d="M10.5 20h3"></path></svg>',
+            audio: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 14h3l4.5 3.5V6.5L6.5 10h-3z"></path><path d="M14.5 10.2a4.2 4.2 0 0 1 0 3.6"></path><path d="M17.5 8a7.4 7.4 0 0 1 0 8"></path><path d="M20 5.5a11 11 0 0 1 0 13"></path></svg>',
+            rigging: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5h16"></path><path d="M6.5 6.5l5.5 10 5.5-10"></path><path d="M9.2 11.4h5.6"></path><path d="M12 16.5v4"></path><circle cx="12" cy="21" r="1.4"></circle></svg>',
+            power: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 4v6"></path><path d="M15.5 4v6"></path><path d="M6 10h12v4a6 6 0 0 1-12 0z"></path></svg>',
+            venue3d: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"></path><path d="M12 12l8-4.5"></path><path d="M12 12v9"></path><path d="M12 12L4 7.5"></path></svg>',
+            outputs: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="13" height="17" rx="2"></rect><path d="M8 8h5"></path><path d="M8 12h5"></path><path d="M8 16h3"></path><path d="M17 8.5h3.5"></path><path d="M18.8 6.8l1.7 1.7-1.7 1.7"></path></svg>',
+            projects: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="8" height="6" rx="1.5"></rect><rect x="13" y="5" width="8" height="6" rx="1.5"></rect><rect x="8" y="13" width="8" height="6" rx="1.5"></rect><path d="M11 8h2"></path><path d="M12 11v2"></path></svg>',
+            settings: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="7" r="2"></circle><circle cx="16" cy="12" r="2"></circle><circle cx="10" cy="17" r="2"></circle><path d="M10 7h10"></path><path d="M3.5 7H6"></path><path d="M3.5 12H14"></path><path d="M18 12h2.5"></path><path d="M3.5 17H8"></path><path d="M12 17h8.5"></path></svg>'
+          };
+          return icons[key] || icons.settings;
+        };
+        reportsSidebar.innerHTML = MODULE_MENU.map((m) => {
+          if (m.jumpTo) {
+            return `
+            <button class="${m.active ? "active" : ""}" title="${m.label}" data-report-jump="${m.jumpTo}">
+                <span class="nav-icon" style="border-color:${m.color};color:${m.color};">${iconSvg(m.iconKey)}</span>
+                <span class="nav-label">${m.label}</span>
+              </button>
+            `;
+          }
+          return `
+            <a href="${m.href}" style="text-decoration:none;">
+              <button title="${m.label}">
+                <span class="nav-icon" style="border-color:${m.color};color:${m.color};">${iconSvg(m.iconKey)}</span>
+                <span class="nav-label">${m.label}</span>
+              </button>
+            </a>
+          `;
+        }).join("");
+
+        reportsSidebar.querySelectorAll("button[data-report-jump]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const dept = String(btn.getAttribute("data-report-jump") || "");
+            reportsSidebar.querySelectorAll("button[data-report-jump]").forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            activeTab = dept;
+            renderReports();
+          });
+        });
+      }
+
+      function getReportPropertyRows() {
+        const data = buildReports();
+        const tab = String(reportPropertyTab || "General");
+        if (tab === "General") {
+          const activeRows = data.byDept?.[activeTab]?.rows || [];
+          return [
+            { k: "View", v: activeTab },
+            { k: "Rows", v: String(activeRows.length) },
+            { k: "Departments", v: String(departments.length) }
+          ];
+        }
+        if (tab === "Power") {
+          const totalKw = departments.reduce((s, d) => s + Number(data.byDept?.[d]?.kpis?.find((k) => k.label === "Power (kW)")?.value || 0), 0);
+          return [
+            { k: "Total Power", v: `${totalKw.toFixed(2)} kW` },
+            { k: "Power Graph", v: "Visible in Power report section" },
+            { k: "Status", v: "Planning-grade summary" }
+          ];
+        }
+        if (tab === "Physical") {
+          const totalKg = departments.reduce((s, d) => s + Number(data.byDept?.[d]?.kpis?.find((k) => k.label === "Weight (kg)")?.value || 0), 0);
+          return [
+            { k: "Total Weight", v: `${totalKg.toFixed(1)} kg` },
+            { k: "Rigging Graph", v: "Visible in Rigging report section" }
+          ];
+        }
+        return [{ k: "Category", v: tab }, { k: "Mode", v: "Structured report output" }];
+      }
+
+      function renderReportsProperties() {
+        if (!reportsPropertyTabs || !reportsPropertyBody || !reportsPropObject) return;
+        reportsPropObject.textContent = (activeTab || "all").toLowerCase();
+        reportsPropertyTabs.innerHTML = REPORT_PROP_TABS.map((tab) => `<button data-report-prop-tab="${tab}" class="${tab === reportPropertyTab ? "active" : ""}">${tab}</button>`).join("");
+        reportsPropertyBody.innerHTML = getReportPropertyRows().map((r) => `
+          <div class="property-row">
+            <div class="property-key">${r.k}</div>
+            <div class="property-val">${r.v}</div>
+          </div>
+        `).join("");
+        reportsPropertyTabs.querySelectorAll("[data-report-prop-tab]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            reportPropertyTab = btn.getAttribute("data-report-prop-tab") || "General";
+            renderReportsProperties();
+          });
+        });
+      }
+
+      function renderReportsStatus() {
+        if (!reportsStatusPill || !reportsStatusText) return;
+        const data = buildReports();
+        const warnCount = (data?.all?.diagnostics || []).length;
+        let level = "READY";
+        let text = "Report pack ready";
+        if (warnCount > 0) {
+          level = warnCount > 8 ? "ERROR" : "WARN";
+          text = `${warnCount} diagnostics flagged in report data`;
+        }
+        reportsStatusPill.textContent = level;
+        reportsStatusPill.className = `status-pill ${level === "ERROR" ? "error" : (level === "WARN" ? "warn" : "ready")}`;
+        reportsStatusText.textContent = text;
+      }
 
       function loadSettings() {
         if (!window.TheBaseSettings) return null;
         return TheBaseSettings.loadSettings();
+      }
+      function loadAppMemorySnapshot() {
+        try {
+          const raw = localStorage.getItem(APP_MEMORY_KEY);
+          if (!raw) return null;
+          const parsed = JSON.parse(raw);
+          return parsed && typeof parsed === "object" ? parsed : null;
+        } catch (_) {
+          return null;
+        }
+      }
+      function getAudioIoRows() {
+        const snap = loadAppMemorySnapshot();
+        const audio = snap?.audioState && typeof snap.audioState === "object" ? snap.audioState : null;
+        const inputs = Array.isArray(audio?.console?.inputs) ? audio.console.inputs : [];
+        const outputs = Array.isArray(audio?.console?.outputs) ? audio.console.outputs : [];
+        const inRows = inputs.map((row, idx) => ({
+          dir: "Input",
+          ch: Math.max(1, Number(row?.patchChannel || idx + 1)),
+          name: String(row?.name || ""),
+          type: String(row?.sourceType || "wired"),
+          location: String(row?.stageLocation === "desk" ? "Desk" : "Stage Box")
+        }));
+        const outRows = outputs.map((row, idx) => ({
+          dir: "Output",
+          ch: Math.max(1, Number(row?.patchChannel || idx + 1)),
+          name: String(row?.name || ""),
+          type: String(row?.sourceType || "wired"),
+          location: String(row?.stageLocation === "desk" ? "Desk" : "Stage Box")
+        }));
+        return [...inRows, ...outRows].sort((a, b) => (a.dir === b.dir ? a.ch - b.ch : (a.dir === "Input" ? -1 : 1)));
       }
       function fmt(value, digits = 1) {
         const n = Number(value);
@@ -446,17 +936,95 @@
       }
 
       function renderSection(dept, report) {
+        const showAudioPdfPreview = dept === "Audio";
         let graphHtml = "";
         if (dept === "Rigging") graphHtml = renderRiggingGraph();
         if (dept === "Power") graphHtml = renderPowerGraph();
+        const audioIoRows = dept === "Audio" ? getAudioIoRows() : [];
+        const audioInputs = audioIoRows.filter((r) => r.dir === "Input");
+        const audioOutputs = audioIoRows.filter((r) => r.dir === "Output");
+        const chunkRows = (rows, size = 26) => {
+          const out = [];
+          for (let i = 0; i < rows.length; i += size) out.push(rows.slice(i, i + size));
+          return out.length ? out : [[]];
+        };
+        const inputPages = chunkRows(audioInputs, 26);
+        const outputPages = chunkRows(audioOutputs, 26);
+        const totalPages = Math.max(inputPages.length, outputPages.length);
+        const audioIoHtml = showAudioPdfPreview ? `
+          <div class="pdf-viewer">
+            <div class="pdf-viewer-toolbar">
+              <b>Audio Patch Sheet (Preview)</b>
+              <span class="muted">${totalPages} page${totalPages === 1 ? "" : "s"} | Inputs ${audioInputs.length} | Outputs ${audioOutputs.length}</span>
+            </div>
+            <div class="pdf-viewer-pages">
+              ${Array.from({ length: totalPages }, (_, pageIndex) => {
+                const inRows = inputPages[pageIndex] || [];
+                const outRows = outputPages[pageIndex] || [];
+                return `
+                  <div class="audio-print-page">
+                    <div class="toolbar">
+                      <h4>Audio Patch Sheet - Page ${pageIndex + 1} of ${totalPages}</h4>
+                      <span class="badge">A4</span>
+                    </div>
+                    <div class="audio-sheet-grid">
+                      <div class="audio-sheet-card">
+                        <div class="toolbar">
+                          <h4>Audio Inputs ${totalPages > 1 ? `(Part ${pageIndex + 1})` : ""}</h4>
+                          <span class="badge">${inRows.length} rows</span>
+                        </div>
+                        <div class="table-wrap">
+                          <table>
+                            <thead><tr><th>Channel</th><th>Name</th><th>Type</th><th>Location</th></tr></thead>
+                            <tbody>
+                              ${inRows.map((r) => `<tr><td>${r.ch}</td><td>${r.name || "-"}</td><td>${r.type}</td><td>${r.location}</td></tr>`).join("") || '<tr><td colspan="4" class="muted">No input rows on this page.</td></tr>'}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="audio-sheet-card">
+                        <div class="toolbar">
+                          <h4>Audio Outputs ${totalPages > 1 ? `(Part ${pageIndex + 1})` : ""}</h4>
+                          <span class="badge">${outRows.length} rows</span>
+                        </div>
+                        <div class="table-wrap">
+                          <table>
+                            <thead><tr><th>Channel</th><th>Name</th><th>Type</th><th>Location</th></tr></thead>
+                            <tbody>
+                              ${outRows.map((r) => `<tr><td>${r.ch}</td><td>${r.name || "-"}</td><td>${r.type}</td><td>${r.location}</td></tr>`).join("") || '<tr><td colspan="4" class="muted">No output rows on this page.</td></tr>'}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        ` : "";
+        if (dept === "Audio") {
+          return `
+            <section class="section" id="report-section-audio">
+              <div class="toolbar">
+                <h3>Audio</h3>
+                <span class="badge">Patch Preview</span>
+              </div>
+              <div class="muted" style="margin-top:0.45rem;">Preview the patch sheet below before exporting PDF.</div>
+              ${renderTopKpis(report, false)}
+              ${audioIoHtml}
+            </section>
+          `;
+        }
         return `
-          <section class="section">
+          <section class="section" id="report-section-${String(dept).toLowerCase()}">
             <div class="toolbar">
               <h3>${dept}</h3>
               <span class="badge">${report.rows.length} rows</span>
             </div>
             ${renderTopKpis(report, false)}
             ${graphHtml}
+            ${audioIoHtml}
             <div class="table-wrap">
               <table>
                 <thead><tr><th>Category</th><th>Item</th><th>Value</th><th>Notes / Warnings</th></tr></thead>
@@ -598,39 +1166,16 @@
       function renderReports() {
         const root = document.getElementById("reportContent");
         const badge = document.getElementById("reportCountBadge");
+        const exportPdfBtn = document.getElementById("exportPdfBtn");
         if (!root || !badge) return;
+        if (exportPdfBtn) exportPdfBtn.style.display = activeTab === "Audio" ? "inline-block" : "none";
         const data = buildReports();
-        if (activeTab === "All") {
-          const totalRows = data.all.rows.length;
-          badge.textContent = `${totalRows} report rows`;
-          applyDeptTheme("All");
-          root.innerHTML = `
-            <section class="section">
-              <div class="toolbar">
-                <h3>All Reports</h3>
-                <span class="badge">${new Date().toLocaleString()}</span>
-              </div>
-              ${renderTopKpis(data.all, true)}
-            </section>
-            ${departments.map((d) => renderSection(d, data.byDept[d])).join("")}
-            <section class="section">
-              <h3>Diagnostics</h3>
-              <div class="table-wrap">
-                <table>
-                  <thead><tr><th>Status</th><th>Message</th></tr></thead>
-                  <tbody>
-                    ${data.all.diagnostics.map((w) => `<tr><td>WARN</td><td>${w}</td></tr>`).join("") || '<tr><td>PASS</td><td>No cross-department warnings.</td></tr>'}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          `;
-          return;
-        }
         const report = data.byDept[activeTab] || { rows: [], kpis: [] };
         badge.textContent = `${report.rows.length} report rows`;
         applyDeptTheme(activeTab);
         root.innerHTML = renderSection(activeTab, report);
+        renderReportsProperties();
+        renderReportsStatus();
       }
 
       function exportRowsAsCsv() {
@@ -671,22 +1216,105 @@
         URL.revokeObjectURL(url);
       }
 
+      function exportAudioPatchPdf() {
+        const audioIoRows = getAudioIoRows();
+        const inputs = audioIoRows.filter((r) => r.dir === "Input").sort((a, b) => a.ch - b.ch);
+        const outputs = audioIoRows.filter((r) => r.dir === "Output").sort((a, b) => a.ch - b.ch);
+        const now = new Date();
+        const stamp = now.toLocaleString();
+        const html = `
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The Base - Audio Patch List</title>
+    <style>
+      @page { size: A4 portrait; margin: 12mm; }
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: "Avenir Next", "Segoe UI", sans-serif; color: #111; background: #fff; }
+      .sheet { width: 100%; page-break-after: always; }
+      .sheet:last-child { page-break-after: auto; }
+      .head { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #cfd4df; margin-bottom: 6mm; padding-bottom: 2mm; }
+      h1 { margin: 0; font-size: 18px; letter-spacing: 0.02em; }
+      .meta { font-size: 11px; color: #555; text-align: right; }
+      .block { margin-bottom: 6mm; }
+      .block h2 { margin: 0 0 3mm 0; font-size: 14px; }
+      table { width: 100%; border-collapse: collapse; font-size: 11px; }
+      th, td { border: 1px solid #d7dbe4; padding: 1.8mm 2mm; text-align: left; vertical-align: top; }
+      th { background: #f3f5f9; }
+      .muted { color: #777; font-size: 11px; margin-top: 2mm; }
+    </style>
+  </head>
+  <body>
+    <section class="sheet">
+      <div class="head">
+        <h1>THE BASE - AUDIO PATCH LIST</h1>
+        <div class="meta">Generated: ${stamp}</div>
+      </div>
+      <div class="block">
+        <h2>Inputs (${inputs.length})</h2>
+        <table>
+          <thead><tr><th>Channel</th><th>Name</th><th>Type</th><th>Location</th></tr></thead>
+          <tbody>
+            ${inputs.map((r) => `<tr><td>${r.ch}</td><td>${r.name || "-"}</td><td>${r.type || "-"}</td><td>${r.location || "-"}</td></tr>`).join("") || `<tr><td colspan="4">No input channels.</td></tr>`}
+          </tbody>
+        </table>
+      </div>
+      <div class="block">
+        <h2>Outputs (${outputs.length})</h2>
+        <table>
+          <thead><tr><th>Channel</th><th>Name</th><th>Type</th><th>Location</th></tr></thead>
+          <tbody>
+            ${outputs.map((r) => `<tr><td>${r.ch}</td><td>${r.name || "-"}</td><td>${r.type || "-"}</td><td>${r.location || "-"}</td></tr>`).join("") || `<tr><td colspan="4">No output channels.</td></tr>`}
+          </tbody>
+        </table>
+      </div>
+      <div class="muted">Planning-grade patch output from current project memory.</div>
+    </section>
+  </body>
+</html>
+        `;
+        const frame = document.createElement("iframe");
+        frame.style.position = "fixed";
+        frame.style.right = "0";
+        frame.style.bottom = "0";
+        frame.style.width = "0";
+        frame.style.height = "0";
+        frame.style.border = "0";
+        frame.setAttribute("aria-hidden", "true");
+        document.body.appendChild(frame);
+        const doc = frame.contentWindow?.document;
+        if (!doc || !frame.contentWindow) {
+          frame.remove();
+          alert("Unable to generate PDF preview.");
+          return;
+        }
+        frame.onload = () => {
+          try {
+            frame.contentWindow.focus();
+            frame.contentWindow.print();
+          } finally {
+            setTimeout(() => frame.remove(), 1500);
+          }
+        };
+        doc.open();
+        doc.write(html);
+        doc.close();
+        setTimeout(() => {
+          if (document.body.contains(frame)) {
+            try {
+              frame.contentWindow.focus();
+              frame.contentWindow.print();
+            } finally {
+              setTimeout(() => frame.remove(), 1500);
+            }
+          }
+        }, 300);
+      }
+
       function initReports() {
-        const storedDept = localStorage.getItem("thebase.activeDept") || "Video";
-        const tabs = document.getElementById("reportTabs");
-        if (!tabs) return;
-        const allTabs = ["All", ...departments];
-        const preferred = allTabs.includes(storedDept) ? storedDept : "All";
-        activeTab = preferred;
-        tabs.innerHTML = allTabs.map((d) => `<button data-dept="${d}" class="${d === preferred ? "active" : ""}">${d === "All" ? "All Reports" : d}</button>`).join("");
-        tabs.querySelectorAll("button[data-dept]").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            tabs.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
-            btn.classList.add("active");
-            activeTab = btn.dataset.dept || "All";
-            renderReports();
-          });
-        });
+        renderReportsSidebar();
+        activeTab = "Video";
 
         const now = new Date();
         const iso = now.toISOString().slice(0, 10);
@@ -695,8 +1323,7 @@
         const dTo = document.getElementById("reportDateTo");
         if (dFrom) dFrom.value = from;
         if (dTo) dTo.value = iso;
-        document.getElementById("exportCsvBtn")?.addEventListener("click", exportRowsAsCsv);
-        document.getElementById("exportJsonBtn")?.addEventListener("click", exportRowsAsJson);
+        document.getElementById("exportPdfBtn")?.addEventListener("click", exportAudioPatchPdf);
         renderReports();
       }
 

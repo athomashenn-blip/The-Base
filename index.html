@@ -182,8 +182,9 @@
       .layout {
         margin-top: 0.8rem;
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: 74px minmax(0, 1fr);
         gap: 0.8rem;
+        align-items: start;
       }
       .nav {
         border: 1px solid var(--line);
@@ -195,18 +196,17 @@
         align-content: start;
         box-shadow: inset 0 1px 0 #4053a52e;
         width: 74px;
-        overflow: hidden;
-        transition: width 180ms ease;
-      }
-      .nav:hover,
-      .nav:focus-within {
-        width: 232px;
+        overflow: visible;
+        position: relative;
+        z-index: 35;
       }
       .nav button {
         width: 100%;
         text-align: left;
         border-radius: 12px;
         padding: 0.6rem 0.55rem;
+        position: relative;
+        overflow: visible;
       }
       .subnav {
         display: grid;
@@ -244,6 +244,7 @@
         flex: 0 0 auto;
         color: #f2f5ff;
         background: color-mix(in srgb, var(--theme-accent) 18%, #1a1f2a 82%);
+        transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
       }
       .nav-icon svg {
         width: 15px;
@@ -251,17 +252,30 @@
         stroke: currentColor;
       }
       .nav-label {
-        display: inline-block;
+        position: absolute;
+        left: calc(100% + 10px);
+        top: 50%;
+        transform: translateY(-50%);
         white-space: nowrap;
         opacity: 0;
-        max-width: 0;
-        overflow: hidden;
-        transition: opacity 120ms ease, max-width 160ms ease;
+        pointer-events: auto;
+        border: 1px solid var(--theme-line-soft);
+        border-radius: 10px;
+        padding: 0.34rem 0.56rem;
+        background: linear-gradient(180deg, var(--theme-card-a), var(--theme-card-b));
+        box-shadow: 0 8px 20px #0000004f;
+        transition: opacity 140ms ease, transform 140ms ease;
+        z-index: 60;
       }
-      .nav:hover .nav-label,
-      .nav:focus-within .nav-label {
+      .nav button:hover .nav-label,
+      .nav button:focus-visible .nav-label {
         opacity: 1;
-        max-width: 140px;
+      }
+      .nav button:hover .nav-icon,
+      .nav button:focus-visible .nav-icon {
+        transform: scale(1.6);
+        border-color: var(--theme-accent);
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-accent), #000 50%);
       }
       .nav:not(:hover):not(:focus-within) .subnav {
         max-height: 0;
@@ -331,6 +345,116 @@
         padding: 1rem;
         box-shadow: 0 14px 28px #00000035, inset 0 1px 0 #7c64be2c;
         overflow: hidden;
+        min-height: calc(100vh - 182px);
+      }
+      .properties-panel {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: linear-gradient(180deg, var(--theme-surface-a), var(--theme-surface-b) 78%);
+        padding: 0.7rem;
+        box-shadow: 0 14px 28px #00000035, inset 0 1px 0 #7c64be2c;
+        position: sticky;
+        top: 0.8rem;
+        max-height: calc(100vh - 112px);
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        gap: 0.55rem;
+      }
+      .properties-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .properties-head .badge {
+        border-color: var(--theme-line-soft);
+      }
+      .property-tabs {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 0.35rem;
+      }
+      .property-tabs button {
+        padding: 0.36rem 0.25rem;
+        font-size: 0.72rem;
+        white-space: nowrap;
+      }
+      .property-panel-body {
+        overflow: auto;
+        border: 1px solid var(--theme-line-soft);
+        border-radius: 10px;
+        padding: 0.5rem;
+        background: #171b24;
+      }
+      .property-row {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr);
+        gap: 0.45rem;
+        align-items: center;
+        padding: 0.28rem 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--theme-line-soft), transparent 50%);
+      }
+      .property-row:last-child {
+        border-bottom: 0;
+      }
+      .property-key {
+        color: var(--muted);
+        font-size: 0.75rem;
+      }
+      .property-val {
+        font-size: 0.82rem;
+        word-break: break-word;
+      }
+      .system-status-bar {
+        position: fixed;
+        left: 0.55rem;
+        right: 0.55rem;
+        bottom: 0.35rem;
+        border: 1px solid var(--theme-line-soft);
+        border-radius: 10px;
+        background: linear-gradient(180deg, #1a1f29f2, #141923f2);
+        padding: 0.35rem 0.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.7rem;
+        z-index: 30;
+        backdrop-filter: blur(6px);
+      }
+      .status-left,
+      .status-right {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        min-width: 0;
+      }
+      .status-pill {
+        border: 1px solid var(--theme-line-soft);
+        border-radius: 999px;
+        padding: 0.12rem 0.48rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+      .status-pill.ready {
+        border-color: #1f9e5d;
+        color: #7aefb4;
+      }
+      .status-pill.warn {
+        border-color: #b2731b;
+        color: #ffc982;
+      }
+      .status-pill.error {
+        border-color: #b73758;
+        color: #ff97b1;
+      }
+      .status-text {
+        font-size: 0.76rem;
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 48vw;
       }
       .module {
         display: none;
@@ -411,16 +535,26 @@
         overflow: auto;
         max-height: 44vh;
         border-radius: 10px;
+        border: 1px solid color-mix(in srgb, var(--theme-line-soft), transparent 18%);
+        background: #171c25;
       }
       table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
         font-size: 0.78rem;
       }
       th, td {
-        border: 1px solid var(--line);
-        padding: 0.3rem 0.34rem;
+        border: 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--theme-line-soft), transparent 34%);
+        padding: 0.36rem 0.4rem;
         vertical-align: top;
+      }
+      tbody tr:nth-child(even) td {
+        background: color-mix(in srgb, #202634, transparent 38%);
+      }
+      tbody tr:hover td {
+        background: color-mix(in srgb, var(--theme-accent), #1a1f2a 88%);
       }
       th {
         text-align: left;
@@ -428,7 +562,7 @@
         font-weight: 600;
         position: sticky;
         top: 0;
-        background: #232835;
+        background: #212733;
         z-index: 1;
       }
       .kpis {
@@ -544,6 +678,153 @@
       }
       .venue3d-mini .tabs {
         margin-bottom: 0;
+      }
+      .venue3d-hints {
+        margin-top: 0.36rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.28rem;
+      }
+      .venue3d-hints .badge {
+        font-size: 0.66rem;
+        padding: 0.08rem 0.4rem;
+        border-color: color-mix(in srgb, var(--theme-line-soft), #000 20%);
+        background: color-mix(in srgb, var(--theme-input), #0f1219 46%);
+      }
+      .obj-inspector {
+        margin-top: 0.65rem;
+        border: 1px solid var(--theme-line-soft);
+        border-radius: 12px;
+        background: linear-gradient(180deg, color-mix(in srgb, var(--theme-card-a), #0e1016 24%), color-mix(in srgb, var(--theme-card-b), #0b0e14 28%));
+        overflow: hidden;
+      }
+      .obj-inspector-head {
+        padding: 0.55rem 0.62rem 0.5rem;
+        border-bottom: 1px solid color-mix(in srgb, var(--theme-line-soft), transparent 35%);
+      }
+      .obj-inspector-title {
+        font-size: 0.82rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .obj-inspector-name {
+        margin-top: 0.12rem;
+        font-size: 0.92rem;
+        font-weight: 650;
+      }
+      .obj-inspector-meta {
+        margin-top: 0.2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+      }
+      .obj-section {
+        padding: 0.52rem 0.62rem;
+        border-top: 1px solid color-mix(in srgb, var(--theme-line-soft), transparent 40%);
+      }
+      .obj-section-label {
+        font-size: 0.72rem;
+        color: var(--muted);
+        margin-bottom: 0.35rem;
+      }
+      .obj-axis-row {
+        display: grid;
+        grid-template-columns: 74px repeat(3, minmax(0, 1fr));
+        gap: 0.35rem;
+        align-items: center;
+        margin-bottom: 0.35rem;
+      }
+      .obj-axis-row:last-child {
+        margin-bottom: 0;
+      }
+      .obj-axis-row > label {
+        margin: 0;
+        font-size: 0.74rem;
+        color: var(--muted);
+      }
+      .obj-axis-head {
+        font-size: 0.68rem;
+        color: var(--muted);
+        text-align: center;
+        padding-bottom: 0.02rem;
+      }
+      .obj-axis-row input {
+        min-height: 32px;
+        padding: 0.28rem 0.38rem;
+        text-align: center;
+      }
+      .obj-geometry-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.38rem;
+      }
+      .obj-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.4rem;
+      }
+      .outliner {
+        margin-top: 0.65rem;
+        border: 1px solid var(--theme-line-soft);
+        border-radius: 12px;
+        background: linear-gradient(180deg, color-mix(in srgb, var(--theme-card-a), #0f1218 26%), color-mix(in srgb, var(--theme-card-b), #0c0f16 30%));
+        overflow: hidden;
+      }
+      .outliner-head {
+        padding: 0.5rem 0.62rem;
+        font-size: 0.82rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-bottom: 1px solid color-mix(in srgb, var(--theme-line-soft), transparent 35%);
+      }
+      .outliner-body {
+        padding: 0.24rem 0.3rem 0.35rem;
+      }
+      .outliner-row {
+        display: grid;
+        grid-template-columns: 16px 18px minmax(0, 1fr) 24px;
+        align-items: center;
+        gap: 0.28rem;
+        padding: 0.18rem 0.26rem;
+        border-radius: 7px;
+        min-height: 26px;
+      }
+      .outliner-row:hover {
+        background: color-mix(in srgb, var(--theme-accent), #11151d 88%);
+      }
+      .outliner-row.active {
+        background: color-mix(in srgb, var(--theme-accent), #0f131b 74%);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--theme-accent), #000 42%);
+      }
+      .outliner-toggle,
+      .outliner-eye {
+        border: 0;
+        background: transparent;
+        color: #d9def0;
+        width: 100%;
+        height: 100%;
+        display: inline-grid;
+        place-items: center;
+        padding: 0;
+        cursor: pointer;
+      }
+      .outliner-toggle.dim {
+        opacity: 0.35;
+        cursor: default;
+      }
+      .outliner-label {
+        font-size: 0.78rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .outliner-group-label {
+        font-weight: 620;
+      }
+      .outliner-row[data-hidden="1"] .outliner-label {
+        opacity: 0.55;
       }
       @media (max-width: 1200px) {
         .venue3d-control-group {
@@ -834,10 +1115,13 @@
       }
       @media (max-width: 1100px) {
         .layout {
-          grid-template-columns: 1fr;
+          grid-template-columns: 74px 1fr;
+        }
+        .properties-panel {
+          display: none;
         }
         .nav {
-          grid-template-columns: repeat(7, minmax(0, 1fr));
+          width: 64px;
         }
       }
       @media (max-width: 1320px) {
@@ -846,15 +1130,25 @@
         }
       }
       @media (max-width: 820px) {
-        .grid-2, .grid-3, .grid-4, .kpis, .nav {
+        .grid-2, .grid-3, .grid-4, .kpis {
+          grid-template-columns: 1fr;
+        }
+        .layout {
           grid-template-columns: 1fr;
         }
         .nav {
           width: 100%;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
         }
         .nav .nav-label {
+          position: static;
+          transform: none;
           opacity: 1;
-          max-width: 180px;
+          pointer-events: auto;
+          border: 0;
+          box-shadow: none;
+          padding: 0;
+          background: transparent;
         }
         .nav .nav-arrow {
           opacity: 1;
@@ -883,17 +1177,7 @@
         </div>
         <div class="header-links">
           <a href="projects.html" id="projectsBtn" class="header-link-btn">Projects</a>
-          <div class="header-link-group">
-            <a href="index.html" class="header-link-btn active">Engineering</a>
-            <div class="header-dropdown" aria-label="Engineering Departments">
-              <a href="index.html?dept=Video">Video</a>
-              <a href="index.html?dept=Lighting">Lighting</a>
-              <a href="index.html?dept=Sound">Sound</a>
-              <a href="index.html?dept=Rigging">Rigging</a>
-              <a href="index.html?dept=Power">Power</a>
-              <a href="index.html?dept=Venue">Venue</a>
-            </div>
-          </div>
+          <a href="index.html" class="header-link-btn active">Engineering</a>
           <a href="reports.html" class="header-link-btn">Reports</a>
           <a href="settings.html" class="header-link-btn">Settings</a>
         </div>
@@ -902,9 +1186,20 @@
       </header>
 
       <section class="layout">
+        <aside class="nav" id="moduleSidebar" aria-label="Engineering Modules"></aside>
         <main class="main"></main>
       </section>
     </div>
+    <footer class="system-status-bar" id="systemStatusBar">
+      <div class="status-left">
+        <span class="status-pill ready" id="systemStatusPill">READY</span>
+        <span class="status-text" id="systemStatusText">System ready</span>
+      </div>
+      <div class="status-right">
+        <span class="badge" id="modeIndicator">Planning Canvas Mode</span>
+        <span class="muted" id="activeModuleIndicator" style="font-size:0.76rem;">Video</span>
+      </div>
+    </footer>
     <script src="data/lighting-fixtures.js"></script>
     <script src="data/settings-store.js"></script>
     <script src="data/power-calculator.js"></script>
@@ -913,7 +1208,6 @@
     <script src="data/prolyte-truss-catalog.js"></script>
     <script src="data/motor-catalog.js"></script>
     <script src="data/gdtf-previews.js"></script>
-    <script src="data/rigging-sample-project.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="data/auth-config.js"></script>
     <script src="data/auth-projects.js"></script>
@@ -1092,7 +1386,32 @@
         const logo = document.getElementById("brandLogo");
         const fallback = document.getElementById("brandFallback");
         const main = document.querySelector("main.main");
+        const moduleSidebar = document.getElementById("moduleSidebar");
+        const propertyTabsEl = document.getElementById("propertyTabs");
+        const propertyPanelBodyEl = document.getElementById("propertyPanelBody");
+        const propObjectTypeEl = document.getElementById("propObjectType");
+        const systemStatusPillEl = document.getElementById("systemStatusPill");
+        const systemStatusTextEl = document.getElementById("systemStatusText");
+        const activeModuleIndicatorEl = document.getElementById("activeModuleIndicator");
+        const modeIndicatorEl = document.getElementById("modeIndicator");
         let currentEngineeringSection = "Video";
+        let currentUiMode = "canvas";
+        const PROPERTY_TABS = ["General", "Signal / Routing", "Power", "Network", "Physical", "Notes"];
+        const PROPERTY_TAB_KEY = "thebase.propertyTabs.v1";
+        let propertyTabMemory = {};
+        try {
+          propertyTabMemory = JSON.parse(localStorage.getItem(PROPERTY_TAB_KEY) || "{}") || {};
+        } catch {
+          propertyTabMemory = {};
+        }
+        const MODULE_MENU = [
+          { id: "Video", label: "Video", iconKey: "video", color: "#57b36a" },
+          { id: "Lighting", label: "Lighting", iconKey: "lighting", color: "#e25555" },
+          { id: "Sound", label: "Audio", iconKey: "audio", color: "#4f82ff" },
+          { id: "Rigging", label: "Rigging", iconKey: "rigging", color: "#f08a3c" },
+          { id: "Power", label: "Power", iconKey: "power", color: "#8b5cff" },
+          { id: "Venue", label: "3D", iconKey: "venue3d", color: "#35bdb0" }
+        ];
         let lightingFixtureLibrary = LIGHTING_FIXTURE_FALLBACK.slice();
         let trussCatalog = TRUSS_FALLBACK.slice();
         let motorCatalog = MOTOR_FALLBACK.slice();
@@ -1132,7 +1451,7 @@
           selectedClientCiId: "none"
         };
         const audioState = {
-          activeTab: "show_info",
+          activeTab: "system_design",
           showInfo: {
             eventName: "",
             eventDate: "",
@@ -1386,6 +1705,14 @@
           floorPlanWizardZeroPx: null,
           floorPlanWizardXPx: null,
           floorPlanWizardYPx: null,
+          floorPlanWizardForceOpen: false,
+          floorPlanWizardDismissed: false,
+          floorPlanSourceName: "",
+          floorPlanPdfLastPage: 1,
+          floorPlanPdfTotalPages: 0,
+          floorPlanRenderScale: 2,
+          floorPlanImportStatus: "No floor plan loaded",
+          floorPlanImportError: "",
           floorPlanWizardXDistanceM: 10,
           floorPlanWizardYDistanceM: 10,
           floorPlanCalibrating: false,
@@ -1407,8 +1734,11 @@
           model3dUrl: "",
           model3dName: "",
           model3dScale: 1,
+          sceneOutlinerCollapsed: {},
+          sceneOutlinerHidden: [],
           ledOverlayMode: "panels",
           projectionMode: "perspective",
+          venue3dInputProfile: "trackpad",
           gizmoMode: "translate",
           customVenueModels: [],
           wallWidthM: 8,
@@ -1431,6 +1761,11 @@
         };
         let riggingDragPayload = null;
         let venueRigDragPayload = null;
+        const venueFloorPlanPdfRuntime = {
+          bytes: null,
+          docPromise: null,
+          pageCache: new Map()
+        };
         const riggingPlanDragState = { active: false, fixtureId: "", spanId: "", groupId: "", ax: 0, ay: 0, bx: 0, by: 0, spanLen: 0, markerGroup: null, lastProjected: null };
         const riggingPlanMotorDragState = { active: false, motorId: "", groupId: "", markerGroup: null, posOffsetM: 0, lastProjectedPosM: null };
         const venueTrussDragState = {
@@ -1593,9 +1928,24 @@
             id: "client_absa",
             name: "Absa",
             colors: [
-              { name: "Primary Red", hex: "#DD0033" },
-              { name: "Red Alt", hex: "#DD3B32" },
-              { name: "White", hex: "#FFFFFF" }
+              { name: "White", hex: "#FFFFFF" },
+              { name: "Silver", hex: "#736464" },
+              { name: "Platinum", hex: "#5A4B4B" },
+              { name: "Graphite", hex: "#2D2323" },
+              { name: "Energy", hex: "#F47721" },
+              { name: "Prepared", hex: "#FA551E" },
+              { name: "Agile", hex: "#F52D28" },
+              { name: "Passion", hex: "#DD0032" },
+              { name: "Warmth", hex: "#BE0028" },
+              { name: "Human", hex: "#AA052D" },
+              { name: "Grounded", hex: "#960528" },
+              { name: "Care", hex: "#F05A78" },
+              { name: "Smile", hex: "#F0325A" },
+              { name: "Surprise", hex: "#AF144B" },
+              { name: "Calm", hex: "#870A3C" },
+              { name: "Luxury", hex: "#640032" },
+              { name: "Depth", hex: "#500A28" },
+              { name: "Black", hex: "#000000" }
             ]
           },
           {
@@ -1629,9 +1979,81 @@
             id: "client_ninety_one",
             name: "Ninety One",
             colors: [
-              { name: "Primary Dark (approx)", hex: "#111111" },
-              { name: "Mid Grey (approx)", hex: "#5E6670" },
-              { name: "White", hex: "#FFFFFF" }
+              { name: "Springbok Cream - Primary", hex: "#DEDBCC" },
+              { name: "Springbok Cream - SC01", hex: "#E5E1D6" },
+              { name: "Springbok Cream - SC02", hex: "#DDD9C8" },
+              { name: "Springbok Cream - SC03", hex: "#CCC6AF" },
+              { name: "Springbok Cream - Accent Red", hex: "#EF233F" },
+              { name: "Springbok Cream - Accent Coral", hex: "#E7B1A7" },
+              { name: "Springbok Cream - Accent Teal", hex: "#0E9C84" },
+              { name: "Springbok Cream - Accent Grey", hex: "#8BA0A5" },
+              { name: "Galjoen Grey - Primary", hex: "#889CA3" },
+              { name: "Galjoen Grey - GG01", hex: "#95A9AF" },
+              { name: "Galjoen Grey - GG02", hex: "#7F969D" },
+              { name: "Galjoen Grey - GG03", hex: "#5F7E84" },
+              { name: "Galjoen Grey - Accent Cream", hex: "#E0DCC9" },
+              { name: "Galjoen Grey - Accent Teal", hex: "#005C5F" },
+              { name: "Galjoen Grey - Accent Coral", hex: "#E4AC9F" },
+              { name: "Cape Coral - Primary", hex: "#E3ACA1" },
+              { name: "Cape Coral - CC01", hex: "#E9BBB1" },
+              { name: "Cape Coral - CC02", hex: "#DDA69A" },
+              { name: "Cape Coral - CC03", hex: "#D09287" },
+              { name: "Cape Coral - Accent Burgundy", hex: "#7B0F4F" },
+              { name: "Cape Coral - Accent Red", hex: "#EF233F" },
+              { name: "Cape Coral - Accent Indigo", hex: "#302153" },
+              { name: "Warm Yellowwood - Primary", hex: "#F8BE00" },
+              { name: "Warm Yellowwood - WYO1", hex: "#FFC822" },
+              { name: "Warm Yellowwood - WYO2", hex: "#F3B600" },
+              { name: "Warm Yellowwood - WYO3", hex: "#DFA100" },
+              { name: "Warm Yellowwood - Accent Indigo", hex: "#302153" },
+              { name: "Warm Yellowwood - Accent Cream", hex: "#E0DCC9" },
+              { name: "Warm Yellowwood - Accent Teal", hex: "#005C5F" },
+              { name: "Pinotage Burgundy - Primary", hex: "#7B0F4F" },
+              { name: "Pinotage Burgundy - PB01", hex: "#8B1E5E" },
+              { name: "Pinotage Burgundy - PB02", hex: "#691145" },
+              { name: "Pinotage Burgundy - PB03", hex: "#501035" },
+              { name: "Pinotage Burgundy - Accent Coral", hex: "#E9B6AB" },
+              { name: "Pinotage Burgundy - Accent Indigo", hex: "#302153" },
+              { name: "Pinotage Burgundy - Accent Red", hex: "#EF233F" },
+              { name: "Leatherback Green - Primary", hex: "#005C5F" },
+              { name: "Leatherback Green - LG01", hex: "#0B6C6D" },
+              { name: "Leatherback Green - LG02", hex: "#005255" },
+              { name: "Leatherback Green - LG03", hex: "#004345" },
+              { name: "Leatherback Green - Accent Yellowwood", hex: "#F8BE00" },
+              { name: "Leatherback Green - Accent Indigo", hex: "#302153" },
+              { name: "Leatherback Green - Accent Coral", hex: "#E4AC9F" },
+              { name: "Agulhas Indigo - Primary", hex: "#302153" },
+              { name: "Agulhas Indigo - AL01", hex: "#3D2D66" },
+              { name: "Agulhas Indigo - AL02", hex: "#32245A" },
+              { name: "Agulhas Indigo - AL03", hex: "#261C45" },
+              { name: "Agulhas Indigo - Accent Coral", hex: "#E9B6AB" },
+              { name: "Agulhas Indigo - Accent Red", hex: "#EF233F" },
+              { name: "Agulhas Indigo - Accent Orange", hex: "#E07C11" },
+              { name: "Agulhas Indigo - Accent Yellowwood", hex: "#F8BE00" },
+              { name: "Agulhas Indigo - Accent Teal", hex: "#0E9C84" },
+              { name: "Marula Green - Primary", hex: "#0F3A24" },
+              { name: "Marula Green - MG01", hex: "#136B43" },
+              { name: "Marula Green - MG02", hex: "#0A5535" },
+              { name: "Marula Green - MG03", hex: "#1E2D1F" },
+              { name: "Marula Green - Accent Coral", hex: "#E9B6AB" },
+              { name: "Marula Green - Accent Red", hex: "#EF233F" },
+              { name: "Marula Green - Accent Teal", hex: "#0E9C84" },
+              { name: "Marula Green - Accent Orange", hex: "#E07C11" },
+              { name: "Ocean Teal - Primary", hex: "#0E9C84" },
+              { name: "Ocean Teal - OTO1", hex: "#17AD93" },
+              { name: "Ocean Teal - OTO2", hex: "#0D957E" },
+              { name: "Ocean Teal - OTO3", hex: "#0A816E" },
+              { name: "Ocean Teal - Accent Leatherback", hex: "#005C5F" },
+              { name: "Ocean Teal - Accent Coral", hex: "#E4AC9F" },
+              { name: "Ocean Teal - Accent Cream", hex: "#E0DCC9" },
+              { name: "Protea Red - Primary", hex: "#EF233F" },
+              { name: "Protea Red - PRO1", hex: "#F24A61" },
+              { name: "Protea Red - PRO2", hex: "#E02944" },
+              { name: "Protea Red - PRO3", hex: "#C81B39" },
+              { name: "Protea Red - Accent Cream", hex: "#E0DCC9" },
+              { name: "Protea Red - Accent Burgundy", hex: "#7B0F4F" },
+              { name: "Protea Red - Accent Coral", hex: "#E4AC9F" },
+              { name: "Protea Red - Accent Indigo", hex: "#302153" }
             ]
           },
           {
@@ -1647,9 +2069,10 @@
             id: "client_nedgroup",
             name: "Nedgroup",
             colors: [
-              { name: "Primary Green (approx)", hex: "#005941" },
-              { name: "Secondary Green (approx)", hex: "#00653C" },
-              { name: "Soft Green (approx)", hex: "#AAC8C1" }
+              { name: "Go Green", hex: "#00E677" },
+              { name: "Nedbank Green", hex: "#006341" },
+              { name: "Heritage Green", hex: "#004D36" },
+              { name: "Black", hex: "#020202" }
             ]
           },
           {
@@ -1663,7 +2086,6 @@
           }
         ];
         const AUDIO_TAB_ORDER = [
-          { id: "show_info", label: "Show Info" },
           { id: "venue_acoustics", label: "Venue + Acoustics" },
           { id: "system_design", label: "System Design (PA)" },
           { id: "l_acoustics", label: "L-Acoustics Planner" },
@@ -1737,6 +2159,54 @@
             headroomDb: 14
           }
         };
+        const AUDIO_CONSOLE_PRESETS = [
+          { id: "generic", console: "Generic Digital Console", stagebox: "Generic Stagebox 32x16", stageboxInputs: 32, stageboxOutputs: 16, deskPreamps: 16, systemInputChannels: 32, systemOutputChannels: 16 },
+          { id: "midas_m32", console: "Midas M32", stagebox: "Midas DL32", stageboxInputs: 32, stageboxOutputs: 16, deskPreamps: 32, systemInputChannels: 32, systemOutputChannels: 16 },
+          { id: "digico_sd10", console: "DigiCo SD10", stagebox: "DigiCo D-Rack", stageboxInputs: 32, stageboxOutputs: 16, deskPreamps: 8, systemInputChannels: 144, systemOutputChannels: 16 },
+          { id: "allan_heath_sq5", console: "Allan & Heath SQ5", stagebox: "Allan & Heath AR2412", stageboxInputs: 24, stageboxOutputs: 12, deskPreamps: 16, systemInputChannels: 48, systemOutputChannels: 12 },
+          { id: "allan_heath_sq6", console: "Allan & Heath SQ6", stagebox: "Allan & Heath AR2412", stageboxInputs: 24, stageboxOutputs: 12, deskPreamps: 24, systemInputChannels: 48, systemOutputChannels: 12 },
+          { id: "soundcraft_vi3000", console: "Soundcraft VI3000", stagebox: "Soundcraft Vi Stagebox", stageboxInputs: 64, stageboxOutputs: 32, deskPreamps: 32, systemInputChannels: 96, systemOutputChannels: 32 }
+        ];
+        function getAudioConsolePresetByName(name) {
+          const key = String(name || "").trim().toLowerCase();
+          return AUDIO_CONSOLE_PRESETS.find((p) => String(p.console || "").trim().toLowerCase() === key) || null;
+        }
+        function applyAudioConsolePreset(consoleCfg, preset) {
+          if (!consoleCfg || !preset) return;
+          consoleCfg.consoleModel = String(preset.console || consoleCfg.consoleModel || "");
+          consoleCfg.stageboxModel = String(preset.stagebox || consoleCfg.stageboxModel || "");
+          consoleCfg.onDeskInputs = Math.max(0, Number(preset.deskPreamps || 0));
+          consoleCfg.systemInputChannels = Math.max(1, Number(preset.systemInputChannels || preset.stageboxInputs || 32));
+          consoleCfg.systemOutputChannels = Math.max(1, Number(preset.systemOutputChannels || preset.stageboxOutputs || 16));
+          const inputs = Math.max(1, Number(preset.stageboxInputs || 32));
+          const outputs = Math.max(0, Number(preset.stageboxOutputs || 16));
+          consoleCfg.stageboxes = [{ id: "sb_1", name: "SB-A", inputs, outputs, spareInputs: 0 }];
+          const totalInputs = Math.max(1, Number(consoleCfg.systemInputChannels || 1));
+          consoleCfg.inputs = Array.from({ length: totalInputs }, (_, idx) => ({
+            id: `aud_in_${Date.now()}_${idx + 1}_${Math.random().toString(36).slice(2, 5)}`,
+            name: "",
+            sourceType: "wired",
+            patchChannel: idx + 1,
+            connector: "XLR",
+            phantom: false,
+            stageLocation: idx < Math.min(inputs, totalInputs) ? "stagebox" : "desk",
+            priority: "important",
+            notes: ""
+          }));
+          const totalOutputs = Math.max(1, Number(consoleCfg.systemOutputChannels || outputs || 1));
+          consoleCfg.outputs = Array.from({ length: totalOutputs }, (_, idx) => ({
+            id: `aud_out_${Date.now()}_${idx + 1}_${Math.random().toString(36).slice(2, 5)}`,
+            name: "",
+            sourceType: "wired",
+            patchChannel: idx + 1,
+            stageLocation: idx < Math.min(outputs, totalOutputs) ? "stagebox" : "desk",
+            connector: "XLR",
+            destination: "",
+            bus: `Out ${idx + 1}`,
+            location: "Stage Rack",
+            notes: ""
+          }));
+        }
         function newRiggingGroup(index = 1) {
           return {
             id: `rig_group_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
@@ -4724,6 +5194,7 @@
                 id: `L${lineCounter}`,
                 keys: lineKeys,
                 panels: lineKeys.length,
+                panelsPerLine,
                 avgA: Number(panel.avgA || 0) * lineKeys.length,
                 maxA: Number(panel.maxA || 0) * lineKeys.length,
                 phase,
@@ -4850,7 +5321,7 @@
                 <tr>
                   <td>${line.id}</td>
                   <td><span style="color:${phaseColors[line.phase]};font-weight:600;">${line.phase}</span></td>
-                  <td>${line.panels}/${panelsPerLine}</td>
+                  <td>${line.panels}/${line.panelsPerLine}</td>
                   <td>${line.avgA.toFixed(2)}</td>
                   <td>${line.maxA.toFixed(2)}</td>
                   <td>${status}</td>
@@ -5268,7 +5739,6 @@
         }
 
         function ensureAudioDefaults() {
-          const profileKey = String(audioState.showInfo.programType || "corporate_speech");
           if (!audioState.laPlanner || typeof audioState.laPlanner !== "object") {
             audioState.laPlanner = {
               selectedSpeakerId: "kara_ii",
@@ -5282,41 +5752,26 @@
               consoleRouting: []
             };
           }
-          const addInput = (name, type, location, phantom) => ({
-            id: `aud_in_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`,
-            name,
-            sourceType: type,
-            connector: "XLR",
-            phantom: Boolean(phantom),
-            stageLocation: location,
-            priority: "important",
-            notes: ""
-          });
           if (!Array.isArray(audioState.console.inputs) || !audioState.console.inputs.length) {
-            if (profileKey === "band" || profileKey === "dj") {
-              audioState.console.inputs = [
-                addInput("Kick", "wired", "DS", false),
-                addInput("Snare", "wired", "DS", false),
-                addInput("Bass DI", "wired", "SL", false),
-                addInput("Guitar", "wired", "SR", false),
-                addInput("Keys L", "wired", "SR", false),
-                addInput("Keys R", "wired", "SR", false),
-                addInput("Tracks L", "playback", "FOH", false),
-                addInput("Tracks R", "playback", "FOH", false),
-                addInput("Lead Vox", "wireless", "DS", false),
-                addInput("BVs", "wired", "DS", false)
-              ];
-            } else {
-              audioState.console.inputs = [
-                addInput("Podium Mic", "wired", "DS", true),
-                addInput("Handheld 1", "wireless", "DS", false),
-                addInput("Handheld 2", "wireless", "DS", false),
-                addInput("Lapel 1", "wireless", "DS", false),
-                addInput("Playback L", "playback", "FOH", false),
-                addInput("Playback R", "playback", "FOH", false)
-              ];
-            }
+            const preset = getAudioConsolePresetByName(audioState.console.consoleModel) || AUDIO_CONSOLE_PRESETS[0];
+            applyAudioConsolePreset(audioState.console, preset);
           }
+          if (!Array.isArray(audioState.console.outputs) || !audioState.console.outputs.length) {
+            const preset = getAudioConsolePresetByName(audioState.console.consoleModel) || AUDIO_CONSOLE_PRESETS[0];
+            applyAudioConsolePreset(audioState.console, preset);
+          }
+          audioState.console.inputs = (audioState.console.inputs || []).map((row, idx) => ({
+            ...row,
+            patchChannel: Number.isFinite(Number(row.patchChannel)) && Number(row.patchChannel) > 0 ? Number(row.patchChannel) : idx + 1,
+            stageLocation: row.stageLocation === "desk" ? "desk" : "stagebox"
+          }));
+          audioState.console.outputs = (audioState.console.outputs || []).map((row, idx) => ({
+            ...row,
+            name: String(row.name || ""),
+            sourceType: row.sourceType === "wireless" || row.sourceType === "playback" ? row.sourceType : "wired",
+            patchChannel: Number.isFinite(Number(row.patchChannel)) && Number(row.patchChannel) > 0 ? Number(row.patchChannel) : idx + 1,
+            stageLocation: row.stageLocation === "desk" ? "desk" : "stagebox"
+          }));
           if (!Array.isArray(audioState.rf.channels) || !audioState.rf.channels.length) {
             audioState.rf.channels = [
               { id: "rf_1", device: "Handheld", talent: "MC", band: "A", freq: "", group: "G1", battery: "AA" },
@@ -5347,22 +5802,29 @@
           const comms = audioState.comms;
           const power = audioState.power;
           const cabling = audioState.cabling;
+          const consolePreset = getAudioConsolePresetByName(consoleCfg.consoleModel);
+          const consoleOptions = AUDIO_CONSOLE_PRESETS.map((p) => `<option value="${p.console}" ${String(consoleCfg.consoleModel || "") === p.console ? "selected" : ""}>${p.console}</option>`).join("");
           const basicTabs = [
-            { id: "show_info", label: "Show Info" },
             { id: "system_design", label: "System" },
-            { id: "console_io", label: "I/O" },
-            { id: "power_distribution", label: "Power" },
+            { id: "console_io", label: "Inputs" },
             { id: "outputs", label: "Outputs" }
           ];
           const basicTabIds = new Set(basicTabs.map((t) => t.id));
           if (!basicTabIds.has(String(audioState.activeTab || ""))) {
-            audioState.activeTab = "show_info";
+            audioState.activeTab = "system_design";
           }
-          const basicActiveTab = String(audioState.activeTab || "show_info");
+          const basicActiveTab = String(audioState.activeTab || "system_design");
           const totalPowerWBasic = (power.loads || []).reduce((a, l) => a + Math.max(0, Number(l.watts || 0)), 0);
-          const inputCountBasic = (consoleCfg.inputs || []).length;
+          const usedInputCountBasic = (consoleCfg.inputs || []).filter((ch) => String(ch.name || "").trim().length > 0).length;
+          const usedOutputCountBasic = (consoleCfg.outputs || []).filter((ch) => String(ch.name || "").trim().length > 0).length;
           const outputCountBasic = (consoleCfg.outputs || []).length;
           const stageboxInputsBasic = (consoleCfg.stageboxes || []).reduce((a, s) => a + Math.max(0, Number(s.inputs || 0)), 0);
+          const stageboxOutputsBasic = (consoleCfg.stageboxes || []).reduce((a, s) => a + Math.max(0, Number(s.outputs || 0)), 0);
+          const systemInputChannelsBasic = Math.max(1, Number(consoleCfg.systemInputChannels || (consolePreset ? consolePreset.systemInputChannels : 0) || (consoleCfg.inputs || []).length || 1));
+          const systemOutputChannelsBasic = Math.max(1, Number(consoleCfg.systemOutputChannels || (consolePreset ? consolePreset.systemOutputChannels : 0) || (consoleCfg.outputs || []).length || 1));
+          const maxPatchedChannelBasic = (consoleCfg.inputs || []).reduce((m, ch, idx) => Math.max(m, Math.max(1, Number(ch.patchChannel || idx + 1))), 1);
+          const totalAvailableInputsBasic = Math.max((consoleCfg.inputs || []).length, systemInputChannelsBasic, maxPatchedChannelBasic, 1);
+          const channelOptionsBasic = Array.from({ length: totalAvailableInputsBasic }, (_, i) => i + 1).map((n) => `<option value="${n}">${n}</option>`).join("");
           const roomLenBasic = Math.max(1, Number(venue.roomL || 1));
           const throwBasic = Math.max(1, Number(system.throwDistanceM || 1));
           const basicSectionHtml = (() => {
@@ -5403,52 +5865,43 @@
             if (basicActiveTab === "console_io") {
               return `
                 <div class="grid grid-4">
-                  <div><label>Console Model</label><input id="audConsoleModel" value="${String(consoleCfg.consoleModel || "").replace(/"/g, "&quot;")}" /></div>
-                  <div><label>Stagebox Model</label><input id="audStageboxModel" value="${String(consoleCfg.stageboxModel || "").replace(/"/g, "&quot;")}" /></div>
+                  <div><label>Console Model</label><select id="audConsoleModel">${consoleOptions}</select></div>
+                  <div><label>Stagebox Model</label><input id="audStageboxModel" value="${String(consoleCfg.stageboxModel || "").replace(/"/g, "&quot;")}" disabled /></div>
                   <div><label>Transport</label><input id="audTransport" value="${String(consoleCfg.transport || "").replace(/"/g, "&quot;")}" /></div>
-                  <div style="display:flex;align-items:flex-end;"><button id="audAddInputBtn">Add Input</button></div>
+                  <div style="display:flex;align-items:flex-end;"><button id="audAddInputBtn">Reset Channel Sheet</button></div>
                 </div>
-                <div class="table-wrap" style="margin-top:0.55rem;">
+                <div class="muted" style="margin-top:0.35rem;">Preset loaded.${consolePreset ? ` System ${consolePreset.systemInputChannels}ch | Stagebox ${consolePreset.stageboxInputs}x${consolePreset.stageboxOutputs} | Desk preamps ${consolePreset.deskPreamps}` : ""}</div>
+                <div class="table-wrap" style="margin-top:0.55rem;max-height:none;overflow:visible;">
                   <table><thead><tr><th>Ch</th><th>Name</th><th>Type</th><th>Location</th><th></th></tr></thead><tbody>
-                    ${(consoleCfg.inputs || []).map((ch, idx) => `<tr><td>${idx + 1}</td><td><input data-aud-in-name="${ch.id}" value="${String(ch.name || "").replace(/"/g, "&quot;")}" /></td><td><select data-aud-in-type="${ch.id}"><option value="wired" ${ch.sourceType === "wired" ? "selected" : ""}>Wired</option><option value="wireless" ${ch.sourceType === "wireless" ? "selected" : ""}>Wireless</option><option value="playback" ${ch.sourceType === "playback" ? "selected" : ""}>Playback</option></select></td><td><input data-aud-in-loc="${ch.id}" value="${String(ch.stageLocation || "").replace(/"/g, "&quot;")}" /></td><td><button data-aud-in-remove="${ch.id}">Remove</button></td></tr>`).join("")}
+                    ${(consoleCfg.inputs || []).map((ch, idx) => `<tr><td><select data-aud-in-ch="${ch.id}">${channelOptionsBasic.replace(`value="${Math.max(1, Number(ch.patchChannel || idx + 1))}"`, `value="${Math.max(1, Number(ch.patchChannel || idx + 1))}" selected`)}</select></td><td><input data-aud-in-name="${ch.id}" value="${String(ch.name || "").replace(/"/g, "&quot;")}" /></td><td><select data-aud-in-type="${ch.id}"><option value="wired" ${ch.sourceType === "wired" ? "selected" : ""}>Wired</option><option value="wireless" ${ch.sourceType === "wireless" ? "selected" : ""}>Wireless</option><option value="playback" ${ch.sourceType === "playback" ? "selected" : ""}>Playback</option></select></td><td><select data-aud-in-loc="${ch.id}"><option value="stagebox" ${ch.stageLocation !== "desk" ? "selected" : ""}>Stage Box</option><option value="desk" ${ch.stageLocation === "desk" ? "selected" : ""}>Desk</option></select></td><td><button data-aud-in-remove="${ch.id}">Remove</button></td></tr>`).join("")}
                   </tbody></table>
                 </div>
-                <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-top:0.6rem;">
-                  <div class="kpi"><div class="muted">Inputs</div><b>${inputCountBasic}</b></div>
+                <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:0.6rem;">
+                  <div class="kpi"><div class="muted">Used Inputs</div><b>${usedInputCountBasic}</b></div>
                   <div class="kpi"><div class="muted">Outputs</div><b>${outputCountBasic}</b></div>
-                  <div class="kpi"><div class="muted">Spare Stagebox Inputs</div><b>${Math.max(0, stageboxInputsBasic - inputCountBasic)}</b></div>
+                  <div class="kpi"><div class="muted">System Input Channels</div><b>${systemInputChannelsBasic}</b></div>
+                  <div class="kpi"><div class="muted">Spare Stagebox Inputs</div><b>${Math.max(0, stageboxInputsBasic - (consoleCfg.inputs || []).filter((ch) => ch.stageLocation !== "desk" && String(ch.name || "").trim().length > 0).length)}</b></div>
                 </div>
-              `;
-            }
-            if (basicActiveTab === "power_distribution") {
-              return `
-                <div class="grid grid-4">
-                  <div><label>Mains Available</label><select id="audPowerMains"><option value="1P_15A" ${power.mainsType === "1P_15A" ? "selected" : ""}>1P 15A</option><option value="1P_16A" ${power.mainsType === "1P_16A" ? "selected" : ""}>1P 16A</option><option value="1P_32A" ${power.mainsType === "1P_32A" ? "selected" : ""}>1P 32A</option><option value="3P_32A" ${power.mainsType === "3P_32A" ? "selected" : ""}>3P 32A</option><option value="3P_63A" ${power.mainsType === "3P_63A" ? "selected" : ""}>3P 63A</option></select></div>
-                  <div style="display:flex;align-items:flex-end;"><button id="audAddPowerLoadBtn">Add Load</button></div>
-                </div>
-                <div class="table-wrap" style="margin-top:0.55rem;">
-                  <table><thead><tr><th>Load</th><th>W</th><th>Phase</th><th></th></tr></thead><tbody>
-                    ${(power.loads || []).map((l) => `<tr><td><input data-aud-pwr-name="${l.id}" value="${String(l.name || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-pwr-w="${l.id}" type="number" min="0" step="1" value="${Number(l.watts || 0)}" /></td><td><select data-aud-pwr-ph="${l.id}"><option value="L1" ${l.phase === "L1" ? "selected" : ""}>L1</option><option value="L2" ${l.phase === "L2" ? "selected" : ""}>L2</option><option value="L3" ${l.phase === "L3" ? "selected" : ""}>L3</option></select></td><td><button data-aud-pwr-remove="${l.id}">Remove</button></td></tr>`).join("")}
-                  </tbody></table>
-                </div>
-                <div class="kpi" style="margin-top:0.6rem;"><div class="muted">Total Audio Power</div><b>${Math.round(totalPowerWBasic).toLocaleString()} W</b></div>
               `;
             }
             return `
-              <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));">
-                <div class="kpi"><div class="muted">Show</div><b>${show.eventName || "Untitled"}</b></div>
-                <div class="kpi"><div class="muted">Venue</div><b>${show.venue || "-"}</b></div>
-                <div class="kpi"><div class="muted">I/O</div><b>${inputCountBasic} / ${outputCountBasic}</b></div>
-                <div class="kpi"><div class="muted">Power</div><b>${Math.round(totalPowerWBasic)} W</b></div>
+              <div class="grid grid-4">
+                <div><label>Console Model</label><select id="audConsoleModel">${consoleOptions}</select></div>
+                <div><label>Stagebox Model</label><input id="audStageboxModel" value="${String(consoleCfg.stageboxModel || "").replace(/"/g, "&quot;")}" disabled /></div>
+                <div><label>Transport</label><input id="audTransport" value="${String(consoleCfg.transport || "").replace(/"/g, "&quot;")}" /></div>
+                <div style="display:flex;align-items:flex-end;"><button id="audResetOutputSheetBtn">Reset Output Sheet</button></div>
               </div>
-              <div class="card" style="margin-top:0.65rem;">
-                <h3 style="margin:0;">Basic Export Pack</h3>
-                <ul style="margin:0.45rem 0 0 1rem;padding:0;">
-                  <li>System Overview</li>
-                  <li>Input List</li>
-                  <li>Power List</li>
-                  <li>Cable Summary</li>
-                </ul>
+              <div class="muted" style="margin-top:0.35rem;">Preset loaded.${consolePreset ? ` System outputs ${consolePreset.systemOutputChannels}ch | Stagebox outputs ${consolePreset.stageboxOutputs}` : ""}</div>
+              <div class="table-wrap" style="margin-top:0.55rem;max-height:none;overflow:visible;">
+                <table><thead><tr><th>Ch</th><th>Name</th><th>Type</th><th>Location</th></tr></thead><tbody>
+                  ${(consoleCfg.outputs || []).map((out, idx) => `<tr><td>${Math.max(1, Number(out.patchChannel || idx + 1))}</td><td><input data-aud-out-name="${out.id}" value="${String(out.name || "").replace(/"/g, "&quot;")}" /></td><td><select data-aud-out-type="${out.id}"><option value="wired" ${out.sourceType === "wired" ? "selected" : ""}>Wired</option><option value="wireless" ${out.sourceType === "wireless" ? "selected" : ""}>Wireless</option><option value="playback" ${out.sourceType === "playback" ? "selected" : ""}>Playback</option></select></td><td><select data-aud-out-loc="${out.id}"><option value="stagebox" ${out.stageLocation !== "desk" ? "selected" : ""}>Stage Box</option><option value="desk" ${out.stageLocation === "desk" ? "selected" : ""}>Desk</option></select></td></tr>`).join("")}
+                </tbody></table>
+              </div>
+              <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-top:0.6rem;">
+                <div class="kpi"><div class="muted">Used Outputs</div><b>${usedOutputCountBasic}</b></div>
+                <div class="kpi"><div class="muted">Available Outputs</div><b>${systemOutputChannelsBasic}</b></div>
+                <div class="kpi"><div class="muted">Stagebox Outputs</div><b>${stageboxOutputsBasic}</b></div>
+                <div class="kpi"><div class="muted">Spare Stagebox Outputs</div><b>${Math.max(0, stageboxOutputsBasic - (consoleCfg.outputs || []).filter((ch) => ch.stageLocation !== "desk" && String(ch.name || "").trim().length > 0).length)}</b></div>
               </div>
             `;
           })();
@@ -5463,7 +5916,7 @@
             <div class="card" style="margin-top:0.7rem;">${basicSectionHtml}</div>
           `;
           document.querySelectorAll("button[data-aud-basic-tab]").forEach((btn) => btn.addEventListener("click", () => {
-            audioState.activeTab = String(btn.getAttribute("data-aud-basic-tab") || "show_info");
+            audioState.activeTab = String(btn.getAttribute("data-aud-basic-tab") || "system_design");
             renderSound();
           }));
           const bindBasicInput = (id, setter, type = "text") => {
@@ -5487,18 +5940,36 @@
           bindBasicInput("audMainType", (v) => { system.mainType = String(v || "line_array"); });
           bindBasicInput("audThrowDist", (v) => { system.throwDistanceM = Math.max(1, Number(v || 1)); }, "number");
           bindBasicInput("audSubCfg", (v) => { system.subConfig = String(v || "ground"); });
-          bindBasicInput("audConsoleModel", (v) => { consoleCfg.consoleModel = String(v || ""); });
+          bindBasicInput("audConsoleModel", (v) => {
+            const selectedConsole = String(v || "");
+            const preset = getAudioConsolePresetByName(selectedConsole);
+            if (preset) {
+              applyAudioConsolePreset(consoleCfg, preset);
+            } else {
+              consoleCfg.consoleModel = selectedConsole;
+            }
+          });
           bindBasicInput("audStageboxModel", (v) => { consoleCfg.stageboxModel = String(v || ""); });
           bindBasicInput("audTransport", (v) => { consoleCfg.transport = String(v || ""); });
           bindBasicInput("audPowerMains", (v) => { power.mainsType = String(v || "3P_63A"); });
           document.getElementById("audAddInputBtn")?.addEventListener("click", () => {
-            consoleCfg.inputs.push({ id: `aud_in_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`, name: "New Channel", sourceType: "wired", connector: "XLR", phantom: false, stageLocation: "DS", priority: "important", notes: "" });
+            const preset = getAudioConsolePresetByName(consoleCfg.consoleModel) || AUDIO_CONSOLE_PRESETS[0];
+            applyAudioConsolePreset(consoleCfg, preset);
             renderSound();
           });
+          document.getElementById("audResetOutputSheetBtn")?.addEventListener("click", () => {
+            const preset = getAudioConsolePresetByName(consoleCfg.consoleModel) || AUDIO_CONSOLE_PRESETS[0];
+            applyAudioConsolePreset(consoleCfg, preset);
+            renderSound();
+          });
+          document.querySelectorAll("[data-aud-in-ch]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-ch")); if (row) row.patchChannel = Math.max(1, Number(el.value || 1)); renderSound(); }));
           document.querySelectorAll("[data-aud-in-name]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-name")); if (row) row.name = el.value; renderSound(); }));
           document.querySelectorAll("[data-aud-in-type]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-type")); if (row) row.sourceType = el.value; renderSound(); }));
           document.querySelectorAll("[data-aud-in-loc]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.inputs.find((x) => x.id === el.getAttribute("data-aud-in-loc")); if (row) row.stageLocation = el.value; renderSound(); }));
           document.querySelectorAll("[data-aud-in-remove]").forEach((el) => el.addEventListener("click", () => { consoleCfg.inputs = consoleCfg.inputs.filter((x) => x.id !== el.getAttribute("data-aud-in-remove")); renderSound(); }));
+          document.querySelectorAll("[data-aud-out-name]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.outputs.find((x) => x.id === el.getAttribute("data-aud-out-name")); if (row) row.name = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-out-type]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.outputs.find((x) => x.id === el.getAttribute("data-aud-out-type")); if (row) row.sourceType = el.value; renderSound(); }));
+          document.querySelectorAll("[data-aud-out-loc]").forEach((el) => el.addEventListener("change", () => { const row = consoleCfg.outputs.find((x) => x.id === el.getAttribute("data-aud-out-loc")); if (row) row.stageLocation = el.value; renderSound(); }));
           document.getElementById("audAddPowerLoadBtn")?.addEventListener("click", () => {
             power.loads.push({ id: `p_${Date.now()}`, name: "New Load", watts: 100, phase: "L1" });
             renderSound();
@@ -5656,7 +6127,7 @@
           putTabValidation("crew_workflow", [], []);
           const overallMissing = Object.values(tabValidation).flatMap((x) => x.missing);
           putTabValidation("outputs", overallMissing.length ? ["Resolve missing info in upstream tabs"] : [], []);
-          const activeTab = AUDIO_TAB_ORDER.some((t) => t.id === audioState.activeTab) ? audioState.activeTab : "show_info";
+          const activeTab = AUDIO_TAB_ORDER.some((t) => t.id === audioState.activeTab) ? audioState.activeTab : "system_design";
           audioState.activeTab = activeTab;
           const getStatusBadge = (id) => {
             const v = tabValidation[id] || { missing: [], warnings: [] };
@@ -5850,11 +6321,12 @@
             `;
             if (activeTab === "console_io") return `
               <div class="grid grid-4">
-                <div><label>Console Model</label><input id="audConsoleModel" value="${String(consoleCfg.consoleModel || "").replace(/"/g, "&quot;")}" /></div>
-                <div><label>Stagebox Model</label><input id="audStageboxModel" value="${String(consoleCfg.stageboxModel || "").replace(/"/g, "&quot;")}" /></div>
+                <div><label>Console Model</label><select id="audConsoleModel">${consoleOptions}</select></div>
+                <div><label>Stagebox Model</label><input id="audStageboxModel" value="${String(consoleCfg.stageboxModel || "").replace(/"/g, "&quot;")}" disabled /></div>
                 <div><label>Transport</label><input id="audTransport" value="${String(consoleCfg.transport || "").replace(/"/g, "&quot;")}" /></div>
                 <div style="display:flex;align-items:flex-end;"><button id="audAddInputBtn">Add Input Channel</button></div>
               </div>
+              <div class="muted" style="margin-top:0.35rem;">Preset stagebox mapping loaded for selected console.${consolePreset ? ` (${consolePreset.stageboxInputs}x${consolePreset.stageboxOutputs})` : ""}</div>
               <div class="table-wrap" style="margin-top:0.55rem;"><table><thead><tr><th>Ch</th><th>Name</th><th>Source</th><th>Location</th><th>Connector</th><th>48V</th><th>Priority</th><th></th></tr></thead><tbody>${(consoleCfg.inputs || []).map((ch, idx) => `<tr><td>${idx + 1}</td><td><input data-aud-in-name="${ch.id}" value="${String(ch.name || "").replace(/"/g, "&quot;")}" /></td><td><select data-aud-in-type="${ch.id}"><option value="wired" ${ch.sourceType === "wired" ? "selected" : ""}>Wired</option><option value="wireless" ${ch.sourceType === "wireless" ? "selected" : ""}>Wireless</option><option value="playback" ${ch.sourceType === "playback" ? "selected" : ""}>Playback</option></select></td><td><input data-aud-in-loc="${ch.id}" value="${String(ch.stageLocation || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-in-con="${ch.id}" value="${String(ch.connector || "").replace(/"/g, "&quot;")}" /></td><td><input data-aud-in-pha="${ch.id}" type="checkbox" ${ch.phantom ? "checked" : ""} /></td><td><select data-aud-in-pri="${ch.id}"><option value="critical" ${ch.priority === "critical" ? "selected" : ""}>Critical</option><option value="important" ${ch.priority === "important" ? "selected" : ""}>Important</option><option value="nice_to_have" ${ch.priority === "nice_to_have" ? "selected" : ""}>Nice-to-have</option></select></td><td><button data-aud-in-remove="${ch.id}">Remove</button></td></tr>`).join("")}</tbody></table></div>
               <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-top:0.7rem;"><div class="kpi"><div class="muted">Inputs</div><b>${inputCount}</b></div><div class="kpi"><div class="muted">Stagebox Inputs</div><b>${stageboxInputs}</b></div><div class="kpi"><div class="muted">Spare Inputs</div><b>${Math.max(0, stageboxInputs - inputCount)}</b></div></div>
               <div class="card" style="margin-top:0.7rem;"><h3 style="margin:0;">Validation</h3>${renderIssues("console_io")}</div>
@@ -5905,7 +6377,7 @@
           `;
 
           document.querySelectorAll("button[data-aud-tab]").forEach((btn) => btn.addEventListener("click", () => {
-            audioState.activeTab = String(btn.getAttribute("data-aud-tab") || "show_info");
+            audioState.activeTab = String(btn.getAttribute("data-aud-tab") || "system_design");
             renderSound();
           }));
 
@@ -5949,7 +6421,15 @@
           bindInput("audSubCfg", (v) => { system.subConfig = String(v || "ground"); });
           bindInput("audDspModel", (v) => { system.dspModel = String(v || ""); });
           bindInput("audRiggingNote", (v) => { system.riggingSafetyNote = String(v || ""); });
-          bindInput("audConsoleModel", (v) => { consoleCfg.consoleModel = String(v || ""); });
+          bindInput("audConsoleModel", (v) => {
+            const selectedConsole = String(v || "");
+            const preset = getAudioConsolePresetByName(selectedConsole);
+            if (preset) {
+              applyAudioConsolePreset(consoleCfg, preset);
+            } else {
+              consoleCfg.consoleModel = selectedConsole;
+            }
+          });
           bindInput("audStageboxModel", (v) => { consoleCfg.stageboxModel = String(v || ""); });
           bindInput("audTransport", (v) => { consoleCfg.transport = String(v || ""); });
           bindInput("audRfRegion", (v) => { rf.region = String(v || "ZA"); });
@@ -6278,11 +6758,18 @@
               const row = document.createElement("div");
               row.className = "card";
               const fixture = getLightingFixtureByKey(line.fixtureKey);
+              const preview = fixturePreviewByKey(line.fixtureKey);
+              const previewPath = String(preview?.path || "");
               const groupOptions = lightingState.groups
                 .map((g) => `<option value="${g.id}" ${g.id === line.groupId ? "selected" : ""}>${g.name}</option>`)
                 .join("");
               row.innerHTML = `
-                <div style="display:grid;grid-template-columns:1.5fr 1fr 80px 1fr auto;gap:0.45rem;align-items:center;">
+                <div style="display:grid;grid-template-columns:56px 1.5fr 1fr 80px 1fr auto;gap:0.45rem;align-items:center;">
+                  <div style="width:48px;height:48px;border:1px solid var(--theme-line-soft);border-radius:8px;overflow:hidden;background:#121722;display:grid;place-items:center;">
+                    ${previewPath
+                      ? `<img src="${previewPath}" alt="${fixture.manufacturer} ${fixture.model}" style="width:100%;height:100%;object-fit:contain;display:block;" />`
+                      : `<span style="font-size:0.68rem;color:var(--muted);">N/A</span>`}
+                  </div>
                   <div>
                     <div><b>${fixture.manufacturer} ${fixture.model}</b></div>
                     <div class="muted">${fixture.category}</div>
@@ -6663,7 +7150,6 @@
               <div class="toolbar">
                 <h2>Rigging - Event Rigging Calculator</h2>
                 <div style="display:flex;gap:0.45rem;">
-                  <button id="rigLoadSampleBtn">Load Sample Project</button>
                   <div style="position:relative;">
                     <button
                       id="rigExportMenuBtn"
@@ -7419,43 +7905,6 @@
             });
           });
 
-          document.getElementById("rigLoadSampleBtn")?.addEventListener("click", () => {
-            const sample = window.THE_BASE_RIGGING_SAMPLE;
-            if (!sample) return;
-            riggingState.projectName = sample.name || "Sample Rigging Project";
-            riggingState.units = sample.units || "kg/m";
-            riggingState.safetyFactor = Number(sample.safety_factor || 1.2);
-            riggingState.cantileverEnabled = false;
-            riggingState.groups = [{ id: "rig_grp_1", name: "Main Rig", color: "#f08a3c" }];
-            riggingState.selectedTrussGroupId = "rig_grp_1";
-            riggingState.groupFixtures = [];
-            riggingState.groupMotors = [];
-            riggingState.nodes = (sample.nodes || []).map((n) => ({ id: n.id, label: n.label, x: Number(n.x || 0), y: Number(n.y || 0) }));
-            riggingState.spans = (sample.spans || []).map((s) => ({ id: s.id, nodeA: s.nodeA, nodeB: s.nodeB, trussTypeId: s.truss_type_id, groupId: "rig_grp_1", lengthM: Number(s.length_m || 0) }));
-            riggingState.pickups = (sample.pickups || []).map((p) => ({ id: p.id, nodeId: p.node_id, pickupType: "motor", motorId: p.motor_id, roofPointWllKg: Number.isFinite(Number(p.roof_point_wll_kg)) ? Number(p.roof_point_wll_kg) : null, chainDropM: Number(p.chain_drop_m || 0), notes: p.notes || "" }));
-            riggingState.fixturePlacements = (sample.fixture_placements || []).map((fp) => ({
-              id: `FP_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`,
-              fixtureKey: "",
-              fixtureName: fp.fixture_name,
-              weightKg: Number.isFinite(Number(fp.weight_kg)) ? Number(fp.weight_kg) : null,
-              clampWeightKg: Number.isFinite(Number(fp.clamp_weight_kg)) ? Number(fp.clamp_weight_kg) : 0,
-              spanId: fp.span_id,
-              positionM: Number(fp.position_m_from_nodeA || 0),
-              quantity: Math.max(1, Math.round(Number(fp.quantity || 1)))
-            }));
-            riggingState.accessories = (sample.accessories || []).map((a) => ({
-              id: `AC_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`,
-              name: a.name,
-              weightKg: Number(a.weight_kg || 0),
-              placement: a.placement,
-              nodeId: a.node_id || null,
-              spanId: a.span_id || null,
-              positionM: Number(a.position_m || 0)
-            }));
-            riggingState.lastCalc = null;
-            renderRigging();
-          });
-
           const exportCsv = () => {
             const r = runRiggingCalculation();
             if (r.compliance?.exportLocked) {
@@ -7698,12 +8147,12 @@
                   data-rig-span-len="${spanLen}"
                   style="cursor:grab;"
                 >
-                  ${previewPath ? `<g data-rig-item-visual="1" transform="translate(${p.x.toFixed(2)} ${(p.y + 12).toFixed(2)})" style="pointer-events:none;${selectedVisualStyle}">
+                  ${previewPath ? `<g data-rig-item-visual="1" transform="translate(${p.x.toFixed(2)} ${(p.y + 12).toFixed(2)}) rotate(180 0 ${imgPivotY.toFixed(2)})" style="pointer-events:none;${selectedVisualStyle}">
                     <line x1="0" y1="-13.2" x2="0" y2="-8.0" stroke="#dfe5f2" stroke-width="0.95"/>
                     <rect x="-4.6" y="-8.0" width="9.2" height="2.4" rx="0.8" fill="#222938" stroke="#8e9aba" stroke-width="0.68"/>
                     <path d="M -3.4 -5.6 Q 0 -2.4 3.4 -5.6" fill="none" stroke="#aebddb" stroke-width="0.85"/>
-                    <image data-rig-item-image="1" href="${previewPath}" x="${imgX.toFixed(2)}" y="${imgY.toFixed(2)}" width="${imgW.toFixed(2)}" height="${imgH.toFixed(2)}" transform="rotate(180 0 ${imgPivotY.toFixed(2)})" preserveAspectRatio="xMidYMid meet"/>
-                  </g>` : `<g data-rig-item-visual="1" transform="translate(${p.x.toFixed(2)} ${(p.y + 12).toFixed(2)})" style="pointer-events:none;${selectedVisualStyle}">
+                    <image data-rig-item-image="1" href="${previewPath}" x="${imgX.toFixed(2)}" y="${imgY.toFixed(2)}" width="${imgW.toFixed(2)}" height="${imgH.toFixed(2)}" preserveAspectRatio="xMidYMid meet"/>
+                  </g>` : `<g data-rig-item-visual="1" transform="translate(${p.x.toFixed(2)} ${(p.y + 12).toFixed(2)}) rotate(180 0 ${imgPivotY.toFixed(2)})" style="pointer-events:none;${selectedVisualStyle}">
                     <line x1="0" y1="${fallbackYokeTop.toFixed(2)}" x2="0" y2="-8.4" stroke="#dfe5f2" stroke-width="0.95"/>
                     <rect x="${fallbackClampX.toFixed(2)}" y="-8.4" width="${fallbackClampW.toFixed(2)}" height="2.6" rx="0.9" fill="#222938" stroke="#8e9aba" stroke-width="0.7"/>
                     <path d="M ${(-fallbackClampW * 0.32).toFixed(2)} -5.8 Q 0 -2.6 ${(fallbackClampW * 0.32).toFixed(2)} -5.8" fill="none" stroke="#aebddb" stroke-width="0.88"/>
@@ -8436,6 +8885,7 @@
             }
             if (venue3dRuntime.onResize) window.removeEventListener("resize", venue3dRuntime.onResize);
             if (venue3dRuntime.onKeydown) window.removeEventListener("keydown", venue3dRuntime.onKeydown);
+            if (venue3dRuntime.onKeyup) window.removeEventListener("keyup", venue3dRuntime.onKeyup);
           } catch (_) {}
           venue3dRuntime = null;
         }
@@ -8446,12 +8896,18 @@
           const pickEl = document.getElementById("venue3dPick");
           const resetBtn = document.getElementById("venue3dResetViewBtn");
           const clearGearBtn = document.getElementById("venue3dClearGearBtn");
+          const outlinerEl = document.getElementById("venue3dOutliner");
           const objNameEl = document.getElementById("venue3dObjName");
+            const objTypeEl = document.getElementById("venue3dObjType");
+            const objSourceEl = document.getElementById("venue3dObjSource");
+            const objHintEl = document.getElementById("venue3dObjHint");
             const objPosXEl = document.getElementById("venue3dObjPosX");
             const objPosYEl = document.getElementById("venue3dObjPosY");
             const objPosZEl = document.getElementById("venue3dObjPosZ");
             const objRotYEl = document.getElementById("venue3dObjRotY");
             const objScaleEl = document.getElementById("venue3dObjScale");
+            const objScaleYGhostEl = document.getElementById("venue3dObjScaleYGhost");
+            const objScaleZGhostEl = document.getElementById("venue3dObjScaleZGhost");
             const objCurveEl = document.getElementById("venue3dObjCurve");
             const objCurveSegEl = document.getElementById("venue3dObjCurveSeg");
             const objApplyBtn = document.getElementById("venue3dObjApplyBtn");
@@ -8459,6 +8915,7 @@
           const gizmoTabs = document.getElementById("venue3dGizmoTabs");
           const scaleEl = document.getElementById("venue3dScaleInput");
           const modeTabs = document.getElementById("venue3dModeTabs");
+          const inputTabs = document.getElementById("venue3dInputTabs");
           const projectionTabs = document.getElementById("venue3dProjectionTabs");
           const viewTabs = document.getElementById("venue3dViewTabs");
           if (!(host instanceof HTMLElement) || !statusEl || !pickEl) return;
@@ -8493,6 +8950,7 @@
             renderer.domElement.style.width = "100%";
             renderer.domElement.style.height = "100%";
             renderer.domElement.style.display = "block";
+            renderer.domElement.addEventListener("contextmenu", (ev) => ev.preventDefault());
             host.appendChild(renderer.domElement);
 
             const scene = new THREE.Scene();
@@ -8570,26 +9028,62 @@
               saveAppMemory();
             };
             syncProjectionTabs();
-            let navMode = "orbit";
-            const setControlMode = (mode) => {
-              navMode = mode;
-              if (!modeTabs) return;
-              modeTabs.querySelectorAll("button[data-venue3d-mode]").forEach((btn) => {
-                btn.classList.toggle("active", btn.getAttribute("data-venue3d-mode") === mode);
-              });
+            let navMode = "blender";
+            let blenderShiftPan = false;
+            let navInputProfile = "trackpad";
+            const applyControlBindings = () => {
               const M = THREE.MOUSE;
-              if (mode === "pan") {
+              controls.enableRotate = true;
+              controls.enablePan = true;
+              controls.enableZoom = true;
+              controls.zoomSpeed = navInputProfile === "trackpad" ? 0.72 : 1;
+              controls.rotateSpeed = 0.95;
+              controls.panSpeed = navInputProfile === "trackpad" ? 0.95 : 1.05;
+              controls.dampingFactor = navInputProfile === "trackpad" ? 0.11 : 0.08;
+              if (navMode === "plan") {
                 controls.mouseButtons = { LEFT: M.PAN, MIDDLE: M.PAN, RIGHT: M.PAN };
                 controls.touches = { ONE: THREE.TOUCH.PAN, TWO: THREE.TOUCH.DOLLY_PAN };
-              } else if (mode === "zoom") {
-                controls.mouseButtons = { LEFT: M.DOLLY, MIDDLE: M.DOLLY, RIGHT: M.DOLLY };
-                controls.touches = { ONE: THREE.TOUCH.DOLLY_PAN, TWO: THREE.TOUCH.DOLLY_PAN };
-              } else {
+                controls.rotateSpeed = 0.65;
+                controls.panSpeed = 1.2;
+                return;
+              }
+              if (navMode === "inspect") {
                 controls.mouseButtons = { LEFT: M.ROTATE, MIDDLE: M.DOLLY, RIGHT: M.PAN };
                 controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+                controls.rotateSpeed = 0.92;
+                controls.panSpeed = 0.95;
+                return;
               }
+              // Blender-style:
+              // Mouse profile -> selection on LMB, orbit MMB, Shift+MMB pan.
+              // Trackpad profile -> LMB drag orbit, Shift+drag pan, wheel/pinch zoom.
+              controls.mouseButtons = navInputProfile === "trackpad"
+                ? { LEFT: blenderShiftPan ? M.PAN : M.ROTATE, MIDDLE: M.DOLLY, RIGHT: M.PAN }
+                : { LEFT: null, MIDDLE: blenderShiftPan ? M.PAN : M.ROTATE, RIGHT: M.PAN };
+              controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+              controls.rotateSpeed = 1.0;
+              controls.panSpeed = navInputProfile === "trackpad" ? 0.92 : 1.0;
             };
-            setControlMode("orbit");
+            const setInputProfile = (profile) => {
+              const safe = profile === "mouse" ? "mouse" : "trackpad";
+              navInputProfile = safe;
+              venueState.venue3dInputProfile = safe;
+              inputTabs?.querySelectorAll("button[data-venue3d-input]").forEach((btn) => {
+                btn.classList.toggle("active", btn.getAttribute("data-venue3d-input") === safe);
+              });
+              applyControlBindings();
+            };
+            const setControlMode = (mode) => {
+              const safe = mode === "inspect" || mode === "plan" ? mode : "blender";
+              navMode = safe;
+              venueState.venue3dNavMode = safe;
+              modeTabs?.querySelectorAll("button[data-venue3d-mode]").forEach((btn) => {
+                btn.classList.toggle("active", btn.getAttribute("data-venue3d-mode") === safe);
+              });
+              applyControlBindings();
+            };
+            setInputProfile(String(venueState.venue3dInputProfile || "trackpad"));
+            setControlMode(String(venueState.venue3dNavMode || "blender"));
             const setGizmoMode = (mode) => {
               const safe = (mode === "rotate" || mode === "scale") ? mode : "translate";
               venueState.gizmoMode = safe;
@@ -8680,6 +9174,8 @@
               else floorPlanMesh.material?.dispose?.();
               floorPlanMesh = null;
               floorPlanBounds = null;
+              applyOutlinerVisibility();
+              renderSceneOutliner();
             };
             const fitViewToBounds = (bounds) => {
               if (!bounds) return;
@@ -8751,12 +9247,15 @@
                   floorPlanMesh = new THREE.Mesh(geo, mat);
                   floorPlanMesh.name = "Venue Floor Plan";
                   floorPlanRoot.add(floorPlanMesh);
+                  floorPlanRoot.visible = !isOutlinerHidden("overlay:floorplan");
                   floorPlanBounds = {
                     minX: Math.min(p00.x, p10.x, p01.x, p11.x),
                     maxX: Math.max(p00.x, p10.x, p01.x, p11.x),
                     minZ: Math.min(p00.z, p10.z, p01.z, p11.z),
                     maxZ: Math.max(p00.z, p10.z, p01.z, p11.z)
                   };
+                  applyOutlinerVisibility();
+                  renderSceneOutliner();
                   resolve(true);
                 }, undefined, () => resolve(false));
               });
@@ -8871,6 +9370,47 @@
             const trussMeshes = new Map();
             const measureRoot = new THREE.Group();
             scene.add(measureRoot);
+            const ensureOutlinerState = () => {
+              if (!venueState.sceneOutlinerCollapsed || typeof venueState.sceneOutlinerCollapsed !== "object") {
+                venueState.sceneOutlinerCollapsed = {};
+              }
+              if (!Array.isArray(venueState.sceneOutlinerHidden)) {
+                venueState.sceneOutlinerHidden = [];
+              }
+            };
+            const getOutlinerHiddenSet = () => {
+              ensureOutlinerState();
+              return new Set((venueState.sceneOutlinerHidden || []).map((k) => String(k)));
+            };
+            const isOutlinerCollapsed = (key) => {
+              ensureOutlinerState();
+              return Boolean(venueState.sceneOutlinerCollapsed[String(key)] === true);
+            };
+            const setOutlinerCollapsed = (key, collapsed) => {
+              ensureOutlinerState();
+              venueState.sceneOutlinerCollapsed[String(key)] = Boolean(collapsed);
+            };
+            const setOutlinerHidden = (key, hidden) => {
+              ensureOutlinerState();
+              const target = String(key || "");
+              if (!target) return;
+              const cur = new Set((venueState.sceneOutlinerHidden || []).map((k) => String(k)));
+              if (hidden) cur.add(target);
+              else cur.delete(target);
+              venueState.sceneOutlinerHidden = Array.from(cur);
+            };
+            const isOutlinerHidden = (key) => getOutlinerHiddenSet().has(String(key || ""));
+            const applyOutlinerVisibility = () => {
+              const hidden = getOutlinerHiddenSet();
+              gearMeshes.forEach((mesh, id) => {
+                if (mesh) mesh.visible = !hidden.has(`gear:${String(id)}`);
+              });
+              trussMeshes.forEach((mesh, id) => {
+                if (mesh) mesh.visible = !hidden.has(`truss:${String(id)}`);
+              });
+              if (floorPlanRoot) floorPlanRoot.visible = !hidden.has("overlay:floorplan");
+              if (loadedRoot) loadedRoot.visible = !hidden.has("imported:model");
+            };
             let fittedCenter = new THREE.Vector3(0, 0, 0);
             let fittedMaxDim = 10;
             const ledPortPalette3d = ["#62d3ff", "#ff7d9f", "#8fff9c", "#ffd27b", "#a7b3ff", "#ff9d62", "#6de2a8", "#d28dff", "#ff6b6b", "#66e0ff", "#b1ff66", "#ffb366", "#9f86ff", "#53f3c2", "#ff8ad8", "#7dc3ff"];
@@ -9406,7 +9946,7 @@
               const selectedMesh = gearState.selectedPlacedId ? gearMeshes.get(gearState.selectedPlacedId) : null;
               const selectedTruss = venueState.selectedTrussPlacementId ? trussMeshes.get(venueState.selectedTrussPlacementId) : null;
               const attachObj = selectedMesh || selectedTruss || null;
-              if (attachObj) {
+              if (attachObj && attachObj.visible !== false) {
                 transformControls.visible = true;
                 transformControls.attach(attachObj);
               } else {
@@ -9414,6 +9954,7 @@
                 transformControls.detach();
               }
               syncCurveHandles();
+              renderSceneOutliner();
             };
             const clearCurveHandles = () => {
               curveHandleMeshes.forEach((h) => {
@@ -9479,29 +10020,63 @@
               const placed = (gearState.placedItems || []).find((x) => x.id === gearState.selectedPlacedId);
               const src = placed ? (gearItemsById[placed.sourceId] || null) : null;
               const truss = venueState.selectedTrussPlacementId ? trussMeshes.get(venueState.selectedTrussPlacementId) : null;
+              const srcDept = String(src?.department || "").toLowerCase();
+              const isVideoWall = Boolean(placed && srcDept === "video");
+              const resetMeta = () => {
+                if (objTypeEl) objTypeEl.textContent = "Type: -";
+                if (objSourceEl) objSourceEl.textContent = "Source: -";
+                if (objHintEl) objHintEl.textContent = "Tip: select and drag in viewport, or edit values here.";
+              };
               if (selectedImportedObject && !placed && !truss) {
                 if (objNameEl) objNameEl.textContent = `Selected: ${selectedImportedObject.name || "Imported Object"}`;
+                if (objTypeEl) objTypeEl.textContent = "Type: Imported";
+                if (objSourceEl) objSourceEl.textContent = "Source: Model";
+                if (objHintEl) objHintEl.textContent = "Imported model supports selection and delete.";
                 if (objPosXEl) objPosXEl.value = String(Number(selectedImportedObject.position?.x || 0).toFixed(2));
                 if (objPosYEl) objPosYEl.value = String(Number(selectedImportedObject.position?.y || 0).toFixed(2));
                 if (objPosZEl) objPosZEl.value = String(Number(selectedImportedObject.position?.z || 0).toFixed(2));
                 if (objRotYEl) objRotYEl.value = String(Number(((selectedImportedObject.rotation?.y || 0) * 180) / Math.PI).toFixed(0));
                 if (objScaleEl) objScaleEl.value = String(Number(selectedImportedObject.scale?.x || 1).toFixed(2));
+                if (objScaleYGhostEl) objScaleYGhostEl.value = String(Number(selectedImportedObject.scale?.y || 1).toFixed(2));
+                if (objScaleZGhostEl) objScaleZGhostEl.value = String(Number(selectedImportedObject.scale?.z || 1).toFixed(2));
+                if (objCurveEl) objCurveEl.value = "";
+                if (objCurveSegEl) objCurveSegEl.value = "";
+                if (objCurveEl) objCurveEl.disabled = true;
+                if (objCurveSegEl) objCurveSegEl.disabled = true;
                 if (objApplyBtn) objApplyBtn.disabled = true;
                 if (objDeleteBtn) objDeleteBtn.disabled = false;
                 return;
               }
               if (truss && !placed) {
                 if (objNameEl) objNameEl.textContent = `Selected: ${truss.name || "Truss Group"}`;
+                if (objTypeEl) objTypeEl.textContent = "Type: Truss Group";
+                if (objSourceEl) objSourceEl.textContent = "Source: Rigging";
+                if (objHintEl) objHintEl.textContent = "Transform is driven from rigging placement.";
                 if (objPosXEl) objPosXEl.value = String(Number(truss.position.x || 0).toFixed(2));
                 if (objPosYEl) objPosYEl.value = String(Number(truss.position.y || 0).toFixed(2));
                 if (objPosZEl) objPosZEl.value = String(Number(truss.position.z || 0).toFixed(2));
                 if (objRotYEl) objRotYEl.value = String(Number((truss.rotation.y * 180) / Math.PI).toFixed(0));
                 if (objScaleEl) objScaleEl.value = "1.00";
+                if (objScaleYGhostEl) objScaleYGhostEl.value = "1.00";
+                if (objScaleZGhostEl) objScaleZGhostEl.value = "1.00";
+                if (objCurveEl) objCurveEl.value = "";
+                if (objCurveSegEl) objCurveSegEl.value = "";
+                if (objCurveEl) objCurveEl.disabled = true;
+                if (objCurveSegEl) objCurveSegEl.disabled = true;
                 if (objApplyBtn) objApplyBtn.disabled = true;
                 if (objDeleteBtn) objDeleteBtn.disabled = true;
                 return;
               }
               if (objNameEl) objNameEl.textContent = placed && src ? `Selected: ${src.name}` : "Selected: -";
+              if (placed && src) {
+                if (objTypeEl) objTypeEl.textContent = `Type: ${src.department || "Other"}`;
+                if (objSourceEl) objSourceEl.textContent = `Source: ${src.manufacturer ? `${src.manufacturer} / ` : ""}${src.name || "-"}`;
+                if (objHintEl) objHintEl.textContent = isVideoWall
+                  ? "Video wall selected. Curve controls are active."
+                  : "Use gizmo or values below to edit transform.";
+              } else {
+                resetMeta();
+              }
               if (objPosXEl) objPosXEl.value = placed ? String(Number(placed.x || 0).toFixed(2)) : "";
               if (objPosYEl) {
                 const defaultY = src && String(src.department || "").toLowerCase() === "video"
@@ -9515,10 +10090,194 @@
               if (objPosZEl) objPosZEl.value = placed ? String(Number(placed.z || 0).toFixed(2)) : "";
               if (objRotYEl) objRotYEl.value = placed ? String(Number(placed.rotYDeg || 0).toFixed(0)) : "";
               if (objScaleEl) objScaleEl.value = placed ? String(Number(placed.scale || 1).toFixed(2)) : "";
+              if (objScaleYGhostEl) objScaleYGhostEl.value = placed ? String(Number(placed.scale || 1).toFixed(2)) : "";
+              if (objScaleZGhostEl) objScaleZGhostEl.value = placed ? String(Number(placed.scale || 1).toFixed(2)) : "";
               if (objCurveEl) objCurveEl.value = placed ? String(Number(placed.curveDeg || 0).toFixed(0)) : "";
               if (objCurveSegEl) objCurveSegEl.value = placed ? String(Math.max(4, Math.min(64, Math.round(Number(placed.curveSegments || 12))))) : "";
+              if (objCurveEl) objCurveEl.disabled = !isVideoWall;
+              if (objCurveSegEl) objCurveSegEl.disabled = !isVideoWall;
               if (objApplyBtn) objApplyBtn.disabled = !placed;
               if (objDeleteBtn) objDeleteBtn.disabled = !placed;
+            };
+            const renderSceneOutliner = () => {
+              if (!outlinerEl) return;
+              ensureOutlinerState();
+              const eyeSvg = (visible) => visible
+                ? '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"></path><circle cx="12" cy="12" r="2.7"></circle></svg>'
+                : '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6c2.1 0 3.9.6 5.4 1.5"></path><path d="M22 12s-3.5 6-10 6c-2.1 0-3.9-.6-5.4-1.5"></path><path d="M3 3l18 18"></path></svg>';
+              const selectedKey = gearState.selectedPlacedId
+                ? `gear:${String(gearState.selectedPlacedId)}`
+                : (venueState.selectedTrussPlacementId
+                  ? `truss:${String(venueState.selectedTrussPlacementId)}`
+                  : (selectedImportedObject ? "imported:model" : ""));
+              const gearItems = (gearState.placedItems || []).map((p) => {
+                const src = gearItemsById[p.sourceId] || {};
+                return {
+                  key: `gear:${String(p.id)}`,
+                  label: String(src.name || "Gear"),
+                  group: String(src.department || "Other"),
+                  type: "gear",
+                  rawId: String(p.id)
+                };
+              });
+              const byDept = {};
+              gearItems.forEach((g) => {
+                const dept = g.group || "Other";
+                if (!Array.isArray(byDept[dept])) byDept[dept] = [];
+                byDept[dept].push(g);
+              });
+              const trussItems = (venueState.trussPlacements || []).map((tp) => {
+                const label = String(tp.label || tp.sourceGroupName || "Truss Group");
+                return { key: `truss:${String(tp.id || "")}`, label, type: "truss", rawId: String(tp.id || "") };
+              });
+              const modelItems = [];
+              if (loadedRoot) modelItems.push({ key: "imported:model", label: String(venueState.model3dName || "Imported Model"), type: "imported" });
+              if (floorPlanMesh) modelItems.push({ key: "overlay:floorplan", label: "Floor Plan Overlay", type: "overlay" });
+
+              const rows = [];
+              const hidden = getOutlinerHiddenSet();
+              const mkGroup = (key, label, children, level = 0) => {
+                if (!children.length) return;
+                const collapsed = isOutlinerCollapsed(key);
+                const childKeys = children.map((c) => c.key);
+                const visibleCount = childKeys.filter((k) => !hidden.has(String(k))).length;
+                const groupVisible = visibleCount > 0;
+                rows.push({
+                  rowType: "group",
+                  key,
+                  label,
+                  level,
+                  collapsed,
+                  visible: groupVisible,
+                  childKeys
+                });
+                if (!collapsed) {
+                  children.forEach((c) => rows.push({ ...c, rowType: "item", level: level + 1, visible: !hidden.has(String(c.key)), selected: selectedKey === c.key }));
+                }
+              };
+
+              mkGroup("group:truss", "Truss Groups", trussItems, 0);
+              const deptNames = Object.keys(byDept).sort((a, b) => a.localeCompare(b));
+              if (deptNames.length) {
+                const gearGroupChildren = [];
+                deptNames.forEach((dept) => {
+                  const deptChildren = (byDept[dept] || []).sort((a, b) => a.label.localeCompare(b.label));
+                  gearGroupChildren.push({
+                    key: `group:gear:${dept}`,
+                    label: dept,
+                    type: "subgroup",
+                    children: deptChildren
+                  });
+                });
+                const gearCollapsed = isOutlinerCollapsed("group:gear");
+                const gearVisible = gearGroupChildren.some((g) => g.children.some((c) => !hidden.has(c.key)));
+                rows.push({
+                  rowType: "group",
+                  key: "group:gear",
+                  label: "Gear",
+                  level: 0,
+                  collapsed: gearCollapsed,
+                  visible: gearVisible,
+                  childKeys: gearGroupChildren.flatMap((g) => g.children.map((c) => c.key))
+                });
+                if (!gearCollapsed) {
+                  gearGroupChildren.forEach((sub) => {
+                    mkGroup(sub.key, sub.label, sub.children, 1);
+                  });
+                }
+              }
+              mkGroup("group:models", "Models & Overlays", modelItems, 0);
+
+              if (!rows.length) {
+                outlinerEl.innerHTML = '<div class="muted">No scene objects yet.</div>';
+                return;
+              }
+
+              outlinerEl.innerHTML = rows.map((row) => {
+                const leftPad = Math.max(0, Number(row.level || 0)) * 14;
+                const isGroup = row.rowType === "group";
+                const toggle = isGroup
+                  ? `<button class="outliner-toggle" data-outliner-toggle="${row.key}" title="${row.collapsed ? "Expand" : "Collapse"}">${row.collapsed ? "▸" : "▾"}</button>`
+                  : '<button class="outliner-toggle dim" tabindex="-1">·</button>';
+                const eye = `<button class="outliner-eye" data-outliner-eye="${row.key}" title="${row.visible ? "Hide" : "Show"}">${eyeSvg(Boolean(row.visible))}</button>`;
+                return `
+                  <div class="outliner-row ${row.selected ? "active" : ""}" data-hidden="${row.visible ? "0" : "1"}" data-outliner-row="${row.key}" data-outliner-type="${row.rowType}" style="padding-left:${leftPad}px;">
+                    ${toggle}
+                    <span style="display:inline-block;width:14px;height:14px;"></span>
+                    <span class="outliner-label ${isGroup ? "outliner-group-label" : ""}">${row.label}</span>
+                    ${eye}
+                  </div>
+                `;
+              }).join("");
+
+              outlinerEl.querySelectorAll("[data-outliner-toggle]").forEach((btn) => {
+                btn.addEventListener("click", (ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                  const key = String(btn.getAttribute("data-outliner-toggle") || "");
+                  if (!key) return;
+                  setOutlinerCollapsed(key, !isOutlinerCollapsed(key));
+                  renderSceneOutliner();
+                  saveAppMemory();
+                });
+              });
+              outlinerEl.querySelectorAll("[data-outliner-eye]").forEach((btn) => {
+                btn.addEventListener("click", (ev) => {
+                  ev.preventDefault();
+                  ev.stopPropagation();
+                  const key = String(btn.getAttribute("data-outliner-eye") || "");
+                  if (!key) return;
+                  const applyTo = [];
+                  if (key.startsWith("group:gear:")) {
+                    const dept = key.replace("group:gear:", "");
+                    (gearState.placedItems || []).forEach((p) => {
+                      const src = gearItemsById[p.sourceId] || {};
+                      if (String(src.department || "Other") === dept) applyTo.push(`gear:${String(p.id)}`);
+                    });
+                  } else if (key === "group:gear") {
+                    (gearState.placedItems || []).forEach((p) => applyTo.push(`gear:${String(p.id)}`));
+                  } else if (key === "group:truss") {
+                    (venueState.trussPlacements || []).forEach((tp) => applyTo.push(`truss:${String(tp.id || "")}`));
+                  } else if (key === "group:models") {
+                    if (loadedRoot) applyTo.push("imported:model");
+                    if (floorPlanMesh) applyTo.push("overlay:floorplan");
+                  } else {
+                    applyTo.push(key);
+                  }
+                  const currentlyVisibleCount = applyTo.filter((k) => !isOutlinerHidden(k)).length;
+                  const hideAll = currentlyVisibleCount > 0;
+                  applyTo.forEach((k) => setOutlinerHidden(k, hideAll));
+                  applyOutlinerVisibility();
+                  updateSelectedVisual();
+                  renderSceneOutliner();
+                  saveAppMemory();
+                });
+              });
+              outlinerEl.querySelectorAll("[data-outliner-row]").forEach((rowEl) => {
+                rowEl.addEventListener("click", () => {
+                  const key = String(rowEl.getAttribute("data-outliner-row") || "");
+                  const type = String(rowEl.getAttribute("data-outliner-type") || "");
+                  if (type !== "item") return;
+                  if (key.startsWith("gear:")) {
+                    gearState.selectedPlacedId = key.slice("gear:".length);
+                    venueState.selectedTrussPlacementId = "";
+                    selectedImportedObject = null;
+                  } else if (key.startsWith("truss:")) {
+                    venueState.selectedTrussPlacementId = key.slice("truss:".length);
+                    gearState.selectedPlacedId = "";
+                    selectedImportedObject = null;
+                  } else if (key === "imported:model") {
+                    selectedImportedObject = loadedRoot || null;
+                    gearState.selectedPlacedId = "";
+                    venueState.selectedTrussPlacementId = "";
+                  } else {
+                    return;
+                  }
+                  updateSelectedVisual();
+                  updateObjectControlPanel();
+                  renderSceneOutliner();
+                });
+              });
             };
             const buildGearMeshSignature = (placed, source) => {
               const dept = String(source?.department || "Other").toLowerCase();
@@ -9600,10 +10359,12 @@
                   mesh.rotation.y = (rotYDeg * Math.PI) / 180;
                   mesh.scale.setScalar(scaleMul);
                 }
+                mesh.visible = !isOutlinerHidden(`gear:${String(p.id)}`);
               });
               if (gearState.selectedPlacedId && !current.has(gearState.selectedPlacedId)) {
                 gearState.selectedPlacedId = "";
               }
+              applyOutlinerVisibility();
               updateSelectedVisual();
               updateObjectControlPanel();
             };
@@ -9748,6 +10509,7 @@
                 beamContainer.userData.trussGroupId = groupId;
                 beamContainer.userData.trussPlacementId = tp.id;
                 beamContainer.userData.trussBaseCenterY = trussCenterY;
+                beamContainer.visible = !isOutlinerHidden(`truss:${String(tp.id)}`);
                 trussRoot.add(beamContainer);
                 trussMeshes.set(String(tp.id), beamContainer);
                 const beam = new THREE.Mesh(
@@ -9854,6 +10616,7 @@
               if (venueState.selectedTrussPlacementId && !trussMeshes.has(String(venueState.selectedTrussPlacementId))) {
                 venueState.selectedTrussPlacementId = "";
               }
+              applyOutlinerVisibility();
               updateSelectedVisual();
               updateObjectControlPanel();
             };
@@ -10004,6 +10767,8 @@
               disposeObject3D(loadedRoot);
               loadedRoot = null;
               selectedImportedObject = null;
+              applyOutlinerVisibility();
+              renderSceneOutliner();
             };
             const getImportedTopLevelObject = (node) => {
               if (!loadedRoot || !node) return null;
@@ -10044,11 +10809,14 @@
                 }
                 applyModelScale();
                 scene.add(loadedRoot);
+                loadedRoot.visible = !isOutlinerHidden("imported:model");
                 fitViewToObject(loadedRoot);
                 const size = getScaledModelSize();
                 const sizeTxt = size ? ` (${size.x.toFixed(1)}m x ${size.z.toFixed(1)}m footprint)` : "";
                 statusEl.textContent = `Loaded: ${venueState.model3dName || "3D model"}${sizeTxt}${floorPlanBounds ? " + Floor plan mapped" : ""}`;
                 pickEl.textContent = "Selected: -";
+                applyOutlinerVisibility();
+                renderSceneOutliner();
                 applyCameraPose(savedPose);
               }, undefined, (err) => {
                 statusEl.textContent = "Failed to load model. Upload a valid .glb/.gltf file.";
@@ -10091,6 +10859,7 @@
               return getDropWorldPoint(event);
             };
             const pickObject = (ev) => {
+              if (Number(ev.button) !== 0) return;
               if (venueState.measureArmed || venueState.generalMeasureArmed) {
                 const p3 = getMeasureWorldPoint(ev);
                 if (p3) {
@@ -10355,18 +11124,115 @@
             objDeleteBtn?.addEventListener("click", () => {
               deleteSelected3dObject();
             });
-            const onVenue3dDeleteKey = (ev) => {
+            const frameSelected = () => {
+              if (gearState.selectedPlacedId) {
+                const mesh = gearMeshes.get(gearState.selectedPlacedId);
+                if (mesh) {
+                  fitViewToObject(mesh);
+                  return;
+                }
+              }
+              if (venueState.selectedTrussPlacementId) {
+                const mesh = trussMeshes.get(String(venueState.selectedTrussPlacementId || ""));
+                if (mesh) {
+                  fitViewToObject(mesh);
+                  return;
+                }
+              }
+              if (selectedImportedObject) {
+                fitViewToObject(selectedImportedObject);
+                return;
+              }
+              const root = new THREE.Group();
+              let any = false;
+              Array.from(gearMeshes.values()).forEach((m) => {
+                if (!m) return;
+                root.add(m.clone());
+                any = true;
+              });
+              Array.from(trussMeshes.values()).forEach((m) => {
+                if (!m) return;
+                root.add(m.clone());
+                any = true;
+              });
+              if (any) fitViewToObject(root);
+            };
+            const onVenue3dKeydown = (ev) => {
               const key = String(ev.key || "");
-              if (key !== "Backspace" && key !== "Delete") return;
               const t = ev.target;
               if (t instanceof Element && t.closest("input, textarea, select, [contenteditable='true']")) return;
               const section = String(currentEngineeringSection || "").toLowerCase();
               if (section !== "venue") return;
-              if (!gearState.selectedPlacedId && !selectedImportedObject && !venueState.selectedTrussPlacementId) return;
-              ev.preventDefault();
-              deleteSelected3dObject();
+
+              if (key === "Shift") {
+                if (navMode === "blender" && !blenderShiftPan) {
+                  blenderShiftPan = true;
+                  applyControlBindings();
+                }
+                return;
+              }
+
+              if (key === "Backspace" || key === "Delete") {
+                if (!gearState.selectedPlacedId && !selectedImportedObject && !venueState.selectedTrussPlacementId) return;
+                ev.preventDefault();
+                deleteSelected3dObject();
+                return;
+              }
+
+              const lower = key.toLowerCase();
+              if (lower === "g") {
+                ev.preventDefault();
+                setGizmoMode("translate");
+                saveAppMemory();
+                return;
+              }
+              if (lower === "r") {
+                ev.preventDefault();
+                setGizmoMode("rotate");
+                saveAppMemory();
+                return;
+              }
+              if (lower === "s") {
+                ev.preventDefault();
+                setGizmoMode("scale");
+                saveAppMemory();
+                return;
+              }
+              if (lower === "f") {
+                ev.preventDefault();
+                frameSelected();
+                return;
+              }
+              if (key === "5" || key === "Numpad5") {
+                ev.preventDefault();
+                setProjection(String(venueState.projectionMode || "perspective") === "orthographic" ? "perspective" : "orthographic");
+                return;
+              }
+              if (key === "1" || key === "Numpad1") {
+                ev.preventDefault();
+                setView(ev.ctrlKey ? "back" : "front");
+                return;
+              }
+              if (key === "3" || key === "Numpad3") {
+                ev.preventDefault();
+                setView(ev.ctrlKey ? "left" : "right");
+                return;
+              }
+              if (key === "7" || key === "Numpad7") {
+                ev.preventDefault();
+                setView("top");
+              }
             };
-            window.addEventListener("keydown", onVenue3dDeleteKey);
+            const onVenue3dKeyup = (ev) => {
+              const key = String(ev.key || "");
+              if (key !== "Shift") return;
+              if (navMode === "blender" && blenderShiftPan) {
+                blenderShiftPan = false;
+                applyControlBindings();
+              }
+            };
+            window.addEventListener("keydown", onVenue3dKeydown);
+            window.addEventListener("keyup", onVenue3dKeyup);
 
             const onResize = () => {
               if (!host || !renderer || !camera) return;
@@ -10392,14 +11258,22 @@
               renderer.render(scene, camera);
               venue3dRuntime.frameId = requestAnimationFrame(tick);
             };
-            venue3dRuntime = { renderer, scene, camera, controls, transformControls, frameId: 0, onResize, onKeydown: onVenue3dDeleteKey, refreshMeasurements: syncMeasureOverlays };
+            venue3dRuntime = { renderer, scene, camera, controls, transformControls, frameId: 0, onResize, onKeydown: onVenue3dKeydown, onKeyup: onVenue3dKeyup, refreshMeasurements: syncMeasureOverlays };
             resetBtn?.addEventListener("click", () => {
               setView("home");
             });
             modeTabs?.querySelectorAll("button[data-venue3d-mode]").forEach((btn) => {
               btn.addEventListener("click", () => {
-                const mode = String(btn.getAttribute("data-venue3d-mode") || "orbit");
+                const mode = String(btn.getAttribute("data-venue3d-mode") || "blender");
                 setControlMode(mode);
+                saveAppMemory();
+              });
+            });
+            inputTabs?.querySelectorAll("button[data-venue3d-input]").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const profile = String(btn.getAttribute("data-venue3d-input") || "trackpad");
+                setInputProfile(profile);
+                saveAppMemory();
               });
             });
             viewTabs?.querySelectorAll("button[data-venue3d-view]").forEach((btn) => {
@@ -11164,7 +12038,8 @@
           const floorPlanOpacity = Math.max(0.05, Math.min(1, safeNum(venueState.floorPlanOpacity, 0.28)));
           const hasFloorPlan = Boolean(venueState.floorPlanDataUrl);
           const hasWorldMatrix = Boolean(venueState.floorPlanWorldMatrix);
-          const wizardOpen = Boolean(venueState.floorPlanWizardOpen && hasFloorPlan);
+          const wizardAutoOpen = Boolean(hasFloorPlan && !hasWorldMatrix && !venueState.floorPlanWizardDismissed);
+          const wizardOpen = Boolean((venueState.floorPlanWizardOpen || venueState.floorPlanWizardForceOpen || wizardAutoOpen) && hasFloorPlan);
           const wizardImgW = Math.max(1, Number(venueState.floorPlanImageWidthPx || 1600));
           const wizardImgH = Math.max(1, Number(venueState.floorPlanImageHeightPx || 900));
           const wizardSafeHref = hasFloorPlan ? String(venueState.floorPlanDataUrl).replace(/"/g, "&quot;") : "";
@@ -11293,8 +12168,13 @@
                 <div class="grid grid-4">
                   <div style="grid-column:span 2;">
                     <label>Floor Plan</label>
-                    <input id="venueFloorPlanFile" type="file" accept="image/*" />
-                    <div class="muted" style="margin-top:0.25rem;">Upload JPG, PNG, SVG, or WebP.</div>
+                    <div style="display:flex;align-items:center;gap:0.45rem;margin-top:0.1rem;">
+                      <button id="venueFloorPlanPickBtn" type="button">Choose Image</button>
+                      <span class="muted">Image files</span>
+                    </div>
+                    <input id="venueFloorPlanFile" type="file" accept="image/*,.png,.jpg,.jpeg,.webp,.bmp" style="display:none;" />
+                    <div class="muted" style="margin-top:0.25rem;">Upload a floor plan image to calibrate.</div>
+                    <div class="muted" style="margin-top:0.15rem;" id="venueFloorPlanLoadedName">${venueState.floorPlanSourceName ? `Loaded: ${String(venueState.floorPlanSourceName).replace(/</g, "&lt;").replace(/>/g, "&gt;")}` : "Loaded: none"}</div>
                   </div>
                   <div>
                     <label>Opacity</label>
@@ -11324,6 +12204,10 @@
                 <div class="muted" style="margin-top:0.35rem;">
                   ${hasWorldMatrix ? "Calibrated transform active. 0X/0Y marker position and overlay scale are independent." : "Not calibrated yet. Use Calibrate to align origin, X and Y distances."}
                 </div>
+                <div class="badge" style="display:inline-flex;margin-top:0.35rem;border-color:var(--theme-line-soft);">
+                  ${String(venueState.floorPlanImportStatus || "No floor plan loaded")}
+                </div>
+                ${venueState.floorPlanImportError ? `<div class="bad" style="margin-top:0.35rem;">${String(venueState.floorPlanImportError).replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>` : ""}
               </div>
               <div class="card" style="margin-top:0.7rem;">
                 <div class="toolbar" style="margin-bottom:0.45rem;">
@@ -11408,11 +12292,18 @@
                     <span class="venue3d-control-label">Camera</span>
                     <div class="venue3d-camera-cluster">
                       <div class="venue3d-mini">
-                        <span class="venue3d-mini-label">Controls</span>
+                        <span class="venue3d-mini-label">Navigation</span>
                         <div class="tabs" id="venue3dModeTabs">
-                          <button data-venue3d-mode="orbit" class="active">Orbit</button>
-                          <button data-venue3d-mode="pan">Pan</button>
-                          <button data-venue3d-mode="zoom">Zoom</button>
+                          <button data-venue3d-mode="blender" class="${String(venueState.venue3dNavMode || "blender") === "blender" ? "active" : ""}">Blender</button>
+                          <button data-venue3d-mode="inspect" class="${String(venueState.venue3dNavMode || "blender") === "inspect" ? "active" : ""}">Inspect</button>
+                          <button data-venue3d-mode="plan" class="${String(venueState.venue3dNavMode || "blender") === "plan" ? "active" : ""}">Plan</button>
+                        </div>
+                      </div>
+                      <div class="venue3d-mini">
+                        <span class="venue3d-mini-label">Input</span>
+                        <div class="tabs" id="venue3dInputTabs">
+                          <button data-venue3d-input="trackpad" class="${String(venueState.venue3dInputProfile || "trackpad") === "trackpad" ? "active" : ""}">Trackpad</button>
+                          <button data-venue3d-input="mouse" class="${String(venueState.venue3dInputProfile || "trackpad") === "mouse" ? "active" : ""}">Mouse</button>
                         </div>
                       </div>
                       <div class="venue3d-mini">
@@ -11433,6 +12324,17 @@
                           <button data-venue3d-view="right">Right</button>
                           <button data-venue3d-view="top">Top</button>
                         </div>
+                      </div>
+                      <div class="venue3d-hints" aria-label="Viewport shortcuts">
+                        <span class="badge">Trackpad: Drag Orbit</span>
+                        <span class="badge">Trackpad: Shift+Drag Pan</span>
+                        <span class="badge">Mouse: MMB Orbit</span>
+                        <span class="badge">Mouse: Shift+MMB Pan</span>
+                        <span class="badge">Wheel Zoom</span>
+                        <span class="badge">G/R/S Gizmo</span>
+                        <span class="badge">1/3/7 Views</span>
+                        <span class="badge">5 Projection</span>
+                        <span class="badge">F Frame</span>
                       </div>
                     </div>
                   </div>
@@ -11505,36 +12407,77 @@
                         >${item.department}: ${item.name} x${item.quantity}</span>
                       `).join("") || '<span class="muted">No gear available.</span>'}
                     </div>
-                    <div class="card" style="margin-top:0.65rem;">
-                      <h3 style="margin:0 0 0.35rem 0;font-size:0.96rem;">Object Controls</h3>
-                      <div class="muted" id="venue3dObjName">Selected: -</div>
-                      <div class="tabs" id="venue3dGizmoTabs" style="margin-top:0.4rem;">
-                        <button data-venue3d-gizmo="translate" class="${String(venueState.gizmoMode || "translate") === "translate" ? "active" : ""}">Move</button>
-                        <button data-venue3d-gizmo="rotate" class="${String(venueState.gizmoMode || "translate") === "rotate" ? "active" : ""}">Rotate</button>
-                        <button data-venue3d-gizmo="scale" class="${String(venueState.gizmoMode || "translate") === "scale" ? "active" : ""}">Scale</button>
+                    <div class="outliner">
+                      <div class="outliner-head">Scene Outliner</div>
+                      <div class="outliner-body" id="venue3dOutliner">
+                        <div class="muted">No scene objects yet.</div>
                       </div>
-                      <div class="grid grid-2" style="margin-top:0.45rem;">
-                        <div><label>Pos X (m)</label><input id="venue3dObjPosX" type="number" step="0.01" /></div>
-                        <div><label>Pos Y (m)</label><input id="venue3dObjPosY" type="number" step="0.01" /></div>
-                        <div><label>Pos Z (m)</label><input id="venue3dObjPosZ" type="number" step="0.01" /></div>
-                        <div><label>Rotate Y (deg)</label><input id="venue3dObjRotY" type="number" step="1" /></div>
-                        <div><label>Scale</label><input id="venue3dObjScale" type="number" min="0.1" step="0.05" /></div>
-                        <div><label>Curve (deg)</label><input id="venue3dObjCurve" type="number" step="1" /></div>
-                        <div><label>Curve Segments</label><input id="venue3dObjCurveSeg" type="number" min="4" max="64" step="1" /></div>
+                    </div>
+                    <div class="obj-inspector">
+                      <div class="obj-inspector-head">
+                        <div class="obj-inspector-title">Object Properties</div>
+                        <div class="obj-inspector-name" id="venue3dObjName">Selected: -</div>
+                        <div class="obj-inspector-meta">
+                          <span class="badge" id="venue3dObjType">Type: -</span>
+                          <span class="badge" id="venue3dObjSource">Source: -</span>
+                        </div>
                       </div>
-                      <div style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.45rem;">
-                        <button id="venue3dObjApplyBtn">Apply</button>
-                        <button id="venue3dObjDeleteBtn">Delete</button>
+                      <div class="obj-section">
+                        <div class="obj-section-label">Mode</div>
+                        <div class="tabs" id="venue3dGizmoTabs" style="margin:0;">
+                          <button data-venue3d-gizmo="translate" class="${String(venueState.gizmoMode || "translate") === "translate" ? "active" : ""}">Move (G)</button>
+                          <button data-venue3d-gizmo="rotate" class="${String(venueState.gizmoMode || "translate") === "rotate" ? "active" : ""}">Rotate (R)</button>
+                          <button data-venue3d-gizmo="scale" class="${String(venueState.gizmoMode || "translate") === "scale" ? "active" : ""}">Scale (S)</button>
+                        </div>
                       </div>
-                      <div class="muted" style="margin-top:0.35rem;">Tip: click and drag a placed object in 3D to move it.</div>
+                      <div class="obj-section">
+                        <div class="obj-section-label">Transform</div>
+                        <div class="obj-axis-row">
+                          <label></label>
+                          <div class="obj-axis-head">X</div>
+                          <div class="obj-axis-head">Y</div>
+                          <div class="obj-axis-head">Z</div>
+                        </div>
+                        <div class="obj-axis-row">
+                          <label>Location (m)</label>
+                          <input id="venue3dObjPosX" type="number" step="0.01" />
+                          <input id="venue3dObjPosY" type="number" step="0.01" />
+                          <input id="venue3dObjPosZ" type="number" step="0.01" />
+                        </div>
+                        <div class="obj-axis-row">
+                          <label>Rotation (deg)</label>
+                          <input value="0" disabled />
+                          <input id="venue3dObjRotY" type="number" step="1" />
+                          <input value="0" disabled />
+                        </div>
+                        <div class="obj-axis-row">
+                          <label>Scale</label>
+                          <input id="venue3dObjScale" type="number" min="0.1" step="0.05" />
+                          <input id="venue3dObjScaleYGhost" type="number" value="1.00" disabled />
+                          <input id="venue3dObjScaleZGhost" type="number" value="1.00" disabled />
+                        </div>
+                      </div>
+                      <div class="obj-section">
+                        <div class="obj-section-label">Geometry</div>
+                        <div class="obj-geometry-grid">
+                          <div><label>Curve (deg)</label><input id="venue3dObjCurve" type="number" step="1" /></div>
+                          <div><label>Curve Segments</label><input id="venue3dObjCurveSeg" type="number" min="4" max="64" step="1" /></div>
+                        </div>
+                      </div>
+                      <div class="obj-section">
+                        <div class="obj-actions">
+                          <button id="venue3dObjApplyBtn">Apply</button>
+                          <button id="venue3dObjDeleteBtn">Delete</button>
+                        </div>
+                        <div class="muted" style="margin-top:0.35rem;" id="venue3dObjHint">Tip: select and drag in viewport, or edit values here.</div>
+                      </div>
                     </div>
                   </div>
                   <div id="venue3dCanvasHost" style="height:760px;border:1px solid var(--theme-line-soft);border-radius:12px;background:var(--theme-input);overflow:hidden;"></div>
                 </div>
               </div>
             </div>
-            ${wizardOpen ? `
-            <div class="modal-backdrop open" id="venueCalModalBackdrop">
+            <div class="modal-backdrop ${wizardOpen ? "open" : ""}" id="venueCalModalBackdrop">
               <div class="modal-card" style="width:min(980px,96vw);padding:1rem;">
                 <div class="modal-head">
                   <strong>Floor Plan Calibration</strong>
@@ -11581,7 +12524,6 @@
                 </svg>
               </div>
             </div>
-            ` : ""}
           `;
 
           const redraw = () => {
@@ -12235,42 +13177,93 @@
             venueState.viewY = null;
           };
           const floorPlanFileInput = document.getElementById("venueFloorPlanFile");
-          floorPlanFileInput?.addEventListener("change", () => {
+          document.getElementById("venueFloorPlanPickBtn")?.addEventListener("click", () => {
+            floorPlanFileInput?.click();
+          });
+          const setFloorPlanImportStatus = (status, error = "") => {
+            venueState.floorPlanImportStatus = String(status || "Idle");
+            venueState.floorPlanImportError = String(error || "");
+          };
+          const openFloorPlanWizard = () => {
+            venueState.floorPlanWizardOpen = true;
+            venueState.floorPlanWizardForceOpen = true;
+            venueState.floorPlanWizardDismissed = false;
+            venueState.floorPlanWizardActivePoint = "scale";
+            venueState.floorPlanWizardRotationDeg = 0;
+            venueState.floorPlanWizardOriginPx = null;
+            venueState.floorPlanWizardZeroPx = null;
+            venueState.floorPlanWizardXPx = null;
+            venueState.floorPlanWizardYPx = null;
+          };
+          const applyFloorPlanImageData = (dataUrl, knownDims = null, options = { openWizard: true }) => {
+            venueState.floorPlanDataUrl = String(dataUrl || "");
+            venueState.floorPlanWorldMatrix = null;
+            venueState.floorPlanScale = 1;
+            venueState.floorPlanScaleAdjust = 1;
+            venueState.floorPlanRotationDeg = 0;
+            venueState.floorPlanOffsetX = 0;
+            venueState.floorPlanOffsetY = 0;
+            venueState.floorPlanCalibrating = false;
+            venueState.floorPlanCalPointA = null;
+            venueState.floorPlanCalPointB = null;
+            venueState.floorPlanWizardDismissed = false;
+            venueState.floorPlanImageWidthPx = Math.max(1, Number(knownDims?.width || 1600));
+            venueState.floorPlanImageHeightPx = Math.max(1, Number(knownDims?.height || 900));
+            if (options?.openWizard !== false) openFloorPlanWizard();
+            renderVenue();
+          };
+          const clearFloorPlanPdfRuntime = () => {
+            venueFloorPlanPdfRuntime.bytes = null;
+            venueFloorPlanPdfRuntime.docPromise = null;
+            venueFloorPlanPdfRuntime.pageCache.clear();
+          };
+          floorPlanFileInput?.addEventListener("change", async () => {
             const file = floorPlanFileInput.files && floorPlanFileInput.files[0];
             if (!file) return;
-            if (!file.type.startsWith("image/")) {
-              alert("Please upload an image file (PNG/JPG/SVG/WebP).");
+            const isImage = String(file.type || "").startsWith("image/") || /\.(png|jpe?g|webp|bmp|gif)$/i.test(file.name || "");
+            if (!isImage) {
+              alert("Please upload an image floor plan (PNG, JPG, WEBP, BMP).");
               floorPlanFileInput.value = "";
               return;
             }
-            const reader = new FileReader();
-            reader.onload = () => {
-              venueState.floorPlanDataUrl = typeof reader.result === "string" ? reader.result : "";
-              venueState.floorPlanWorldMatrix = null;
-              venueState.floorPlanScale = 1;
-              venueState.floorPlanScaleAdjust = 1;
-              venueState.floorPlanRotationDeg = 0;
-              venueState.floorPlanOffsetX = 0;
-              venueState.floorPlanOffsetY = 0;
-              venueState.floorPlanCalibrating = false;
-              venueState.floorPlanCalPointA = null;
-              venueState.floorPlanCalPointB = null;
-              const probe = new Image();
-              probe.onload = () => {
-                venueState.floorPlanImageWidthPx = Number(probe.naturalWidth || probe.width || 1);
-                venueState.floorPlanImageHeightPx = Number(probe.naturalHeight || probe.height || 1);
-                venueState.floorPlanWizardOpen = true;
-                venueState.floorPlanWizardActivePoint = "scale";
-                venueState.floorPlanWizardRotationDeg = 0;
-                venueState.floorPlanWizardOriginPx = null;
-                venueState.floorPlanWizardZeroPx = null;
-                venueState.floorPlanWizardXPx = null;
-                venueState.floorPlanWizardYPx = null;
-                renderVenue();
-              };
-              probe.src = String(venueState.floorPlanDataUrl);
-            };
-            reader.readAsDataURL(file);
+            // Reset and load a new image floor plan session.
+            clearFloorPlanPdfRuntime();
+            venueState.floorPlanDataUrl = "";
+            venueState.floorPlanImageWidthPx = null;
+            venueState.floorPlanImageHeightPx = null;
+            venueState.floorPlanWorldMatrix = null;
+            venueState.floorPlanWizardOriginPx = null;
+            venueState.floorPlanWizardZeroPx = null;
+            venueState.floorPlanWizardXPx = null;
+            venueState.floorPlanWizardYPx = null;
+            venueState.floorPlanWizardDismissed = false;
+            venueState.floorPlanSourceName = String(file.name || "Image");
+            venueState.floorPlanPdfTotalPages = 0;
+            renderVenue();
+            setFloorPlanImportStatus("Loading image...");
+            try {
+              const dataUrl = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(String(reader.result || ""));
+                reader.onerror = () => reject(new Error("Unable to read image file."));
+                reader.readAsDataURL(file);
+              });
+              const dims = await new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve({ width: Math.max(1, Number(img.naturalWidth || img.width || 1)), height: Math.max(1, Number(img.naturalHeight || img.height || 1)) });
+                img.onerror = () => reject(new Error("Unable to decode image."));
+                img.src = String(dataUrl || "");
+              });
+              applyFloorPlanImageData(String(dataUrl || ""), dims, { openWizard: true });
+              setFloorPlanImportStatus("Ready");
+            } catch (err) {
+              console.error("Floor plan import failed:", err);
+              setFloorPlanImportStatus("Import failed", err?.message || "Unknown image import error.");
+              alert(`Unable to import floor plan image. ${err?.message || ""}`.trim());
+              renderVenue();
+            } finally {
+              floorPlanFileInput.value = "";
+            }
           });
           const floorOpacityInput = document.getElementById("venueFloorPlanOpacity");
           const floorOpacityLabel = document.getElementById("venueFloorPlanOpacityLabel");
@@ -12308,6 +13301,8 @@
           document.getElementById("venueOpenCalWizardBtn")?.addEventListener("click", () => {
             if (!venueState.floorPlanDataUrl) return;
             venueState.floorPlanWizardOpen = true;
+            venueState.floorPlanWizardForceOpen = true;
+            venueState.floorPlanWizardDismissed = false;
             venueState.floorPlanWizardActivePoint = "scale";
             venueState.floorPlanWizardRotationDeg = 0;
             venueState.floorPlanWizardOriginPx = null;
@@ -12802,6 +13797,8 @@
           });
           document.getElementById("venueCalWizardCancelBtn")?.addEventListener("click", () => {
             venueState.floorPlanWizardOpen = false;
+            venueState.floorPlanWizardForceOpen = false;
+            venueState.floorPlanWizardDismissed = true;
             venueState.floorPlanWizardRotationDeg = 0;
             renderVenue();
           });
@@ -12813,15 +13810,25 @@
             }
             venueState.floorPlanWorldMatrix = matrix;
             venueState.floorPlanWizardOpen = false;
+            venueState.floorPlanWizardForceOpen = false;
+            venueState.floorPlanWizardDismissed = true;
             venueState.floorPlanWizardRotationDeg = 0;
             renderVenue();
           });
           document.getElementById("venueFloorPlanClearBtn")?.addEventListener("click", () => {
+            clearFloorPlanPdfRuntime();
             venueState.floorPlanDataUrl = "";
             venueState.floorPlanImageWidthPx = null;
             venueState.floorPlanImageHeightPx = null;
             venueState.floorPlanWorldMatrix = null;
+            venueState.floorPlanSourceName = "";
+            venueState.floorPlanPdfTotalPages = 0;
+            venueState.floorPlanPdfLastPage = 1;
+            venueState.floorPlanImportStatus = "No floor plan loaded";
+            venueState.floorPlanImportError = "";
             venueState.floorPlanWizardOpen = false;
+            venueState.floorPlanWizardForceOpen = false;
+            venueState.floorPlanWizardDismissed = false;
             venueState.floorPlanWizardRotationDeg = 0;
             venueState.floorPlanWizardOriginPx = null;
             venueState.floorPlanWizardZeroPx = null;
@@ -12966,6 +13973,202 @@
           initVenue3dViewer();
         }
 
+        function getObjectTypeForContext() {
+          if (currentEngineeringSection === "Lighting") return "fixture";
+          if (currentEngineeringSection === "Video") return "led_wall";
+          if (currentEngineeringSection === "Rigging") return "truss_group";
+          if (currentEngineeringSection === "Power") return "power_plan";
+          if (currentEngineeringSection === "Sound") return "audio_system";
+          if (currentEngineeringSection === "Venue") return "venue_3d";
+          if (currentEngineeringSection === "RF") return "rf_plan";
+          return "module";
+        }
+
+        function readPropertyRows(tabName, objectType) {
+          const tab = String(tabName || "General");
+          if (currentEngineeringSection === "Video") {
+            const wall = getActiveLedWall();
+            const calc = calculateLedForWall(wall || {});
+            if (!wall || !calc) return [{ key: "Status", value: "No wall selected" }];
+            if (tab === "General") return [
+              { key: "Wall", value: wall.name || "Wall" },
+              { key: "Panel Type", value: (LED_PANELS.find((p) => p.id === wall.panelType)?.name) || wall.panelType || "-" },
+              { key: "Panels", value: `${calc.panelsWidth} x ${calc.panelsHeight} (${calc.totalPanels})` }
+            ];
+            if (tab === "Signal / Routing") return [
+              { key: "Controllers", value: (wall.routing?.controllers || []).map((c) => `${(LED_CONTROLLERS.find((x) => x.id === c.id)?.name) || c.id} x${c.qty}`).join(", ") || "None" },
+              { key: "Mapped Ports", value: String(Object.keys(wall.routing?.assignments || {}).length) },
+              { key: "Selected Port", value: `P${Number(wall.routing?.selectedPort || 0) + 1}` }
+            ];
+            if (tab === "Power") return [
+              { key: "Supply", value: ledState.powerSupplyType === "socapex" ? "Socapex 6-way" : "32A" },
+              { key: "Avg Current", value: `${Number(calc.avgPowerA || 0).toFixed(1)} A` },
+              { key: "Max Current", value: `${Number(calc.maxPowerA || 0).toFixed(1)} A` }
+            ];
+            return [{ key: "Info", value: "LED wall engineering data" }];
+          }
+          if (currentEngineeringSection === "Lighting") {
+            const f = getLightingFixtureByKey(lightingState.selectedFixtureKey || "") || null;
+            if (tab === "General") return [
+              { key: "Fixture", value: f ? `${f.manufacturer} ${f.model}` : "None selected" },
+              { key: "Groups", value: String((lightingState.groups || []).length) },
+              { key: "Fixture Lines", value: String((lightingState.fixtures || []).length) }
+            ];
+            if (tab === "Signal / Routing") return [{ key: "Patch", value: "DMX patch managed in Lighting planner" }];
+            if (tab === "Power") return [{ key: "Group Power", value: "See Group Outputs" }];
+            if (tab === "Physical") return [{ key: "Weight", value: f && Number.isFinite(Number(f.weight_kg)) ? `${Number(f.weight_kg).toFixed(1)} kg` : "-" }];
+            return [{ key: "Notes", value: "Lighting object properties" }];
+          }
+          if (currentEngineeringSection === "Rigging") {
+            const calc = riggingState.lastCalc || runRiggingCalculation();
+            const activeGroup = getRiggingGroupById(riggingState.selectedPlanGroupId || riggingState.selectedTrussGroupId || "");
+            if (tab === "General") return [
+              { key: "Group", value: activeGroup?.name || "No group selected" },
+              { key: "Spans", value: String((riggingState.spans || []).length) },
+              { key: "Motors", value: String((riggingState.pickups || []).length) }
+            ];
+            if (tab === "Physical") return [
+              { key: "Total Weight", value: `${Number(calc.totalWeightKg || 0).toFixed(1)} kg` },
+              { key: "Safety Factor", value: Number(riggingState.safetyFactor || 1).toFixed(2) }
+            ];
+            if (tab === "Power") return [{ key: "Motor Load", value: "See motor labels and reaction graph" }];
+            return [{ key: "Status", value: calc.blocked ? "Blocked by rigging blockers" : "Calculation valid" }];
+          }
+          if (currentEngineeringSection === "Power") {
+            const plan = buildPowerPlan();
+            const tot = plan?.totals?.max || { W: 0, VA: 0, A: 0 };
+            if (tab === "General") return [
+              { key: "Loads", value: String(getCombinedPowerLoads().length) },
+              { key: "Max VA", value: `${Math.round(Number(tot.VA || 0)).toLocaleString()} VA` },
+              { key: "Max Current", value: `${Number(tot.A || 0).toFixed(1)} A` }
+            ];
+            if (tab === "Power") return [{ key: "Compliance", value: String(plan?.compliance?.overall || "PASS") }];
+            if (tab === "Signal / Routing") return [{ key: "Phase Balance", value: "L1 / L2 / L3 auto-balanced" }];
+            return [{ key: "Notes", value: "South African 3-phase planning defaults enabled." }];
+          }
+          if (currentEngineeringSection === "Sound") {
+            if (tab === "General") return [
+              { key: "Event", value: audioState.showInfo?.eventName || "-" },
+              { key: "Inputs", value: String((audioState.console?.inputs || []).length) },
+              { key: "Outputs", value: String((audioState.console?.outputs || []).length) }
+            ];
+            if (tab === "Power") return [{ key: "Audio Loads", value: `${(audioState.power?.loads || []).length} line(s)` }];
+            return [{ key: "Routing", value: "Console + stagebox routes in Audio tab." }];
+          }
+          if (currentEngineeringSection === "Venue") {
+            if (tab === "General") return [
+              { key: "Placed Gear", value: String((venueState.placedModels || []).length) },
+              { key: "Floorplan", value: venueState.floorPlanDataUrl ? "Calibrated" : "None" },
+              { key: "Projection", value: venueState.projectionMode === "orthographic" ? "Orthographic" : "Perspective" }
+            ];
+            if (tab === "Physical") return [
+              { key: "Origin", value: `${Number(venueState.gridOriginX || 0).toFixed(1)}m, ${Number(venueState.gridOriginY || 0).toFixed(1)}m` },
+              { key: "Scale", value: Number(venueState.floorPlanScale || 1).toFixed(4) }
+            ];
+            return [{ key: "Notes", value: "3D world and venue planning context." }];
+          }
+          return [{ key: "Module", value: currentEngineeringSection }];
+        }
+
+        function renderPropertyPanel() {
+          if (!propertyTabsEl || !propertyPanelBodyEl || !propObjectTypeEl) return;
+          const objectType = getObjectTypeForContext();
+          const lastTab = propertyTabMemory[objectType];
+          const activeTab = PROPERTY_TABS.includes(lastTab) ? lastTab : "General";
+          propObjectTypeEl.textContent = objectType.replace(/_/g, " ");
+          propertyTabsEl.innerHTML = PROPERTY_TABS.map((tab) => `<button data-prop-tab="${tab}" class="${tab === activeTab ? "active" : ""}">${tab}</button>`).join("");
+          const rows = readPropertyRows(activeTab, objectType);
+          propertyPanelBodyEl.innerHTML = `
+            <div class="muted" style="margin-bottom:0.42rem;">${activeTab}</div>
+            ${(rows || []).map((r) => `
+              <div class="property-row">
+                <div class="property-key">${r.key}</div>
+                <div class="property-val">${r.value}</div>
+              </div>
+            `).join("")}
+          `;
+          propertyTabsEl.querySelectorAll("[data-prop-tab]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const nextTab = btn.getAttribute("data-prop-tab") || "General";
+              propertyTabMemory[objectType] = nextTab;
+              localStorage.setItem(PROPERTY_TAB_KEY, JSON.stringify(propertyTabMemory));
+              renderPropertyPanel();
+            });
+          });
+        }
+
+        function renderModuleSidebar() {
+          if (!moduleSidebar) return;
+          const iconSvg = (key) => {
+            const icons = {
+              video: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="14" height="10" rx="2"></rect><path d="M17.5 8.5L21 6.8v7.4l-3.5-1.7z"></path><path d="M6 18.5h9"></path><path d="M10.5 15.5v3"></path></svg>',
+              lighting: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5h10"></path><path d="M8.5 4.5v4l3.5 4v3"></path><path d="M15.5 4.5v4l-3.5 4"></path><path d="M9.5 18h5"></path><path d="M10.5 20h3"></path></svg>',
+              audio: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 14h3l4.5 3.5V6.5L6.5 10h-3z"></path><path d="M14.5 10.2a4.2 4.2 0 0 1 0 3.6"></path><path d="M17.5 8a7.4 7.4 0 0 1 0 8"></path><path d="M20 5.5a11 11 0 0 1 0 13"></path></svg>',
+              rigging: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5h16"></path><path d="M6.5 6.5l5.5 10 5.5-10"></path><path d="M9.2 11.4h5.6"></path><path d="M12 16.5v4"></path><circle cx="12" cy="21" r="1.4"></circle></svg>',
+              power: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 4v6"></path><path d="M15.5 4v6"></path><path d="M6 10h12v4a6 6 0 0 1-12 0z"></path></svg>',
+              venue3d: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"></path><path d="M12 12l8-4.5"></path><path d="M12 12v9"></path><path d="M12 12L4 7.5"></path></svg>',
+              rf: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18.5" r="1.2"></circle><path d="M12 17v-4"></path><path d="M8.5 13.5a5 5 0 0 1 7 0"></path><path d="M6 11a8.5 8.5 0 0 1 12 0"></path><path d="M3.5 8.5a12 12 0 0 1 17 0"></path></svg>',
+              outputs: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="13" height="17" rx="2"></rect><path d="M8 8h5"></path><path d="M8 12h5"></path><path d="M8 16h3"></path><path d="M17 8.5h3.5"></path><path d="M18.8 6.8l1.7 1.7-1.7 1.7"></path></svg>',
+              projects: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="8" height="6" rx="1.5"></rect><rect x="13" y="5" width="8" height="6" rx="1.5"></rect><rect x="8" y="13" width="8" height="6" rx="1.5"></rect><path d="M11 8h2"></path><path d="M12 11v2"></path></svg>',
+              settings: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="7" r="2"></circle><circle cx="16" cy="12" r="2"></circle><circle cx="10" cy="17" r="2"></circle><path d="M10 7h10"></path><path d="M3.5 7H6"></path><path d="M3.5 12H14"></path><path d="M18 12h2.5"></path><path d="M3.5 17H8"></path><path d="M12 17h8.5"></path></svg>'
+            };
+            return icons[key] || icons.settings;
+          };
+          moduleSidebar.innerHTML = MODULE_MENU.map((m) => {
+            const active = (m.id === currentEngineeringSection)
+              || (m.id === "3D" && currentEngineeringSection === "Venue");
+            return `
+              <button class="nav-btn ${active ? "active" : ""}" data-module-nav="${m.id}" title="${m.label}">
+                <span class="nav-icon" style="border-color:${m.color};color:${m.color};">${iconSvg(m.iconKey)}</span>
+                <span class="nav-label">${m.label}</span>
+              </button>
+            `;
+          }).join("");
+          moduleSidebar.querySelectorAll("[data-module-nav]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const moduleName = btn.getAttribute("data-module-nav") || "Video";
+              setEngineeringSection(moduleName);
+            });
+          });
+        }
+
+        function updateSystemStatusBar() {
+          if (!systemStatusPillEl || !systemStatusTextEl || !activeModuleIndicatorEl || !modeIndicatorEl) return;
+          let level = "READY";
+          let text = "System ready";
+          if (currentEngineeringSection === "Rigging") {
+            const calc = riggingState.lastCalc || runRiggingCalculation();
+            if (calc.blockers?.length) {
+              level = "ERROR";
+              text = `${calc.blockers.length} blocker(s) in rigging calculation`;
+            } else if (calc.warnings?.length) {
+              level = "WARN";
+              text = `${calc.warnings.length} warning(s) in rigging calculation`;
+            }
+          } else if (currentEngineeringSection === "Power") {
+            const overall = String(buildPowerPlan()?.compliance?.overall || "PASS");
+            if (overall === "FAIL") {
+              level = "ERROR";
+              text = "Power compliance fail";
+            } else if (overall === "WARN") {
+              level = "WARN";
+              text = "Power compliance warning";
+            }
+          }
+          systemStatusPillEl.textContent = level;
+          systemStatusPillEl.className = `status-pill ${level === "ERROR" ? "error" : (level === "WARN" ? "warn" : "ready")}`;
+          systemStatusTextEl.textContent = text;
+          activeModuleIndicatorEl.textContent = currentEngineeringSection;
+          modeIndicatorEl.textContent = currentUiMode === "canvas" ? "Planning Canvas Mode" : "Engineering Data Mode";
+        }
+
+        function refreshEngineeringChrome() {
+          currentUiMode = ["Venue", "Rigging", "Video"].includes(currentEngineeringSection) ? "canvas" : "data";
+          renderModuleSidebar();
+          renderPropertyPanel();
+          updateSystemStatusBar();
+        }
+
         function setEngineeringSection(name) {
           currentEngineeringSection = name;
           if (name !== "Venue") disposeVenue3dRuntime();
@@ -12980,36 +14183,45 @@
             Lighting: "Lighting",
             Power: "Power",
             Rigging: "Rigging",
-            Venue: "Venue"
+            Venue: "Venue",
+            RF: "Sound",
+            Outputs: "Power"
           };
           document.body.setAttribute("data-dept", themeMap[name] || "Power");
           localStorage.setItem("thebase.activeDept", themeMap[name] || "Power");
           saveAppMemory();
-          if (name === "Video") {
-            renderVideoSubTab("LED");
-            return;
+          try {
+            if (name === "Video") {
+              renderVideoSubTab("LED");
+              return;
+            }
+            if (name === "Lighting") {
+              renderLighting();
+              return;
+            }
+            if (name === "Sound") {
+              renderSound();
+              return;
+            }
+            if (name === "Venue") {
+              renderVenue();
+              return;
+            }
+            if (name === "Rigging") {
+              renderRigging();
+              return;
+            }
+            if (name === "Power") {
+              renderPower();
+              return;
+            }
+            renderPlaceholder(name, `${name} workspace is ready for implementation.`);
+          } catch (err) {
+            console.error("Section render failed:", name, err);
+            renderPlaceholder(name, `${name} failed to render. Check console for details.`);
+          } finally {
+            refreshEngineeringChrome();
           }
-          if (name === "Lighting") {
-            renderLighting();
-            return;
-          }
-          if (name === "Sound") {
-            renderSound();
-            return;
-          }
-          if (name === "Venue") {
-            renderVenue();
-            return;
-          }
-          if (name === "Rigging") {
-            renderRigging();
-            return;
-          }
-          if (name === "Power") {
-            renderPower();
-            return;
-          }
-          renderPlaceholder(name, `${name} workspace is ready for implementation.`);
         }
 
         window.addEventListener("storage", (ev) => {
@@ -13067,6 +14279,13 @@
           const initDept = DEPTS.has(urlDept) ? urlDept : (DEPTS.has(storedDept) ? storedDept : "Video");
           setEngineeringSection(initDept);
           startAppMemoryAutosave();
+          if (main) {
+            const observer = new MutationObserver(() => {
+              refreshEngineeringChrome();
+            });
+            observer.observe(main, { childList: true, subtree: false });
+          }
+          refreshEngineeringChrome();
         }
         bootstrapEngineeringPage();
 

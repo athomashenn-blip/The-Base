@@ -17,12 +17,15 @@
         --theme-bg-c: #111217;
         --theme-glow-a: #6a738420;
         --theme-glow-b: #8d97aa1a;
-        --theme-header-a: #282434;
-        --theme-header-b: #201d2c;
-        --theme-main-a: #24222e;
-        --theme-main-b: #1f1d29;
-        --theme-card-a: #2a2736;
-        --theme-card-b: #22202d;
+        --theme-header-a: #2b3039;
+        --theme-header-b: #232831;
+        --theme-main-a: #252932;
+        --theme-main-b: #20242c;
+        --theme-card-a: #303640;
+        --theme-card-b: #282e38;
+        --theme-input: #1b1923;
+        --theme-btn-a: #343946;
+        --theme-btn-b: #2a2f3a;
         --logo-hue: 0deg;
       }
       * { box-sizing: border-box; }
@@ -130,13 +133,59 @@
         border-bottom: 2px solid var(--btn-active);
         padding-bottom: 0.2rem;
       }
-      .main {
+      .layout {
         margin-top: 0.8rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.8rem;
+        align-items: start;
+      }
+      .main {
         border: 1px solid var(--line);
         border-radius: 22px;
         background: linear-gradient(180deg, var(--theme-main-a), var(--theme-main-b) 78%);
         padding: 1rem;
+        min-height: calc(100vh - 182px);
       }
+      .properties-panel {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        background: linear-gradient(180deg, var(--theme-main-a), var(--theme-main-b) 78%);
+        padding: 0.7rem;
+        position: sticky;
+        top: 0.8rem;
+        max-height: calc(100vh - 112px);
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        gap: 0.55rem;
+      }
+      .property-tabs {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 0.35rem;
+      }
+      .property-tabs button {
+        padding: 0.35rem 0.25rem;
+        font-size: 0.72rem;
+      }
+      .property-panel-body {
+        overflow: auto;
+        border: 1px solid var(--line-2);
+        border-radius: 10px;
+        padding: 0.5rem;
+        background: var(--theme-input);
+      }
+      .property-row {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr);
+        gap: 0.45rem;
+        align-items: center;
+        padding: 0.28rem 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--line-2), transparent 50%);
+      }
+      .property-row:last-child { border-bottom: 0; }
+      .property-key { color: var(--muted); font-size: 0.75rem; }
+      .property-val { font-size: 0.82rem; word-break: break-word; }
       .card {
         border: 1px solid var(--line-2);
         border-radius: 14px;
@@ -156,7 +205,7 @@
         font: inherit;
         color: inherit;
         border: 1px solid var(--btn-line);
-        background: linear-gradient(180deg, #343946, #2a2f3a);
+        background: linear-gradient(180deg, var(--theme-btn-a), var(--theme-btn-b));
         border-radius: 8px;
         padding: 10px 12px;
         cursor: pointer;
@@ -164,6 +213,32 @@
       button.primary { border-color: var(--btn-active); background: linear-gradient(180deg, color-mix(in srgb, var(--btn-active) 38%, #323846 62%), color-mix(in srgb, var(--btn-line) 58%, #262b36 42%)); }
       .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
       a.link-btn { text-decoration: none; display: inline-block; }
+      .system-status-bar {
+        position: fixed;
+        left: 0.55rem;
+        right: 0.55rem;
+        bottom: 0.35rem;
+        border: 1px solid var(--line-2);
+        border-radius: 10px;
+        background: linear-gradient(180deg, #1a1f29f2, #141923f2);
+        padding: 0.35rem 0.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.7rem;
+        z-index: 30;
+      }
+      .status-pill {
+        border: 1px solid var(--line-2);
+        border-radius: 999px;
+        padding: 0.12rem 0.48rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+      }
+      .status-pill.ready { border-color: #1f9e5d; color: #7aefb4; }
+      .status-pill.warn { border-color: #b2731b; color: #ffc982; }
+      .status-pill.error { border-color: #b73758; color: #ff97b1; }
+      .status-text { font-size: 0.76rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 56vw; }
       body[data-dept="Video"] {
         --logo-hue: -150deg;
         --line: #3e784f;
@@ -279,12 +354,22 @@
         --theme-bg-c: #111217;
         --theme-glow-a: #6a738420;
         --theme-glow-b: #8d97aa1a;
-        --theme-header-a: #282434;
-        --theme-header-b: #201d2c;
-        --theme-main-a: #24222e;
-        --theme-main-b: #1f1d29;
-        --theme-card-a: #2a2736;
-        --theme-card-b: #22202d;
+        --theme-header-a: #2b3039;
+        --theme-header-b: #232831;
+        --theme-main-a: #252932;
+        --theme-main-b: #20242c;
+        --theme-card-a: #303640;
+        --theme-card-b: #282e38;
+        --theme-input: #1b1923;
+        --theme-btn-a: #343946;
+        --theme-btn-b: #2a2f3a;
+      }
+      @media (max-width: 1100px) {
+        .layout { grid-template-columns: 1fr; }
+        .properties-panel { display: none; }
+      }
+      @media (max-width: 820px) {
+        .layout { grid-template-columns: 1fr; }
       }
     </style>
   </head>
@@ -301,23 +386,14 @@
         </div>
         <div class="header-links">
           <a class="header-link-btn active" href="projects.html">Projects</a>
-          <div class="header-link-group">
-            <a class="header-link-btn" href="index.html">Engineering</a>
-            <div class="header-dropdown" aria-label="Engineering Departments">
-              <a href="index.html?dept=Video">Video</a>
-              <a href="index.html?dept=Lighting">Lighting</a>
-              <a href="index.html?dept=Sound">Sound</a>
-              <a href="index.html?dept=Rigging">Rigging</a>
-              <a href="index.html?dept=Power">Power</a>
-              <a href="index.html?dept=Venue">Venue</a>
-            </div>
-          </div>
+          <a class="header-link-btn" href="index.html">Engineering</a>
           <a class="header-link-btn" href="reports.html">Reports</a>
           <a class="header-link-btn" href="settings.html">Settings</a>
         </div>
         <div class="header-actions"></div>
       </header>
-      <main class="main">
+      <section class="layout">
+        <main class="main">
         <div class="card" style="margin-bottom:0.7rem;">
           <div class="row">
             <h1 style="margin:0;">Projects</h1>
@@ -368,9 +444,20 @@
             <div id="projectTeamStatus" class="muted" style="margin-bottom:0.4rem;"></div>
             <div id="projectTeamList" class="muted">Select a project.</div>
           </div>
-        </div>
-      </main>
+          </div>
+        </main>
+      </section>
     </div>
+    <footer class="system-status-bar" id="projectsStatusBar">
+      <div style="display:flex;align-items:center;gap:0.65rem;min-width:0;">
+        <span class="status-pill ready" id="projectsStatusPill">READY</span>
+        <span class="status-text" id="projectsStatusText">Project center ready</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.65rem;">
+        <span class="link-btn" style="padding:0.12rem 0.46rem;">Engineering Data Mode</span>
+        <span class="muted" style="font-size:0.76rem;">Projects</span>
+      </div>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="data/auth-config.js"></script>
     <script src="data/auth-projects.js"></script>
@@ -401,6 +488,25 @@
         let currentUser = null;
         let selectedProject = null;
         let selectedRole = "";
+        const projectsSidebar = document.getElementById("projectsSidebar");
+        const projectsPropertyTabs = document.getElementById("projectsPropertyTabs");
+        const projectsPropertyBody = document.getElementById("projectsPropertyBody");
+        const projectsPropObject = document.getElementById("projectsPropObject");
+        const projectsStatusPill = document.getElementById("projectsStatusPill");
+        const projectsStatusText = document.getElementById("projectsStatusText");
+        const PROJECT_PROP_TABS = ["General", "Signal / Routing", "Power", "Network", "Physical", "Notes"];
+        let projectPropertyTab = "General";
+        const MODULE_MENU = [
+          { href: "projects.html", label: "Projects", iconKey: "projects", color: "#8b5cff", active: true },
+          { href: "index.html?dept=Video", label: "Video", iconKey: "video", color: "#57b36a" },
+          { href: "index.html?dept=Lighting", label: "Lighting", iconKey: "lighting", color: "#e25555" },
+          { href: "index.html?dept=Sound", label: "Audio", iconKey: "audio", color: "#4f82ff" },
+          { href: "index.html?dept=Rigging", label: "Rigging", iconKey: "rigging", color: "#f08a3c" },
+          { href: "index.html?dept=Power", label: "Power", iconKey: "power", color: "#8b5cff" },
+          { href: "index.html?dept=Venue", label: "3D", iconKey: "venue3d", color: "#35bdb0" },
+          { href: "reports.html", label: "Reports", iconKey: "outputs", color: "#7c889f" },
+          { href: "settings.html", label: "Settings", iconKey: "settings", color: "#8b5cff" }
+        ];
 
         const esc = (v) => String(v == null ? "" : v).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c]));
         const setMsg = (el, msg, ok) => {
@@ -413,6 +519,72 @@
           el.textContent = String(msg || "");
           el.style.color = "#b8b3c9";
         };
+        function renderProjectsSidebar() {
+          if (!projectsSidebar) return;
+          const iconSvg = (key) => {
+            const icons = {
+              video: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="14" height="10" rx="2"></rect><path d="M17.5 8.5L21 6.8v7.4l-3.5-1.7z"></path><path d="M6 18.5h9"></path><path d="M10.5 15.5v3"></path></svg>',
+              lighting: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4.5h10"></path><path d="M8.5 4.5v4l3.5 4v3"></path><path d="M15.5 4.5v4l-3.5 4"></path><path d="M9.5 18h5"></path><path d="M10.5 20h3"></path></svg>',
+              audio: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 14h3l4.5 3.5V6.5L6.5 10h-3z"></path><path d="M14.5 10.2a4.2 4.2 0 0 1 0 3.6"></path><path d="M17.5 8a7.4 7.4 0 0 1 0 8"></path><path d="M20 5.5a11 11 0 0 1 0 13"></path></svg>',
+              rigging: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5h16"></path><path d="M6.5 6.5l5.5 10 5.5-10"></path><path d="M9.2 11.4h5.6"></path><path d="M12 16.5v4"></path><circle cx="12" cy="21" r="1.4"></circle></svg>',
+              power: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 4v6"></path><path d="M15.5 4v6"></path><path d="M6 10h12v4a6 6 0 0 1-12 0z"></path></svg>',
+              venue3d: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"></path><path d="M12 12l8-4.5"></path><path d="M12 12v9"></path><path d="M12 12L4 7.5"></path></svg>',
+              outputs: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="13" height="17" rx="2"></rect><path d="M8 8h5"></path><path d="M8 12h5"></path><path d="M8 16h3"></path><path d="M17 8.5h3.5"></path><path d="M18.8 6.8l1.7 1.7-1.7 1.7"></path></svg>',
+              projects: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="8" height="6" rx="1.5"></rect><rect x="13" y="5" width="8" height="6" rx="1.5"></rect><rect x="8" y="13" width="8" height="6" rx="1.5"></rect><path d="M11 8h2"></path><path d="M12 11v2"></path></svg>',
+              settings: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="7" r="2"></circle><circle cx="16" cy="12" r="2"></circle><circle cx="10" cy="17" r="2"></circle><path d="M10 7h10"></path><path d="M3.5 7H6"></path><path d="M3.5 12H14"></path><path d="M18 12h2.5"></path><path d="M3.5 17H8"></path><path d="M12 17h8.5"></path></svg>'
+            };
+            return icons[key] || icons.settings;
+          };
+          projectsSidebar.innerHTML = MODULE_MENU.map((m) => `
+            <a href="${m.href}" style="text-decoration:none;">
+              <button class="${m.active ? "active" : ""}" title="${m.label}">
+                <span class="nav-icon" style="border-color:${m.color};color:${m.color};">${iconSvg(m.iconKey)}</span>
+                <span class="nav-label">${m.label}</span>
+              </button>
+            </a>
+          `).join("");
+        }
+        function getProjectPropertyRows() {
+          const tab = String(projectPropertyTab || "General");
+          if (tab === "General") return [
+            { k: "Selected", v: selectedProject?.name || "No project selected" },
+            { k: "Role", v: selectedRole || "-" },
+            { k: "User", v: currentUser?.email || "Not signed in" }
+          ];
+          if (tab === "Network") return [
+            { k: "Cloud Auth", v: window.TheBaseCloud?.isConfigured?.() ? "Configured" : "Local mode" },
+            { k: "Sync", v: "Project snapshots stored per project" }
+          ];
+          if (tab === "Notes") return [
+            { k: "Access", v: "Only assigned team members can access a project." },
+            { k: "Flow", v: "New / Open / Export / Team management." }
+          ];
+          return [{ k: "Category", v: tab }];
+        }
+        function renderProjectsProperties() {
+          if (!projectsPropertyTabs || !projectsPropertyBody || !projectsPropObject) return;
+          projectsPropObject.textContent = selectedProject?.name ? "project" : "none";
+          projectsPropertyTabs.innerHTML = PROJECT_PROP_TABS.map((tab) => `<button data-proj-prop-tab="${tab}" class="${tab === projectPropertyTab ? "active" : ""}">${tab}</button>`).join("");
+          projectsPropertyBody.innerHTML = getProjectPropertyRows().map((r) => `
+            <div class="property-row">
+              <div class="property-key">${r.k}</div>
+              <div class="property-val">${r.v}</div>
+            </div>
+          `).join("");
+          projectsPropertyTabs.querySelectorAll("[data-proj-prop-tab]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              projectPropertyTab = btn.getAttribute("data-proj-prop-tab") || "General";
+              renderProjectsProperties();
+            });
+          });
+        }
+        function renderProjectsStatus(level, text) {
+          if (!projectsStatusPill || !projectsStatusText) return;
+          const safeLevel = level || "READY";
+          projectsStatusPill.textContent = safeLevel;
+          projectsStatusPill.className = `status-pill ${safeLevel === "ERROR" ? "error" : (safeLevel === "WARN" ? "warn" : "ready")}`;
+          projectsStatusText.textContent = text || "Project center ready";
+        }
 
         async function renderProjectList() {
           if (!window.TheBaseCloud) return;
@@ -426,6 +598,8 @@
           if (!list.length) {
             projectListWrap.innerHTML = '<div class="muted">No projects yet. Create your first project above.</div>';
             teamCard.style.display = "none";
+            renderProjectsProperties();
+            renderProjectsStatus("WARN", "No projects found. Create your first project.");
             return;
           }
           const active = TheBaseCloud.getActiveProject();
@@ -503,6 +677,7 @@
               selectedProject = project;
               selectedRole = project.role || "member";
               await renderTeam();
+              renderProjectsProperties();
             });
           });
           projectListWrap.querySelectorAll("[data-delete-project]").forEach((btn) => {
@@ -525,11 +700,14 @@
               }
             });
           });
+          renderProjectsProperties();
+          renderProjectsStatus("READY", `Loaded ${list.length} project(s).`);
         }
 
         async function renderTeam() {
           if (!selectedProject) {
             teamCard.style.display = "none";
+            renderProjectsProperties();
             return;
           }
           teamCard.style.display = "block";
@@ -572,8 +750,10 @@
                 });
               });
             }
+            renderProjectsProperties();
           } catch (err) {
             setMsg(teamStatus, err?.message || "Failed to load team", false);
+            renderProjectsStatus("WARN", err?.message || "Failed to load team");
           }
         }
 
@@ -619,6 +799,9 @@
         });
 
         async function bootstrap() {
+          renderProjectsSidebar();
+          renderProjectsProperties();
+          renderProjectsStatus("READY", "Initializing project center");
           if (!window.TheBaseCloud || !TheBaseCloud.isConfigured()) return;
           try {
             await TheBaseCloud.init();
@@ -631,6 +814,7 @@
               loginBtn.style.display = "inline-block";
               logoutBtn.style.display = "none";
               workspace.style.display = "none";
+              renderProjectsStatus("WARN", "Not signed in");
               return;
             }
             await TheBaseCloud.ensureProfile(currentUser);
@@ -644,10 +828,12 @@
                 ? "Cloud connected. Projects are private to assigned team members."
                 : "Local mode active. Projects are private per local account and project membership."
             );
+            renderProjectsStatus("READY", "Connected and ready");
             await renderProjectList();
           } catch (err) {
             setMsg(cloudStatus, err?.message || "Failed to initialize cloud", false);
             workspace.style.display = "none";
+            renderProjectsStatus("ERROR", err?.message || "Cloud initialization failed");
           }
         }
 
